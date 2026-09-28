@@ -76,8 +76,29 @@ P={
 "Tear of the Goddess":(400,0,0,0,0,0,200,0,0,0,0,0,0,0),
 "Dagger":(400,0,.12,0,0,0,0,0,0,0,0,0,0,0),
 "Long Sword":(500,12,0,0,0,0,0,0,0,0,0,0,0,0),
-"Brawler's Gloves":(500,0,0,.10,0,0,0,0,0,0,0,0,0,0)}
+"Brawler's Gloves":(500,0,0,.10,0,0,0,0,0,0,0,0,0,0),
+"Cloth Armor":(500,0,0,0,0,0,0,20,0,0,0,0,0,0),
+"Null-Magic Mantle":(500,0,0,0,0,0,0,0,20,0,0,0,0,0),
+"Ruby Crystal":(500,0,0,0,0,150,0,0,0,0,0,0,0,0),
+"Amplifying Tome":(500,0,0,0,20,0,0,0,0,0,0,0,0,0),
+"Ring of Revelation":(300,0,0,0,0,0,0,0,0,5,0,0,0,0),
+"Boots of Speed":(400,0,0,0,0,0,0,0,0,0,0,0,0,25)}
 
+B={
+"Gluttonous Greaves":(1000,12,0,0,0,0,0,0,0,0,0,0,0,45),
+"Immortal Treads":(2000,12,0,0,0,0,0,0,0,0,0,0,0,45),
+"Ionian Boots of Lucidity":(1000,0,0,0,0,0,0,0,0,15,0,0,0,45),
+"Crimson Lucidity":(2000,0,0,0,0,0,0,0,0,25,0,0,0,45),
+"Berserker's Greaves":(1200,0,.35,0,0,0,0,0,0,0,0,0,0,45),
+"Gunmetal Greaves":(2200,0,.50,0,0,0,0,0,0,0,.05,0,0,45),
+"Mercury's Treads":(1200,0,0,0,0,150,0,0,25,0,0,0,0,45),
+"Chainlaced Crushers":(2200,0,0,0,0,150,0,0,30,0,0,0,0,45),
+"Plated Steelcaps":(1200,0,0,0,0,150,0,25,0,0,0,0,0,45),
+"Armored Advance":(2200,0,0,0,0,150,0,30,0,0,0,0,0,45),
+"Boots of Mana":(1200,0,0,0,25,0,0,0,0,0,0,0,0,45),
+"Spellslinger's Shoes":(2200,0,0,0,35,0,0,0,0,0,0,0,0,45),
+"Boots of Dynamism":(1200,15,0,0,0,0,0,0,0,0,0,10,0,45),
+"Armorcrusher Boots":(2200,20,0,0,0,0,0,0,0,0,0,10,.06,45)}
 K=["gold","ad","as","crit","ap","hp","mana","armor","mr","ah","ls","flatpen","pctpen","ms"]
 def dct(v): return dict(zip(K,v))
 def gu(l):
@@ -177,26 +198,121 @@ with st.expander("Proc / scenario switches"):
     ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",True)
     execs=st.number_input("Collector previous executes",0,500,0,1)
 
-pool=st.radio("Item pool",["Full items","Components"],horizontal=True); DB=F if pool=="Full items" else P
-items=st.multiselect("Items",list(DB),default=list(DB))
-with st.expander("V5 item database"):
+if champ=="Jhin":
+    st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
+
+tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database"])
+
+with tabs[0]:
+    st.subheader("Item Tier List")
+    st.caption("Completed items ranked numerically by single-target DPS under identical settings.")
+    if champ!="Jhin" and st.button("Rank all completed items",type="primary",use_container_width=True):
+        rows=[]
+        for it in F:
+            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs)
+            rows.append(row)
+        df=pd.DataFrame(rows,columns=["Item","Gold","TTK","Attacks","Avg DPS"]).sort_values(["Avg DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        df.insert(0,"Rank",range(1,len(df)+1))
+        st.dataframe(df,use_container_width=True,hide_index=True)
+
+with tabs[1]:
+    st.subheader("Build Lab")
+    st.caption("Exactly 5 different completed items + 1 required Boots slot.")
+    cols=st.columns(5)
+    build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
+    boot=st.selectbox("Boots (required)",list(B))
+    if len(set(build))<5:
+        st.error("Choose 5 different completed items.")
+    elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
+        qs=[dct(F[x]) for x in build]; qb=dct(B[boot])
+        total={k:sum(q[k] for q in qs)+qb[k] for k in K}
+        s0=stats(champ,level,mist); maxmana=mana+total["mana"]
+        awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
+        ad=s0["ad"]+total["ad"]+awe
+        crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
+        cd=2.3 if "Infinity Edge" in build else 2.0
+        if champ=="Senna": cd*=.9
+        hp2=float(hp); t=0.; attacks=0; pd=rb=dark=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        while hp2>0 and attacks<500:
+            attacks+=1
+            dyn=(.06*pd if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
+            if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.25
+            if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
+            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+.25+total["as"]+dyn))
+            cc=min(1,crit+(ytcrit if "Yun Tal Wildarrows" in build else 0))
+            pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
+            if "Terminus" in build: pct=min(.40,pct)
+            ea=max(0,armor*(1-pct)-total["flatpen"])
+            true=0.; mag=0.; onp=0.
+            if "Fiendhunter Bolts" in build and fh and t<=8:
+                phy=ad*(cd*.80); true=ad*.15*cc
+            else: phy=ad*(1+cc*(cd-1))
+            if "Hexoptics C44" in build:
+                amp=max(0,min(.10,.10*dist/550)); phy*=1+amp; true*=1+amp
+            if "Wit's End" in build: mag+=40
+            if "Nashor's Tooth" in build: mag+=15+.20*total["ap"]
+            if "Guinsoo's Rageblade" in build: mag+=30
+            if "Terminus" in build: mag+=30
+            if "Blade of the Ruined King" in build: onp+=max(15,.07*hp2)
+            if "Muramana" in build: onp+=.015*maxmana
+            if "Kraken Slayer" in build and attacks%3==0:
+                base=120+(level-1)/14*48; miss=(hp-hp2)/hp
+                onp+=base*(1+min(.75,.75*miss))
+            if "Duskblade of Draktharr" in build and attacks==1: onp+=60+(level-1)/14*100
+            if energized and attacks==1:
+                if "Rapid Firecannon" in build: mag+=80
+                if "Stormrazor" in build: mag+=120
+                if "Statikk Shiv" in build: mag+=60
+            if spell and attacks==1:
+                if "Essence Reaver" in build: onp+=1.35*s0["basead"]+min(80,.8*cc*100)
+                if "Trinity Force" in build: onp+=2*s0["basead"]
+                if "Iceborn Gauntlet" in build: onp+=s0["basead"]+.25*total["armor"]
+            if "Guinsoo's Rageblade" in build and rb>=4 and attacks%3==0:
+                onp*=2; mag*=2
+            phy+=onp
+            if "Lord Dominik's Regards" in build:
+                amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
+            dmg=phy*rm(ea)+mag*rm(mr)+true; hp2-=dmg
+            if "The Collector" in build:
+                th=min(1,.05+.001*execs)
+                if 0<hp2<=hp*th: hp2=0
+            if "Phantom Dancer" in build: pd=min(5,pd+1)
+            if "Guinsoo's Rageblade" in build: rb=min(4,rb+1)
+            if "Terminus" in build and attacks%2==0: dark=min(3,dark+1)
+            if "Yun Tal Wildarrows" in build:
+                ytcrit=min(.25,ytcrit+.002)
+                if attacks==1: yt_until=t+6
+            if "Fiendhunter Bolts" in build and fh and t<=8: fh-=1
+            if hp2<=0: break
+            t+=1/asp
+        cost=sum(F[x][0] for x in build)+B[boot][0]
+        a1,a2,a3,a4,a5=st.columns(5)
+        a1.metric("Build Cost",f"{cost:,}g"); a2.metric("Total AD",f"{ad:.1f}"); a3.metric("Crit",f"{crit*100:.0f}%")
+        a4.metric("TTK",f"{t:.3f}s"); a5.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞")
+        st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
+
+with tabs[2]:
+    st.subheader("Item Value")
+    st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
+    rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
+    if champ!="Jhin":
+        rows=[]
+        for it,v0 in F.items():
+            q=dct(v0); raw=sum(q[k]*rates[k] for k in rates)
+            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs)
+            dps=row[4]; rows.append([it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
+        val=pd.DataFrame(rows,columns=["Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
+        val.insert(0,"Rank",range(1,len(val)+1)); st.dataframe(val,use_container_width=True,hide_index=True)
+        st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
+
+with tabs[3]:
+    st.subheader("Database")
+    dbpick=st.radio("Show",["Completed items","Components","Boots"],horizontal=True)
+    DB=F if dbpick=="Completed items" else P if dbpick=="Components" else B
     rows=[]
     for n,v0 in DB.items():
-        q=dct(v0); rows.append([n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]*100])
-    st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS%"]),use_container_width=True,hide_index=True)
-
-if st.button("⚔️ CALCULATE",type="primary",use_container_width=True):
-    rows=[]; logs={}
-    for it in items:
-        row,lg=sim(champ,level,hp,armor,mr,it,DB,mist,bonus_hp,dist,mana,spell,energized,ult,execs)
-        rows.append(row); logs[it]=lg
-    if rows:
-        df=pd.DataFrame(rows,columns=["Item","Gold","TTK","Attacks","Avg DPS"]).sort_values(["TTK","Attacks"]).reset_index(drop=True)
-        df.insert(0,"Rank",range(1,len(df)+1)); st.dataframe(df,use_container_width=True,hide_index=True)
-        st.success(f"Fastest: {df.iloc[0]['Item']} — {df.iloc[0]['TTK']}s")
-        pick=st.selectbox("Attack log",df["Item"].tolist())
-        st.dataframe(pd.DataFrame(logs[pick],columns=["AA","Time","AS","Crit%","Effective Armor","HP before","Damage","HP after","Proc"]),use_container_width=True,hide_index=True)
-        st.download_button("CSV indir",df.to_csv(index=False).encode(),"sharpwr_v5_results.csv","text/csv")
+        q=dct(v0); rows.append([n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
+    st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5 | 35 completed items + Muramana transformed state + 17 components | QSS 60s | Flat and % armor penetration separated | Runaan secondary bolts excluded from single-target TTK | Utility/defensive passives stored conceptually but do not inflate offensive DPS.")
+st.caption("Web V5.1 | Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
