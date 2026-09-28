@@ -170,7 +170,7 @@ if champ=="Jhin":
 x,y,z=st.columns(3)
 hp=x.number_input("Target HP",100,20000,2500,100); armor=y.number_input("Target Armor",0.,1000.,0.,5.); mr=z.number_input("Target MR",0.,1000.,0.,5.)
 u,v,w=st.columns(3)
-bonus_hp=u.number_input("Target Bonus HP",0.,10000.,0.,100); dist=v.number_input("Attack distance",0.,1000.,550.,25.); mana=w.number_input("Champion Max Mana before item",0.,5000.,0.,50.)
+bonus_hp=u.number_input("Target Bonus HP",0.0,10000.0,0.0,100.0); dist=v.number_input("Attack distance",0.0,1000.0,550.0,25.0); mana=w.number_input("Champion Max Mana before item",0.0,5000.0,0.0,50.0)
 with st.expander("Proc / scenario switches"):
     spell=st.checkbox("Ability cast before first AA (Spellblade ready)",True)
     energized=st.checkbox("Start with Energized/Jolt proc ready",True)
