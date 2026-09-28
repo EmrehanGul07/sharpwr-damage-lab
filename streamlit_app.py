@@ -320,10 +320,55 @@ with tabs[1]:
             if hp2<=0: break
             t+=1/asp
         cost=sum(F[x][0] for x in build)+B[boot][0]
-        a1,a2,a3,a4,a5=st.columns(5)
+
+        # Highest legal one-AA damage. A crit is forced only when the build has non-zero crit chance.
+        maxcrit=crit>0
+        max_ea=max(0,armor*(1-total["pctpen"])-total["flatpen"])
+        hit_phy=ad*(cd if maxcrit else 1.0); hit_mag=0.; hit_true=0.
+        parts=[["Basic AA crit" if maxcrit else "Basic AA","Physical",hit_phy]]
+        if "Hexoptics C44" in build:
+            amp=max(0,min(.10,.10*dist/550)); hit_phy*=1+amp
+            parts=[[n,typ,v*(1+amp) if typ=="Physical" else v] for n,typ,v in parts]
+        for name,val in [("Wit's End",40 if "Wit's End" in build else 0),
+                         ("Rageblade",30 if "Guinsoo's Rageblade" in build else 0),
+                         ("Terminus",30 if "Terminus" in build else 0)]:
+            if val: hit_mag+=val; parts.append([name,"Magic",val])
+        if "Nashor's Tooth" in build:
+            v=15+.20*total["ap"]; hit_mag+=v; parts.append(["Nashor's Tooth","Magic",v])
+        if "Blade of the Ruined King" in build:
+            v=max(15,.07*hp); hit_phy+=v; parts.append(["BotRK current-HP","Physical",v])
+        if "Muramana" in build:
+            v=.015*maxmana; hit_phy+=v; parts.append(["Muramana Shock","Physical",v])
+        if energized:
+            for name,val in [("Rapid Firecannon",80),("Stormrazor",120),("Statikk Shiv",60)]:
+                if name in build: hit_mag+=val; parts.append([name,"Magic",val])
+        if spell:
+            if "Essence Reaver" in build:
+                v=1.35*s0["basead"]+min(80,80 if maxcrit else 0); hit_phy+=v; parts.append(["Essence Reaver","Physical",v])
+            if "Trinity Force" in build:
+                v=2*s0["basead"]; hit_phy+=v; parts.append(["Trinity Force","Physical",v])
+            if "Iceborn Gauntlet" in build:
+                v=s0["basead"]+.25*total["armor"]; hit_phy+=v; parts.append(["Iceborn Gauntlet","Physical",v])
+        if "Duskblade of Draktharr" in build:
+            v=60+(level-1)/14*100; hit_phy+=v; parts.append(["Duskblade","Physical",v])
+        ldramp=min(.12,.12*max(0,bonus_hp)/1200) if "Lord Dominik's Regards" in build else 0
+        if ldramp:
+            hit_phy*=1+ldramp; hit_mag*=1+ldramp; hit_true*=1+ldramp
+            parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
+        max_hit=hit_phy*rm(max_ea)+hit_mag*rm(mr)+hit_true
+
+        a1,a2,a3,a4,a5,a6=st.columns(6)
         a1.metric("Build Cost",f"{cost:,}g"); a2.metric("Total AD",f"{ad:.1f}"); a3.metric("Crit",f"{crit*100:.0f}%")
-        a4.metric("TTK",f"{t:.3f}s"); a5.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞")
+        a4.metric("TTK",f"{t:.3f}s"); a5.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a6.metric("Max Single Hit",f"{max_hit:.1f}")
         st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
+        with st.expander("Max Single Hit breakdown"):
+            st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
+            br=[]
+            for pn,pt,pv in parts:
+                dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(mr) if pt=="Magic" else pv
+                br.append([pn,pt,round(pv,1),round(dealt,1)])
+            st.dataframe(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage After Resist"]),use_container_width=True,hide_index=True)
+            st.metric("Total Max Single Hit",f"{max_hit:.1f}")
 
 with tabs[2]:
     st.subheader("Item Value")
