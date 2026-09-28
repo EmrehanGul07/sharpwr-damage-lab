@@ -367,7 +367,7 @@ with tabs[1]:
             for pn,pt,pv in parts:
                 dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(mr) if pt=="Magic" else pv
                 br.append([pn,pt,round(pv,1),round(dealt,1)])
-            st.dataframe(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage After Resist"]),width="stretch",hide_index=True)
+            st.table(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage After Resist"]))
             st.metric("Total Max Single Hit",f"{max_hit:.1f}")
 
 with tabs[2]:
