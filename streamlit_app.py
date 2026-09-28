@@ -115,11 +115,11 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
     hp=float(hp0); t=0.; k=0; log=[]
-    pd=rb=light=dark=0; ytcrit=0.; yt_until=-1.; yt_cd=0.
+    pd_stacks=rb=light=dark=0; ytcrit=0.; yt_until=-1.; yt_cd=0.
     fh=3 if it=="Fiendhunter Bolts" and ult else 0
     while hp>0 and k<500:
         k+=1
-        dyn=(.06*pd if it=="Phantom Dancer" else 0)+(.08*rb if it=="Guinsoo's Rageblade" else 0)
+        dyn=(.06*pd_stacks if it=="Phantom Dancer" else 0)+(.08*rb if it=="Guinsoo's Rageblade" else 0)
         if it=="Yun Tal Wildarrows" and t<yt_until: dyn+=.25
         if it=="Fiendhunter Bolts" and fh and t<=8: dyn+=.50
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+.25+q["as"]+dyn))
@@ -166,7 +166,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         if it=="The Collector":
             th=min(1,.05+.001*execs)
             if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
-        if it=="Phantom Dancer": pd=min(5,pd+1)
+        if it=="Phantom Dancer": pd_stacks=min(5,pd_stacks+1)
         if it=="Guinsoo's Rageblade": rb=min(4,rb+1)
         if it=="Terminus":
             if k%2: light=min(3,light+1)
@@ -266,10 +266,10 @@ with tabs[1]:
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
-        hp2=float(hp); t=0.; attacks=0; pd=rb=dark=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         while hp2>0 and attacks<500:
             attacks+=1
-            dyn=(.06*pd if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
+            dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
             if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.25
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
             asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+.25+total["as"]+dyn))
@@ -310,7 +310,7 @@ with tabs[1]:
             if "The Collector" in build:
                 th=min(1,.05+.001*execs)
                 if 0<hp2<=hp*th: hp2=0
-            if "Phantom Dancer" in build: pd=min(5,pd+1)
+            if "Phantom Dancer" in build: pd_stacks=min(5,pd_stacks+1)
             if "Guinsoo's Rageblade" in build: rb=min(4,rb+1)
             if "Terminus" in build and attacks%2==0: dark=min(3,dark+1)
             if "Yun Tal Wildarrows" in build:
