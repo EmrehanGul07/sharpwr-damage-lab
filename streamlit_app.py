@@ -205,15 +205,49 @@ tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 D
 
 with tabs[0]:
     st.subheader("Item Tier List")
-    st.caption("Completed items ranked numerically by single-target DPS under identical settings.")
-    if champ!="Jhin" and st.button("Rank all completed items",type="primary",use_container_width=True):
+    st.caption("Pick the champion and target here, then every completed item is tested alone. Boots are excluded.")
+
+    tc1,tc2=st.columns(2)
+    tier_champ=tc1.selectbox("Champion",list(C),index=list(C).index(champ),key="tier_champ")
+    tier_level=tc2.slider("Level",1,15,level,key="tier_level")
+    tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
+
+    te1,te2,te3=st.columns(3)
+    tier_hp=te1.number_input("Enemy HP",100,20000,int(hp),100,key="tier_hp")
+    tier_armor=te2.number_input("Enemy Armor",0.0,1000.0,float(armor),5.0,key="tier_armor")
+    tier_mr=te3.number_input("Enemy MR",0.0,1000.0,float(mr),5.0,key="tier_mr")
+    te4,te5,te6=st.columns(3)
+    tier_bonus_hp=te4.number_input("Enemy Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="tier_bonus_hp")
+    tier_dist=te5.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
+    tier_mana=te6.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
+
+    st.markdown("**Scenario assumptions**")
+    ts1,ts2,ts3=st.columns(3)
+    tier_spell=ts1.checkbox("Spellblade ready",value=spell,key="tier_spell")
+    tier_energized=ts2.checkbox("Energized proc ready",value=energized,key="tier_energized")
+    tier_ult=ts3.checkbox("Ultimate cast before combat",value=ult,key="tier_ult")
+    tier_execs=st.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+
+    if tier_champ=="Jhin":
+        st.warning("Jhin is excluded until the 4-shot + reload model is added.")
+    elif st.button("⚔️ CALCULATE ITEM TIER LIST",type="primary",use_container_width=True,key="tiercalc"):
+        # Naked baseline uses the same engine with a zero-stat pseudo item.
+        base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
+        base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0)
+        baseline=base_row[4]
         rows=[]
         for it in F:
-            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs)
-            rows.append(row)
-        df=pd.DataFrame(rows,columns=["Item","Gold","TTK","Attacks","Avg DPS"]).sort_values(["Avg DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs)
+            gain=(row[4]/baseline-1)*100 if baseline else 0
+            rows.append([it,row[1],row[4],gain,row[2],row[3]])
+        df=pd.DataFrame(rows,columns=["Item","Gold","DPS","DPS Gain %","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
         df.insert(0,"Rank",range(1,len(df)+1))
+        m1,m2,m3=st.columns(3)
+        m1.metric("No-item DPS",f"{baseline:.1f}")
+        m2.metric("Highest DPS",f"{df.iloc[0]['DPS']:.1f}")
+        m3.metric("Top item",df.iloc[0]["Item"])
         st.dataframe(df,use_container_width=True,hide_index=True)
+        st.caption("DPS Gain % = improvement over the same champion with no item against this exact target. Item passives use the scenario switches above.")
 
 with tabs[1]:
     st.subheader("Build Lab")
