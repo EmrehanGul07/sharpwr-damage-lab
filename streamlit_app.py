@@ -122,7 +122,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         dyn=(.06*pd_stacks if it=="Phantom Dancer" else 0)+(.08*rb if it=="Guinsoo's Rageblade" else 0)
         if it=="Yun Tal Wildarrows" and t<yt_until: dyn+=.25
         if it=="Fiendhunter Bolts" and fh and t<=8: dyn+=.50
-        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+.25+q["as"]+dyn))
+        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+q["as"]+dyn))
         crit=q["crit"]+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if it=="Yun Tal Wildarrows" else 0)
         crit=min(1,crit); cd=2.3 if it=="Infinity Edge" else 2.
         if n=="Senna": cd*=.9
@@ -272,7 +272,7 @@ with tabs[1]:
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
             if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.25
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
-            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+.25+total["as"]+dyn))
+            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn))
             cc=min(1,crit+(ytcrit if "Yun Tal Wildarrows" in build else 0))
             pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
             if "Terminus" in build: pct=min(.40,pct)
