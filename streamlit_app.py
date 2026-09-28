@@ -115,7 +115,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
     hp=float(hp0); t=0.; k=0; log=[]
-    pd_stacks=rb=light=dark=0; ytcrit=0.; yt_until=-1.; yt_cd=0.
+    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; yt_cd=0.
     fh=3 if it=="Fiendhunter Bolts" and ult else 0
     while hp>0 and k<500:
         k+=1
@@ -137,7 +137,13 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             amp=max(0,min(.10,.10*dist/550)); phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.1f}%")
         if it=="Wit's End": onm+=40
         if it=="Nashor's Tooth": onm+=15+.20*q["ap"]
-        if it=="Guinsoo's Rageblade": onm+=30
+        rage_extra=False
+        if it=="Guinsoo's Rageblade":
+            onm+=30
+            if rb>=4:
+                rage_hits+=1
+                if rage_hits>=3:
+                    rage_extra=True; rage_hits=0
         if it=="Terminus": onm+=30
         if it=="Recurve Bow": onp+=15
         if it=="Blade of the Ruined King": onp+=max(15,.07*hp)
@@ -157,8 +163,10 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             if it=="Trinity Force": onp+=2*s["basead"]; note.append("Trinity")
             if it=="Iceborn Gauntlet": onp+=s["basead"]+.25*q["armor"]; note.append("Iceborn")
             if it=="Sheen": onp+=s["basead"]; note.append("Sheen")
-        if it=="Guinsoo's Rageblade" and rb>=4 and k%3==0:
-            onp*=2; onm*=2; note.append("Double on-hit")
+        if it=="Guinsoo's Rageblade" and rage_extra:
+            # Phantom hit repeats Rageblade's own repeatable on-hit only.
+            # It must not duplicate unrelated every-N-attacks procs such as Kraken.
+            onm+=30; note.append("Rageblade phantom on-hit")
         phy+=onp; mag+=onm
         if it=="Lord Dominik's Regards":
             amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
@@ -266,7 +274,7 @@ with tabs[1]:
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
-        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
@@ -285,7 +293,13 @@ with tabs[1]:
                 amp=max(0,min(.10,.10*dist/550)); phy*=1+amp; true*=1+amp
             if "Wit's End" in build: mag+=40
             if "Nashor's Tooth" in build: mag+=15+.20*total["ap"]
-            if "Guinsoo's Rageblade" in build: mag+=30
+            rage_extra=False
+            if "Guinsoo's Rageblade" in build:
+                mag+=30
+                if rb>=4:
+                    rage_hits+=1
+                    if rage_hits>=3:
+                        rage_extra=True; rage_hits=0
             if "Terminus" in build: mag+=30
             if "Blade of the Ruined King" in build: onp+=max(15,.07*hp2)
             if "Muramana" in build: onp+=.015*maxmana
@@ -301,8 +315,15 @@ with tabs[1]:
                 if "Essence Reaver" in build: onp+=1.35*s0["basead"]+min(80,.8*cc*100)
                 if "Trinity Force" in build: onp+=2*s0["basead"]
                 if "Iceborn Gauntlet" in build: onp+=s0["basead"]+.25*total["armor"]
-            if "Guinsoo's Rageblade" in build and rb>=4 and attacks%3==0:
-                onp*=2; mag*=2
+            if "Guinsoo's Rageblade" in build and rage_extra:
+                # Repeat only repeatable on-hit effects; never duplicate Kraken,
+                # Energized, Spellblade, Duskblade, or the basic attack itself.
+                mag+=30
+                if "Wit's End" in build: mag+=40
+                if "Nashor's Tooth" in build: mag+=15+.20*total["ap"]
+                if "Terminus" in build: mag+=30
+                if "Blade of the Ruined King" in build: onp+=max(15,.07*hp2)
+                if "Muramana" in build: onp+=.015*maxmana
             phy+=onp
             if "Lord Dominik's Regards" in build:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
