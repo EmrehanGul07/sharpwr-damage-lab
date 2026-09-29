@@ -585,6 +585,12 @@ with tabs[1]:
     own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
     battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
     absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
+    scorch_ability_hit=st.checkbox("Scorch — ability hit before autos",value=False,key="scorch_ability_hit") if "Scorch" in selected_runes else False
+    nearby_enemies=st.slider("Unshakeable — nearby enemy champions",0,3,3,1,key="unshakeable_enemies") if "Unshakeable" in selected_runes else 0
+    overgrowth_units=st.number_input("Overgrowth — nearby minions / monsters counted",0,999,60,3,key="overgrowth_units") if "Overgrowth" in selected_runes else 0
+    font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
+    summoner_used=st.checkbox("Nimbus Cloak — summoner spell just used",value=False,key="summoner_used") if "Nimbus Cloak" in selected_runes else False
+
 
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     _passive_notes=[]
@@ -593,6 +599,18 @@ with tabs[1]:
     if "Relentless Hunter" in selected_runes: _passive_notes.append("Relentless Hunter: +20 out-of-combat MS (5 stacks)")
     if "Legend: Haste" in selected_runes: _passive_notes.append(f"Legend Haste: +{15 if haste_full else 0} AH")
     if "Legend: Bloodline" in selected_runes: _passive_notes.append(f"Bloodline: {8 if bloodline_full else 1}% Omnivamp")
+    if "Overgrowth" in selected_runes:
+        _og_hp=(overgrowth_units//3)*3
+        _og_hp=_og_hp*1.03 if overgrowth_units>=30 else _og_hp
+        _passive_notes.append(f"Overgrowth: +{_og_hp:.1f} HP")
+    if "Unshakeable" in selected_runes: _passive_notes.append(f"Unshakeable: +{3+2*nearby_enemies}% Armor/MR"+(" • 20% Slow Resist" if nearby_enemies==3 else ""))
+    if "Celerity" in selected_runes: _passive_notes.append("Celerity: +2% MS; other MS bonuses ×1.07")
+    if "Transcendence" in selected_runes: _passive_notes.append(f"Transcendence: +{5 if level<5 else 10} AH"+(" • Lv9 cooldown proc enabled by ability hit" if level>=9 else ""))
+    if "Nimbus Cloak" in selected_runes and summoner_used: _passive_notes.append("Nimbus Cloak active: +10–40% MS for 3s")
+    if "Revitalize" in selected_runes: _passive_notes.append("Revitalize: +5% healing/shielding; +10% more below 40% target HP")
+    if "Second Wind" in selected_runes: _passive_notes.append("Second Wind: 5 HP/5s; after champion damage 3 + 1.5% missing HP over 5s")
+    if "Perseverance" in selected_runes: _passive_notes.append("Perseverance: +10% Tenacity")
+
     if _passive_notes: st.caption(" • ".join(_passive_notes))
     # Rune icon selector is enabled only after verified local rune assets are present.
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
@@ -686,6 +704,17 @@ with tabs[1]:
         qs=[dct(F[x]) for x in build]; qb=dct(B[boot])
         total={k:sum(q[k] for q in qs)+qb[k] for k in K}
         s0=stats(champ,level,mist)
+        # Persistent Resolve/Sorcery stats.
+        rune_bonus_hp=0.0
+        if "Overgrowth" in selected_sub_runes:
+            rune_bonus_hp=(overgrowth_units//3)*3.0
+            if overgrowth_units>=30: rune_bonus_hp*=1.03
+        rune_armor_mult=1.0
+        rune_mr_mult=1.0
+        if "Unshakeable" in selected_sub_runes:
+            _unshakeable_pct=.03+.02*nearby_enemies
+            rune_armor_mult+=_unshakeable_pct
+            rune_mr_mult+=_unshakeable_pct
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=15.0 if "Zombie Ward" in selected_sub_runes else 0.0
         if "Absolute Focus" in selected_sub_runes and absolute_focus_active:
@@ -695,6 +724,8 @@ with tabs[1]:
         ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
         rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
         rune_bonus_ah=15.0 if ("Legend: Haste" in selected_sub_runes and haste_full) else 0.0
+        if "Transcendence" in selected_sub_runes:
+            rune_bonus_ah+=5.0 if level<5 else 10.0
         rune_omnivamp=(.08 if bloodline_full else .01) if "Legend: Bloodline" in selected_sub_runes else 0.0
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
@@ -709,6 +740,8 @@ with tabs[1]:
         dark_harvest_ready_at=0.0
         cheap_shot_ready_at=sudden_impact_ready_at=tyrant_ready_at=empowered_attack_ready_at=0.0
         chain_hits_left=2 if chain_marked else 0
+        scorch_pending=(1.0 if ("Scorch" in selected_sub_runes and scorch_ability_hit) else None)
+        scorch_ready_at=0.0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
@@ -826,6 +859,10 @@ with tabs[1]:
             if "Empowered Attack" in selected_sub_runes and t>=empowered_attack_ready_at:
                 dmg+=lvl_scale(20,60,level)*.80*rm(ea)
                 empowered_attack_ready_at=t+8.0
+            if scorch_pending is not None and t>=scorch_pending and t>=scorch_ready_at:
+                dmg+=lvl_scale(21,49,level)*rm(em)
+                scorch_ready_at=t+8.0
+                scorch_pending=None
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             hp2-=dmg
             if "The Collector" in build:
@@ -964,4 +1001,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.15 | Precision and persistent rune stats • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.16 | Sorcery and Resolve rune engine • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
