@@ -1,7 +1,7 @@
 import streamlit as st
 import base64
 from pathlib import Path
-from rune_database import RUNE_DATABASE, RUNE_TREES
+from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
 ITEM_ICON_FILE={
@@ -352,15 +352,24 @@ with tabs[0]:
 with tabs[1]:
     st.subheader("Build Lab")
 
-    # Rune Lab — combat state is simulated automatically from zero stacks.
-    st.markdown("**Rune Lab**")
-    rc1,rc2=st.columns(2)
-    keystone=rc1.selectbox("Keystone",["None","First Strike","Phase Rush","Arcane Comet","Aery","Guardian","Grasp of the Undying","Conqueror","Fleet Footwork","Lethal Tempo","Empowerment","Dark Harvest"],key="build_keystone")
-    combat_rune=rc2.selectbox("Precision Rune",["None"]+RUNE_TREES["Precision"],key="build_combat_rune")
+    # Legal rune loadout: 1 key + 3 runes from one primary tree + 1 from another tree.
+    st.markdown("**Rune Loadout**")
+    keystone=st.selectbox("Key Rune",["None"]+RUNE_TREES["Key Rune"],key="build_keystone")
+    sub_trees=["Precision","Domination","Resolve","Sorcery"]
+    primary_tree=st.selectbox("Primary Tree",sub_trees,key="build_primary_tree")
+    pr1,pr2,pr3=st.columns(3)
+    primary_1=pr1.selectbox("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],key="build_primary_slot1")
+    primary_2=pr2.selectbox("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],key="build_primary_slot2")
+    primary_3=pr3.selectbox("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],key="build_primary_slot3")
+    secondary_tree=st.selectbox("Secondary Tree",[x for x in sub_trees if x!=primary_tree],key="build_secondary_tree")
+    secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
+    secondary_rune=st.selectbox("Secondary Rune",secondary_options,key="build_secondary_rune")
+    selected_sub_runes=[primary_1,primary_2,primary_3,secondary_rune]
+    combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
     dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if keystone=="Dark Harvest" else 0
-    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if combat_rune=="Legend: Alacrity" else False
-    st.caption("Combat stacks and target-HP thresholds are automatic. Every fight starts at 0 rune stacks.")
-    st.caption("Exactly 5 different completed items + 1 required Boots slot.")
+    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_sub_runes else False
+    st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
+    st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
     cols=st.columns(5)
     build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
@@ -403,7 +412,7 @@ with tabs[1]:
         ad=s0["ad"]+total["ad"]+awe
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=0.0
-        rune_bonus_as=(.21 if alacrity_full else .03) if combat_rune=="Legend: Alacrity" else 0.0
+        rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
@@ -490,9 +499,9 @@ with tabs[1]:
                 base_lt=6+(level-1)/14*14
                 bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
                 dmg+=base_lt*(1+.0033*bonus_as_pct)
-            if combat_rune=="Cut Down" and hp_pct>.60: dmg*=1.065
-            elif combat_rune=="Coup de Grace" and hp_pct<.40: dmg*=1.08
-            elif combat_rune=="Brutal":
+            if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
+            if "Coup de Grace" in selected_sub_runes and hp_pct<.40: dmg*=1.08
+            if "Brutal" in selected_sub_runes:
                 # Verified tooltip: every champion attack deals 6 + 8% bonus AD adaptive damage.
                 # Current ADC lab resolves adaptive damage as physical when AD is the adaptive stat.
                 dmg+=(6+.08*bonus_ad)*rm(ea)
@@ -560,7 +569,7 @@ with tabs[1]:
             rune_bits=[]
             if rune_bonus_ad: rune_bits.append(f"+{rune_bonus_ad:.1f} AD")
             if rune_bonus_as: rune_bits.append(f"+{rune_bonus_as*100:.1f}% AS")
-            st.caption("Keystone: **"+keystone+"** • Combat Rune: **"+combat_rune+"** • "+" • ".join(rune_bits))
+            st.caption("Key Rune: **"+keystone+"** • Primary: **"+primary_tree+"** • Secondary: **"+secondary_rune+"** • "+" • ".join(rune_bits))
         o1,o2,o3,o4=st.columns(4)
         o1.metric("Total AD",f"{ad:.1f}")
         o2.metric("Attack Speed",f"{display_as:.3f}")
@@ -632,4 +641,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.2 | 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.3 | Legal 5-rune loadouts • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
