@@ -594,6 +594,8 @@ with tabs[1]:
     overgrowth_stacks=st.number_input("Overgrowth — stacks",0,999,60,1,key="overgrowth_stacks") if "Overgrowth" in selected_runes else 0
     font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
     summoner_used=st.checkbox("Nimbus Cloak — summoner spell just used",value=False,key="summoner_used") if "Nimbus Cloak" in selected_runes else False
+    game_minute=st.slider("Gathering Storm — game minute",0,21,15,1,key="gathering_storm_minute") if "Gathering Storm" in selected_runes else 0
+    axiom_ult_scenario=st.checkbox("Axiom Arcanist — include ultimate modifier in summary",value=False,key="axiom_ult") if "Axiom Arcanist" in selected_runes else False
 
 
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
@@ -612,7 +614,20 @@ with tabs[1]:
     if "Nimbus Cloak" in selected_runes and summoner_used: _passive_notes.append("Nimbus Cloak active: +10–40% MS for 3s")
     if "Revitalize" in selected_runes: _passive_notes.append("Revitalize: +5% healing/shielding; +10% more below 40% target HP")
     if "Second Wind" in selected_runes: _passive_notes.append("Second Wind: 5 HP/5s; after champion damage 3 + 1.5% missing HP over 5s")
-    if "Perseverance" in selected_runes: _passive_notes.append("Perseverance: +10% Tenacity")
+    if "Perseverance" in selected_runes: _passive_notes.append("Perseverance: +10% Tenacity • immobilized: +10–15 Armor/MR for 1.5s")
+    if "Gathering Storm" in selected_runes:
+        _gs_preview=max((v for m,v in ((6,2),(9,5),(12,9),(15,14),(18,20),(21,27)) if game_minute>=m),default=0)
+        _passive_notes.append(f"Gathering Storm @ {game_minute}m: +{_gs_preview} AD")
+    if "Axiom Arcanist" in selected_runes: _passive_notes.append("Axiom Arcanist: Ultimate +10% damage/heal/shield • AoE ultimate damage increase +5% • takedown: -7% remaining ult CD")
+    if "Hexflash" in selected_runes: _passive_notes.append("Hexflash: available while Flash is on cooldown • 18s CD • entering champion combat → 6s CD")
+    if "Botanist" in selected_runes: _passive_notes.append("Botanist: plant +10g • Honeyfruit heal +20% • Scryer vision +20% • Blast Cone +40% MS for 2.5s")
+    if "Ixtali Seedjar" in selected_runes: _passive_notes.append("Ixtali Seedjar: plant seed replaces trinket for 60s • unique plant 30s cooldown")
+    if "Battle Zeal" in selected_runes: _passive_notes.append(f"Battle Zeal: +{1.4*min(3,int(battle_seconds)):.1f}% basic-ability damage only")
+    if "Demolish" in selected_runes: _passive_notes.append("Demolish: turret-only third-attack proc • Max-HP calculation pending champion HP data")
+    if "Font of Life" in selected_runes: _passive_notes.append("Font of Life: healing calculation pending champion Max HP data")
+    if "Courage of the Colossus" in selected_runes: _passive_notes.append(f"Courage: shield {lvl_scale(25,45,level):.1f} + 1% Max HP • 18s CD")
+    if "Nullifying Orb" in selected_runes: _passive_notes.append(f"Nullifying Orb: shield {lvl_scale(60,180,level):.1f} at <35% HP + scaling component if any supplied • 60s CD")
+    if "Bone Plating" in selected_runes: _passive_notes.append(f"Bone Plating: {lvl_scale(30,60,level):.1f} damage reduction on current + next 3 champion hits/abilities within 1.5s • 40s CD")
 
     if _passive_notes: st.caption(" • ".join(_passive_notes))
     # Rune icon selector is enabled only after verified local rune assets are present.
@@ -727,6 +742,12 @@ with tabs[1]:
         rune_bonus_ad=15.0 if "Zombie Ward" in selected_sub_runes else 0.0
         if "Absolute Focus" in selected_sub_runes and absolute_focus_active:
             rune_bonus_ad+=lvl_scale(2,20,level)
+        gathering_storm_ad=0.0
+        if "Gathering Storm" in selected_sub_runes:
+            # Only user-supplied known breakpoints; do not extrapolate beyond 21 minutes.
+            _gs=((6,2),(9,5),(12,9),(15,14),(18,20),(21,27))
+            gathering_storm_ad=max((v for m,v in _gs if game_minute>=m),default=0)
+            rune_bonus_ad+=gathering_storm_ad
         maxmana=mana+total["mana"]+(300 if "Manaflow Band" in selected_sub_runes else 0)
         awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
         ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
@@ -868,7 +889,8 @@ with tabs[1]:
                 last_stand_amp=.11 if own_hp_pct<=30 else .05+(.60-own_hp_pct/100.0)/.30*.06
                 dmg*=1+last_stand_amp
             if "Battle Zeal" in selected_sub_runes:
-                dmg*=1+.014*min(3,max(int(t),int(battle_seconds)))
+                # Basic-ability damage amplification only. Normal auto attacks are intentionally unaffected.
+                pass
             # Domination combat runes. Adaptive damage resolves physical for this ADC lab.
             if "Cheap Shot" in selected_sub_runes and target_impaired and t>=cheap_shot_ready_at:
                 dmg+=lvl_scale(10,45,level)
@@ -955,6 +977,7 @@ with tabs[1]:
         if keystone!="None":
             rune_bits=[]
             if rune_bonus_ad: rune_bits.append(f"+{rune_bonus_ad:.1f} AD")
+            if gathering_storm_ad: rune_bits.append(f"GS +{gathering_storm_ad:.0f} AD @ {game_minute}m")
             if rune_bonus_as: rune_bits.append(f"+{rune_bonus_as*100:.1f}% AS")
             if rune_bonus_ah: rune_bits.append(f"+{rune_bonus_ah:.0f} AH")
             if rune_omnivamp: rune_bits.append(f"+{rune_omnivamp*100:.0f}% Omnivamp")
@@ -1036,4 +1059,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.17 | Keystone triggers and rune combat breakdown • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.18 | Remaining rune states and Gathering Storm • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
