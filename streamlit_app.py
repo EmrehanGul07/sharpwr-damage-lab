@@ -154,10 +154,12 @@ def _premium_item_grid(items, selected):
       .tile{height:66px}.tile>img{width:54px;height:54px}
       .tile:hover .card{visibility:hidden;opacity:0}
       .tile.open{z-index:50;border-color:#d1ae55}
-      .tile.open .card{visibility:visible;opacity:1;pointer-events:auto;top:76px!important;bottom:auto!important;left:50%!important;right:auto!important;transform:translateX(-50%) translateY(0)!important;width:min(340px,88vw)}
-      .tile.open.edge-left .card{left:0!important;transform:translateX(0)!important}
-      .tile.open.edge-right .card{left:auto!important;right:0!important;transform:translateX(0)!important}
-      .desk{display:none}.add{display:block}
+      .tile.open .card{visibility:visible;opacity:1;pointer-events:auto;position:fixed!important;z-index:9999!important;
+        top:12px!important;bottom:auto!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;
+        width:calc(100vw - 24px)!important;max-width:360px!important;max-height:calc(100vh - 24px)!important;overflow-y:auto!important;
+        -webkit-overflow-scrolling:touch}
+      .tile.open.edge-left .card,.tile.open.edge-right .card{left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+      .desk{display:none}.add{display:block;position:sticky;bottom:0;background:#111925;margin-top:10px}
     }
     </style></head><body><div class="grid">'''+''.join(tiles)+'''</div>
     <script>
@@ -180,7 +182,7 @@ def _premium_item_grid(items, selected):
     });
     </script></body></html>'''
     rows=(len(items)+9)//10
-    components.html(doc,height=330+rows*78,scrolling=False)
+    components.html(doc,height=360+rows*78,scrolling=False)
 
 
 import pandas as pd
@@ -803,4 +805,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.8 | Desktop hover + mobile tap cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.8.1 | Mobile modal item cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
