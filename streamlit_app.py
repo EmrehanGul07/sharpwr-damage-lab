@@ -579,6 +579,10 @@ with tabs[1]:
     first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
     grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
     aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
+    comet_ability_hit=st.checkbox("Arcane Comet — ability hit before autos",value=False,key="comet_ability_hit") if "Arcane Comet" in selected_runes else False
+    comet_total_hits=st.number_input("Arcane Comet — previous champion hits",0,999,0,1,key="comet_hits") if "Arcane Comet" in selected_runes else 0
+    fleet_ready=st.checkbox("Fleet Footwork — start at 100 Energy",value=False,key="fleet_ready") if "Fleet Footwork" in selected_runes else False
+
     target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
     mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
     chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
@@ -739,10 +743,13 @@ with tabs[1]:
         if "Overgrowth" in selected_sub_runes:
             st.caption(f"Overgrowth applied to tracked build/rune HP: {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} flat rune HP → {build_max_hp:.1f} HP contribution after ×{overgrowth_health_mult:.2f}.")
         hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        rune_trace=[]
         conq_stacks=0; lt_stacks=0; empowerment_hits=0; empowerment_active=False; brutal_cd_ready=0.0
         first_strike_until=3.0 if (keystone=="First Strike" and first_strike_ready) else -1.0
         grasp_next_ready=0.0 if (keystone=="Grasp of the Undying" and grasp_ready) else 3.0
         aery_available=(keystone=="Aery" and aery_ready)
+        comet_pending=(keystone=="Arcane Comet" and comet_ability_hit)
+        fleet_available=(keystone=="Fleet Footwork" and fleet_ready)
         dark_harvest_ready_at=0.0
         cheap_shot_ready_at=sudden_impact_ready_at=tyrant_ready_at=empowered_attack_ready_at=0.0
         chain_hits_left=2 if chain_marked else 0
@@ -813,29 +820,42 @@ with tabs[1]:
             # Rune effects read the live state before this hit.
             hp_pct=hp2/hp if hp else 0
             bonus_ad=max(0,current_ad-s0["ad"])
+            _pre_rune_dmg=dmg
+            _rune_events=[]
             if keystone=="First Strike" and 0<=t<first_strike_until:
                 # First Strike is 7% BONUS TRUE damage, not a generic 7% multiplier.
-                dmg += dmg*.07
+                _v=dmg*.07; dmg += _v; _rune_events.append(f"First Strike +{_v:.1f} true")
             elif keystone=="Empowerment":
                 # Tooltip range uses linear Lv1 -> Lv15 scaling.
-                if empowerment_hits==2: dmg+=lvl_scale(40.0,165.0,level)
+                if empowerment_hits==2:
+                    _v=lvl_scale(40.0,165.0,level); dmg+=_v; _rune_events.append(f"Empowerment +{_v:.1f}")
                 # The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
             elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
-                dmg+=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]
+                _v=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]; dmg+=_v; _rune_events.append(f"Dark Harvest +{_v:.1f}")
                 dark_harvest_ready_at=t+20.0
             elif keystone=="Aery" and aery_available:
-                # Aery's exact level curve/return cadence is unknown, so do not invent damage.
+                _v=(lvl_scale(15,70,level)+.10*bonus_ad+.05*total["ap"])*rm(em)
+                dmg+=_v; _rune_events.append(f"Aery +{_v:.1f}")
+                # Return cadence was not supplied, so only the explicitly-ready Aery is consumed.
                 aery_available=False
+            elif keystone=="Arcane Comet" and comet_pending:
+                _v=(lvl_scale(15,100,level)+2*comet_total_hits+.10*bonus_ad+.05*total["ap"])*rm(em)
+                dmg+=_v; _rune_events.append(f"Arcane Comet +{_v:.1f}")
+                comet_pending=False
+            elif keystone=="Fleet Footwork" and fleet_available:
+                # Energized attack consumes Fleet. Its heal/MS/mana are utility; the supplied tooltip has no bonus hit damage.
+                _rune_events.append("Fleet Footwork proc")
+                fleet_available=False
             elif keystone=="Grasp of the Undying" and t>=grasp_next_ready:
                 # Ranged Grasp: 3.3% max HP × 40% = 1.32% max HP bonus magic damage.
-                dmg+=(.033*hp*.40)*rm(em)
+                _v=(.033*hp*.40)*rm(em); dmg+=_v; _rune_events.append(f"Grasp +{_v:.1f}")
                 grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
                 # Tooltip range is treated as linear Lv1 -> Lv15: 6 at Lv1, 20 at Lv15.
                 base_lt=lvl_scale(6.0,20.0,level)
                 bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
-                dmg+=base_lt*(1+.0033*bonus_as_pct)
+                _v=base_lt*(1+.0033*bonus_as_pct); dmg+=_v; _rune_events.append(f"Lethal Tempo +{_v:.1f}")
             if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
             if "Coup de Grace" in selected_sub_runes and hp_pct<.40: dmg*=1.08
             if "Brutal" in selected_sub_runes:
@@ -870,6 +890,9 @@ with tabs[1]:
                 scorch_ready_at=t+8.0
                 scorch_pending=None
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
+            _rune_delta=dmg-_pre_rune_dmg
+            if _rune_events or abs(_rune_delta)>0.01:
+                rune_trace.append([attacks,round(t,3),round(hp_pct*100,1)," • ".join(_rune_events) if _rune_events else "Sub-rune modifier(s)",round(_rune_delta,1),round(dmg,1)])
             hp2-=dmg
             if "The Collector" in build:
                 th=min(1,.05+.001*execs)
@@ -955,6 +978,12 @@ with tabs[1]:
         a1.metric("Build Cost",f"{cost:,}g"); a2.metric("TTK",f"{t:.3f}s")
         a3.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a4.metric("Max Single Hit",f"{max_hit:.1f}")
         st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
+        with st.expander("Rune Combat Breakdown"):
+            if rune_trace:
+                st.caption("Only attacks where a rune changed damage or triggered an explicit rune event are shown.")
+                st.dataframe(pd.DataFrame(rune_trace,columns=["AA","Time","Target HP %","Rune Event","Rune Damage / Delta","Final Hit"]),use_container_width=True,hide_index=True)
+            else:
+                st.caption("No selected rune changed auto-attack damage in this scenario.")
         with st.expander("Max Single Hit breakdown"):
             st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
             br=[]
@@ -1007,4 +1036,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.16.2 | Overgrowth health multiplier • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.17 | Keystone triggers and rune combat breakdown • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
