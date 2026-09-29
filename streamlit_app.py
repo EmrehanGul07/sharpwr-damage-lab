@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 import html
 import urllib.parse
+import streamlit.components.v1 as components
 from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
@@ -105,65 +106,45 @@ STAT_NAMES={
 }
 
 def _premium_item_grid(items, selected):
-    # One native clickable tile per item. CSS turns the button into the visual card trigger.
-    # The hover preview is rendered directly beneath the grid for the currently focused/selected item.
-    st.markdown("""<style>
-    .wr-shop-title{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8d9aae;margin:4px 0 10px}
-    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]{
-        min-height:24px!important;height:24px!important;padding:0!important;border-radius:7px!important;
-        border:1px solid #343d4d!important;background:transparent!important;
-        box-shadow:none!important;font-size:10px!important;
-        line-height:1.05!important;white-space:normal!important;transition:.15s ease!important;
-    }
-    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]:hover{
-        border-color:#c5a75a!important;box-shadow:0 0 10px rgba(197,167,90,.18)!important;
-    }
-    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"] p{
-        font-size:10px!important;line-height:1.05!important;margin:0!important;
-    }
-    .wr-card{max-width:430px;margin:10px 0 18px;padding:16px 17px;border-radius:14px;
-      border:1px solid #4b5669;background:linear-gradient(150deg,#151c27 0%,#0a0f16 72%);
-      box-shadow:0 16px 42px rgba(0,0,0,.34)}
-    .wr-card-head{display:flex;gap:13px;align-items:center;padding-bottom:12px;border-bottom:1px solid #2b3442}
-    .wr-card-head img{width:66px;height:66px;border-radius:10px;border:1px solid #b99b50;box-shadow:0 0 18px rgba(185,155,80,.16)}
-    .wr-card-name{font-size:18px;font-weight:800;color:#f2d57d;letter-spacing:.02em}
-    .wr-card-gold{font-size:13px;color:#d9b75d;margin-top:3px}
-    .wr-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;padding-top:12px}
-    .wr-stat{display:flex;align-items:center;gap:8px;color:#d9e0ea;font-size:13px}
-    .wr-stat-i{width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;
-      background:#202a38;border:1px solid #39475b;color:#9fc3ef;font-size:13px}
-    .wr-stat b{color:#fff;font-weight:750}.wr-stat-name{color:#8f9cad;font-size:11px;display:block}
-    </style>""",unsafe_allow_html=True)
-
-    st.markdown('<div class="wr-shop-title">Item Arsenal</div>',unsafe_allow_html=True)
-    grid_cols=st.columns(10)
-    for i,name in enumerate(items):
-        col=grid_cols[i%10]
-        icon=item_icon(name)
-        if icon: col.image(icon,width=58)
-        # Keep the tile visually icon-first; full name/details live in hover help/card.
-        if col.button("✓" if name in selected else "＋",key=f"pick_item_{i}",
-                      help="Select / preview "+name+" • "+" • ".join(_item_stat_lines(name)),use_container_width=True,disabled=False):
-            cur=list(st.session_state.build_items_v2)
-            st.session_state.preview_item=name
-            if name not in cur and len(cur)<5:
-                cur.append(name); st.session_state.build_items_v2=cur
-            st.rerun()
-
-    preview=st.session_state.get("preview_item")
-    if preview not in F:
-        preview=selected[-1] if selected else items[0]
-    q=dct(F[preview]); icon=item_icon(preview)
-    rows=[]
-    for key,label in STAT_NAMES.items():
-        v=q.get(key,0)
-        if not v: continue
-        val=f"{v*100:g}%" if key in ("as","crit","lifesteal","pctpen","ms") else f"{v:g}"
-        rows.append(f'<div class="wr-stat"><span class="wr-stat-i">{STAT_GLYPHS[key]}</span><span><b>{val}</b><span class="wr-stat-name">{label}</span></span></div>')
-    card=f"""<div class="wr-card"><div class="wr-card-head"><img src="{html.escape(icon)}"><div>
-      <div class="wr-card-name">{html.escape(preview)}</div><div class="wr-card-gold">◆ {int(q['gold'])} Gold</div>
-      </div></div><div class="wr-stats">{''.join(rows)}</div></div>"""
-    st.markdown(card,unsafe_allow_html=True)
+    # Real icon-hover surface: the image itself is the hover target.
+    # Floating premium cards are rendered in the same HTML surface.
+    tiles=[]
+    for name in items:
+        icon=item_icon(name); q=dct(F[name]); rows=[]
+        for key,label in STAT_NAMES.items():
+            v=q.get(key,0)
+            if not v: continue
+            val=f"{v*100:g}%" if key in ("as","crit","lifesteal","pctpen","ms") else f"{v:g}"
+            rows.append(f'<div class="s"><i>{STAT_GLYPHS[key]}</i><span><b>{val}</b><small>{label}</small></span></div>')
+        sel=" selected" if name in selected else ""
+        # target=_top lets the icon itself navigate the Streamlit app; Python consumes item_pick.
+        href="?item_pick="+urllib.parse.quote(name)
+        tiles.append(f'''<a class="tile{sel}" href="{href}" target="_top">
+          <img src="{html.escape(icon)}" alt="{html.escape(name)}">
+          <div class="card"><header><img src="{html.escape(icon)}"><div><strong>{html.escape(name)}</strong><em>◆ {int(q["gold"])} Gold</em></div></header>
+          <section>{"".join(rows)}</section><footer>Click to add to build</footer></div></a>''')
+    doc='''<!doctype html><html><head><style>
+    *{box-sizing:border-box}body{margin:0;background:transparent;font-family:Inter,system-ui,sans-serif;color:#e9edf3;overflow:visible}
+    .grid{display:grid;grid-template-columns:repeat(10,minmax(58px,1fr));gap:10px;padding:88px 4px 14px}
+    .tile{position:relative;display:flex;justify-content:center;align-items:center;height:68px;border:1px solid #343e4e;border-radius:11px;
+      background:linear-gradient(145deg,#171e29,#0a0f16);text-decoration:none;transition:.15s;z-index:1}
+    .tile>img{width:56px;height:56px;object-fit:cover;border-radius:8px}
+    .tile:hover{border-color:#d1ae55;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20}
+    .tile.selected{border-color:#d1ae55;box-shadow:inset 0 0 0 1px rgba(209,174,85,.45)}
+    .card{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:100;left:50%;bottom:76px;transform:translateX(-50%) translateY(5px);
+      width:310px;padding:14px;border:1px solid #526078;border-radius:13px;background:linear-gradient(150deg,#151d29,#080d14 75%);
+      box-shadow:0 18px 45px rgba(0,0,0,.62);transition:opacity .14s .32s,transform .14s .32s}
+    .tile:hover .card{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
+    header{display:flex;gap:11px;align-items:center;padding-bottom:10px;border-bottom:1px solid #2d3746}
+    header img{width:52px;height:52px;border-radius:8px;border:1px solid #b8994d}strong{display:block;color:#f1d37b;font-size:16px}
+    em{display:block;color:#d5b45b;font-size:12px;font-style:normal;margin-top:3px}
+    section{display:grid;grid-template-columns:1fr 1fr;gap:7px 10px;padding-top:11px}.s{display:flex;gap:7px;align-items:center}
+    .s i{font-style:normal;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#202a38;border:1px solid #3a485d;color:#a8c8ee}
+    .s b{font-size:12px}.s small{display:block;color:#8f9cac;font-size:9px}footer{margin-top:10px;padding-top:8px;border-top:1px solid #28313e;color:#718096;font-size:9px}
+    @media(max-width:900px){.grid{grid-template-columns:repeat(6,minmax(54px,1fr))}}
+    </style></head><body><div class="grid">'''+''.join(tiles)+'''</div></body></html>'''
+    rows=(len(items)+9)//10
+    components.html(doc,height=102+rows*78,scrolling=False)
 
 
 import pandas as pd
@@ -463,6 +444,18 @@ with tabs[1]:
     # Premium clickable item picker.
     if "build_items_v2" not in st.session_state:
         st.session_state.build_items_v2=list(F)[:5]
+
+    picked=st.query_params.get("item_pick")
+    if picked:
+        picked=urllib.parse.unquote(picked)
+        cur=list(st.session_state.build_items_v2)
+        if picked in F:
+            st.session_state.preview_item=picked
+            if picked not in cur and len(cur)<5:
+                cur.append(picked)
+                st.session_state.build_items_v2=cur
+        st.query_params.clear()
+        st.rerun()
 
     st.markdown("**Selected Build**")
     build=list(st.session_state.build_items_v2)
@@ -774,4 +767,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.6.1 | Compact native picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.7 | True icon hover cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
