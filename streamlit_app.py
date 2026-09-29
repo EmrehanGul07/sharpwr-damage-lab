@@ -1,6 +1,7 @@
 import streamlit as st
 import base64
 from pathlib import Path
+from rune_database import RUNE_DATABASE, RUNE_TREES
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
 ITEM_ICON_FILE={
@@ -355,9 +356,9 @@ with tabs[1]:
     st.markdown("**Rune Lab**")
     rc1,rc2=st.columns(2)
     keystone=rc1.selectbox("Keystone",["None","First Strike","Phase Rush","Arcane Comet","Aery","Guardian","Grasp of the Undying","Conqueror","Fleet Footwork","Lethal Tempo","Empowerment","Dark Harvest"],key="build_keystone")
-    combat_rune=rc2.selectbox("Combat Rune",["None","Cut Down","Coup de Grace","Brutal","Legend: Alacrity"],key="build_combat_rune")
+    combat_rune=rc2.selectbox("Precision Rune",["None"]+RUNE_TREES["Precision"],key="build_combat_rune")
     dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if keystone=="Dark Harvest" else 0
-    alacrity_takedowns=st.number_input("Legend: Alacrity takedowns",0,10,0,1,key="alacrity_takedowns") if combat_rune=="Legend: Alacrity" else 0
+    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if combat_rune=="Legend: Alacrity" else False
     st.caption("Combat stacks and target-HP thresholds are automatic. Every fight starts at 0 rune stacks.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
@@ -402,7 +403,7 @@ with tabs[1]:
         ad=s0["ad"]+total["ad"]+awe
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=0.0
-        rune_bonus_as=(.03+min(10,alacrity_takedowns)*.02) if combat_rune=="Legend: Alacrity" else 0.0
+        rune_bonus_as=(.21 if alacrity_full else .03) if combat_rune=="Legend: Alacrity" else 0.0
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
@@ -491,9 +492,10 @@ with tabs[1]:
                 dmg+=base_lt*(1+.0033*bonus_as_pct)
             if combat_rune=="Cut Down" and hp_pct>.60: dmg*=1.065
             elif combat_rune=="Coup de Grace" and hp_pct<.40: dmg*=1.08
-            elif combat_rune=="Brutal" and t>=brutal_cd_ready:
-                dmg+=12+(level-1)/14*18
-                brutal_cd_ready=t+5.0
+            elif combat_rune=="Brutal":
+                # Verified tooltip: every champion attack deals 6 + 8% bonus AD adaptive damage.
+                # Current ADC lab resolves adaptive damage as physical when AD is the adaptive stat.
+                dmg+=(6+.08*bonus_ad)*rm(ea)
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             hp2-=dmg
             if "The Collector" in build:
@@ -611,12 +613,23 @@ with tabs[2]:
 
 with tabs[3]:
     st.subheader("Database")
-    dbpick=st.radio("Show",["Completed items","Components","Boots"],horizontal=True)
-    DB=F if dbpick=="Completed items" else P if dbpick=="Components" else B
-    rows=[]
-    for n,v0 in DB.items():
-        q=dct(v0); rows.append([n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
-    st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
+    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes"],horizontal=True)
+    if dbpick=="Runes":
+        st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
+        tree_filter=st.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
+        rune_rows=[]
+        for rn,rv in RUNE_DATABASE.items():
+            if tree_filter!="All" and rv["tree"]!=tree_filter: continue
+            rune_rows.append([rn,rv["tree"],rv["kind"],rv["tooltip"]])
+        st.dataframe(pd.DataFrame(rune_rows,columns=["Rune","Tree","Type","Verified tooltip / effect"]),use_container_width=True,hide_index=True)
+        counts={tree:len(names) for tree,names in RUNE_TREES.items()}
+        st.caption(" • ".join(f"{tree}: {count}" for tree,count in counts.items())+" • Total: 51")
+    else:
+        DB=F if dbpick=="Completed items" else P if dbpick=="Components" else B
+        rows=[]
+        for n,v0 in DB.items():
+            q=dct(v0); rows.append([n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
+        st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.1 | Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.2 | 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
