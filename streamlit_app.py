@@ -2,23 +2,30 @@ import streamlit as st
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/data/items/icons2d/"
 ITEM_ICON_FILE={
-"Fiendhunter Bolts":"fiendhunter_bolts.png","Rapid Firecannon":"3094_rapid_firecannon.png",
-"Runaan's Hurricane":"3085_runaans_hurricane.png","Phantom Dancer":"3046_phantom_dancer.png",
-"Navori Quickblades":"6675_navori_quickblades.png","Wit's End":"3091_wits_end.png",
-"Hexoptics C44":"hexoptics_c44.png","Kraken Slayer":"6672_kraken_slayer.png",
-"Nashor's Tooth":"3115_nashors_tooth.png","Manamune":"3004_manamune.png","Muramana":"3042_muramana.png",
-"Statikk Shiv":"3087_statikk_shiv.png","Guinsoo's Rageblade":"3124_guinsoos_rageblade.png",
-"Mortal Reminder":"3033_mortal_reminder.png","Maw of Malmortius":"3156_maw_of_malmortius.png",
-"Essence Reaver":"3508_essence_reaver.png","Immortal Shieldbow":"6673_immortal_shieldbow.png",
-"The Collector":"6676_the_collector.png","Terminus":"3302_terminus.png","Stormrazor":"3095_stormrazor.png",
-"Yun Tal Wildarrows":"yun_tal_wildarrows.png","Galeforce":"6671_galeforce.png",
-"Mercurial Scimitar":"3139_mercurial_scimitar.png","Blade of the Ruined King":"3153_blade_of_the_ruined_king.png",
-"Guardian Angel":"3026_guardian_angel.png","Bloodthirster":"3072_the_bloodthirster.png",
-"Lord Dominik's Regards":"3036_lord_dominiks_regards.png","Trinity Force":"3078_trinity_force.png",
-"Infinity Edge":"3031_infinity_edge.png","Serylda's Grudge":"6694_seryldas_grudge.png",
-"Serpent's Fang":"6695_serpents_fang.png","Youmuu's Ghostblade":"3142_youmus_ghostblade.png",
-"Duskblade of Draktharr":"6691_duskblade_of_draktharr.png","Edge of Night":"3814_edge_of_night.png",
-"Iceborn Gauntlet":"6662_iceborn_gauntlet.png","Death's Dance":"6333_deaths_dance.png"}
+"Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
+"Runaan's Hurricane":"3085_marksman_t3_runaans.png",
+"Phantom Dancer":"3046_marksman_t3_phantomdancer.png",
+"Wit's End":"3091_fighter_t3_witsend.png",
+"Nashor's Tooth":"3115_mage_t3_nashorstooth.png",
+"Manamune":"3004_marksman_t3_manamune.png",
+"Muramana":"3042_marksman_t3_muramana.png",
+"Statikk Shiv":"3087_statikk_shiv.png",
+"Guinsoo's Rageblade":"3124_marksman_t3_guinsoosrageblade.png",
+"Mortal Reminder":"3033_marksman_t3_mortalreminder.png",
+"Maw of Malmortius":"3156_fighter_t3_mawofmalmortius.png",
+"Essence Reaver":"3508_marksman_t3_essencereaver.png",
+"Terminus":"3302_terminus.png",
+"Mercurial Scimitar":"3139_marksman_t3_mercurialscimitar.png",
+"Blade of the Ruined King":"3153_fighter_t3_bladeoftheruinedking.png",
+"Guardian Angel":"3026_fighter_t3_guardianangel.png",
+"Bloodthirster":"3072_fighter_t3_bloodthirster.png",
+"Lord Dominik's Regards":"3036_marksman_t3_dominikregards.png",
+"Trinity Force":"3078_fighter_t4_trinityforce.png",
+"Infinity Edge":"3031_marksman_t3_infinityedge.png",
+"Youmuu's Ghostblade":"3142_assassin_t3_youmuusghostblade.png",
+"Edge of Night":"3814_assassin_t3_edgeofnight.png",
+"Yun Tal Wildarrows":"3032_yuntalwildarrows.png"
+}
 def item_icon(name):
     fn=ITEM_ICON_FILE.get(name)
     return CD_ITEM_ICON_BASE+fn if fn else ""
