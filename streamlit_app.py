@@ -95,27 +95,27 @@ def _item_stat_lines(name):
     return out
 
 def _premium_item_grid(items, selected):
-    cards=[]
-    for name in items:
+    # Native Streamlit buttons are used for interaction so clicks work reliably
+    # inside Streamlit Cloud; CSS styles the buttons as an icon grid.
+    st.markdown("""<style>
+    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]{
+        min-height:76px;border-radius:12px;border:1px solid #303744;
+    }
+    </style>""",unsafe_allow_html=True)
+    grid_cols=st.columns(8)
+    for i,name in enumerate(items):
+        col=grid_cols[i%8]
         icon=item_icon(name)
+        if icon:
+            col.image(icon,width=52)
         tip=" • ".join(_item_stat_lines(name))
-        sel=" selected" if name in selected else ""
-        href="?item_pick="+urllib.parse.quote(name)
-        cards.append(f"""<a class="wr-item{sel}" href="{href}" title="{html.escape(tip)}">
-          <img src="{html.escape(icon)}" alt="{html.escape(name)}"/>
-          <span class="wr-tip"><b>{html.escape(name)}</b><small>{html.escape(tip)}</small></span>
-        </a>""")
-    markup="""<style>
-    .wr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:10px;margin:8px 0 18px}
-    .wr-item{position:relative;display:flex;align-items:center;justify-content:center;padding:7px;border:1px solid #303744;border-radius:12px;background:linear-gradient(145deg,#151a22,#0d1118);transition:.16s;min-height:66px}
-    .wr-item:hover{transform:translateY(-2px);border-color:#8aa4d6;box-shadow:0 8px 24px rgba(0,0,0,.32)}
-    .wr-item.selected{border-color:#d7b55b;box-shadow:0 0 0 1px #d7b55b,0 0 18px rgba(215,181,91,.20)}
-    .wr-item img{width:54px;height:54px;object-fit:cover;border-radius:9px}
-    .wr-tip{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:999;left:50%;bottom:74px;transform:translateX(-50%);width:230px;padding:12px;border:1px solid #596579;border-radius:10px;background:#0b0f16;color:#f4f6fa;box-shadow:0 12px 34px rgba(0,0,0,.55);transition:opacity .15s .35s}
-    .wr-tip b{display:block;color:#e8ca72;margin-bottom:5px}.wr-tip small{display:block;line-height:1.45;color:#c7cfda}
-    .wr-item:hover .wr-tip{visibility:visible;opacity:1}
-    </style><div class="wr-grid">"""+ "".join(cards) + "</div>"
-    st.markdown(markup,unsafe_allow_html=True)
+        label=("✓ " if name in selected else "")+name
+        if col.button(label,key=f"pick_item_{i}",help=tip,use_container_width=True,disabled=name in selected):
+            cur=list(st.session_state.build_items_v2)
+            if name not in cur and len(cur)<5:
+                cur.append(name)
+                st.session_state.build_items_v2=cur
+                st.rerun()
 
 
 import pandas as pd
@@ -412,19 +412,9 @@ with tabs[1]:
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
-    # Premium clickable item picker. Query-param clicks are converted into session state.
+    # Premium clickable item picker.
     if "build_items_v2" not in st.session_state:
         st.session_state.build_items_v2=list(F)[:5]
-    picked=st.query_params.get("item_pick")
-    if picked:
-        picked=urllib.parse.unquote(picked)
-        cur=list(st.session_state.build_items_v2)
-        if picked in F and picked not in cur:
-            if len(cur)<5: cur.append(picked)
-            else: cur[-1]=picked
-            st.session_state.build_items_v2=cur
-        st.query_params.clear()
-        st.rerun()
 
     st.markdown("**Selected Build**")
     build=list(st.session_state.build_items_v2)
@@ -707,4 +697,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.4 | Premium item picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.4.1 | Native clickable item grid • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
