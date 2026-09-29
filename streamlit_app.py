@@ -1,6 +1,6 @@
 import streamlit as st
 
-CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/data/items/icons2d/"
+CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
 ITEM_ICON_FILE={
 "Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
 "Runaan's Hurricane":"3085_marksman_t3_runaans.png",
