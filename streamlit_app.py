@@ -95,22 +95,28 @@ def _item_stat_lines(name):
     return out
 
 def _premium_item_grid(items, selected):
-    # Native Streamlit buttons are used for interaction so clicks work reliably
-    # inside Streamlit Cloud; CSS styles the buttons as an icon grid.
+    # Compact visual picker: the clickable control itself is the item tile.
+    # Streamlit's native help tooltip is bound to that tile, not a separate name label.
     st.markdown("""<style>
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]{
-        min-height:76px;border-radius:12px;border:1px solid #303744;
+        min-height:46px!important;padding:3px 5px!important;border-radius:9px!important;
+        border:1px solid #303744!important;font-size:11px!important;line-height:1.05!important;
+        white-space:normal!important;
+    }
+    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"] p{
+        font-size:11px!important;line-height:1.05!important;margin:0!important;
     }
     </style>""",unsafe_allow_html=True)
-    grid_cols=st.columns(8)
+    grid_cols=st.columns(10)
     for i,name in enumerate(items):
-        col=grid_cols[i%8]
+        col=grid_cols[i%10]
         icon=item_icon(name)
-        if icon:
-            col.image(icon,width=52)
         tip=" • ".join(_item_stat_lines(name))
-        label=("✓ " if name in selected else "")+name
-        if col.button(label,key=f"pick_item_{i}",help=tip,use_container_width=True,disabled=name in selected):
+        if icon:
+            col.image(icon,width=58)
+        # Keep the text deliberately tiny; hover/help belongs to this click target.
+        short=name if len(name)<=15 else name[:13]+"…"
+        if col.button(("✓ " if name in selected else "")+short,key=f"pick_item_{i}",help=tip,use_container_width=True,disabled=name in selected):
             cur=list(st.session_state.build_items_v2)
             if name not in cur and len(cur)<5:
                 cur.append(name)
@@ -697,4 +703,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.4.1 | Native clickable item grid • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.4.2 | Compact item tiles • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
