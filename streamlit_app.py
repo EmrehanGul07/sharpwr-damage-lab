@@ -177,11 +177,13 @@ B={
 "Plated Steelcaps":(1200,0,0,0,0,150,0,25,0,0,0,0,0,45),
 "Armored Advance":(2200,0,0,0,0,150,0,30,0,0,0,0,0,45),
 "Boots of Mana":(1200,0,0,0,25,0,0,0,0,0,0,0,0,45),
-"Spellslinger's Shoes":(2200,0,0,0,35,0,0,0,0,0,0,0,0,45),
+"Spellslinger's Shoes":(2200,0,0,0,35,0,0,0,0,0,0,0,0,45,18,.08),
 "Boots of Dynamism":(1200,15,0,0,0,0,0,0,0,0,0,10,0,45),
 "Armorcrusher Boots":(2200,25,0,0,0,0,0,0,0,0,0,12,.06,45)}
-K=["gold","ad","as","crit","ap","hp","mana","armor","mr","ah","ls","flatpen","pctpen","ms"]
-def dct(v): return dict(zip(K,v))
+K=["gold","ad","as","crit","ap","hp","mana","armor","mr","ah","ls","flatpen","pctpen","ms","flatmpen","pctmpen"]
+def dct(v):
+    v=tuple(v)+(0,)*(len(K)-len(v))
+    return dict(zip(K,v))
 def gu(l):
     n=l-1
     return n*(.7025+.0175*n)
@@ -446,7 +448,8 @@ with tabs[1]:
             phy+=onp
             if "Lord Dominik's Regards" in build:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
-            dmg=phy*rm(ea)+mag*rm(mr)+true
+            em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
+            dmg=phy*rm(ea)+mag*rm(em)+true
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             hp2-=dmg
             if "The Collector" in build:
@@ -494,7 +497,8 @@ with tabs[1]:
         if ldramp:
             hit_phy*=1+ldramp; hit_mag*=1+ldramp; hit_true*=1+ldramp
             parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
-        max_hit=hit_phy*rm(max_ea)+hit_mag*rm(mr)+hit_true
+        max_em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
+        max_hit=hit_phy*rm(max_ea)+hit_mag*rm(max_em)+hit_true
         if boot=="Immortal Treads" and immortal_above_half:
             max_hit*=1.05
             parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
@@ -510,6 +514,10 @@ with tabs[1]:
         o6.metric("Ability Haste",f"{total['ah']:.0f}")
         o7.metric("Flat Armor Pen",f"{total['flatpen']:.0f}")
         o8.metric("Armor Pen",f"{total['pctpen']*100:.0f}%")
+        if total["flatmpen"] or total["pctmpen"]:
+            m1,m2=st.columns(2)
+            m1.metric("Flat Magic Pen",f"{total['flatmpen']:.0f}")
+            m2.metric("Magic Pen",f"{total['pctmpen']*100:.0f}%")
 
         a1,a2,a3,a4=st.columns(4)
         a1.metric("Build Cost",f"{cost:,}g"); a2.metric("TTK",f"{t:.3f}s")
@@ -519,7 +527,7 @@ with tabs[1]:
             st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
             br=[]
             for pn,pt,pv in parts:
-                dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(mr) if pt=="Magic" else pv
+                dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(max_em) if pt=="Magic" else pv
                 br.append([pn,pt,round(pv,1),round(dealt,1)])
             st.table(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage After Resist"]))
             st.metric("Total Max Single Hit",f"{max_hit:.1f}")
