@@ -54,6 +54,7 @@ def _local_icon_data(path):
 
 BOOT_ICON_FILE={
 "Gluttonous Greaves":"Gluttonous_Greaves_WR_item.png",
+"Immortal Treads":"immortal_treads_wr_item.webp",
 "Ionian Boots of Lucidity":"Ionian_Boots_of_Lucidity_WR_item.png",
 "Crimson Lucidity":"item-crimson-lucidity-icon.png",
 "Berserker's Greaves":"Berserker's_Greaves_WR_item.png",
