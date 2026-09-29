@@ -52,10 +52,13 @@ def _rune_icon_grid(label, options, state_key, cols=6):
     @media(max-width:900px),(hover:none){
       body{padding-bottom:8px}.rg{grid-template-columns:repeat(4,minmax(54px,1fr))}
       .rune{width:56px;height:56px}.tile{flex-wrap:wrap}.tile:hover .card{display:none}
-      .tile:focus-within .card{display:block;position:relative;top:auto;left:auto;right:auto;transform:none;width:calc(400% + 27px);margin-top:8px}
-      .tile:nth-child(4n+2) .card{margin-left:calc(-100% - 9px)}
-      .tile:nth-child(4n+3) .card{margin-left:calc(-200% - 18px)}
-      .tile:nth-child(4n+4) .card{margin-left:calc(-300% - 27px)}
+      /* Mobile: anchor the expanded card to the full grid width, never to the tapped tile. */
+      .tile:focus-within{position:static}
+      .tile:focus-within .card{
+        display:block;position:absolute;top:auto;left:5px;right:5px;transform:none;
+        width:auto;margin-top:66px;max-width:none
+      }
+      .edge-left .card,.edge-right .card{left:5px;right:5px;transform:none}
       .pick{display:block}
     }</style><div class="rg">'''+''.join(tiles)+'''</div>'''
     rows=(len(options)+cols-1)//cols
@@ -899,4 +902,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.12 | Premium rune cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.12.1 | Mobile rune card alignment • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
