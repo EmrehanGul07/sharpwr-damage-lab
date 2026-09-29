@@ -61,9 +61,11 @@ def _rune_icon_grid(label, options, state_key, cols=6):
       .edge-left .card,.edge-right .card{left:5px;right:5px;transform:none}
       .pick{display:block}
     }</style><div class="rg">'''+''.join(tiles)+'''</div>'''
-    rows=(len(options)+cols-1)//cols
-    # Extra vertical room lets desktop hover cards render without iframe clipping.
-    components.html(doc,height=rows*78+170,scrolling=False)
+    # The component itself is an iframe, so mobile expanded cards need real vertical
+    # canvas below the final grid row; otherwise the bottom of the card is clipped.
+    mobile_cols=4
+    visual_rows=max((len(options)+cols-1)//cols,(len(options)+mobile_cols-1)//mobile_cols)
+    components.html(doc,height=visual_rows*78+300,scrolling=False)
     return current
 
 ITEM_ICON_FILE={
@@ -902,4 +904,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.12.1 | Mobile rune card alignment • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.12.2 | Mobile rune card canvas • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
