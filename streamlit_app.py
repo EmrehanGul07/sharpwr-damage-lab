@@ -263,6 +263,17 @@ with tabs[1]:
     cols=st.columns(5)
     build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
     boot=st.selectbox("Boots (required)",list(B))
+
+    # Yun Tal assumptions are only relevant when the item is in the build.
+    yt_bonus_crit=0.0
+    yt_flurry=False
+    if "Yun Tal Wildarrows" in build:
+        with st.container(border=True):
+            st.markdown("**🏹 Yun Tal Settings**")
+            yc1,yc2=st.columns(2)
+            yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),format_func=lambda x:f"{x}%",key="build_yt_crit")/100
+            yt_flurry=yc2.checkbox("Flurry Active (+35% AS)",value=False,key="build_yt_flurry")
+
     if len(set(build))<5:
         st.error("Choose 5 different completed items.")
     elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
@@ -271,17 +282,19 @@ with tabs[1]:
         s0=stats(champ,level,mist); maxmana=mana+total["mana"]
         awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
         ad=s0["ad"]+total["ad"]+awe
-        crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
+        crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
-        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        display_dyn=.35 if ("Yun Tal Wildarrows" in build and yt_flurry) else 0
+        display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn))
+        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
-            if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.35
+            if "Yun Tal Wildarrows" in build and yt_flurry: dyn+=.35
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
             asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn))
-            cc=min(1,crit+(ytcrit if "Yun Tal Wildarrows" in build else 0))
+            cc=crit
             pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
             if "Terminus" in build: pct=min(.40,pct)
             ea=max(0,armor*(1-pct)-total["flatpen"])
@@ -334,9 +347,6 @@ with tabs[1]:
             if "Phantom Dancer" in build: pd_stacks=min(5,pd_stacks+1)
             if "Guinsoo's Rageblade" in build: rb=min(4,rb+1)
             if "Terminus" in build and attacks%2==0: dark=min(3,dark+1)
-            if "Yun Tal Wildarrows" in build:
-                ytcrit=min(.25,ytcrit+.002)
-                if attacks==1: yt_until=t+6
             if "Fiendhunter Bolts" in build and fh and t<=8: fh-=1
             if hp2<=0: break
             t+=1/asp
@@ -378,9 +388,21 @@ with tabs[1]:
             parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
         max_hit=hit_phy*rm(max_ea)+hit_mag*rm(mr)+hit_true
 
-        a1,a2,a3,a4,a5,a6=st.columns(6)
-        a1.metric("Build Cost",f"{cost:,}g"); a2.metric("Total AD",f"{ad:.1f}"); a3.metric("Crit",f"{crit*100:.0f}%")
-        a4.metric("TTK",f"{t:.3f}s"); a5.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a6.metric("Max Single Hit",f"{max_hit:.1f}")
+        st.markdown("**Full Build Offensive Stats**")
+        o1,o2,o3,o4=st.columns(4)
+        o1.metric("Total AD",f"{ad:.1f}")
+        o2.metric("Attack Speed",f"{display_as:.3f}")
+        o3.metric("Crit Chance",f"{crit*100:.0f}%")
+        o4.metric("Crit Damage",f"{cd*100:.0f}%")
+        o5,o6,o7,o8=st.columns(4)
+        o5.metric("Lifesteal",f"{total['ls']*100:.0f}%")
+        o6.metric("Ability Haste",f"{total['ah']:.0f}")
+        o7.metric("Flat Armor Pen",f"{total['flatpen']:.0f}")
+        o8.metric("Armor Pen",f"{total['pctpen']*100:.0f}%")
+
+        a1,a2,a3,a4=st.columns(4)
+        a1.metric("Build Cost",f"{cost:,}g"); a2.metric("TTK",f"{t:.3f}s")
+        a3.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a4.metric("Max Single Hit",f"{max_hit:.1f}")
         st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
         with st.expander("Max Single Hit breakdown"):
             st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
