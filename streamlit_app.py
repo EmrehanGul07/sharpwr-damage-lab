@@ -127,7 +127,7 @@ def _premium_item_grid(items, selected):
           <section>{"".join(rows)}</section><footer>Click to add to build</footer></div></a>''')
     doc='''<!doctype html><html><head><style>
     *{box-sizing:border-box}body{margin:0;background:transparent;font-family:Inter,system-ui,sans-serif;color:#e9edf3;overflow:visible}
-    .grid{display:grid;grid-template-columns:repeat(10,minmax(58px,1fr));gap:10px;padding:18px 4px 230px}
+    .grid{display:grid;grid-template-columns:repeat(10,minmax(58px,1fr));gap:10px;padding:18px 4px 260px}
     .tile{position:relative;display:flex;justify-content:center;align-items:center;height:68px;border:1px solid #343e4e;border-radius:11px;
       background:linear-gradient(145deg,#171e29,#0a0f16);text-decoration:none;transition:.15s;z-index:1}
     .tile>img{width:56px;height:56px;object-fit:cover;border-radius:8px}
@@ -137,13 +137,12 @@ def _premium_item_grid(items, selected):
       width:360px;min-height:150px;padding:14px;border:1px solid #526078;border-radius:13px;background:linear-gradient(150deg,#151d29,#080d14 75%);
       box-shadow:0 18px 45px rgba(0,0,0,.62);transition:opacity .14s .32s,transform .14s .32s}
     .tile:hover .card{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
-    .tile:nth-child(-n+20) .card{bottom:auto;top:76px;transform:translateX(-50%) translateY(-5px)}
-    .tile.edge-left .card{left:0;right:auto;transform:translateX(0) translateY(5px)}
-    .tile.edge-right .card{left:auto;right:0;transform:translateX(0) translateY(5px)}
-    .tile:nth-child(-n+20).edge-left .card,.tile:nth-child(-n+20).edge-right .card{transform:translateX(0) translateY(-5px)}
-    .tile:nth-child(-n+20):hover .card{transform:translateX(-50%) translateY(0)}
-    .tile.edge-left:hover .card,.tile.edge-right:hover .card,
-    .tile:nth-child(-n+20).edge-left:hover .card,.tile:nth-child(-n+20).edge-right:hover .card{transform:translateX(0) translateY(0)}
+    /* Always open cards downward: avoids iframe top clipping of name/price header. */
+    .card{bottom:auto!important;top:76px!important;transform:translateX(-50%) translateY(-5px)!important}
+    .tile.edge-left .card{left:0;right:auto;transform:translateX(0) translateY(-5px)!important}
+    .tile.edge-right .card{left:auto;right:0;transform:translateX(0) translateY(-5px)!important}
+    .tile:hover .card{transform:translateX(-50%) translateY(0)!important}
+    .tile.edge-left:hover .card,.tile.edge-right:hover .card{transform:translateX(0) translateY(0)!important}
     header{display:flex;gap:11px;align-items:center;padding-bottom:10px;border-bottom:1px solid #2d3746}
     header img{width:52px;height:52px;border-radius:8px;border:1px solid #b8994d}strong{display:block;color:#f1d37b;font-size:16px}
     em{display:block;color:#d5b45b;font-size:12px;font-style:normal;margin-top:3px}
@@ -152,7 +151,7 @@ def _premium_item_grid(items, selected):
     @media(max-width:900px){.grid{grid-template-columns:repeat(6,minmax(54px,1fr))}}
     </style></head><body><div class="grid">'''+''.join(tiles)+'''</div></body></html>'''
     rows=(len(items)+9)//10
-    components.html(doc,height=250+rows*78,scrolling=False)
+    components.html(doc,height=330+rows*78,scrolling=False)
 
 
 import pandas as pd
@@ -775,4 +774,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.7.3 | Fixed edge & stat layout • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.7.4 | No-clipping hover cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
