@@ -7,12 +7,17 @@ from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
-# Wild Rift rune icons: exact League Wiki WR rune file redirect.
-# The wiki file pages confirm the 128x128 naming convention: "<Rune> (Wild Rift) rune.png".
+# Wild Rift rune icons served directly by RiftPatchNotes.
+# Their rune pages expose images at /runes/<slug>.png (e.g. Ice Overlord).
+RUNE_ICON_SLUG={
+    "Hexflash":"hexflash",
+}
 def rune_icon(name):
     if not name or name=="None": return ""
-    filename=f"{name} (Wild Rift) rune.png".replace(" ","_")
-    return "https://wiki.leagueoflegends.com/en-us/Special:Redirect/file/"+urllib.parse.quote(filename,safe="()_:'")
+    slug=RUNE_ICON_SLUG.get(name)
+    if not slug:
+        slug=name.lower().replace("&","and").replace("'","").replace(":","").replace(" ","-")
+    return f"https://www.riftpatchnotes.com/runes/{slug}.png"
 
 def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
@@ -873,4 +878,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.11 | Icon-first rune selector • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.11.1 | RiftPatchNotes rune assets • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
