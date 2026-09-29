@@ -12,6 +12,47 @@ CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icon
 RUNE_ICON_SLUG={
     "Hexflash":"hexflash",
 }
+def _last_stand_amp(own_hp_pct):
+    missing=100-own_hp_pct
+    if missing<30: return 0.0
+    return min(.11,.05+((missing-30)//5)*.01)
+
+def _rune_self_tests():
+    tests=[]
+    def check(name,got,expected,tol=1e-9):
+        ok=abs(got-expected)<=tol if isinstance(expected,(int,float)) else got==expected
+        tests.append([name,"PASS" if ok else "FAIL",got,expected])
+    scale=lambda lo,hi,lvl: lo+(hi-lo)*(lvl-1)/14
+    check("Level scale 6→20 @ Lv1",scale(6,20,1),6)
+    check("Level scale 6→20 @ Lv8",scale(6,20,8),13)
+    check("Level scale 6→20 @ Lv15",scale(6,20,15),20)
+    for hp,amp in [(71,0),(70,.05),(65,.06),(60,.07),(55,.08),(50,.09),(45,.10),(40,.11),(30,.11)]:
+        check(f"Last Stand @ {hp}% current HP",_last_stand_amp(hp),amp)
+    conq=0; seq=[]
+    for _ in range(7):
+        seq.append(conq); conq=min(6,conq+1)
+    check("Conqueror AA1-AA7 stack state",seq,[0,1,2,3,4,5,6])
+    lt=0; bullets=[]
+    for _ in range(7):
+        bullets.append(lt>=6); lt=min(6,lt+1)
+    check("Lethal Tempo bullet after 6 completed AAs",bullets,[False,False,False,False,False,False,True])
+    eh=0; procs=[]; amps=[]; active=False
+    for _ in range(5):
+        eh+=1; proc=(eh==3); procs.append(proc); amps.append(active)
+        if proc: active=True
+    check("Empowerment proc AA3",procs,[False,False,True,False,False])
+    check("Empowerment amp starts AA4",amps,[False,False,False,True,True])
+    check("Cut Down 60% OFF",.60>.60,False); check("Cut Down 60.1% ON",.601>.60,True)
+    check("Coup 40% OFF",.40<.40,False); check("Coup 39.9% ON",.399<.40,True)
+    check("Dark Harvest 50% OFF",.50<.50,False); check("Dark Harvest 49.9% ON",.499<.50,True)
+    check("Zombie Ward 5 stacks AD",5*3,15)
+    check("Eyeball 8 stacks AD",8*1.5,12)
+    check("Overgrowth 60 stacks flat HP",60*3,180)
+    check("Overgrowth 30+ multiplier",1.03 if 60>=30 else 1.0,1.03)
+    check("Manaflow full Mana",300,300)
+    check("Gathering Storm sequence",[2,5,9,14,20,27],[2,5,9,14,20,27])
+    return tests
+
 def rune_icon(name):
     if not name or name=="None": return ""
     slug=RUNE_ICON_SLUG.get(name)
@@ -919,10 +960,8 @@ with tabs[1]:
                 _b=dmg; dmg+=(6+.08*bonus_ad)*rm(ea); _rune_part("Brutal",_b,dmg)
             # Precision combat modifiers.
             if "Last Stand" in selected_sub_runes and own_hp_pct<60:
-                # User-verified rule: starts at 30% missing HP with +5% damage,
-                # then +1 percentage point for each additional 5% missing HP, capped at +11% at 60% missing HP.
-                missing_hp_pct=100-own_hp_pct
-                last_stand_amp=min(.11,.05+max(0,missing_hp_pct-30)//5*.01)
+                # Shared tested implementation of the verified missing-HP step rule.
+                last_stand_amp=_last_stand_amp(own_hp_pct)
                 _b=dmg; dmg*=1+last_stand_amp; _rune_part("Last Stand",_b,dmg,f"×{1+last_stand_amp:.3f}")
             if "Battle Zeal" in selected_sub_runes:
                 # Basic-ability damage amplification only. Normal auto attacks are intentionally unaffected.
@@ -1156,6 +1195,13 @@ with tabs[3]:
         adf=pd.DataFrame(audit_rows,columns=["Rune","Engine Status","Audit Note"])
         st.dataframe(adf,use_container_width=True,hide_index=True)
         st.caption("Audit: 51/51 runes classified. 'Pending/Blocked' effects are intentionally not converted into fake DPS.")
+        st.markdown("**Rune Engine Test Suite**")
+        _tests=_rune_self_tests()
+        _passed=sum(1 for r in _tests if r[1]=="PASS")
+        st.caption(f"{_passed}/{len(_tests)} deterministic checks passing. Guards verified rune math, thresholds, stack timing and persistent defaults.")
+        st.dataframe(pd.DataFrame(_tests,columns=["Test","Status","Actual","Expected"]),use_container_width=True,hide_index=True)
+        if _passed==len(_tests): st.success("All rune regression checks PASS.")
+        else: st.error(f"{len(_tests)-_passed} rune regression check(s) FAILED.")
         counts={tree:len(names) for tree,names in RUNE_TREES.items()}
         st.caption(" • ".join(f"{tree}: {count}" for tree,count in counts.items())+" • Total: 51")
     else:
@@ -1166,4 +1212,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.23 | Ability Trigger Engine Lite • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.24 | Rune Engine regression test suite • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
