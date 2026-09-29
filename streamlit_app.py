@@ -1,4 +1,28 @@
 import streamlit as st
+
+CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/data/items/icons2d/"
+ITEM_ICON_FILE={
+"Fiendhunter Bolts":"fiendhunter_bolts.png","Rapid Firecannon":"3094_rapid_firecannon.png",
+"Runaan's Hurricane":"3085_runaans_hurricane.png","Phantom Dancer":"3046_phantom_dancer.png",
+"Navori Quickblades":"6675_navori_quickblades.png","Wit's End":"3091_wits_end.png",
+"Hexoptics C44":"hexoptics_c44.png","Kraken Slayer":"6672_kraken_slayer.png",
+"Nashor's Tooth":"3115_nashors_tooth.png","Manamune":"3004_manamune.png","Muramana":"3042_muramana.png",
+"Statikk Shiv":"3087_statikk_shiv.png","Guinsoo's Rageblade":"3124_guinsoos_rageblade.png",
+"Mortal Reminder":"3033_mortal_reminder.png","Maw of Malmortius":"3156_maw_of_malmortius.png",
+"Essence Reaver":"3508_essence_reaver.png","Immortal Shieldbow":"6673_immortal_shieldbow.png",
+"The Collector":"6676_the_collector.png","Terminus":"3302_terminus.png","Stormrazor":"3095_stormrazor.png",
+"Yun Tal Wildarrows":"yun_tal_wildarrows.png","Galeforce":"6671_galeforce.png",
+"Mercurial Scimitar":"3139_mercurial_scimitar.png","Blade of the Ruined King":"3153_blade_of_the_ruined_king.png",
+"Guardian Angel":"3026_guardian_angel.png","Bloodthirster":"3072_the_bloodthirster.png",
+"Lord Dominik's Regards":"3036_lord_dominiks_regards.png","Trinity Force":"3078_trinity_force.png",
+"Infinity Edge":"3031_infinity_edge.png","Serylda's Grudge":"6694_seryldas_grudge.png",
+"Serpent's Fang":"6695_serpents_fang.png","Youmuu's Ghostblade":"3142_youmus_ghostblade.png",
+"Duskblade of Draktharr":"6691_duskblade_of_draktharr.png","Edge of Night":"3814_edge_of_night.png",
+"Iceborn Gauntlet":"6662_iceborn_gauntlet.png","Death's Dance":"6333_deaths_dance.png"}
+def item_icon(name):
+    fn=ITEM_ICON_FILE.get(name)
+    return CD_ITEM_ICON_BASE+fn if fn else ""
+
 import pandas as pd
 
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
@@ -271,6 +295,13 @@ with tabs[1]:
     cols=st.columns(5)
     build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
     boot=st.selectbox("Boots (required)",list(B))
+    st.markdown("**Selected Build**")
+    icon_cols=st.columns(6)
+    for _i,_it in enumerate(build):
+        _url=item_icon(_it)
+        if _url: icon_cols[_i].image(_url,width=56)
+        icon_cols[_i].caption(_it)
+    icon_cols[5].caption(boot)
 
     # Yun Tal assumptions are only relevant when the item is in the build.
     yt_bonus_crit=0.0
@@ -437,9 +468,10 @@ with tabs[2]:
         for it,v0 in F.items():
             q=dct(v0); raw=sum(q[k]*rates[k] for k in rates)
             row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs,proc_states.get(it,True))
-            dps=row[4]; rows.append([it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
-        val=pd.DataFrame(rows,columns=["Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
-        val.insert(0,"Rank",range(1,len(val)+1)); st.dataframe(val,use_container_width=True,hide_index=True)
+            dps=row[4]; rows.append([item_icon(it),it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
+        val=pd.DataFrame(rows,columns=["Icon","Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
+        val.insert(0,"Rank",range(1,len(val)+1))
+        st.dataframe(val,use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
 
 with tabs[3]:
