@@ -578,28 +578,44 @@ with tabs[1]:
     alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
     haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
     bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
-    # Context switches only appear when the selected rune actually needs them.
+    # Ability Trigger Engine Lite: shared combat events drive rune triggers.
+    _needs_ability_event=any(r in selected_runes for r in ["Arcane Comet","Chain Assault","Scorch","Transcendence","Manaflow Band"])
+    _needs_basic_event=("Transcendence" in selected_runes)
+    _needs_ult_event=("Axiom Arcanist" in selected_runes)
+    _needs_immobilize=any(r in selected_runes for r in ["Ice Overlord","Courage of the Colossus","Perseverance"])
+    _needs_mobility=("Sudden Impact" in selected_runes)
+    _needs_summoner=("Nimbus Cloak" in selected_runes)
+    _needs_takedown=any(r in selected_runes for r in ["Triumph","Hubris","Axiom Arcanist"])
+
+    if any([_needs_ability_event,_needs_basic_event,_needs_ult_event,_needs_immobilize,_needs_mobility,_needs_summoner,_needs_takedown]):
+        st.markdown("**Combat Events — Trigger Engine Lite**")
+        st.caption("These are trigger events only; champion ability damage is not calculated.")
+    ability_hit=st.checkbox("Ability Hit",value=False,key="evt_ability_hit") if _needs_ability_event else False
+    basic_ability_hit=st.checkbox("Basic Ability Hit",value=False,key="evt_basic_hit") if _needs_basic_event else False
+    ultimate_hit=st.checkbox("Ultimate Hit / Cast",value=False,key="evt_ultimate_hit") if _needs_ult_event else False
+    immobilize_event=st.checkbox("Immobilized enemy champion",value=False,key="evt_immobilize") if _needs_immobilize else False
+    mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="evt_mobility") if _needs_mobility else False
+    summoner_used=st.checkbox("Summoner Spell Used",value=False,key="evt_summoner") if _needs_summoner else False
+    takedown_event=st.checkbox("Champion Takedown",value=False,key="evt_takedown") if _needs_takedown else False
+
+    # Existing rune-specific states that are not generic combat events.
     first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
     grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
     aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
-    comet_ability_hit=st.checkbox("Arcane Comet — ability hit before autos",value=False,key="comet_ability_hit") if "Arcane Comet" in selected_runes else False
+    comet_ability_hit=ability_hit
     comet_total_hits=st.number_input("Arcane Comet — previous champion hits",0,999,0,1,key="comet_hits") if "Arcane Comet" in selected_runes else 0
     fleet_ready=st.checkbox("Fleet Footwork — start at 100 Energy",value=False,key="fleet_ready") if "Fleet Footwork" in selected_runes else False
-
     target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
-    mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
-    chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
+    chain_marked=ability_hit if "Chain Assault" in selected_runes else False
     own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
     battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
     absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
-    scorch_ability_hit=st.checkbox("Scorch — ability hit before autos",value=False,key="scorch_ability_hit") if "Scorch" in selected_runes else False
+    scorch_ability_hit=ability_hit
     nearby_enemies=st.slider("Unshakeable — nearby enemy champions",0,3,3,1,key="unshakeable_enemies") if "Unshakeable" in selected_runes else 0
     overgrowth_stacks=st.number_input("Overgrowth — stacks",0,999,60,1,key="overgrowth_stacks") if "Overgrowth" in selected_runes else 0
     font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
-    summoner_used=st.checkbox("Nimbus Cloak — summoner spell just used",value=False,key="summoner_used") if "Nimbus Cloak" in selected_runes else False
     game_minute=st.slider("Gathering Storm — game minute",0,21,15,1,key="gathering_storm_minute") if "Gathering Storm" in selected_runes else 0
-    axiom_ult_scenario=st.checkbox("Axiom Arcanist — include ultimate modifier in summary",value=False,key="axiom_ult") if "Axiom Arcanist" in selected_runes else False
-
+    axiom_ult_scenario=ultimate_hit if "Axiom Arcanist" in selected_runes else False
 
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     _passive_notes=[]
@@ -615,23 +631,23 @@ with tabs[1]:
         _passive_notes.append(f"Overgrowth: {_og_flat:+g} flat HP"+(" • ×1.03 max Health" if overgrowth_stacks>=30 else ""))
     if "Unshakeable" in selected_runes: _passive_notes.append(f"Unshakeable: +{3+2*nearby_enemies}% Armor/MR"+(" • 20% Slow Resist" if nearby_enemies==3 else ""))
     if "Celerity" in selected_runes: _passive_notes.append("Celerity: +2% MS; other MS bonuses ×1.07")
-    if "Transcendence" in selected_runes: _passive_notes.append(f"Transcendence: +{5 if level<5 else 10} AH"+(" • Lv9 cooldown proc enabled by ability hit" if level>=9 else ""))
+    if "Transcendence" in selected_runes: _passive_notes.append(f"Transcendence: +{5 if level<5 else 10} AH"+(" • Lv9 basic-ability CD proc TRIGGERED" if level>=9 and basic_ability_hit else (" • Lv9 proc ready for Basic Ability Hit" if level>=9 else "")))
     if "Nimbus Cloak" in selected_runes and summoner_used: _passive_notes.append("Nimbus Cloak active: +10–40% MS for 3s")
     if "Revitalize" in selected_runes: _passive_notes.append("Revitalize: +5% healing/shielding; +10% more below 40% target HP")
     if "Second Wind" in selected_runes: _passive_notes.append("Second Wind: 5 HP/5s; after champion damage 3 + 1.5% missing HP over 5s")
-    if "Perseverance" in selected_runes: _passive_notes.append("Perseverance: +10% Tenacity • immobilized: +10–15 Armor/MR for 1.5s")
+    if "Perseverance" in selected_runes: _passive_notes.append("Perseverance: +10% Tenacity"+(f" • immobilize event: +{lvl_scale(10,15,level):.1f} Armor/MR for 1.5s" if immobilize_event else ""))
     if "Gathering Storm" in selected_runes:
         _gs_preview=max((v for m,v in ((6,2),(9,5),(12,9),(15,14),(18,20),(21,27)) if game_minute>=m),default=0)
         _passive_notes.append(f"Gathering Storm @ {game_minute}m: +{_gs_preview} AD")
-    if "Axiom Arcanist" in selected_runes: _passive_notes.append("Axiom Arcanist: Ultimate +10% damage/heal/shield • AoE ultimate damage increase +5% • takedown: -7% remaining ult CD")
+    if "Axiom Arcanist" in selected_runes: _passive_notes.append("Axiom Arcanist: "+("Ultimate event active • " if ultimate_hit else "")+"Ultimate +10% damage/heal/shield • AoE ultimate damage increase +5%"+(" • takedown event: -7% remaining ult CD" if takedown_event else ""))
     if "Hexflash" in selected_runes: _passive_notes.append("Hexflash: available while Flash is on cooldown • 18s CD • entering champion combat → 6s CD")
     if "Botanist" in selected_runes: _passive_notes.append("Botanist: plant +10g • Honeyfruit heal +20% • Scryer vision +20% • Blast Cone +40% MS for 2.5s")
     if "Ixtali Seedjar" in selected_runes: _passive_notes.append("Ixtali Seedjar: plant seed replaces trinket for 60s • unique plant 30s cooldown")
     if "Battle Zeal" in selected_runes: _passive_notes.append(f"Battle Zeal: +{1.4*min(3,int(battle_seconds)):.1f}% basic-ability damage only")
     if "Demolish" in selected_runes: _passive_notes.append("Demolish: turret-only third-attack proc • Max-HP calculation pending champion HP data")
     if "Font of Life" in selected_runes: _passive_notes.append("Font of Life: healing calculation pending champion Max HP data")
-    if "Courage of the Colossus" in selected_runes: _passive_notes.append(f"Courage: shield {lvl_scale(25,45,level):.1f} + 1% Max HP • 18s CD")
-    if "Nullifying Orb" in selected_runes: _passive_notes.append(f"Nullifying Orb: shield {lvl_scale(60,180,level):.1f} at <35% HP + scaling component if any supplied • 60s CD")
+    if "Courage of the Colossus" in selected_runes: _passive_notes.append(f"Courage: "+("TRIGGERED • " if immobilize_event else "")+f"shield {lvl_scale(25,45,level):.1f} + 1% Max HP • 18s CD")
+    if "Nullifying Orb" in selected_runes: _passive_notes.append(f"Nullifying Orb: shield {lvl_scale(60,180,level):.1f} at <35% HP • 60s CD")
     if "Bone Plating" in selected_runes: _passive_notes.append(f"Bone Plating: {lvl_scale(30,60,level):.1f} damage reduction on current + next 3 champion hits/abilities within 1.5s • 40s CD")
 
     if _passive_notes: st.caption(" • ".join(_passive_notes))
@@ -1088,7 +1104,7 @@ with tabs[3]:
             ["First Strike","Partial","Damage works; engagement/cooldown/gold lifecycle not fully simulated"],
             ["Ice Overlord","Pending","Needs immobilize + own bonus HP/defense state"],
             ["Phase Rush","Partial","No direct AA damage; 3-hit mobility/basic-AH state not simulated"],
-            ["Arcane Comet","Scenario","Ability-hit start proc modeled; repeated ability/cooldown events need ability engine"],
+            ["Arcane Comet","Trigger Lite","Shared Ability Hit event launches the modeled comet proc"],
             ["Aery","Scenario","One explicitly-ready damage proc modeled; return cadence not supplied"],
             ["Guardian","Pending","Needs ally/incoming-damage + own bonus HP state"],
             ["Grasp of the Undying","Blocked: HP","Correctly disabled until own champion Max HP exists"],
@@ -1109,7 +1125,7 @@ with tabs[3]:
             ["Eyeball Collection","Stat","0–8 progression input wired at +1.5 AD/stack"],
             ["Hubris","Scenario","Champion kill count + explicit 30s buff-active state wired"],
             ["Tyrant","Combat","Live <50% + adaptive physical + 10s CD modeled"],
-            ["Chain Assault","Scenario","Ability-mark + next 2 hits modeled; re-mark lifecycle needs ability engine"],
+            ["Chain Assault","Trigger Lite","Shared Ability Hit event marks target; next 2 hits modeled"],
             ["Sudden Impact","Scenario","Mobility trigger + 4s window + true damage modeled"],
             ["Cheap Shot","Scenario","Impaired-target trigger + true damage + 7s CD modeled"],
             ["Zombie Ward","Stat","Default 5 stacks = +15 AD modeled"],
@@ -1127,10 +1143,10 @@ with tabs[3]:
             ["Demolish","Blocked: HP","Needs own Max HP + turret scenario"],
             ["Gathering Storm","Stat","Verified 6–21m AD sequence modeled; no extrapolation"],
             ["Absolute Focus","Scenario","Linear AD modeled with >65% toggle; own live HP engine pending"],
-            ["Scorch","Scenario","Ability-start trigger modeled as independent t=1.0 magic-damage event"],
-            ["Axiom Arcanist","Ability-only","Rule displayed; needs ultimate engine"],
+            ["Scorch","Trigger Lite","Shared Ability Hit event schedules independent t=1.0 magic damage"],
+            ["Axiom Arcanist","Trigger Lite","Ultimate and takedown events represented; champion ultimate damage itself is out of scope"],
             ["Manaflow Band","Stat","Default full +300 Mana modeled"],
-            ["Transcendence","Partial","+5/+10 AH modeled; Lv9 basic-ability cooldown proc needs ability engine"],
+            ["Transcendence","Trigger Lite","+5/+10 AH modeled; Lv9 Basic Ability Hit event represented"],
             ["Celerity","Utility","Rule displayed; needs movement-speed engine"],
             ["Nimbus Cloak","Utility","Summoner trigger represented; exact MS output not applied to movement engine"],
             ["Ixtali Seedjar","Utility","Rule displayed; no plant/trinket engine"],
@@ -1150,4 +1166,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.22 | Exact Last Stand missing-HP steps • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.23 | Ability Trigger Engine Lite • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
