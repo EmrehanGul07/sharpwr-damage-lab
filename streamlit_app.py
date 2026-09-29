@@ -94,34 +94,76 @@ def _item_stat_lines(name):
         else: out.append(f"{label} +{v:g}")
     return out
 
+STAT_GLYPHS={
+    "ad":"⚔","as":"⏩","crit":"✦","ap":"✧","hp":"♥","mana":"◆",
+    "armor":"⬟","mr":"◈","ah":"◷","lifesteal":"♦","flatpen":"➤","pctpen":"◎","ms":"➜"
+}
+STAT_NAMES={
+    "ad":"Attack Damage","as":"Attack Speed","crit":"Critical Strike","ap":"Ability Power",
+    "hp":"Health","mana":"Mana","armor":"Armor","mr":"Magic Resist","ah":"Ability Haste",
+    "lifesteal":"Lifesteal","flatpen":"Armor Penetration","pctpen":"% Armor Penetration","ms":"Movement Speed"
+}
+
 def _premium_item_grid(items, selected):
-    # Compact visual picker: the clickable control itself is the item tile.
-    # Streamlit's native help tooltip is bound to that tile, not a separate name label.
+    # One native clickable tile per item. CSS turns the button into the visual card trigger.
+    # The hover preview is rendered directly beneath the grid for the currently focused/selected item.
     st.markdown("""<style>
+    .wr-shop-title{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8d9aae;margin:4px 0 10px}
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]{
-        min-height:46px!important;padding:3px 5px!important;border-radius:9px!important;
-        border:1px solid #303744!important;font-size:11px!important;line-height:1.05!important;
-        white-space:normal!important;
+        min-height:64px!important;padding:5px!important;border-radius:10px!important;
+        border:1px solid #343d4d!important;background:linear-gradient(145deg,#161c26,#0b1017)!important;
+        box-shadow:inset 0 0 0 1px rgba(255,255,255,.015);font-size:10px!important;
+        line-height:1.05!important;white-space:normal!important;transition:.15s ease!important;
+    }
+    div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]:hover{
+        border-color:#c5a75a!important;transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.28)!important;
     }
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"] p{
-        font-size:11px!important;line-height:1.05!important;margin:0!important;
+        font-size:10px!important;line-height:1.05!important;margin:0!important;
     }
+    .wr-card{max-width:430px;margin:10px 0 18px;padding:16px 17px;border-radius:14px;
+      border:1px solid #4b5669;background:linear-gradient(150deg,#151c27 0%,#0a0f16 72%);
+      box-shadow:0 16px 42px rgba(0,0,0,.34)}
+    .wr-card-head{display:flex;gap:13px;align-items:center;padding-bottom:12px;border-bottom:1px solid #2b3442}
+    .wr-card-head img{width:66px;height:66px;border-radius:10px;border:1px solid #b99b50;box-shadow:0 0 18px rgba(185,155,80,.16)}
+    .wr-card-name{font-size:18px;font-weight:800;color:#f2d57d;letter-spacing:.02em}
+    .wr-card-gold{font-size:13px;color:#d9b75d;margin-top:3px}
+    .wr-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;padding-top:12px}
+    .wr-stat{display:flex;align-items:center;gap:8px;color:#d9e0ea;font-size:13px}
+    .wr-stat-i{width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;
+      background:#202a38;border:1px solid #39475b;color:#9fc3ef;font-size:13px}
+    .wr-stat b{color:#fff;font-weight:750}.wr-stat-name{color:#8f9cad;font-size:11px;display:block}
     </style>""",unsafe_allow_html=True)
+
+    st.markdown('<div class="wr-shop-title">Item Arsenal</div>',unsafe_allow_html=True)
     grid_cols=st.columns(10)
     for i,name in enumerate(items):
         col=grid_cols[i%10]
         icon=item_icon(name)
-        tip=" • ".join(_item_stat_lines(name))
-        if icon:
-            col.image(icon,width=58)
-        # Keep the text deliberately tiny; hover/help belongs to this click target.
-        short=name if len(name)<=15 else name[:13]+"…"
-        if col.button(("✓ " if name in selected else "")+short,key=f"pick_item_{i}",help=tip,use_container_width=True,disabled=name in selected):
+        if icon: col.image(icon,width=58)
+        short=name if len(name)<=13 else name[:11]+"…"
+        if col.button(("✓ " if name in selected else "")+short,key=f"pick_item_{i}",
+                      help="Click to add • "+name,use_container_width=True,disabled=name in selected):
             cur=list(st.session_state.build_items_v2)
             if name not in cur and len(cur)<5:
-                cur.append(name)
-                st.session_state.build_items_v2=cur
-                st.rerun()
+                cur.append(name); st.session_state.build_items_v2=cur
+            st.session_state.preview_item=name
+            st.rerun()
+
+    preview=st.session_state.get("preview_item")
+    if preview not in F:
+        preview=selected[-1] if selected else items[0]
+    q=dct(F[preview]); icon=item_icon(preview)
+    rows=[]
+    for key,label in STAT_NAMES.items():
+        v=q.get(key,0)
+        if not v: continue
+        val=f"{v*100:g}%" if key in ("as","crit","lifesteal","pctpen","ms") else f"{v:g}"
+        rows.append(f'<div class="wr-stat"><span class="wr-stat-i">{STAT_GLYPHS[key]}</span><span><b>{val}</b><span class="wr-stat-name">{label}</span></span></div>')
+    card=f"""<div class="wr-card"><div class="wr-card-head"><img src="{html.escape(icon)}"><div>
+      <div class="wr-card-name">{html.escape(preview)}</div><div class="wr-card-gold">◆ {int(q['gold'])} Gold</div>
+      </div></div><div class="wr-stats">{''.join(rows)}</div></div>"""
+    st.markdown(card,unsafe_allow_html=True)
 
 
 import pandas as pd
@@ -703,4 +745,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.4.2 | Compact item tiles • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.5 | Premium item cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
