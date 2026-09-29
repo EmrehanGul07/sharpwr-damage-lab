@@ -362,6 +362,14 @@ with tabs[1]:
     if _boot_url: icon_cols[5].image(_boot_url,width=56)
     icon_cols[5].caption(boot)
 
+    immortal_above_half=False
+    if boot=="Immortal Treads":
+        immortal_above_half=st.checkbox(
+            "Immortal Treads — Above 50% HP (+5% damage)",
+            value=True,
+            key="build_immortal_above_half"
+        )
+
     # Yun Tal assumptions are only relevant when the item is in the build.
     yt_bonus_crit=0.0
     yt_flurry=False
@@ -438,7 +446,9 @@ with tabs[1]:
             phy+=onp
             if "Lord Dominik's Regards" in build:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
-            dmg=phy*rm(ea)+mag*rm(mr)+true; hp2-=dmg
+            dmg=phy*rm(ea)+mag*rm(mr)+true
+            if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
+            hp2-=dmg
             if "The Collector" in build:
                 th=min(1,.05+.001*execs)
                 if 0<hp2<=hp*th: hp2=0
@@ -485,6 +495,9 @@ with tabs[1]:
             hit_phy*=1+ldramp; hit_mag*=1+ldramp; hit_true*=1+ldramp
             parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
         max_hit=hit_phy*rm(max_ea)+hit_mag*rm(mr)+hit_true
+        if boot=="Immortal Treads" and immortal_above_half:
+            max_hit*=1.05
+            parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
 
         st.markdown("**Full Build Offensive Stats**")
         o1,o2,o3,o4=st.columns(4)
