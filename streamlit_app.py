@@ -366,8 +366,12 @@ with tabs[1]:
     secondary_rune=st.selectbox("Secondary Rune",secondary_options,key="build_secondary_rune")
     selected_sub_runes=[primary_1,primary_2,primary_3,secondary_rune]
     combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
-    dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if keystone=="Dark Harvest" else 0
-    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_sub_runes else False
+    # Progression controls are generated for every selected rune that needs persistent state.
+    selected_runes=[keystone]+selected_sub_runes
+    dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if "Dark Harvest" in selected_runes else 0
+    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
+    haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
+    bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
@@ -413,6 +417,8 @@ with tabs[1]:
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=0.0
         rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
+        rune_bonus_ah=15.0 if ("Legend: Haste" in selected_sub_runes and haste_full) else 0.0
+        rune_omnivamp=(.08 if bloodline_full else .01) if "Legend: Bloodline" in selected_sub_runes else 0.0
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
@@ -569,6 +575,8 @@ with tabs[1]:
             rune_bits=[]
             if rune_bonus_ad: rune_bits.append(f"+{rune_bonus_ad:.1f} AD")
             if rune_bonus_as: rune_bits.append(f"+{rune_bonus_as*100:.1f}% AS")
+            if rune_bonus_ah: rune_bits.append(f"+{rune_bonus_ah:.0f} AH")
+            if rune_omnivamp: rune_bits.append(f"+{rune_omnivamp*100:.0f}% Omnivamp")
             st.caption("Key Rune: **"+keystone+"** • Primary: **"+primary_tree+"** • Secondary: **"+secondary_rune+"** • "+" • ".join(rune_bits))
         o1,o2,o3,o4=st.columns(4)
         o1.metric("Total AD",f"{ad:.1f}")
@@ -577,7 +585,7 @@ with tabs[1]:
         o4.metric("Crit Damage",f"{cd*100:.0f}%")
         o5,o6,o7,o8=st.columns(4)
         o5.metric("Lifesteal",f"{total['ls']*100:.0f}%")
-        o6.metric("Ability Haste",f"{total['ah']:.0f}")
+        o6.metric("Ability Haste",f"{total['ah']+rune_bonus_ah:.0f}")
         o7.metric("Flat Armor Pen",f"{total['flatpen']:.0f}")
         o8.metric("Armor Pen",f"{total['pctpen']*100:.0f}%")
         if total["flatmpen"] or total["pctmpen"]:
@@ -641,4 +649,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.3 | Legal 5-rune loadouts • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.3.1 | Rune progression controls • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
