@@ -179,7 +179,7 @@ B={
 "Boots of Mana":(1200,0,0,0,25,0,0,0,0,0,0,0,0,45),
 "Spellslinger's Shoes":(2200,0,0,0,35,0,0,0,0,0,0,0,0,45),
 "Boots of Dynamism":(1200,15,0,0,0,0,0,0,0,0,0,10,0,45),
-"Armorcrusher Boots":(2200,20,0,0,0,0,0,0,0,0,0,10,.06,45)}
+"Armorcrusher Boots":(2200,25,0,0,0,0,0,0,0,0,0,12,.06,45)}
 K=["gold","ad","as","crit","ap","hp","mana","armor","mr","ah","ls","flatpen","pctpen","ms"]
 def dct(v): return dict(zip(K,v))
 def gu(l):
