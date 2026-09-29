@@ -765,6 +765,7 @@ with tabs[1]:
             st.caption(f"Overgrowth applied to tracked build/rune HP: {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} flat rune HP → {build_max_hp:.1f} HP contribution after ×{overgrowth_health_mult:.2f}.")
         hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         rune_trace=[]
+        rune_timeline=[]
         conq_stacks=0; lt_stacks=0; empowerment_hits=0; empowerment_active=False; brutal_cd_ready=0.0
         first_strike_until=3.0 if (keystone=="First Strike" and first_strike_ready) else -1.0
         grasp_next_ready=0.0 if (keystone=="Grasp of the Undying" and grasp_ready) else 3.0
@@ -843,6 +844,11 @@ with tabs[1]:
             bonus_ad=max(0,current_ad-s0["ad"])
             _pre_rune_dmg=dmg
             _rune_events=[]
+            _rune_parts=[]
+            def _rune_part(name,before,after,detail=""):
+                delta=after-before
+                if abs(delta)>0.005 or detail:
+                    _rune_parts.append(f"{name} {delta:+.1f}"+(f" ({detail})" if detail else ""))
             if keystone=="First Strike" and 0<=t<first_strike_until:
                 # First Strike is 7% BONUS TRUE damage, not a generic 7% multiplier.
                 _v=dmg*.07; dmg += _v; _rune_events.append(f"First Strike +{_v:.1f} true")
@@ -877,44 +883,53 @@ with tabs[1]:
                 base_lt=lvl_scale(6.0,20.0,level)
                 bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
                 _v=base_lt*(1+.0033*bonus_as_pct); dmg+=_v; _rune_events.append(f"Lethal Tempo +{_v:.1f}")
-            if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
-            if "Coup de Grace" in selected_sub_runes and hp_pct<.40: dmg*=1.08
+            if "Cut Down" in selected_sub_runes and hp_pct>.60:
+                _b=dmg; dmg*=1.065; _rune_part("Cut Down",_b,dmg,"×1.065")
+            if "Coup de Grace" in selected_sub_runes and hp_pct<.40:
+                _b=dmg; dmg*=1.08; _rune_part("Coup de Grace",_b,dmg,"×1.08")
             if "Brutal" in selected_sub_runes:
                 # Verified tooltip: every champion attack deals 6 + 8% bonus AD adaptive damage.
                 # Current ADC lab resolves adaptive damage as physical when AD is the adaptive stat.
-                dmg+=(6+.08*bonus_ad)*rm(ea)
+                _b=dmg; dmg+=(6+.08*bonus_ad)*rm(ea); _rune_part("Brutal",_b,dmg)
             # Precision combat modifiers.
             if "Last Stand" in selected_sub_runes and own_hp_pct<60:
                 # Linear from 5% at 60% own HP to the 11% cap at 30% own HP.
                 last_stand_amp=.11 if own_hp_pct<=30 else .05+(.60-own_hp_pct/100.0)/.30*.06
-                dmg*=1+last_stand_amp
+                _b=dmg; dmg*=1+last_stand_amp; _rune_part("Last Stand",_b,dmg,f"×{1+last_stand_amp:.3f}")
             if "Battle Zeal" in selected_sub_runes:
                 # Basic-ability damage amplification only. Normal auto attacks are intentionally unaffected.
                 pass
             # Domination combat runes. Adaptive damage resolves physical for this ADC lab.
             if "Cheap Shot" in selected_sub_runes and target_impaired and t>=cheap_shot_ready_at:
-                dmg+=lvl_scale(10,45,level)
+                _b=dmg; dmg+=lvl_scale(10,45,level); _rune_part("Cheap Shot",_b,dmg,"true")
                 cheap_shot_ready_at=t+7.0
             if "Sudden Impact" in selected_sub_runes and mobility_trigger and t<4.0 and t>=sudden_impact_ready_at:
-                dmg+=lvl_scale(10,65,level)
+                _b=dmg; dmg+=lvl_scale(10,65,level); _rune_part("Sudden Impact",_b,dmg,"true")
                 sudden_impact_ready_at=t+15.0
             if "Chain Assault" in selected_sub_runes and chain_hits_left>0:
-                dmg+=(lvl_scale(12,38,level)+.03*bonus_ad+.015*total["ap"])*rm(ea)
+                _b=dmg; dmg+=(lvl_scale(12,38,level)+.03*bonus_ad+.015*total["ap"])*rm(ea); _rune_part("Chain Assault",_b,dmg,f"{chain_hits_left}/2 before hit")
                 chain_hits_left-=1
             if "Tyrant" in selected_sub_runes and hp_pct<.50 and t>=tyrant_ready_at:
-                dmg+=(lvl_scale(20,70,level)+.06*bonus_ad+.03*total["ap"])*rm(ea)
+                _b=dmg; dmg+=(lvl_scale(20,70,level)+.06*bonus_ad+.03*total["ap"])*rm(ea); _rune_part("Tyrant",_b,dmg)
                 tyrant_ready_at=t+10.0
             if "Empowered Attack" in selected_sub_runes and t>=empowered_attack_ready_at:
-                dmg+=lvl_scale(20,60,level)*.80*rm(ea)
+                _b=dmg; dmg+=lvl_scale(20,60,level)*.80*rm(ea); _rune_part("Empowered Attack",_b,dmg)
                 empowered_attack_ready_at=t+8.0
             if scorch_pending is not None and t>=scorch_pending and t>=scorch_ready_at:
-                dmg+=lvl_scale(21,49,level)*rm(em)
+                _b=dmg; dmg+=lvl_scale(21,49,level)*rm(em); _rune_part("Scorch",_b,dmg,"magic")
                 scorch_ready_at=t+8.0
                 scorch_pending=None
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             _rune_delta=dmg-_pre_rune_dmg
-            if _rune_events or abs(_rune_delta)>0.01:
-                rune_trace.append([attacks,round(t,3),round(hp_pct*100,1)," • ".join(_rune_events) if _rune_events else "Sub-rune modifier(s)",round(_rune_delta,1),round(dmg,1)])
+            _event_text=" • ".join(_rune_events+_rune_parts)
+            if _event_text or abs(_rune_delta)>0.01:
+                rune_trace.append([attacks,round(t,3),round(hp_pct*100,1),_event_text or "Rune modifier",round(_rune_delta,1),round(dmg,1)])
+            _stack_before=f"Conq {conq_stacks}/6 | LT {lt_stacks}/6 | Empower {empowerment_hits}/3"
+            _cd_bits=[]
+            if "Cheap Shot" in selected_sub_runes: _cd_bits.append(f"Cheap {'READY' if cheap_shot_ready_at<=t else f'{cheap_shot_ready_at-t:.1f}s'}")
+            if "Sudden Impact" in selected_sub_runes: _cd_bits.append(f"Sudden {'READY' if sudden_impact_ready_at<=t else f'{sudden_impact_ready_at-t:.1f}s'}")
+            if "Tyrant" in selected_sub_runes: _cd_bits.append(f"Tyrant {'READY' if tyrant_ready_at<=t else f'{tyrant_ready_at-t:.1f}s'}")
+            if "Empowered Attack" in selected_sub_runes: _cd_bits.append(f"EmpAtk {'READY' if empowered_attack_ready_at<=t else f'{empowered_attack_ready_at-t:.1f}s'}")
             hp2-=dmg
             if "The Collector" in build:
                 th=min(1,.05+.001*execs)
@@ -929,6 +944,8 @@ with tabs[1]:
             if "Guinsoo's Rageblade" in build: rb=min(4,rb+1)
             if "Terminus" in build and attacks%2==0: dark=min(3,dark+1)
             if "Fiendhunter Bolts" in build and fh and t<=8: fh-=1
+            _stack_after=f"Conq {conq_stacks}/6 | LT {lt_stacks}/6 | Empower {empowerment_hits}/3"
+            rune_timeline.append([attacks,round(t,3),round(max(0,hp2),1),_stack_before+" → "+_stack_after," • ".join(_cd_bits) if _cd_bits else "—",_event_text or "—"])
             if hp2<=0: break
             t+=1/asp
         cost=sum(F[x][0] for x in build)+B[boot][0]
@@ -1001,12 +1018,15 @@ with tabs[1]:
         a1.metric("Build Cost",f"{cost:,}g"); a2.metric("TTK",f"{t:.3f}s")
         a3.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a4.metric("Max Single Hit",f"{max_hit:.1f}")
         st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
-        with st.expander("Rune Combat Breakdown"):
+        with st.expander("Rune Combat Breakdown V2"):
             if rune_trace:
-                st.caption("Only attacks where a rune changed damage or triggered an explicit rune event are shown.")
-                st.dataframe(pd.DataFrame(rune_trace,columns=["AA","Time","Target HP %","Rune Event","Rune Damage / Delta","Final Hit"]),use_container_width=True,hide_index=True)
+                st.caption("Each rune contribution is separated. Multipliers show their exact damage delta on that hit.")
+                st.dataframe(pd.DataFrame(rune_trace,columns=["AA","Time","Target HP %","Rune Events","Total Rune Delta","Final Hit"]),use_container_width=True,hide_index=True)
             else:
                 st.caption("No selected rune changed auto-attack damage in this scenario.")
+            st.markdown("**Stack / Cooldown Timeline**")
+            if rune_timeline:
+                st.dataframe(pd.DataFrame(rune_timeline,columns=["AA","Time","Target HP After","Stacks Before → After","Cooldowns","Rune Events"]),use_container_width=True,hide_index=True)
         with st.expander("Max Single Hit breakdown"):
             st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
             br=[]
@@ -1059,4 +1079,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.18 | Remaining rune states and Gathering Storm • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.19 | Rune Breakdown V2 and timeline • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
