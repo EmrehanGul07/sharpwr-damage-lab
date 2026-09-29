@@ -105,7 +105,7 @@ def _premium_item_grid(items, selected):
           <img src="{html.escape(icon)}" alt="{html.escape(name)}"/>
           <span class="wr-tip"><b>{html.escape(name)}</b><small>{html.escape(tip)}</small></span>
         </a>""")
-    st.markdown("""<style>
+    markup="""<style>
     .wr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:10px;margin:8px 0 18px}
     .wr-item{position:relative;display:flex;align-items:center;justify-content:center;padding:7px;border:1px solid #303744;border-radius:12px;background:linear-gradient(145deg,#151a22,#0d1118);transition:.16s;min-height:66px}
     .wr-item:hover{transform:translateY(-2px);border-color:#8aa4d6;box-shadow:0 8px 24px rgba(0,0,0,.32)}
@@ -114,7 +114,8 @@ def _premium_item_grid(items, selected):
     .wr-tip{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:999;left:50%;bottom:74px;transform:translateX(-50%);width:230px;padding:12px;border:1px solid #596579;border-radius:10px;background:#0b0f16;color:#f4f6fa;box-shadow:0 12px 34px rgba(0,0,0,.55);transition:opacity .15s .35s}
     .wr-tip b{display:block;color:#e8ca72;margin-bottom:5px}.wr-tip small{display:block;line-height:1.45;color:#c7cfda}
     .wr-item:hover .wr-tip{visibility:visible;opacity:1}
-    </style><div class="wr-grid">""+"".join(cards)+"</div>",unsafe_allow_html=True)
+    </style><div class="wr-grid">"""+ "".join(cards) + "</div>"
+    st.markdown(markup,unsafe_allow_html=True)
 
 
 import pandas as pd
