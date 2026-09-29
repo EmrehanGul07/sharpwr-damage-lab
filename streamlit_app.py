@@ -52,6 +52,25 @@ def _local_icon_data(path):
     mime="image/webp" if ext==".webp" else "image/png"
     return f"data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"
 
+BOOT_ICON_FILE={
+"Gluttonous Greaves":"Gluttonous_Greaves_WR_item.png",
+"Ionian Boots of Lucidity":"Ionian_Boots_of_Lucidity_WR_item.png",
+"Crimson Lucidity":"item-crimson-lucidity-icon.png",
+"Berserker's Greaves":"Berserker's_Greaves_WR_item.png",
+"Gunmetal Greaves":"item-gunmetal-greaves-icon.png",
+"Mercury's Treads":"Mercury's_Treads_WR_item.png",
+"Chainlaced Crushers":"item-chainlaced-crushers-icon.png",
+"Plated Steelcaps":"Plated_Steelcaps_WR_item.png",
+"Armored Advance":"item-armored-advance-icon.png",
+"Boots of Mana":"Boots_of_Mana_WR_item.png",
+"Spellslinger's Shoes":"item-spellslingers-shoes-icon.png",
+"Boots of Dynamism":"Boots_of_Dynamism_WR_item.png",
+"Armorcrusher Boots":"item-armorcrusher-boots-icon.png",
+}
+def boot_icon(name):
+    fn=BOOT_ICON_FILE.get(name)
+    return _local_icon_data("assets/items/"+fn) if fn else ""
+
 def item_icon(name):
     local=LOCAL_ITEM_ICON.get(name)
     if local:
@@ -338,6 +357,8 @@ with tabs[1]:
         _url=item_icon(_it)
         if _url: icon_cols[_i].image(_url,width=56)
         icon_cols[_i].caption(_it)
+    _boot_url=boot_icon(boot)
+    if _boot_url: icon_cols[5].image(_boot_url,width=56)
     icon_cols[5].caption(boot)
 
     # Yun Tal assumptions are only relevant when the item is in the build.
