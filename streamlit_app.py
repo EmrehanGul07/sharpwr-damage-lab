@@ -430,6 +430,7 @@ with tabs[2]:
             q=dct(v0); raw=sum(q[k]*rates[k] for k in rates)
             row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs,proc_states.get(it,True))
             dps=row[4]; rows.append([it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
+        val=pd.DataFrame(rows,columns=["Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
         val.insert(0,"Rank",range(1,len(val)+1)); st.dataframe(val,use_container_width=True,hide_index=True)
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
 
