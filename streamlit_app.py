@@ -350,6 +350,38 @@ with tabs[0]:
 
 with tabs[1]:
     st.subheader("Build Lab")
+
+    # Keystone Rune Lab — combat-relevant keystones from the current in-game tooltips.
+    st.markdown("**Keystone Rune**")
+    keystone=st.selectbox("Keystone",[
+        "None","First Strike","Phase Rush","Arcane Comet","Aery","Guardian",
+        "Grasp of the Undying","Conqueror","Fleet Footwork","Lethal Tempo",
+        "Empowerment","Dark Harvest"
+    ],key="build_keystone")
+    rune_stacks=0
+    dark_harvest_souls=0
+    comet_hits=0
+    rune_target_below_50=False
+    rune_fully_stacked=False
+    if keystone=="Conqueror":
+        rune_stacks=st.slider("Conqueror stacks",0,6,6,key="conq_stacks")
+    elif keystone=="Lethal Tempo":
+        rune_stacks=st.slider("Lethal Tempo stacks",0,6,6,key="lt_stacks")
+    elif keystone=="Dark Harvest":
+        dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls")
+        rune_target_below_50=st.checkbox("Target below 50% HP",True,key="dh_below50")
+    elif keystone=="Arcane Comet":
+        comet_hits=st.number_input("Previous Arcane Comet hits",0,500,0,1,key="comet_hits")
+    elif keystone=="Empowerment":
+        rune_fully_stacked=st.checkbox("3 consecutive hits completed (8% amp active)",True,key="emp_active")
+    elif keystone=="First Strike":
+        rune_fully_stacked=st.checkbox("First Strike active (7% bonus true damage)",True,key="fs_active")
+    elif keystone=="Fleet Footwork":
+        rune_fully_stacked=st.checkbox("Fleet energized (40% bonus AS)",True,key="fleet_active")
+
+    st.caption("Rune Lab models damage/offensive effects. Mobility, healing, shields, gold generation, mana restore and cooldown-only effects are not added to DPS.")
+
+    st.caption("Exactly 5 different completed items + 1 required Boots slot.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
     cols=st.columns(5)
     build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
@@ -390,18 +422,31 @@ with tabs[1]:
         s0=stats(champ,level,mist); maxmana=mana+total["mana"]
         awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
         ad=s0["ad"]+total["ad"]+awe
+        # Rune offensive stats. Adaptive Force resolves to AD for this ADC lab.
+        rune_bonus_ad=0.0
+        rune_bonus_as=0.0
+        if keystone=="Conqueror":
+            # Tooltip: 3-5 bonus AD per stack by level, up to 6 stacks.
+            per_stack_ad=3+(level-1)/14*2
+            rune_bonus_ad=per_stack_ad*rune_stacks
+        elif keystone=="Lethal Tempo":
+            # Ranged: 4.8% AS per stack.
+            rune_bonus_as=.048*rune_stacks
+        elif keystone=="Fleet Footwork" and rune_fully_stacked:
+            rune_bonus_as=.40
+        ad+=rune_bonus_ad
         crit=min(1,total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         cd=2.3 if "Infinity Edge" in build else 2.0
         if champ=="Senna": cd*=.9
         display_dyn=.35 if ("Yun Tal Wildarrows" in build and yt_flurry) else 0
-        display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn))
+        display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn+rune_bonus_as))
         hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
             if "Yun Tal Wildarrows" in build and yt_flurry: dyn+=.35
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
-            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn))
+            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn+rune_bonus_as))
             cc=crit
             pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
             if "Terminus" in build: pct=min(.40,pct)
@@ -450,6 +495,36 @@ with tabs[1]:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
             em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
             dmg=phy*rm(ea)+mag*rm(em)+true
+
+            # Keystone damage effects.
+            if keystone=="First Strike" and rune_fully_stacked:
+                # Tooltip: 7% bonus true damage for the active window.
+                dmg+=dmg*.07
+            elif keystone=="Empowerment":
+                # Proc damage on the 3rd consecutive attack; 8% amp after activation.
+                if attacks==3:
+                    dmg+=40+(level-1)/14*125
+                if rune_fully_stacked and attacks>=3:
+                    dmg*=1.08
+            elif keystone=="Dark Harvest" and rune_target_below_50 and attacks==1:
+                # Tooltip: 35 + 11 per soul + 10% bonus AD (+5% AP).
+                bonus_ad=max(0,ad-s0["ad"])
+                dmg+=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]
+            elif keystone=="Arcane Comet" and attacks==1:
+                # Ability-triggered proc represented once at fight start.
+                bonus_ad=max(0,ad-s0["ad"])
+                dmg+=15+(level-1)/14*85+2*comet_hits+.10*bonus_ad+.05*total["ap"]
+            elif keystone=="Aery" and attacks==1:
+                bonus_ad=max(0,ad-s0["ad"])
+                dmg+=15+(level-1)/14*55+.10*bonus_ad+.05*total["ap"]
+            elif keystone=="Grasp of the Undying" and attacks==1:
+                # Ranged champions receive 40% of the normal 3.3% max-HP damage.
+                dmg+=.033*hp*.40
+            elif keystone=="Lethal Tempo" and rune_stacks>=6:
+                # Ranged max-stack bolt: 6-20 adaptive damage, +0.33% per 1% bonus AS.
+                base_lt=6+(level-1)/14*14
+                bonus_as_pct=(total["as"]+rune_bonus_as)*100
+                dmg+=base_lt*(1+.0033*bonus_as_pct)
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             hp2-=dmg
             if "The Collector" in build:
@@ -504,6 +579,11 @@ with tabs[1]:
             parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
 
         st.markdown("**Full Build Offensive Stats**")
+        if keystone!="None":
+            rune_bits=[]
+            if rune_bonus_ad: rune_bits.append(f"+{rune_bonus_ad:.1f} AD")
+            if rune_bonus_as: rune_bits.append(f"+{rune_bonus_as*100:.1f}% AS")
+            st.caption("Rune: **"+keystone+"**"+((" • "+" • ".join(rune_bits)) if rune_bits else ""))
         o1,o2,o3,o4=st.columns(4)
         o1.metric("Total AD",f"{ad:.1f}")
         o2.metric("Attack Speed",f"{display_as:.3f}")
