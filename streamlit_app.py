@@ -574,6 +574,10 @@ with tabs[1]:
     alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
     haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
     bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
+    # Context switches only appear when the selected rune actually needs them.
+    first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
+    grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
+    aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     # Rune icon selector is enabled only after verified local rune assets are present.
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
@@ -681,12 +685,20 @@ with tabs[1]:
         display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn+rune_bonus_as))
         hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         conq_stacks=0; lt_stacks=0; empowerment_hits=0; empowerment_active=False; brutal_cd_ready=0.0
+        first_strike_until=3.0 if (keystone=="First Strike" and first_strike_ready) else -1.0
+        grasp_next_ready=0.0 if (keystone=="Grasp of the Undying" and grasp_ready) else 3.0
+        aery_available=(keystone=="Aery" and aery_ready)
+        dark_harvest_ready_at=0.0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
             if "Yun Tal Wildarrows" in build and yt_flurry: dyn+=.35
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
-            current_ad=ad+(conq_stacks*(3+(level-1)/14*2) if keystone=="Conqueror" else 0)
+            if keystone=="Conqueror":
+                _conq_ad_per_stack=3.0 if level==1 else (5.0 if level==15 else 0.0)
+                current_ad=ad+conq_stacks*_conq_ad_per_stack
+            else:
+                current_ad=ad
             lt_as=.048*lt_stacks if keystone=="Lethal Tempo" else 0.0
             asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn+rune_bonus_as+lt_as))
             cc=crit
@@ -741,25 +753,32 @@ with tabs[1]:
             # Rune effects read the live state before this hit.
             hp_pct=hp2/hp if hp else 0
             bonus_ad=max(0,current_ad-s0["ad"])
-            if keystone=="First Strike":
-                dmg*=1.07
+            if keystone=="First Strike" and 0<=t<first_strike_until:
+                # First Strike is 7% BONUS TRUE damage, not a generic 7% multiplier.
+                dmg += dmg*.07
             elif keystone=="Empowerment":
-                if empowerment_hits==2: dmg+=40+(level-1)/14*125
+                # Exact 40–165 level curve was not supplied: proc damage is intentionally
+                # not guessed between endpoints. The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
-            elif keystone=="Dark Harvest" and hp_pct<.50:
+            elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
                 dmg+=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]
-                # One proc in this single-target fight; 20s cooldown is longer than typical test.
-                dark_harvest_souls=-999999
-            elif keystone=="Arcane Comet" and attacks==1:
-                dmg+=15+(level-1)/14*85+.10*bonus_ad+.05*total["ap"]
-            elif keystone=="Aery" and attacks==1:
-                dmg+=15+(level-1)/14*55+.10*bonus_ad+.05*total["ap"]
-            elif keystone=="Grasp of the Undying" and attacks==1:
-                dmg+=.033*hp*.40
+                dark_harvest_ready_at=t+20.0
+            elif keystone=="Aery" and aery_available:
+                # Aery's exact level curve/return cadence is unknown, so do not invent damage.
+                aery_available=False
+            elif keystone=="Grasp of the Undying" and t>=grasp_next_ready:
+                # Ranged Grasp: 3.3% max HP × 40% = 1.32% max HP bonus magic damage.
+                dmg+=(.033*hp*.40)*rm(em)
+                grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
-                base_lt=6+(level-1)/14*14
-                bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
-                dmg+=base_lt*(1+.0033*bonus_as_pct)
+                # Full-stack bullet has a 6–20 level-scaled base; exact curve is unknown.
+                # Keep the AS stacking exact, but do not fabricate the bullet's mid-level base.
+                if level==1: base_lt=6.0
+                elif level==15: base_lt=20.0
+                else: base_lt=None
+                if base_lt is not None:
+                    bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
+                    dmg+=base_lt*(1+.0033*bonus_as_pct)
             if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
             if "Coup de Grace" in selected_sub_runes and hp_pct<.40: dmg*=1.08
             if "Brutal" in selected_sub_runes:
@@ -904,4 +923,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.12.2 | Mobile rune card canvas • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.13 | Stateful rune engine foundation • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
