@@ -42,7 +42,7 @@ RUNE_DATABASE = {
 "Relentless Hunter":{"tree":"Domination","kind":"movement","tooltip":"Gain 10 out-of-combat Movement Speed. Champion/epic monster takedowns grant +2 OOC MS, max 5 stacks. Default: max stacks.","data":{"base_ooc_ms":10,"ooc_ms_per_stack":2,"max_stacks":5,"default_stacks":5}},
 
 # RESOLVE (10)
-"Overgrowth":{"tree":"Resolve","kind":"health_growth","tooltip":"Every 3 nearby enemy minions or 3 monsters killed permanently grants +3 max HP. At 30 stacks gain +3% Health. Default progression input: 60 nearby units.","data":{"units_per_proc":3,"hp_per_proc":3,"threshold_stacks":30,"health_amp_pct":3,"default_units":60}},
+"Overgrowth":{"tree":"Resolve","kind":"health_growth","tooltip":"Every 3 nearby enemy minions or 3 monsters killed permanently grants +3 max HP. At 30 stacks gain +3% Health. Default progression input: 60 stacks.","data":{"units_per_proc":3,"hp_per_proc":3,"threshold_stacks":30,"health_amp_pct":3,"default_stacks":60}},
 "Bone Plating":{"tree":"Resolve","kind":"damage_reduction","tooltip":"After champion damage, current and next 3 champion attacks/abilities within 1.5s deal 30–60 (level scaling) less damage. Cooldown 40s.","data":{"reduction_range":[30,60],"hits":4,"window":1.5,"cooldown":40}},
 "Second Wind":{"tree":"Resolve","kind":"healing","tooltip":"Gain 5 Health every 5s. After champion damage regenerate 3 + 1.5% missing Health over 5s. Doubled for melee.","data":{"passive_heal":5,"passive_interval":5,"missing_hp_ratio":0.015,"duration":5}},
 "Perseverance":{"tree":"Resolve","kind":"tenacity_defense","tooltip":"Gain 10% Tenacity. When immobilized gain 10–15 Armor and MR (level scaling) for 1.5s.","data":{"tenacity_pct":10,"resist_range":[10,15],"duration":1.5}},
