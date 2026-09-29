@@ -7,68 +7,35 @@ from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
-# Wild Rift rune icons. Use the rune page's OpenGraph image through a public image proxy;
-# direct guessed asset URLs were not reliable/hotlink-safe.
-RUNE_SLUG={
-    "First Strike":"first strike",
-    "Ice Overlord":"ice overlord",
-    "Phase Rush":"phase rush",
-    "Arcane Comet":"arcane comet",
-    "Aery":"aery",
-    "Guardian":"guardian",
-    "Grasp of the Undying":"grasp-of-undying",
-    "Conqueror":"conqueror",
-    "Fleet Footwork":"fleet footwork",
-    "Lethal Tempo":"lethal tempo",
-    "Empowerment":"empowerment",
-    "Dark Harvest":"dark harvest",
-    "Brutal":"brutal",
-    "Triumph":"triumph",
-    "Battle Zeal":"battle zeal",
-    "Last Stand":"last stand",
-    "Cut Down":"cut down",
-    "Coup de Grace":"coup de grace",
-    "Legend: Alacrity":"legend-alacrity",
-    "Legend: Haste":"legend-haste",
-    "Legend: Bloodline":"legend-bloodline",
-    "Eyeball Collection":"eyeball collection",
-    "Hubris":"hubris",
-    "Tyrant":"tyrant",
-    "Chain Assault":"chain assault",
-    "Sudden Impact":"sudden impact",
-    "Cheap Shot":"cheap shot",
-    "Zombie Ward":"zombie ward",
-    "Empowered Attack":"empowered attack",
-    "Relentless Hunter":"relentless hunter",
-    "Overgrowth":"overgrowth",
-    "Bone Plating":"bone plating",
-    "Second Wind":"second wind",
-    "Perseverance":"perseverance",
-    "Revitalize":"revitalize",
-    "Nullifying Orb":"nullifying orb",
-    "Unshakeable":"unshakeable",
-    "Courage of the Colossus":"courage of the colossus",
-    "Font of Life":"font of life",
-    "Demolish":"demolish",
-    "Gathering Storm":"gathering storm",
-    "Absolute Focus":"absolute focus",
-    "Scorch":"scorch",
-    "Axiom Arcanist":"axiom arcanist",
-    "Manaflow Band":"manaflow band",
-    "Transcendence":"transcendence",
-    "Celerity":"celerity",
-    "Nimbus Cloak":"nimbus cloak",
-    "Ixtali Seedjar":"ixtali seedjar",
-    "Hexflash":"hextech-flashtraption",
-    "Botanist":"botanist",
-}
+# Wild Rift rune icons: exact League Wiki WR rune file redirect.
+# The wiki file pages confirm the 128x128 naming convention: "<Rune> (Wild Rift) rune.png".
 def rune_icon(name):
-    slug=RUNE_SLUG.get(name)
-    if not slug: return ""
-    # WildRiftMeta pages expose the current rune icon; wsrv fetches/caches it server-side,
-    # avoiding browser hotlink/CORS failures.
-    page=f"https://www.wildriftmeta.com/runes/{slug}/"
-    return "https://wsrv.nl/?url="+urllib.parse.quote(page,safe="")+"&w=128&h=128&fit=cover"
+    if not name or name=="None": return ""
+    filename=f"{name} (Wild Rift) rune.png".replace(" ","_")
+    return "https://wiki.leagueoflegends.com/en-us/Special:Redirect/file/"+urllib.parse.quote(filename,safe="()_:'")
+
+def _rune_icon_grid(label, options, state_key, cols=6):
+    current=st.session_state.get(state_key,options[0] if options else None)
+    st.markdown(f"**{label}**")
+    html_tiles=[]
+    for i,name in enumerate(options):
+        icon=rune_icon(name)
+        chosen=" chosen" if name==current else ""
+        href="?rune_pick="+urllib.parse.quote(state_key+"|"+name,safe="")
+        tip=RUNE_DATABASE.get(name,{}).get("tooltip","")
+        html_tiles.append(f'''<a class="rune{chosen}" href="{href}" target="_top" title="{html.escape(tip)}">
+          <img src="{html.escape(icon)}"><span>{html.escape(name)}</span></a>''')
+    doc='''<style>*{box-sizing:border-box}body{margin:0;background:transparent;font-family:Inter,system-ui}
+    .rg{display:grid;grid-template-columns:repeat('''+str(cols)+''',minmax(58px,1fr));gap:8px}
+    .rune{min-width:0;padding:6px 3px;border:1px solid #303b4b;border-radius:10px;background:#0d131c;text-decoration:none;text-align:center}
+    .rune:hover,.rune.chosen{border-color:#d1ae55;box-shadow:0 0 12px rgba(209,174,85,.22)}
+    .rune img{display:block;width:52px;height:52px;object-fit:contain;margin:auto;border-radius:8px}
+    .rune span{display:block;color:#aeb9c8;font-size:9px;line-height:1.05;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    @media(max-width:700px){.rg{grid-template-columns:repeat(4,minmax(58px,1fr))}.rune img{width:50px;height:50px}}
+    </style><div class="rg">'''+''.join(html_tiles)+'''</div>'''
+    rows=(len(options)+cols-1)//cols
+    components.html(doc,height=rows*82+8,scrolling=False)
+    return current
 
 ITEM_ICON_FILE={
 "Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
@@ -526,18 +493,48 @@ with tabs[0]:
 with tabs[1]:
     st.subheader("Build Lab")
 
-    # Legal rune loadout: 1 key + 3 runes from one primary tree + 1 from another tree.
+    # Legal rune loadout: icon-first selector.
     st.markdown("**Rune Loadout**")
-    keystone=st.selectbox("Key Rune",["None"]+RUNE_TREES["Key Rune"],key="build_keystone")
+    _rp=st.query_params.get("rune_pick")
+    if _rp:
+        try:
+            _rk,_rv=urllib.parse.unquote(_rp).split("|",1)
+            if _rk.startswith("build_"): st.session_state[_rk]=_rv
+        except ValueError: pass
+        st.query_params.clear(); st.rerun()
+
     sub_trees=["Precision","Domination","Resolve","Sorcery"]
-    primary_tree=st.selectbox("Primary Tree",sub_trees,key="build_primary_tree")
-    pr1,pr2,pr3=st.columns(3)
-    primary_1=pr1.selectbox("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],key="build_primary_slot1")
-    primary_2=pr2.selectbox("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],key="build_primary_slot2")
-    primary_3=pr3.selectbox("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],key="build_primary_slot3")
-    secondary_tree=st.selectbox("Secondary Tree",[x for x in sub_trees if x!=primary_tree],key="build_secondary_tree")
+    keystone=_rune_icon_grid("Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
+
+    st.markdown("**Primary Tree**")
+    _tc=st.columns(4)
+    primary_tree=st.session_state.get("build_primary_tree","Precision")
+    for _i,_tree in enumerate(sub_trees):
+        if _tc[_i].button(("✓ " if primary_tree==_tree else "")+_tree,key=f"tree_{_tree}",use_container_width=True):
+            st.session_state.build_primary_tree=_tree
+            st.session_state.build_primary_slot1=RUNE_SLOTS[_tree][1][0]
+            st.session_state.build_primary_slot2=RUNE_SLOTS[_tree][2][0]
+            st.session_state.build_primary_slot3=RUNE_SLOTS[_tree][3][0]
+            st.rerun()
+    primary_tree=st.session_state.get("build_primary_tree","Precision")
+    primary_1=_rune_icon_grid("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],"build_primary_slot1",4)
+    primary_2=_rune_icon_grid("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],"build_primary_slot2",4)
+    primary_3=_rune_icon_grid("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],"build_primary_slot3",4)
+
+    _secondary_trees=[x for x in sub_trees if x!=primary_tree]
+    secondary_tree=st.session_state.get("build_secondary_tree",_secondary_trees[0])
+    if secondary_tree not in _secondary_trees:
+        secondary_tree=_secondary_trees[0]; st.session_state.build_secondary_tree=secondary_tree
+    st.markdown("**Secondary Tree**")
+    _sc=st.columns(3)
+    for _i,_tree in enumerate(_secondary_trees):
+        if _sc[_i].button(("✓ " if secondary_tree==_tree else "")+_tree,key=f"secondary_tree_{_tree}",use_container_width=True):
+            st.session_state.build_secondary_tree=_tree
+            st.session_state.build_secondary_rune=RUNE_SLOTS[_tree][1][0]
+            st.rerun()
+    secondary_tree=st.session_state.get("build_secondary_tree",_secondary_trees[0])
     secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
-    secondary_rune=st.selectbox("Secondary Rune",secondary_options,key="build_secondary_rune")
+    secondary_rune=_rune_icon_grid("Secondary Rune",secondary_options,"build_secondary_rune",6)
     selected_sub_runes=[primary_1,primary_2,primary_3,secondary_rune]
     combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
     # Progression controls are generated for every selected rune that needs persistent state.
@@ -876,4 +873,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.10.1 | Rune icon source correction • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.11 | Icon-first rune selector • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
