@@ -110,13 +110,13 @@ def _premium_item_grid(items, selected):
     st.markdown("""<style>
     .wr-shop-title{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#8d9aae;margin:4px 0 10px}
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]{
-        min-height:64px!important;padding:5px!important;border-radius:10px!important;
-        border:1px solid #343d4d!important;background:linear-gradient(145deg,#161c26,#0b1017)!important;
-        box-shadow:inset 0 0 0 1px rgba(255,255,255,.015);font-size:10px!important;
+        min-height:24px!important;height:24px!important;padding:0!important;border-radius:7px!important;
+        border:1px solid #343d4d!important;background:transparent!important;
+        box-shadow:none!important;font-size:10px!important;
         line-height:1.05!important;white-space:normal!important;transition:.15s ease!important;
     }
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"]:hover{
-        border-color:#c5a75a!important;transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.28)!important;
+        border-color:#c5a75a!important;box-shadow:0 0 10px rgba(197,167,90,.18)!important;
     }
     div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"] button[kind="secondary"] p{
         font-size:10px!important;line-height:1.05!important;margin:0!important;
@@ -143,11 +143,11 @@ def _premium_item_grid(items, selected):
         if icon: col.image(icon,width=58)
         # Keep the tile visually icon-first; full name/details live in hover help/card.
         if col.button("✓" if name in selected else "＋",key=f"pick_item_{i}",
-                      help=name+" • "+" • ".join(_item_stat_lines(name)),use_container_width=True,disabled=name in selected):
+                      help="Select / preview "+name+" • "+" • ".join(_item_stat_lines(name)),use_container_width=True,disabled=False):
             cur=list(st.session_state.build_items_v2)
+            st.session_state.preview_item=name
             if name not in cur and len(cur)<5:
                 cur.append(name); st.session_state.build_items_v2=cur
-            st.session_state.preview_item=name
             st.rerun()
 
     preview=st.session_state.get("preview_item")
@@ -495,8 +495,8 @@ with tabs[1]:
             if not _v: continue
             _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
         if _col.button("✓" if st.session_state.build_boot_v2==_name else "＋",key=f"pick_boot_{_i}",
-                       help=_name+" • "+" • ".join(_parts),use_container_width=True,
-                       disabled=st.session_state.build_boot_v2==_name):
+                       help="Select / preview "+_name+" • "+" • ".join(_parts),use_container_width=True,
+                       disabled=False):
             st.session_state.build_boot_v2=_name
             st.session_state.preview_boot=_name
             st.rerun()
@@ -774,4 +774,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.6 | Icon-first item & boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.6.1 | Compact native picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
