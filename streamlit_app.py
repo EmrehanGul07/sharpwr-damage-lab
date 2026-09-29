@@ -154,11 +154,14 @@ def _premium_item_grid(items, selected):
       .tile{height:66px}.tile>img{width:54px;height:54px}
       .tile:hover .card{visibility:hidden;opacity:0}
       .tile.open{z-index:50;border-color:#d1ae55}
-      .tile.open .card{visibility:visible;opacity:1;pointer-events:auto;position:fixed!important;z-index:9999!important;
-        top:8px!important;bottom:auto!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important;
-        width:calc(100% - 16px)!important;max-width:360px!important;max-height:420px!important;overflow-y:auto!important;
+      .tile.open{margin-bottom:245px}
+      .tile.open .card{visibility:visible;opacity:1;pointer-events:auto;position:absolute!important;z-index:9999!important;
+        top:76px!important;bottom:auto!important;left:0!important;right:auto!important;transform:none!important;
+        width:calc(400% + 27px)!important;max-width:none!important;max-height:230px!important;overflow-y:auto!important;
         -webkit-overflow-scrolling:touch}
-      .tile.open.edge-left .card,.tile.open.edge-right .card{left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+      .tile:nth-child(4n+2).open .card{left:calc(-100% - 9px)!important}
+      .tile:nth-child(4n+3).open .card{left:calc(-200% - 18px)!important}
+      .tile:nth-child(4n).open .card{left:calc(-300% - 27px)!important}
       .desk{display:none}.add{display:block;position:sticky;bottom:0;background:#111925;margin-top:10px}
     }
     </style></head><body><div class="grid">'''+''.join(tiles)+'''</div>
@@ -173,10 +176,8 @@ def _premium_item_grid(items, selected):
           document.querySelectorAll('.tile.open').forEach(x=>x.classList.remove('open'));
           if(!was){
             t.classList.add('open');
-            // components.html lives in an iframe: fixed is iframe-relative, not page-relative.
-            // Bring the component/card itself into the phone viewport every time.
-            const card=t.querySelector('.card');
-            setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center',inline:'nearest'}),30);
+            // Card expands in normal grid flow below the tapped row.
+            setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start',inline:'nearest'}),30);
           }
         }else{
           window.top.location.href=t.dataset.href;
@@ -811,4 +812,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.8.2 | Mobile card auto-focus • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.9 | Mobile inline item cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
