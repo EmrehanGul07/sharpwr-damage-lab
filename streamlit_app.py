@@ -590,7 +590,6 @@ with tabs[1]:
     mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
     chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
     own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
-    last_stand_mid_amp=st.slider("Last Stand bonus damage % (31–59% HP; exact curve not supplied)",5.0,11.0,5.0,0.1,key="last_stand_mid_amp") if ("Last Stand" in selected_runes and 30<own_hp_pct<60) else 0.0
     battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
     absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
     scorch_ability_hit=st.checkbox("Scorch — ability hit before autos",value=False,key="scorch_ability_hit") if "Scorch" in selected_runes else False
@@ -904,8 +903,10 @@ with tabs[1]:
                 _b=dmg; dmg+=(6+.08*bonus_ad)*rm(ea); _rune_part("Brutal",_b,dmg)
             # Precision combat modifiers.
             if "Last Stand" in selected_sub_runes and own_hp_pct<60:
-                # Verified endpoints only; exact 31–59% curve was not supplied.
-                last_stand_amp=.11 if own_hp_pct<=30 else last_stand_mid_amp/100.0
+                # User-verified rule: starts at 30% missing HP with +5% damage,
+                # then +1 percentage point for each additional 5% missing HP, capped at +11% at 60% missing HP.
+                missing_hp_pct=100-own_hp_pct
+                last_stand_amp=min(.11,.05+max(0,missing_hp_pct-30)//5*.01)
                 _b=dmg; dmg*=1+last_stand_amp; _rune_part("Last Stand",_b,dmg,f"×{1+last_stand_amp:.3f}")
             if "Battle Zeal" in selected_sub_runes:
                 # Basic-ability damage amplification only. Normal auto attacks are intentionally unaffected.
@@ -1099,7 +1100,7 @@ with tabs[3]:
             ["Brutal","Combat","Every-AA adaptive physical damage modeled"],
             ["Triumph","Post-fight","Takedown-only; no fake DPS effect"],
             ["Battle Zeal","Ability-only","Correctly excluded from AA damage; waits for ability engine"],
-            ["Last Stand","Scenario","≤30% = 11%; 31–59% uses explicit user-set value because exact curve is not supplied"],
+            ["Last Stand","Combat","User-verified missing-HP steps: 30%=+5%, then +1% per 5% missing HP, capped at 60%=+11%"],
             ["Cut Down","Combat","Live target >60% threshold modeled"],
             ["Coup de Grace","Combat","Live target <40% threshold modeled"],
             ["Legend: Alacrity","Stat","Base/max progression toggle modeled; intermediate progression unknown"],
@@ -1149,4 +1150,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.21 | Audit cleanup: progression + exact event handling • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.22 | Exact Last Stand missing-HP steps • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
