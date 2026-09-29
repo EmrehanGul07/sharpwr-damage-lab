@@ -141,9 +141,9 @@ def _premium_item_grid(items, selected):
         col=grid_cols[i%10]
         icon=item_icon(name)
         if icon: col.image(icon,width=58)
-        short=name if len(name)<=13 else name[:11]+"…"
-        if col.button(("✓ " if name in selected else "")+short,key=f"pick_item_{i}",
-                      help="Click to add • "+name,use_container_width=True,disabled=name in selected):
+        # Keep the tile visually icon-first; full name/details live in hover help/card.
+        if col.button("✓" if name in selected else "＋",key=f"pick_item_{i}",
+                      help=name+" • "+" • ".join(_item_stat_lines(name)),use_container_width=True,disabled=name in selected):
             cur=list(st.session_state.build_items_v2)
             if name not in cur and len(cur)<5:
                 cur.append(name); st.session_state.build_items_v2=cur
@@ -480,9 +480,38 @@ with tabs[1]:
 
     st.markdown("**Items**")
     _premium_item_grid(list(F),build)
-    boot=st.selectbox("Boots (required)",list(B))
-    _boot_url=boot_icon(boot)
-    if _boot_url: st.image(_boot_url,width=56)
+    st.markdown("**Boots**")
+    if "build_boot_v2" not in st.session_state:
+        st.session_state.build_boot_v2=list(B)[0]
+    boot_cols=st.columns(7)
+    for _i,_name in enumerate(B):
+        _col=boot_cols[_i%7]
+        _icon=boot_icon(_name)
+        if _icon: _col.image(_icon,width=56)
+        _q=dct(B[_name])
+        _parts=[f"{int(_q['gold'])}g"]
+        for _key,_label in STAT_LABELS:
+            _v=_q.get(_key,0)
+            if not _v: continue
+            _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
+        if _col.button("✓" if st.session_state.build_boot_v2==_name else "＋",key=f"pick_boot_{_i}",
+                       help=_name+" • "+" • ".join(_parts),use_container_width=True,
+                       disabled=st.session_state.build_boot_v2==_name):
+            st.session_state.build_boot_v2=_name
+            st.session_state.preview_boot=_name
+            st.rerun()
+    boot=st.session_state.build_boot_v2
+    _bq=dct(B[boot]); _bicon=boot_icon(boot)
+    _brows=[]
+    for _key,_label in STAT_NAMES.items():
+        _v=_bq.get(_key,0)
+        if not _v: continue
+        _val=f"{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_v:g}"
+        _brows.append(f'<div class="wr-stat"><span class="wr-stat-i">{STAT_GLYPHS[_key]}</span><span><b>{_val}</b><span class="wr-stat-name">{_label}</span></span></div>')
+    _bcard=f"""<div class="wr-card"><div class="wr-card-head"><img src="{html.escape(_bicon)}"><div>
+      <div class="wr-card-name">{html.escape(boot)}</div><div class="wr-card-gold">◆ {int(_bq['gold'])} Gold</div>
+      </div></div><div class="wr-stats">{''.join(_brows)}</div></div>"""
+    st.markdown(_bcard,unsafe_allow_html=True)
 
     immortal_above_half=False
     if boot=="Immortal Treads":
@@ -745,4 +774,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.5 | Premium item cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.6 | Icon-first item & boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
