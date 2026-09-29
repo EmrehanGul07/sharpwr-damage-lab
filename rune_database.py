@@ -27,12 +27,12 @@ RUNE_DATABASE = {
 "Cut Down":{"tree":"Precision","kind":"damage_amp","tooltip":"Attacks deal 6.5% bonus damage to champions above 60% Health.","data":{"target_hp_above_pct":60,"amp_pct":6.5}},
 "Coup de Grace":{"tree":"Precision","kind":"damage_amp","tooltip":"Deal 8% bonus damage to champions below 40% Health.","data":{"target_hp_below_pct":40,"amp_pct":8}},
 "Legend: Alacrity":{"tree":"Precision","kind":"attack_speed","tooltip":"Gain 3% Attack Speed. Takedowns grant up to an additional 18% Attack Speed (21% total max). Exact stack progression not supplied.","data":{"base_as_pct":3,"additional_as_max_pct":18,"total_as_max_pct":21}},
-"Legend: Tenacity":{"tree":"Precision","kind":"tenacity","tooltip":"Exact tooltip/stat data not yet supplied; slot placement verified by user.","data":{}},
+"Legend: Haste":{"tree":"Precision","kind":"haste","tooltip":"Takedowns grant Ability Haste, capped at 15. Exact stack progression not supplied.","data":{"max_ability_haste":15}},
 "Legend: Bloodline":{"tree":"Precision","kind":"omnivamp","tooltip":"Gain 1% Omnivamp. Takedowns grant up to an additional 7% (8% total max). Exact stack progression not supplied.","data":{"base_omnivamp_pct":1,"additional_max_pct":7,"total_max_pct":8}},
 
 # DOMINATION (9)
 "Eyeball Collection":{"tree":"Domination","kind":"adaptive_force","tooltip":"Champion or epic monster takedown grants 1.5 AD, max 8 stacks (+12 AD).","data":{"ad_per_stack":1.5,"max_stacks":8}},
-"Ingenious Hunter":{"tree":"Domination","kind":"utility","tooltip":"Exact tooltip/stat data not yet supplied; slot placement verified by user.","data":{}},
+"Hubris":{"tree":"Domination","kind":"takedown_adaptive_force","tooltip":"Champion takedown grants 5 + champion kill count Adaptive Force for 30s.","data":{"base_force":5,"duration":30}},
 "Tyrant":{"tree":"Domination","kind":"damage","tooltip":"Against a champion below 50% HP, deal 20–70 (level scaling) + 6% bonus AD + 3% AP adaptive damage. Cooldown 10s.","data":{"threshold_pct":50,"damage_range":[20,70],"bonus_ad_ratio":0.06,"ap_ratio":0.03,"cooldown":10}},
 "Chain Assault":{"tree":"Domination","kind":"ability_mark_damage","tooltip":"Ability damage marks a target. Next 2 attacks/active abilities deal 12–38 (level scaling) + 3% bonus AD + 1.5% AP adaptive damage. Cooldown 15s.","data":{"charges":2,"damage_range":[12,38],"bonus_ad_ratio":0.03,"ap_ratio":0.015,"cooldown":15}},
 "Sudden Impact":{"tree":"Domination","kind":"true_damage","tooltip":"After dash/leap/blink/teleport/stealth, next attack/ability within 4s deals 10–65 true damage (level scaling). Cooldown 15s.","data":{"damage_range":[10,65],"window":4,"cooldown":15}},
@@ -75,13 +75,13 @@ RUNE_TREES = {
 RUNE_SLOTS = {
     "Domination": {
         1:["Cheap Shot","Sudden Impact","Empowered Attack"],
-        2:["Chain Assault","Tyrant","Ingenious Hunter"],
+        2:["Chain Assault","Tyrant","Hubris"],
         3:["Eyeball Collection","Relentless Hunter","Zombie Ward"],
     },
     "Precision": {
         1:["Brutal","Triumph","Battle Zeal"],
         2:["Last Stand","Cut Down","Coup de Grace"],
-        3:["Legend: Alacrity","Legend: Tenacity","Legend: Bloodline"],
+        3:["Legend: Alacrity","Legend: Haste","Legend: Bloodline"],
     },
     "Resolve": {
         1:["Demolish","Font of Life","Courage of the Colossus","Unshakeable"],
