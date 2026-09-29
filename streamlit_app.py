@@ -572,6 +572,9 @@ with tabs[1]:
     # Progression controls are generated for every selected rune that needs persistent state.
     selected_runes=[keystone]+selected_sub_runes
     dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if "Dark Harvest" in selected_runes else 0
+    eyeball_stacks=st.number_input("Eyeball Collection stacks",0,8,8,1,key="eyeball_stacks") if "Eyeball Collection" in selected_runes else 0
+    hubris_kills=st.number_input("Hubris — champion kill count",0,100,0,1,key="hubris_kills") if "Hubris" in selected_runes else 0
+    hubris_active=st.checkbox("Hubris — 30s Adaptive Force buff active",value=False,key="hubris_active") if "Hubris" in selected_runes else False
     alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
     haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
     bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
@@ -587,6 +590,7 @@ with tabs[1]:
     mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
     chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
     own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
+    last_stand_mid_amp=st.slider("Last Stand bonus damage % (31–59% HP; exact curve not supplied)",5.0,11.0,5.0,0.1,key="last_stand_mid_amp") if ("Last Stand" in selected_runes and 30<own_hp_pct<60) else 0.0
     battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
     absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
     scorch_ability_hit=st.checkbox("Scorch — ability hit before autos",value=False,key="scorch_ability_hit") if "Scorch" in selected_runes else False
@@ -605,6 +609,8 @@ with tabs[1]:
     if "Relentless Hunter" in selected_runes: _passive_notes.append("Relentless Hunter: +20 out-of-combat MS (5 stacks)")
     if "Legend: Haste" in selected_runes: _passive_notes.append(f"Legend Haste: +{15 if haste_full else 0} AH")
     if "Legend: Bloodline" in selected_runes: _passive_notes.append(f"Bloodline: {8 if bloodline_full else 1}% Omnivamp")
+    if "Eyeball Collection" in selected_runes: _passive_notes.append(f"Eyeball Collection: {eyeball_stacks}/8 stacks = +{1.5*eyeball_stacks:g} AD")
+    if "Hubris" in selected_runes: _passive_notes.append(f"Hubris: {'ACTIVE +' + str(5+hubris_kills) + ' AD' if hubris_active else 'buff inactive'}")
     if "Overgrowth" in selected_runes:
         _og_flat=overgrowth_stacks*3
         _passive_notes.append(f"Overgrowth: {_og_flat:+g} flat HP"+(" • ×1.03 max Health" if overgrowth_stacks>=30 else ""))
@@ -740,6 +746,8 @@ with tabs[1]:
             rune_mr_mult+=_unshakeable_pct
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=15.0 if "Zombie Ward" in selected_sub_runes else 0.0
+        if "Eyeball Collection" in selected_sub_runes: rune_bonus_ad+=1.5*eyeball_stacks
+        if "Hubris" in selected_sub_runes and hubris_active: rune_bonus_ad+=5.0+hubris_kills
         if "Absolute Focus" in selected_sub_runes and absolute_focus_active:
             rune_bonus_ad+=lvl_scale(2,20,level)
         gathering_storm_ad=0.0
@@ -773,6 +781,7 @@ with tabs[1]:
         comet_pending=(keystone=="Arcane Comet" and comet_ability_hit)
         fleet_available=(keystone=="Fleet Footwork" and fleet_ready)
         dark_harvest_ready_at=0.0
+        dark_harvest_live_souls=int(dark_harvest_souls)
         cheap_shot_ready_at=sudden_impact_ready_at=tyrant_ready_at=empowered_attack_ready_at=0.0
         chain_hits_left=2 if chain_marked else 0
         scorch_pending=(1.0 if ("Scorch" in selected_sub_runes and scorch_ability_hit) else None)
@@ -859,7 +868,8 @@ with tabs[1]:
                 # The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
             elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
-                _raw=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]; _v=_raw*rm(ea); dmg+=_v; _rune_events.append(f"Dark Harvest +{_v:.1f} physical")
+                _raw=35+11*dark_harvest_live_souls+.10*bonus_ad+.05*total["ap"]; _v=_raw*rm(ea); dmg+=_v; _rune_events.append(f"Dark Harvest +{_v:.1f} physical (souls {dark_harvest_live_souls}→{dark_harvest_live_souls+1})")
+                dark_harvest_live_souls+=1
                 dark_harvest_ready_at=t+20.0
             elif keystone=="Aery" and aery_available:
                 _v=(lvl_scale(15,70,level)+.10*bonus_ad+.05*total["ap"])*rm(em)
@@ -894,8 +904,8 @@ with tabs[1]:
                 _b=dmg; dmg+=(6+.08*bonus_ad)*rm(ea); _rune_part("Brutal",_b,dmg)
             # Precision combat modifiers.
             if "Last Stand" in selected_sub_runes and own_hp_pct<60:
-                # Linear from 5% at 60% own HP to the 11% cap at 30% own HP.
-                last_stand_amp=.11 if own_hp_pct<=30 else .05+(.60-own_hp_pct/100.0)/.30*.06
+                # Verified endpoints only; exact 31–59% curve was not supplied.
+                last_stand_amp=.11 if own_hp_pct<=30 else last_stand_mid_amp/100.0
                 _b=dmg; dmg*=1+last_stand_amp; _rune_part("Last Stand",_b,dmg,f"×{1+last_stand_amp:.3f}")
             if "Battle Zeal" in selected_sub_runes:
                 # Basic-ability damage amplification only. Normal auto attacks are intentionally unaffected.
@@ -917,8 +927,10 @@ with tabs[1]:
                 _b=dmg; dmg+=lvl_scale(20,60,level)*.80*rm(ea); _rune_part("Empowered Attack",_b,dmg)
                 empowered_attack_ready_at=t+8.0
             if scorch_pending is not None and t>=scorch_pending and t>=scorch_ready_at:
-                _b=dmg; dmg+=lvl_scale(21,49,level)*rm(em); _rune_part("Scorch",_b,dmg,"magic")
-                scorch_ready_at=t+8.0
+                _sv=lvl_scale(21,49,level)*rm(em)
+                hp2-=_sv
+                rune_trace.append(["EVENT",round(scorch_pending,3),round(hp_pct*100,1),f"Scorch +{_sv:.1f} magic",round(_sv,1),round(_sv,1)])
+                scorch_ready_at=scorch_pending+8.0
                 scorch_pending=None
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             _rune_delta=dmg-_pre_rune_dmg
@@ -1083,18 +1095,18 @@ with tabs[3]:
             ["Fleet Footwork","Partial","Proc consumption modeled; 40% AS duration/heal/resource need duration/HP-resource engine"],
             ["Lethal Tempo","Combat","0→6 AS stacks + max-stack adaptive physical bullet modeled"],
             ["Empowerment","Combat","3rd-hit adaptive physical proc + subsequent 8% amp modeled; repeat proc lifecycle needs verification"],
-            ["Dark Harvest","Combat","<50% threshold + adaptive physical proc modeled; soul harvesting during same simulation not yet persisted"],
+            ["Dark Harvest","Combat","<50% threshold + adaptive physical proc modeled; proc harvests +1 live soul"],
             ["Brutal","Combat","Every-AA adaptive physical damage modeled"],
             ["Triumph","Post-fight","Takedown-only; no fake DPS effect"],
             ["Battle Zeal","Ability-only","Correctly excluded from AA damage; waits for ability engine"],
-            ["Last Stand","Review","5–11% endpoints known; current 60→30 HP interpolation is an assumption"],
+            ["Last Stand","Scenario","≤30% = 11%; 31–59% uses explicit user-set value because exact curve is not supplied"],
             ["Cut Down","Combat","Live target >60% threshold modeled"],
             ["Coup de Grace","Combat","Live target <40% threshold modeled"],
             ["Legend: Alacrity","Stat","Base/max progression toggle modeled; intermediate progression unknown"],
             ["Legend: Haste","Stat","Max progression toggle modeled; intermediate progression unknown"],
             ["Legend: Bloodline","Stat","Omnivamp stored/displayed; intermediate progression unknown"],
-            ["Eyeball Collection","Pending","Verified +1.5 AD/stack, but progression input not wired"],
-            ["Hubris","Pending","Needs champion kill count + 30s buff-active state"],
+            ["Eyeball Collection","Stat","0–8 progression input wired at +1.5 AD/stack"],
+            ["Hubris","Scenario","Champion kill count + explicit 30s buff-active state wired"],
             ["Tyrant","Combat","Live <50% + adaptive physical + 10s CD modeled"],
             ["Chain Assault","Scenario","Ability-mark + next 2 hits modeled; re-mark lifecycle needs ability engine"],
             ["Sudden Impact","Scenario","Mobility trigger + 4s window + true damage modeled"],
@@ -1114,7 +1126,7 @@ with tabs[3]:
             ["Demolish","Blocked: HP","Needs own Max HP + turret scenario"],
             ["Gathering Storm","Stat","Verified 6–21m AD sequence modeled; no extrapolation"],
             ["Absolute Focus","Scenario","Linear AD modeled with >65% toggle; own live HP engine pending"],
-            ["Scorch","Scenario","Ability-start trigger modeled; exact 1s independent event timing awaits event engine"],
+            ["Scorch","Scenario","Ability-start trigger modeled as independent t=1.0 magic-damage event"],
             ["Axiom Arcanist","Ability-only","Rule displayed; needs ultimate engine"],
             ["Manaflow Band","Stat","Default full +300 Mana modeled"],
             ["Transcendence","Partial","+5/+10 AH modeled; Lv9 basic-ability cooldown proc needs ability engine"],
@@ -1137,4 +1149,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.20 | 51-rune engine audit + adaptive damage fixes • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.21 | Audit cleanup: progression + exact event handling • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
