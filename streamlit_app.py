@@ -21,25 +21,46 @@ def rune_icon(name):
 
 def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
+    if current not in options and options:
+        current=options[0]; st.session_state[state_key]=current
     st.markdown(f"**{label}**")
-    html_tiles=[]
+    tiles=[]
     for i,name in enumerate(options):
         icon=rune_icon(name)
         chosen=" chosen" if name==current else ""
+        edge=" edge-left" if i%cols==0 else (" edge-right" if i%cols==cols-1 else "")
         href="?rune_pick="+urllib.parse.quote(state_key+"|"+name,safe="")
         tip=RUNE_DATABASE.get(name,{}).get("tooltip","")
-        html_tiles.append(f'''<a class="rune{chosen}" href="{href}" target="_top" title="{html.escape(tip)}">
-          <img src="{html.escape(icon)}"><span>{html.escape(name)}</span></a>''')
-    doc='''<style>*{box-sizing:border-box}body{margin:0;background:transparent;font-family:Inter,system-ui}
-    .rg{display:grid;grid-template-columns:repeat('''+str(cols)+''',minmax(58px,1fr));gap:8px}
-    .rune{min-width:0;padding:6px 3px;border:1px solid #303b4b;border-radius:10px;background:#0d131c;text-decoration:none;text-align:center}
-    .rune:hover,.rune.chosen{border-color:#d1ae55;box-shadow:0 0 12px rgba(209,174,85,.22)}
-    .rune img{display:block;width:52px;height:52px;object-fit:contain;margin:auto;border-radius:8px}
-    .rune span{display:block;color:#aeb9c8;font-size:9px;line-height:1.05;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    @media(max-width:700px){.rg{grid-template-columns:repeat(4,minmax(58px,1fr))}.rune img{width:50px;height:50px}}
-    </style><div class="rg">'''+''.join(html_tiles)+'''</div>'''
+        tree=RUNE_DATABASE.get(name,{}).get("tree","Rune")
+        tiles.append(f'''<div class="tile{edge}">
+          <a class="rune{chosen}" href="{href}" target="_top"><img src="{html.escape(icon)}" alt="{html.escape(name)}"></a>
+          <div class="card"><div class="ctop"><img src="{html.escape(icon)}"><div><b>{html.escape(name)}</b><small>{html.escape(tree)}</small></div></div>
+          <div class="rule"></div><p>{html.escape(tip)}</p><a class="pick" href="{href}" target="_top">Select Rune</a></div>
+        </div>''')
+    doc='''<style>
+    *{box-sizing:border-box}body{margin:0;padding:7px 5px 150px;background:transparent;font-family:Inter,system-ui;color:#e9eef5;overflow:visible}
+    .rg{display:grid;grid-template-columns:repeat('''+str(cols)+''',minmax(54px,1fr));gap:9px;overflow:visible}
+    .tile{position:relative;min-width:0;display:flex;justify-content:center}
+    .rune{display:flex;width:58px;height:58px;padding:3px;border:1px solid #344254;border-radius:12px;background:linear-gradient(145deg,#121b27,#090e15);text-decoration:none;transition:.14s}
+    .rune:hover,.rune.chosen{border-color:#d4b15c;box-shadow:0 0 0 1px rgba(212,177,92,.2),0 0 17px rgba(212,177,92,.24);transform:translateY(-1px)}
+    .rune img{width:100%;height:100%;object-fit:contain;border-radius:8px}
+    .card{display:none;position:absolute;z-index:30;top:66px;left:50%;transform:translateX(-50%);width:330px;padding:14px;border:1px solid #3a485a;border-radius:13px;background:linear-gradient(155deg,#111925,#090e15);box-shadow:0 18px 42px rgba(0,0,0,.55);text-align:left}
+    .tile:hover .card{display:block}.edge-left .card{left:0;transform:none}.edge-right .card{left:auto;right:0;transform:none}
+    .ctop{display:flex;gap:10px;align-items:center}.ctop img{width:46px;height:46px;border-radius:8px}.ctop b{display:block;color:#f3d987;font-size:15px}.ctop small{display:block;color:#8593a5;margin-top:3px}
+    .rule{height:1px;background:#293546;margin:10px 0}.card p{font-size:12px;line-height:1.45;color:#c5ced9;margin:0}
+    .pick{display:none;margin-top:11px;padding:8px 10px;border:1px solid #b99648;border-radius:8px;color:#f3d987;text-decoration:none;text-align:center;font-size:12px}
+    @media(max-width:900px),(hover:none){
+      body{padding-bottom:8px}.rg{grid-template-columns:repeat(4,minmax(54px,1fr))}
+      .rune{width:56px;height:56px}.tile{flex-wrap:wrap}.tile:hover .card{display:none}
+      .tile:focus-within .card{display:block;position:relative;top:auto;left:auto;right:auto;transform:none;width:calc(400% + 27px);margin-top:8px}
+      .tile:nth-child(4n+2) .card{margin-left:calc(-100% - 9px)}
+      .tile:nth-child(4n+3) .card{margin-left:calc(-200% - 18px)}
+      .tile:nth-child(4n+4) .card{margin-left:calc(-300% - 27px)}
+      .pick{display:block}
+    }</style><div class="rg">'''+''.join(tiles)+'''</div>'''
     rows=(len(options)+cols-1)//cols
-    components.html(doc,height=rows*82+8,scrolling=False)
+    # Extra vertical room lets desktop hover cards render without iframe clipping.
+    components.html(doc,height=rows*78+170,scrolling=False)
     return current
 
 ITEM_ICON_FILE={
@@ -878,4 +899,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.11.1 | RiftPatchNotes rune assets • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.12 | Premium rune cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
