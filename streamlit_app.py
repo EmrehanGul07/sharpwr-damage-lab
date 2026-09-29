@@ -115,7 +115,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
     hp=float(hp0); t=0.; k=0; log=[]
-    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; yt_cd=0.
+    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; yt_cd=0.; spellblade_ready=0.
     fh=3 if it=="Fiendhunter Bolts" and ult else 0
     while hp>0 and k<500:
         k+=1
@@ -158,11 +158,19 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             if it=="Stormrazor": onm+=120; note.append("Storm")
             if it=="Statikk Shiv": onm+=60; note.append("Shiv")
             if it=="Kircheis Shard": onm+=40; note.append("Jolt")
-        if spell and item_proc and k==1:
-            if it=="Essence Reaver": onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER")
-            if it=="Trinity Force": onp+=2*s["basead"]; note.append("Trinity")
-            if it=="Iceborn Gauntlet": onp+=s["basead"]+.25*q["armor"]; note.append("Iceborn")
-            if it=="Sheen": onp+=s["basead"]; note.append("Sheen")
+        if spell and item_proc and t>=spellblade_ready:
+            if it=="Essence Reaver":
+                onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER")
+                spellblade_ready=t+1.5
+            if it=="Trinity Force":
+                onp+=2*s["basead"]; note.append("Trinity")
+                spellblade_ready=t+1.5
+            if it=="Iceborn Gauntlet":
+                onp+=s["basead"]+.25*q["armor"]; note.append("Iceborn")
+                spellblade_ready=t+1.5
+            if it=="Sheen":
+                onp+=s["basead"]; note.append("Sheen")
+                spellblade_ready=t+1.5
         if it=="Guinsoo's Rageblade" and item_proc and rage_extra:
             # Phantom hit repeats Rageblade's own repeatable on-hit only.
             # It must not duplicate unrelated every-N-attacks procs such as Kraken.
@@ -182,7 +190,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         if it=="Yun Tal Wildarrows" and item_proc:
             ytcrit=min(.25,ytcrit+.002)
             if yt_cd<=t: yt_until=t+6; yt_cd=t+20; note.append("Flurry")
-        if it=="Fiendhunter Bolts" and fh and t<=8: fh-=1
+        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: fh-=1
         log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note)])
         if hp<=0: break
         t+=1/asp
@@ -419,7 +427,7 @@ with tabs[2]:
     rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
     proc_items=["Fiendhunter Bolts","Rapid Firecannon","Phantom Dancer","Kraken Slayer","Statikk Shiv","Guinsoo\'s Rageblade","Essence Reaver","The Collector","Terminus","Stormrazor","Yun Tal Wildarrows","Trinity Force","Duskblade of Draktharr","Iceborn Gauntlet"]
     st.markdown("**Item proc?**")
-    st.caption("Toggle conditional proc / activation effects for each applicable item. Raw item stats remain active.")
+    st.caption("ON = proc is used whenever its trigger/cooldown allows during the fight. OFF = proc disabled. Raw item stats remain active.")
     proc_states={}
     pc=st.columns(4)
     for i,pit in enumerate(proc_items):
