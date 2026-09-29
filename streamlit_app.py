@@ -121,15 +121,15 @@ def _premium_item_grid(items, selected):
         edge=" edge-left" if col<=2 else (" edge-right" if col>=9 else "")
         # target=_top lets the icon itself navigate the Streamlit app; Python consumes item_pick.
         href="?item_pick="+urllib.parse.quote(name)
-        tiles.append(f'''<a class="tile{sel}{edge}" href="{href}" target="_top">
+        tiles.append(f'''<div class="tile{sel}{edge}" data-href="{href}" tabindex="0">
           <img src="{html.escape(icon)}" alt="{html.escape(name)}">
           <div class="card"><header><img src="{html.escape(icon)}"><div><strong>{html.escape(name)}</strong><em>◆ {int(q["gold"])} Gold</em></div></header>
-          <section>{"".join(rows)}</section><footer>Click to add to build</footer></div></a>''')
+          <section>{"".join(rows)}</section><footer><span class="desk">Click icon to add to build</span><a class="add" href="{href}" target="_top">Add to Build</a></footer></div></div>''')
     doc='''<!doctype html><html><head><style>
     *{box-sizing:border-box}body{margin:0;background:transparent;font-family:Inter,system-ui,sans-serif;color:#e9edf3;overflow:visible}
     .grid{display:grid;grid-template-columns:repeat(10,minmax(58px,1fr));gap:10px;padding:18px 4px 260px}
     .tile{position:relative;display:flex;justify-content:center;align-items:center;height:68px;border:1px solid #343e4e;border-radius:11px;
-      background:linear-gradient(145deg,#171e29,#0a0f16);text-decoration:none;transition:.15s;z-index:1}
+      background:linear-gradient(145deg,#171e29,#0a0f16);text-decoration:none;transition:.15s;z-index:1;cursor:pointer}
     .tile>img{width:56px;height:56px;object-fit:cover;border-radius:8px}
     .tile:hover{border-color:#d1ae55;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20}
     .tile.selected{border-color:#d1ae55;box-shadow:inset 0 0 0 1px rgba(209,174,85,.45)}
@@ -148,8 +148,37 @@ def _premium_item_grid(items, selected):
     em{display:block;color:#d5b45b;font-size:12px;font-style:normal;margin-top:3px}
     section{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;padding-top:11px;align-items:start}.s{display:flex;gap:7px;align-items:flex-start;min-width:0}.s i{font-style:normal;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#202a38;border:1px solid #3a485d;color:#a8c8ee}
     .s b{font-size:12px;white-space:nowrap}.s span{min-width:0}.s small{display:block;color:#8f9cac;font-size:9px;line-height:1.15;white-space:normal;overflow-wrap:anywhere}footer{margin-top:10px;padding-top:8px;border-top:1px solid #28313e;color:#718096;font-size:9px}
-    @media(max-width:900px){.grid{grid-template-columns:repeat(6,minmax(54px,1fr))}}
-    </style></head><body><div class="grid">'''+''.join(tiles)+'''</div></body></html>'''
+    .add{display:none;color:#f1d37b;text-decoration:none;border:1px solid #8d7439;border-radius:7px;padding:7px 10px;text-align:center;font-size:11px;font-weight:700}
+    @media(max-width:900px),(hover:none){
+      .grid{grid-template-columns:repeat(4,minmax(58px,1fr));gap:9px;padding-bottom:300px}
+      .tile{height:66px}.tile>img{width:54px;height:54px}
+      .tile:hover .card{visibility:hidden;opacity:0}
+      .tile.open{z-index:50;border-color:#d1ae55}
+      .tile.open .card{visibility:visible;opacity:1;pointer-events:auto;top:76px!important;bottom:auto!important;left:50%!important;right:auto!important;transform:translateX(-50%) translateY(0)!important;width:min(340px,88vw)}
+      .tile.open.edge-left .card{left:0!important;transform:translateX(0)!important}
+      .tile.open.edge-right .card{left:auto!important;right:0!important;transform:translateX(0)!important}
+      .desk{display:none}.add{display:block}
+    }
+    </style></head><body><div class="grid">'''+''.join(tiles)+'''</div>
+    <script>
+    const mobile=window.matchMedia('(hover: none)').matches || window.innerWidth<=900;
+    document.querySelectorAll('.tile').forEach(t=>{
+      t.addEventListener('click',e=>{
+        if(e.target.closest('.add')) return;
+        if(mobile){
+          e.preventDefault();
+          const was=t.classList.contains('open');
+          document.querySelectorAll('.tile.open').forEach(x=>x.classList.remove('open'));
+          if(!was) t.classList.add('open');
+        }else{
+          window.top.location.href=t.dataset.href;
+        }
+      });
+    });
+    document.addEventListener('click',e=>{
+      if(mobile && !e.target.closest('.tile')) document.querySelectorAll('.tile.open').forEach(x=>x.classList.remove('open'));
+    });
+    </script></body></html>'''
     rows=(len(items)+9)//10
     components.html(doc,height=330+rows*78,scrolling=False)
 
@@ -774,4 +803,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.7.4 | No-clipping hover cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.8 | Desktop hover + mobile tap cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
