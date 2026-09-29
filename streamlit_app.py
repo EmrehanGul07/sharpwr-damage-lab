@@ -7,6 +7,63 @@ from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
+# Wild Rift rune icons (Patch 7.3 catalog). Verified source pattern: WildRiftMeta rune assets.
+RUNE_ICON_URL={
+    "First Strike":"https://www.wildriftmeta.com/assets/rune/icon/rune-first-strike-icon.png",
+    "Ice Overlord":"https://www.wildriftmeta.com/assets/rune/icon/rune-ice-overlord-icon.png",
+    "Phase Rush":"https://www.wildriftmeta.com/assets/rune/icon/rune-phase-rush-icon.png",
+    "Arcane Comet":"https://www.wildriftmeta.com/assets/rune/icon/rune-arcane-comet-icon.png",
+    "Aery":"https://www.wildriftmeta.com/assets/rune/icon/rune-aery-icon.png",
+    "Guardian":"https://www.wildriftmeta.com/assets/rune/icon/rune-guardian-icon.png",
+    "Grasp of the Undying":"https://www.wildriftmeta.com/assets/rune/icon/rune-grasp-of-undying-icon.png",
+    "Conqueror":"https://www.wildriftmeta.com/assets/rune/icon/rune-conqueror-icon.png",
+    "Fleet Footwork":"https://www.wildriftmeta.com/assets/rune/icon/rune-fleet-footwork-icon.png",
+    "Lethal Tempo":"https://www.wildriftmeta.com/assets/rune/icon/rune-lethal-tempo-icon.png",
+    "Empowerment":"https://www.wildriftmeta.com/assets/rune/icon/rune-empowerment-icon.png",
+    "Dark Harvest":"https://www.wildriftmeta.com/assets/rune/icon/rune-dark-harvest-icon.png",
+    "Brutal":"https://www.wildriftmeta.com/assets/rune/icon/rune-brutal-icon.png",
+    "Triumph":"https://www.wildriftmeta.com/assets/rune/icon/rune-triumph-icon.png",
+    "Battle Zeal":"https://www.wildriftmeta.com/assets/rune/icon/rune-battle-zeal-icon.png",
+    "Last Stand":"https://www.wildriftmeta.com/assets/rune/icon/rune-last-stand-icon.png",
+    "Cut Down":"https://www.wildriftmeta.com/assets/rune/icon/rune-cut-down-icon.png",
+    "Coup de Grace":"https://www.wildriftmeta.com/assets/rune/icon/rune-coup-de-grace-icon.png",
+    "Legend: Alacrity":"https://www.wildriftmeta.com/assets/rune/icon/rune-legend-alacrity-icon.png",
+    "Legend: Haste":"https://www.wildriftmeta.com/assets/rune/icon/rune-legend-haste-icon.png",
+    "Legend: Bloodline":"https://www.wildriftmeta.com/assets/rune/icon/rune-legend-bloodline-icon.png",
+    "Eyeball Collection":"https://www.wildriftmeta.com/assets/rune/icon/rune-eyeball-collection-icon.png",
+    "Hubris":"https://www.wildriftmeta.com/assets/rune/icon/rune-hubris-icon.png",
+    "Tyrant":"https://www.wildriftmeta.com/assets/rune/icon/rune-tyrant-icon.png",
+    "Chain Assault":"https://www.wildriftmeta.com/assets/rune/icon/rune-chain-assault-icon.png",
+    "Sudden Impact":"https://www.wildriftmeta.com/assets/rune/icon/rune-sudden-impact-icon.png",
+    "Cheap Shot":"https://www.wildriftmeta.com/assets/rune/icon/rune-cheap-shot-icon.png",
+    "Zombie Ward":"https://www.wildriftmeta.com/assets/rune/icon/rune-zombie-ward-icon.png",
+    "Empowered Attack":"https://www.wildriftmeta.com/assets/rune/icon/rune-empowered-attack-icon.png",
+    "Relentless Hunter":"https://www.wildriftmeta.com/assets/rune/icon/rune-relentless-hunter-icon.png",
+    "Overgrowth":"https://www.wildriftmeta.com/assets/rune/icon/rune-overgrowth-icon.png",
+    "Bone Plating":"https://www.wildriftmeta.com/assets/rune/icon/rune-bone-plating-icon.png",
+    "Second Wind":"https://www.wildriftmeta.com/assets/rune/icon/rune-second-wind-icon.png",
+    "Perseverance":"https://www.wildriftmeta.com/assets/rune/icon/rune-perseverance-icon.png",
+    "Revitalize":"https://www.wildriftmeta.com/assets/rune/icon/rune-revitalize-icon.png",
+    "Nullifying Orb":"https://www.wildriftmeta.com/assets/rune/icon/rune-nullifying-orb-icon.png",
+    "Unshakeable":"https://www.wildriftmeta.com/assets/rune/icon/rune-unshakeable-icon.png",
+    "Courage of the Colossus":"https://www.wildriftmeta.com/assets/rune/icon/rune-courage-of-the-colossus-icon.png",
+    "Font of Life":"https://www.wildriftmeta.com/assets/rune/icon/rune-font-of-life-icon.png",
+    "Demolish":"https://www.wildriftmeta.com/assets/rune/icon/rune-demolish-icon.png",
+    "Gathering Storm":"https://www.wildriftmeta.com/assets/rune/icon/rune-gathering-storm-icon.png",
+    "Absolute Focus":"https://www.wildriftmeta.com/assets/rune/icon/rune-absolute-focus-icon.png",
+    "Scorch":"https://www.wildriftmeta.com/assets/rune/icon/rune-scorch-icon.png",
+    "Axiom Arcanist":"https://www.wildriftmeta.com/assets/rune/icon/rune-axiom-arcanist-icon.png",
+    "Manaflow Band":"https://www.wildriftmeta.com/assets/rune/icon/rune-manaflow-band-icon.png",
+    "Transcendence":"https://www.wildriftmeta.com/assets/rune/icon/rune-transcendence-icon.png",
+    "Celerity":"https://www.wildriftmeta.com/assets/rune/icon/rune-celerity-icon.png",
+    "Nimbus Cloak":"https://www.wildriftmeta.com/assets/rune/icon/rune-nimbus-cloak-icon.png",
+    "Ixtali Seedjar":"https://www.wildriftmeta.com/assets/rune/icon/rune-ixtali-seedjar-icon.png",
+    "Hexflash":"https://www.wildriftmeta.com/assets/rune/icon/rune-hextech-flashtraption-icon.png",
+    "Botanist":"https://www.wildriftmeta.com/assets/rune/icon/rune-botanist-icon.png",
+}
+def rune_icon(name):
+    return RUNE_ICON_URL.get(name,"")
+
 ITEM_ICON_FILE={
 "Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
 "Runaan's Hurricane":"3085_marksman_t3_runaans.png",
@@ -484,6 +541,11 @@ with tabs[1]:
     haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
     bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
+    _rune_visual=[r for r in [keystone,primary_1,primary_2,primary_3,secondary_rune] if r!="None"]
+    _rcols=st.columns(5)
+    for _ri,_rn in enumerate(_rune_visual):
+        _rcols[_ri].image(rune_icon(_rn),width=58)
+        _rcols[_ri].caption(_rn)
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
     # Premium clickable item picker.
@@ -812,4 +874,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.9 | Mobile inline item cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.10 | Wild Rift rune icons • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
