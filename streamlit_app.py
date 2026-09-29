@@ -587,7 +587,7 @@ with tabs[1]:
     absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
     scorch_ability_hit=st.checkbox("Scorch — ability hit before autos",value=False,key="scorch_ability_hit") if "Scorch" in selected_runes else False
     nearby_enemies=st.slider("Unshakeable — nearby enemy champions",0,3,3,1,key="unshakeable_enemies") if "Unshakeable" in selected_runes else 0
-    overgrowth_units=st.number_input("Overgrowth — nearby minions / monsters counted",0,999,60,3,key="overgrowth_units") if "Overgrowth" in selected_runes else 0
+    overgrowth_stacks=st.number_input("Overgrowth — stacks",0,999,60,1,key="overgrowth_stacks") if "Overgrowth" in selected_runes else 0
     font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
     summoner_used=st.checkbox("Nimbus Cloak — summoner spell just used",value=False,key="summoner_used") if "Nimbus Cloak" in selected_runes else False
 
@@ -600,9 +600,8 @@ with tabs[1]:
     if "Legend: Haste" in selected_runes: _passive_notes.append(f"Legend Haste: +{15 if haste_full else 0} AH")
     if "Legend: Bloodline" in selected_runes: _passive_notes.append(f"Bloodline: {8 if bloodline_full else 1}% Omnivamp")
     if "Overgrowth" in selected_runes:
-        _og_hp=(overgrowth_units//3)*3
-        _og_hp=_og_hp*1.03 if overgrowth_units>=30 else _og_hp
-        _passive_notes.append(f"Overgrowth: +{_og_hp:.1f} HP")
+        _og_flat=overgrowth_stacks*3
+        _passive_notes.append(f"Overgrowth: {_og_flat:+g} flat HP"+(" • +3% total Health" if overgrowth_stacks>=30 else ""))
     if "Unshakeable" in selected_runes: _passive_notes.append(f"Unshakeable: +{3+2*nearby_enemies}% Armor/MR"+(" • 20% Slow Resist" if nearby_enemies==3 else ""))
     if "Celerity" in selected_runes: _passive_notes.append("Celerity: +2% MS; other MS bonuses ×1.07")
     if "Transcendence" in selected_runes: _passive_notes.append(f"Transcendence: +{5 if level<5 else 10} AH"+(" • Lv9 cooldown proc enabled by ability hit" if level>=9 else ""))
@@ -707,8 +706,8 @@ with tabs[1]:
         # Persistent Resolve/Sorcery stats.
         rune_bonus_hp=0.0
         if "Overgrowth" in selected_sub_runes:
-            rune_bonus_hp=(overgrowth_units//3)*3.0
-            if overgrowth_units>=30: rune_bonus_hp*=1.03
+            # Each stack grants +3 max HP. At 30 stacks, total Health is increased by 3%.
+            rune_bonus_hp=overgrowth_stacks*3.0
         rune_armor_mult=1.0
         rune_mr_mult=1.0
         if "Unshakeable" in selected_sub_runes:
@@ -1001,4 +1000,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.16 | Sorcery and Resolve rune engine • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.16.1 | Correct Overgrowth stacks • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
