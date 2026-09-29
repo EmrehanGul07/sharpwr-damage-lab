@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
 st.title("⚔️ SharpWR Damage Lab — V5")
-st.caption("Patch 7.3 • Full items + components • single-target ADC auto-attack lab")
+st.caption("Patch 7.3a • Full items + components • single-target ADC auto-attack lab")
 
 # base AD, AD/lvl, AS ratio, base AS, base bonus AS, AS/lvl
 C={
@@ -15,10 +15,10 @@ C={
 "Miss Fortune":(58,4,.656,.656,.22,.032),"Yunara":(58,3,.650,.650,.23,.032),
 "Kai'Sa":(59,3.5,.644,.644,.17,.022),"Corki":(54,2.5,.644,.644,.17,.032),
 "Lucian":(60,3.5,.638,.638,.25,.028),"Smolder":(54,3.5,.638,.638,.25,.031),
-"Caitlyn":(60,4.2,.625,.625,.28,.040),"Jinx":(58,4,.625,.625,.30,.020),
+"Caitlyn":(60,4.2,.625,.625,.28,.025),"Jinx":(58,4,.625,.625,.30,.020),
 "Ezreal":(60,4.5,.625,.625,.28,.022),"Zeri":(58,4,.625,.625,.28,.024),
 "Jhin":(60,5,.625,.625,.06,.032),"Sivir":(60,4,.625,.625,.30,.010),
-"Senna":(50,0,.400,.400,.60,.050)}
+"Senna":(50,0,.300,.300,1.10,.025)}
 
 # gold, AD, AS, crit, AP, HP, mana, armor, MR, AH, lifesteal, flat armor pen, % armor pen, MS
 F={
@@ -42,7 +42,7 @@ F={
 "The Collector":(3000,50,0,.25,0,0,0,0,0,0,0,10,0,0),
 "Terminus":(3000,35,.35,0,0,0,0,0,0,0,0,0,0,0),
 "Stormrazor":(3000,50,.20,.25,0,0,0,0,0,0,0,0,0,0),
-"Yun Tal Wildarrows":(3100,50,.25,0,0,0,0,0,0,0,0,0,0,0),
+"Yun Tal Wildarrows":(3100,50,.35,0,0,0,0,0,0,0,0,0,0,0),
 "Galeforce":(3100,60,0,.25,0,0,0,0,0,0,0,0,0,.04),
 "Mercurial Scimitar":(3100,45,0,0,0,0,0,0,40,0,.12,0,0,0),
 "Blade of the Ruined King":(3100,40,.30,0,0,0,0,0,0,0,.12,0,0,0),
@@ -120,7 +120,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     while hp>0 and k<500:
         k+=1
         dyn=(.06*pd_stacks if it=="Phantom Dancer" else 0)+(.08*rb if it=="Guinsoo's Rageblade" else 0)
-        if it=="Yun Tal Wildarrows" and t<yt_until: dyn+=.25
+        if it=="Yun Tal Wildarrows" and t<yt_until: dyn+=.35
         if it=="Fiendhunter Bolts" and fh and t<=8: dyn+=.50
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+q["as"]+dyn))
         crit=q["crit"]+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if it=="Yun Tal Wildarrows" else 0)
@@ -278,7 +278,7 @@ with tabs[1]:
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
-            if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.25
+            if "Yun Tal Wildarrows" in build and t<yt_until: dyn+=.35
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
             asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn))
             cc=min(1,crit+(ytcrit if "Yun Tal Wildarrows" in build else 0))
