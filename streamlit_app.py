@@ -582,7 +582,18 @@ with tabs[1]:
     target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
     mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
     chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
+    own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
+    battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
+    absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
+
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
+    _passive_notes=[]
+    if "Manaflow Band" in selected_runes: _passive_notes.append("Manaflow: +300 Mana")
+    if "Zombie Ward" in selected_runes: _passive_notes.append("Zombie Ward: +15 AD (5 stacks)")
+    if "Relentless Hunter" in selected_runes: _passive_notes.append("Relentless Hunter: +20 out-of-combat MS (5 stacks)")
+    if "Legend: Haste" in selected_runes: _passive_notes.append(f"Legend Haste: +{15 if haste_full else 0} AH")
+    if "Legend: Bloodline" in selected_runes: _passive_notes.append(f"Bloodline: {8 if bloodline_full else 1}% Omnivamp")
+    if _passive_notes: st.caption(" • ".join(_passive_notes))
     # Rune icon selector is enabled only after verified local rune assets are present.
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
@@ -674,11 +685,14 @@ with tabs[1]:
     elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
         qs=[dct(F[x]) for x in build]; qb=dct(B[boot])
         total={k:sum(q[k] for q in qs)+qb[k] for k in K}
-        s0=stats(champ,level,mist); maxmana=mana+total["mana"]
-        awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
-        ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
+        s0=stats(champ,level,mist)
         # Persistent rune progression only; combat stacks always start at zero.
         rune_bonus_ad=15.0 if "Zombie Ward" in selected_sub_runes else 0.0
+        if "Absolute Focus" in selected_sub_runes and absolute_focus_active:
+            rune_bonus_ad+=lvl_scale(2,20,level)
+        maxmana=mana+total["mana"]+(300 if "Manaflow Band" in selected_sub_runes else 0)
+        awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
+        ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
         rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
         rune_bonus_ah=15.0 if ("Legend: Haste" in selected_sub_runes and haste_full) else 0.0
         rune_omnivamp=(.08 if bloodline_full else .01) if "Legend: Bloodline" in selected_sub_runes else 0.0
@@ -789,6 +803,13 @@ with tabs[1]:
                 # Verified tooltip: every champion attack deals 6 + 8% bonus AD adaptive damage.
                 # Current ADC lab resolves adaptive damage as physical when AD is the adaptive stat.
                 dmg+=(6+.08*bonus_ad)*rm(ea)
+            # Precision combat modifiers.
+            if "Last Stand" in selected_sub_runes and own_hp_pct<60:
+                # Linear from 5% at 60% own HP to the 11% cap at 30% own HP.
+                last_stand_amp=.11 if own_hp_pct<=30 else .05+(.60-own_hp_pct/100.0)/.30*.06
+                dmg*=1+last_stand_amp
+            if "Battle Zeal" in selected_sub_runes:
+                dmg*=1+.014*min(3,max(int(t),int(battle_seconds)))
             # Domination combat runes. Adaptive damage resolves physical for this ADC lab.
             if "Cheap Shot" in selected_sub_runes and target_impaired and t>=cheap_shot_ready_at:
                 dmg+=lvl_scale(10,45,level)
@@ -943,4 +964,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.14 | Precision and Domination rune engine • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.15 | Precision and persistent rune stats • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
