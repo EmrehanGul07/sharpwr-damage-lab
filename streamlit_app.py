@@ -1,5 +1,7 @@
 import streamlit as st
 import base64
+import html
+import urllib.parse
 from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
@@ -80,6 +82,40 @@ def item_icon(name):
         if data: return data
     fn=ITEM_ICON_FILE.get(name)
     return CD_ITEM_ICON_BASE+fn if fn else ""
+
+STAT_LABELS=[("ad","AD"),("as","AS"),("crit","Crit"),("ap","AP"),("hp","HP"),("mana","Mana"),("armor","Armor"),("mr","MR"),("ah","AH"),("lifesteal","Lifesteal"),("flatpen","Armor Pen"),("pctpen","% Armor Pen"),("ms","MS")]
+def _item_stat_lines(name):
+    q=dct(F[name])
+    out=[f"{int(q['gold'])}g"]
+    for key,label in STAT_LABELS:
+        v=q.get(key,0)
+        if not v: continue
+        if key in ("as","crit","lifesteal","pctpen","ms"): out.append(f"{label} +{v*100:g}%")
+        else: out.append(f"{label} +{v:g}")
+    return out
+
+def _premium_item_grid(items, selected):
+    cards=[]
+    for name in items:
+        icon=item_icon(name)
+        tip=" • ".join(_item_stat_lines(name))
+        sel=" selected" if name in selected else ""
+        href="?item_pick="+urllib.parse.quote(name)
+        cards.append(f"""<a class="wr-item{sel}" href="{href}" title="{html.escape(tip)}">
+          <img src="{html.escape(icon)}" alt="{html.escape(name)}"/>
+          <span class="wr-tip"><b>{html.escape(name)}</b><small>{html.escape(tip)}</small></span>
+        </a>""")
+    st.markdown("""<style>
+    .wr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:10px;margin:8px 0 18px}
+    .wr-item{position:relative;display:flex;align-items:center;justify-content:center;padding:7px;border:1px solid #303744;border-radius:12px;background:linear-gradient(145deg,#151a22,#0d1118);transition:.16s;min-height:66px}
+    .wr-item:hover{transform:translateY(-2px);border-color:#8aa4d6;box-shadow:0 8px 24px rgba(0,0,0,.32)}
+    .wr-item.selected{border-color:#d7b55b;box-shadow:0 0 0 1px #d7b55b,0 0 18px rgba(215,181,91,.20)}
+    .wr-item img{width:54px;height:54px;object-fit:cover;border-radius:9px}
+    .wr-tip{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:999;left:50%;bottom:74px;transform:translateX(-50%);width:230px;padding:12px;border:1px solid #596579;border-radius:10px;background:#0b0f16;color:#f4f6fa;box-shadow:0 12px 34px rgba(0,0,0,.55);transition:opacity .15s .35s}
+    .wr-tip b{display:block;color:#e8ca72;margin-bottom:5px}.wr-tip small{display:block;line-height:1.45;color:#c7cfda}
+    .wr-item:hover .wr-tip{visibility:visible;opacity:1}
+    </style><div class="wr-grid">""+"".join(cards)+"</div>",unsafe_allow_html=True)
+
 
 import pandas as pd
 
@@ -375,18 +411,39 @@ with tabs[1]:
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
     st.caption("Exactly 5 different completed items + 1 required Boots slot.")
-    cols=st.columns(5)
-    build=[cols[i].selectbox(f"Item {i+1}",list(F),index=i,key=f"bi{i}") for i in range(5)]
-    boot=st.selectbox("Boots (required)",list(B))
+    # Premium clickable item picker. Query-param clicks are converted into session state.
+    if "build_items_v2" not in st.session_state:
+        st.session_state.build_items_v2=list(F)[:5]
+    picked=st.query_params.get("item_pick")
+    if picked:
+        picked=urllib.parse.unquote(picked)
+        cur=list(st.session_state.build_items_v2)
+        if picked in F and picked not in cur:
+            if len(cur)<5: cur.append(picked)
+            else: cur[-1]=picked
+            st.session_state.build_items_v2=cur
+        st.query_params.clear()
+        st.rerun()
+
     st.markdown("**Selected Build**")
-    icon_cols=st.columns(6)
-    for _i,_it in enumerate(build):
-        _url=item_icon(_it)
-        if _url: icon_cols[_i].image(_url,width=56)
-        icon_cols[_i].caption(_it)
+    build=list(st.session_state.build_items_v2)
+    slot_cols=st.columns(5)
+    for _i in range(5):
+        if _i<len(build):
+            _it=build[_i]; _url=item_icon(_it)
+            if _url: slot_cols[_i].image(_url,width=58)
+            slot_cols[_i].caption(_it)
+            if slot_cols[_i].button("Remove",key=f"remove_item_{_i}",use_container_width=True):
+                build.pop(_i); st.session_state.build_items_v2=build; st.rerun()
+        else:
+            slot_cols[_i].markdown("### ＋")
+            slot_cols[_i].caption("Empty slot")
+
+    st.markdown("**Items**")
+    _premium_item_grid(list(F),build)
+    boot=st.selectbox("Boots (required)",list(B))
     _boot_url=boot_icon(boot)
-    if _boot_url: icon_cols[5].image(_boot_url,width=56)
-    icon_cols[5].caption(boot)
+    if _boot_url: st.image(_boot_url,width=56)
 
     immortal_above_half=False
     if boot=="Immortal Treads":
@@ -406,7 +463,7 @@ with tabs[1]:
             yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),index=25,format_func=lambda x:f"{x}%",key="build_yt_crit")/100
             yt_flurry=yc2.checkbox("Flurry Active (+35% AS)",value=False,key="build_yt_flurry")
 
-    if len(set(build))<5:
+    if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
     elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
         qs=[dct(F[x]) for x in build]; qb=dct(B[boot])
@@ -649,4 +706,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.3.1 | Rune progression controls • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.4 | Premium item picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
