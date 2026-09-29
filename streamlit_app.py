@@ -117,9 +117,11 @@ def _premium_item_grid(items, selected):
             val=f"{v*100:g}%" if key in ("as","crit","lifesteal","pctpen","ms") else f"{v:g}"
             rows.append(f'<div class="s"><i>{STAT_GLYPHS[key]}</i><span><b>{val}</b><small>{label}</small></span></div>')
         sel=" selected" if name in selected else ""
+        col=(items.index(name)%10)+1
+        edge=" edge-left" if col<=2 else (" edge-right" if col>=9 else "")
         # target=_top lets the icon itself navigate the Streamlit app; Python consumes item_pick.
         href="?item_pick="+urllib.parse.quote(name)
-        tiles.append(f'''<a class="tile{sel}" href="{href}" target="_top">
+        tiles.append(f'''<a class="tile{sel}{edge}" href="{href}" target="_top">
           <img src="{html.escape(icon)}" alt="{html.escape(name)}">
           <div class="card"><header><img src="{html.escape(icon)}"><div><strong>{html.escape(name)}</strong><em>◆ {int(q["gold"])} Gold</em></div></header>
           <section>{"".join(rows)}</section><footer>Click to add to build</footer></div></a>''')
@@ -132,25 +134,21 @@ def _premium_item_grid(items, selected):
     .tile:hover{border-color:#d1ae55;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20}
     .tile.selected{border-color:#d1ae55;box-shadow:inset 0 0 0 1px rgba(209,174,85,.45)}
     .card{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:100;left:50%;bottom:76px;transform:translateX(-50%) translateY(5px);
-      width:340px;min-height:150px;padding:14px;border:1px solid #526078;border-radius:13px;background:linear-gradient(150deg,#151d29,#080d14 75%);
+      width:360px;min-height:150px;padding:14px;border:1px solid #526078;border-radius:13px;background:linear-gradient(150deg,#151d29,#080d14 75%);
       box-shadow:0 18px 45px rgba(0,0,0,.62);transition:opacity .14s .32s,transform .14s .32s}
     .tile:hover .card{visibility:visible;opacity:1;transform:translateX(-50%) translateY(0)}
     .tile:nth-child(-n+20) .card{bottom:auto;top:76px;transform:translateX(-50%) translateY(-5px)}
-    .tile:nth-child(10n+1) .card,.tile:nth-child(10n+2) .card{left:0;transform:translateX(0) translateY(5px)}
-    .tile:nth-child(10n+9) .card,.tile:nth-child(10n) .card{left:auto;right:0;transform:translateX(0) translateY(5px)}
-    .tile:nth-child(-n+20):nth-child(10n+1) .card,.tile:nth-child(-n+20):nth-child(10n+2) .card,
-    .tile:nth-child(-n+20):nth-child(10n+9) .card,.tile:nth-child(-n+20):nth-child(10n) .card{transform:translateX(0) translateY(-5px)}
+    .tile.edge-left .card{left:0;right:auto;transform:translateX(0) translateY(5px)}
+    .tile.edge-right .card{left:auto;right:0;transform:translateX(0) translateY(5px)}
+    .tile:nth-child(-n+20).edge-left .card,.tile:nth-child(-n+20).edge-right .card{transform:translateX(0) translateY(-5px)}
     .tile:nth-child(-n+20):hover .card{transform:translateX(-50%) translateY(0)}
-    .tile:nth-child(10n+1):hover .card,.tile:nth-child(10n+2):hover .card,
-    .tile:nth-child(10n+9):hover .card,.tile:nth-child(10n):hover .card{transform:translateX(0) translateY(0)}
-    .tile:nth-child(-n+20):nth-child(10n+1):hover .card,.tile:nth-child(-n+20):nth-child(10n+2):hover .card,
-    .tile:nth-child(-n+20):nth-child(10n+9):hover .card,.tile:nth-child(-n+20):nth-child(10n):hover .card{transform:translateX(0) translateY(0)}
+    .tile.edge-left:hover .card,.tile.edge-right:hover .card,
+    .tile:nth-child(-n+20).edge-left:hover .card,.tile:nth-child(-n+20).edge-right:hover .card{transform:translateX(0) translateY(0)}
     header{display:flex;gap:11px;align-items:center;padding-bottom:10px;border-bottom:1px solid #2d3746}
     header img{width:52px;height:52px;border-radius:8px;border:1px solid #b8994d}strong{display:block;color:#f1d37b;font-size:16px}
     em{display:block;color:#d5b45b;font-size:12px;font-style:normal;margin-top:3px}
-    section{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding-top:11px;align-items:start}.s{display:flex;gap:7px;align-items:center}
-    .s i{font-style:normal;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#202a38;border:1px solid #3a485d;color:#a8c8ee}
-    .s b{font-size:12px;white-space:nowrap}.s small{display:block;color:#8f9cac;font-size:9px;line-height:1.15}footer{margin-top:10px;padding-top:8px;border-top:1px solid #28313e;color:#718096;font-size:9px}
+    section{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;padding-top:11px;align-items:start}.s{display:flex;gap:7px;align-items:flex-start;min-width:0}.s i{font-style:normal;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#202a38;border:1px solid #3a485d;color:#a8c8ee}
+    .s b{font-size:12px;white-space:nowrap}.s span{min-width:0}.s small{display:block;color:#8f9cac;font-size:9px;line-height:1.15;white-space:normal;overflow-wrap:anywhere}footer{margin-top:10px;padding-top:8px;border-top:1px solid #28313e;color:#718096;font-size:9px}
     @media(max-width:900px){.grid{grid-template-columns:repeat(6,minmax(54px,1fr))}}
     </style></head><body><div class="grid">'''+''.join(tiles)+'''</div></body></html>'''
     rows=(len(items)+9)//10
@@ -777,4 +775,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.7.2 | Edge-safe hover cards • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.7.3 | Fixed edge & stat layout • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
