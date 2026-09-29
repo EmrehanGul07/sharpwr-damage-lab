@@ -601,7 +601,7 @@ with tabs[1]:
     if "Legend: Bloodline" in selected_runes: _passive_notes.append(f"Bloodline: {8 if bloodline_full else 1}% Omnivamp")
     if "Overgrowth" in selected_runes:
         _og_flat=overgrowth_stacks*3
-        _passive_notes.append(f"Overgrowth: {_og_flat:+g} flat HP"+(" • +3% total Health" if overgrowth_stacks>=30 else ""))
+        _passive_notes.append(f"Overgrowth: {_og_flat:+g} flat HP"+(" • ×1.03 max Health" if overgrowth_stacks>=30 else ""))
     if "Unshakeable" in selected_runes: _passive_notes.append(f"Unshakeable: +{3+2*nearby_enemies}% Armor/MR"+(" • 20% Slow Resist" if nearby_enemies==3 else ""))
     if "Celerity" in selected_runes: _passive_notes.append("Celerity: +2% MS; other MS bonuses ×1.07")
     if "Transcendence" in selected_runes: _passive_notes.append(f"Transcendence: +{5 if level<5 else 10} AH"+(" • Lv9 cooldown proc enabled by ability hit" if level>=9 else ""))
@@ -705,9 +705,14 @@ with tabs[1]:
         s0=stats(champ,level,mist)
         # Persistent Resolve/Sorcery stats.
         rune_bonus_hp=0.0
+        overgrowth_health_mult=1.0
         if "Overgrowth" in selected_sub_runes:
-            # Each stack grants +3 max HP. At 30 stacks, total Health is increased by 3%.
+            # Each stack grants +3 max HP. At 30 stacks, ALL max Health (base + items + flat rune HP) is increased by 3%.
             rune_bonus_hp=overgrowth_stacks*3.0
+            if overgrowth_stacks>=30:
+                overgrowth_health_mult=1.03
+        build_max_hp=(total["hp"]+rune_bonus_hp)*overgrowth_health_mult
+        overgrowth_bonus_from_pct=(total["hp"]+rune_bonus_hp)*(overgrowth_health_mult-1.0)
         rune_armor_mult=1.0
         rune_mr_mult=1.0
         if "Unshakeable" in selected_sub_runes:
@@ -731,6 +736,8 @@ with tabs[1]:
         if champ=="Senna": cd*=.9
         display_dyn=.35 if ("Yun Tal Wildarrows" in build and yt_flurry) else 0
         display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn+rune_bonus_as))
+        if "Overgrowth" in selected_sub_runes:
+            st.caption(f"Overgrowth applied to tracked build/rune HP: {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} flat rune HP → {build_max_hp:.1f} HP contribution after ×{overgrowth_health_mult:.2f}.")
         hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
         conq_stacks=0; lt_stacks=0; empowerment_hits=0; empowerment_active=False; brutal_cd_ready=0.0
         first_strike_until=3.0 if (keystone=="First Strike" and first_strike_ready) else -1.0
@@ -1000,4 +1007,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.16.1 | Correct Overgrowth stacks • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.16.2 | Overgrowth health multiplier • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
