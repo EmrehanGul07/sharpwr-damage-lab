@@ -110,7 +110,7 @@ def stats(n,l,mist=0):
             "ratio":r,"baseas":b,"bba":bba,"lvbas":asg*u}
 def rm(x): return 100/(100+max(0,x))
 
-def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs):
+def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
@@ -119,18 +119,18 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     fh=3 if it=="Fiendhunter Bolts" and ult else 0
     while hp>0 and k<500:
         k+=1
-        dyn=(.06*pd_stacks if it=="Phantom Dancer" else 0)+(.08*rb if it=="Guinsoo's Rageblade" else 0)
-        if it=="Yun Tal Wildarrows" and t<yt_until: dyn+=.35
-        if it=="Fiendhunter Bolts" and fh and t<=8: dyn+=.50
+        dyn=(.06*pd_stacks if it=="Phantom Dancer" and item_proc else 0)+(.08*rb if it=="Guinsoo's Rageblade" and item_proc else 0)
+        if it=="Yun Tal Wildarrows" and item_proc and t<yt_until: dyn+=.35
+        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: dyn+=.50
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+q["as"]+dyn))
         crit=q["crit"]+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if it=="Yun Tal Wildarrows" else 0)
         crit=min(1,crit); cd=2.3 if it=="Infinity Edge" else 2.
         if n=="Senna": cd*=.9
-        pct=q["pctpen"]+(.10*dark if it=="Terminus" else 0)
+        pct=q["pctpen"]+(.10*dark if it=="Terminus" and item_proc else 0)
         if it=="Terminus": pct=min(.40,pct)
         ea=max(0,arm*(1-pct)-q["flatpen"])
         true=0.; mag=0.; onp=0.; onm=0.; note=[]
-        if it=="Fiendhunter Bolts" and fh and t<=8:
+        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8:
             phy=ad*(cd*.80); true=ad*.15*crit; note.append("Opening Barrage")
         else: phy=ad*(1+crit*(cd-1))
         if it=="Hexoptics C44":
@@ -148,22 +148,22 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         if it=="Recurve Bow": onp+=15
         if it=="Blade of the Ruined King": onp+=max(15,.07*hp)
         if it=="Muramana": onp+=.015*mana
-        if it=="Kraken Slayer" and k%3==0:
+        if it=="Kraken Slayer" and item_proc and k%3==0:
             base=120+(l-1)/14*48; miss=(hp0-hp)/hp0
             onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
-        if it=="Duskblade of Draktharr" and k==1:
+        if it=="Duskblade of Draktharr" and item_proc and k==1:
             onp+=60+(l-1)/14*100; note.append("Nightstalker")
-        if energized and k==1:
+        if energized and item_proc and k==1:
             if it=="Rapid Firecannon": onm+=80; note.append("RFC")
             if it=="Stormrazor": onm+=120; note.append("Storm")
             if it=="Statikk Shiv": onm+=60; note.append("Shiv")
             if it=="Kircheis Shard": onm+=40; note.append("Jolt")
-        if spell and k==1:
+        if spell and item_proc and k==1:
             if it=="Essence Reaver": onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER")
             if it=="Trinity Force": onp+=2*s["basead"]; note.append("Trinity")
             if it=="Iceborn Gauntlet": onp+=s["basead"]+.25*q["armor"]; note.append("Iceborn")
             if it=="Sheen": onp+=s["basead"]; note.append("Sheen")
-        if it=="Guinsoo's Rageblade" and rage_extra:
+        if it=="Guinsoo's Rageblade" and item_proc and rage_extra:
             # Phantom hit repeats Rageblade's own repeatable on-hit only.
             # It must not duplicate unrelated every-N-attacks procs such as Kraken.
             onm+=30; note.append("Rageblade phantom on-hit")
@@ -171,15 +171,15 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         if it=="Lord Dominik's Regards":
             amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
         dmg=phy*rm(ea)+mag*rm(mr)+true; before=hp; hp-=dmg
-        if it=="The Collector":
+        if it=="The Collector" and item_proc:
             th=min(1,.05+.001*execs)
             if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
-        if it=="Phantom Dancer": pd_stacks=min(5,pd_stacks+1)
-        if it=="Guinsoo's Rageblade": rb=min(4,rb+1)
-        if it=="Terminus":
+        if it=="Phantom Dancer" and item_proc: pd_stacks=min(5,pd_stacks+1)
+        if it=="Guinsoo's Rageblade" and item_proc: rb=min(4,rb+1)
+        if it=="Terminus" and item_proc:
             if k%2: light=min(3,light+1)
             else: dark=min(3,dark+1)
-        if it=="Yun Tal Wildarrows":
+        if it=="Yun Tal Wildarrows" and item_proc:
             ytcrit=min(.25,ytcrit+.002)
             if yt_cd<=t: yt_until=t+6; yt_cd=t+20; note.append("Flurry")
         if it=="Fiendhunter Bolts" and fh and t<=8: fh-=1
@@ -271,7 +271,7 @@ with tabs[1]:
         with st.container(border=True):
             st.markdown("**🏹 Yun Tal Settings**")
             yc1,yc2=st.columns(2)
-            yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),format_func=lambda x:f"{x}%",key="build_yt_crit")/100
+            yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),index=25,format_func=lambda x:f"{x}%",key="build_yt_crit")/100
             yt_flurry=yc2.checkbox("Flurry Active (+35% AS)",value=False,key="build_yt_flurry")
 
     if len(set(build))<5:
@@ -417,13 +417,19 @@ with tabs[2]:
     st.subheader("Item Value")
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
     rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
+    proc_items=["Fiendhunter Bolts","Rapid Firecannon","Phantom Dancer","Kraken Slayer","Statikk Shiv","Guinsoo\'s Rageblade","Essence Reaver","The Collector","Terminus","Stormrazor","Yun Tal Wildarrows","Trinity Force","Duskblade of Draktharr","Iceborn Gauntlet"]
+    st.markdown("**Item proc?**")
+    st.caption("Toggle conditional proc / activation effects for each applicable item. Raw item stats remain active.")
+    proc_states={}
+    pc=st.columns(4)
+    for i,pit in enumerate(proc_items):
+        proc_states[pit]=pc[i%4].checkbox(pit,value=True,key=f"iv_proc_{pit}")
     if champ!="Jhin":
         rows=[]
         for it,v0 in F.items():
             q=dct(v0); raw=sum(q[k]*rates[k] for k in rates)
-            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs)
+            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs,proc_states.get(it,True))
             dps=row[4]; rows.append([it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
-        val=pd.DataFrame(rows,columns=["Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
         val.insert(0,"Rank",range(1,len(val)+1)); st.dataframe(val,use_container_width=True,hide_index=True)
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
 
