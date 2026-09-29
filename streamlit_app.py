@@ -695,7 +695,8 @@ with tabs[1]:
             if "Yun Tal Wildarrows" in build and yt_flurry: dyn+=.35
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
             if keystone=="Conqueror":
-                _conq_ad_per_stack=3.0 if level==1 else (5.0 if level==15 else 0.0)
+                # User-confirmed convention for tooltip ranges: linear Lv1 -> Lv15 scaling.
+                _conq_ad_per_stack=3.0+(level-1)/14*2.0
                 current_ad=ad+conq_stacks*_conq_ad_per_stack
             else:
                 current_ad=ad
@@ -757,8 +758,9 @@ with tabs[1]:
                 # First Strike is 7% BONUS TRUE damage, not a generic 7% multiplier.
                 dmg += dmg*.07
             elif keystone=="Empowerment":
-                # Exact 40–165 level curve was not supplied: proc damage is intentionally
-                # not guessed between endpoints. The 8% amp begins after the third hit.
+                # Tooltip range uses linear Lv1 -> Lv15 scaling.
+                if empowerment_hits==2: dmg+=40.0+(level-1)/14*125.0
+                # The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
             elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
                 dmg+=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]
@@ -771,14 +773,10 @@ with tabs[1]:
                 dmg+=(.033*hp*.40)*rm(em)
                 grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
-                # Full-stack bullet has a 6–20 level-scaled base; exact curve is unknown.
-                # Keep the AS stacking exact, but do not fabricate the bullet's mid-level base.
-                if level==1: base_lt=6.0
-                elif level==15: base_lt=20.0
-                else: base_lt=None
-                if base_lt is not None:
-                    bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
-                    dmg+=base_lt*(1+.0033*bonus_as_pct)
+                # Tooltip range is treated as linear Lv1 -> Lv15: 6 at Lv1, 20 at Lv15.
+                base_lt=6.0+(level-1)/14*14.0
+                bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
+                dmg+=base_lt*(1+.0033*bonus_as_pct)
             if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
             if "Coup de Grace" in selected_sub_runes and hp_pct<.40: dmg*=1.08
             if "Brutal" in selected_sub_runes:
@@ -923,4 +921,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.13 | Stateful rune engine foundation • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.13.1 | Linear rune level scaling • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
