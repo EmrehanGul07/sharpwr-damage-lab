@@ -1,4 +1,6 @@
 import streamlit as st
+import base64
+from pathlib import Path
 
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
 ITEM_ICON_FILE={
@@ -41,9 +43,19 @@ LOCAL_ITEM_ICON={
 "Navori Quickblades":"assets/items/Navori_Quickblades_WR_item.png",
 "Serpent's Fang":"assets/items/Serpent's_Fang_WR_item.png",
 }
+@st.cache_data
+def _local_icon_data(path):
+    p=Path(path)
+    if not p.exists(): return ""
+    ext=p.suffix.lower()
+    mime="image/webp" if ext==".webp" else "image/png"
+    return f"data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"
+
 def item_icon(name):
     local=LOCAL_ITEM_ICON.get(name)
-    if local: return local
+    if local:
+        data=_local_icon_data(local)
+        if data: return data
     fn=ITEM_ICON_FILE.get(name)
     return CD_ITEM_ICON_BASE+fn if fn else ""
 
