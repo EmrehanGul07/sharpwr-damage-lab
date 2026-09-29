@@ -855,11 +855,11 @@ with tabs[1]:
             elif keystone=="Empowerment":
                 # Tooltip range uses linear Lv1 -> Lv15 scaling.
                 if empowerment_hits==2:
-                    _v=lvl_scale(40.0,165.0,level); dmg+=_v; _rune_events.append(f"Empowerment +{_v:.1f}")
+                    _raw=lvl_scale(40.0,165.0,level); _v=_raw*rm(ea); dmg+=_v; _rune_events.append(f"Empowerment +{_v:.1f} physical")
                 # The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
             elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
-                _v=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]; dmg+=_v; _rune_events.append(f"Dark Harvest +{_v:.1f}")
+                _raw=35+11*dark_harvest_souls+.10*bonus_ad+.05*total["ap"]; _v=_raw*rm(ea); dmg+=_v; _rune_events.append(f"Dark Harvest +{_v:.1f} physical")
                 dark_harvest_ready_at=t+20.0
             elif keystone=="Aery" and aery_available:
                 _v=(lvl_scale(15,70,level)+.10*bonus_ad+.05*total["ap"])*rm(em)
@@ -875,14 +875,15 @@ with tabs[1]:
                 _rune_events.append("Fleet Footwork proc")
                 fleet_available=False
             elif keystone=="Grasp of the Undying" and t>=grasp_next_ready:
-                # Ranged Grasp: 3.3% max HP × 40% = 1.32% max HP bonus magic damage.
-                _v=(.033*hp*.40)*rm(em); dmg+=_v; _rune_events.append(f"Grasp +{_v:.1f}")
+                # Grasp scales from the USER'S max HP, never target HP.
+                # Champion max-HP data is not in the lab yet, so do not fabricate damage.
+                _rune_events.append("Grasp ready — own Max HP data required")
                 grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
                 # Tooltip range is treated as linear Lv1 -> Lv15: 6 at Lv1, 20 at Lv15.
                 base_lt=lvl_scale(6.0,20.0,level)
                 bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
-                _v=base_lt*(1+.0033*bonus_as_pct); dmg+=_v; _rune_events.append(f"Lethal Tempo +{_v:.1f}")
+                _raw=base_lt*(1+.0033*bonus_as_pct); _v=_raw*rm(ea); dmg+=_v; _rune_events.append(f"Lethal Tempo +{_v:.1f} physical")
             if "Cut Down" in selected_sub_runes and hp_pct>.60:
                 _b=dmg; dmg*=1.065; _rune_part("Cut Down",_b,dmg,"×1.065")
             if "Coup de Grace" in selected_sub_runes and hp_pct<.40:
@@ -1069,6 +1070,63 @@ with tabs[3]:
             if tree_filter!="All" and rv["tree"]!=tree_filter: continue
             rune_rows.append([rn,rv["tree"],rv["kind"],rv["tooltip"]])
         st.dataframe(pd.DataFrame(rune_rows,columns=["Rune","Tree","Type","Verified tooltip / effect"]),use_container_width=True,hide_index=True)
+        st.markdown("**Rune Engine Audit**")
+        audit_rows=[
+            ["First Strike","Partial","Damage works; engagement/cooldown/gold lifecycle not fully simulated"],
+            ["Ice Overlord","Pending","Needs immobilize + own bonus HP/defense state"],
+            ["Phase Rush","Partial","No direct AA damage; 3-hit mobility/basic-AH state not simulated"],
+            ["Arcane Comet","Scenario","Ability-hit start proc modeled; repeated ability/cooldown events need ability engine"],
+            ["Aery","Scenario","One explicitly-ready damage proc modeled; return cadence not supplied"],
+            ["Guardian","Pending","Needs ally/incoming-damage + own bonus HP state"],
+            ["Grasp of the Undying","Blocked: HP","Correctly disabled until own champion Max HP exists"],
+            ["Conqueror","Combat","0→6 AD stacks modeled; omnivamp is non-damage"],
+            ["Fleet Footwork","Partial","Proc consumption modeled; 40% AS duration/heal/resource need duration/HP-resource engine"],
+            ["Lethal Tempo","Combat","0→6 AS stacks + max-stack adaptive physical bullet modeled"],
+            ["Empowerment","Combat","3rd-hit adaptive physical proc + subsequent 8% amp modeled; repeat proc lifecycle needs verification"],
+            ["Dark Harvest","Combat","<50% threshold + adaptive physical proc modeled; soul harvesting during same simulation not yet persisted"],
+            ["Brutal","Combat","Every-AA adaptive physical damage modeled"],
+            ["Triumph","Post-fight","Takedown-only; no fake DPS effect"],
+            ["Battle Zeal","Ability-only","Correctly excluded from AA damage; waits for ability engine"],
+            ["Last Stand","Review","5–11% endpoints known; current 60→30 HP interpolation is an assumption"],
+            ["Cut Down","Combat","Live target >60% threshold modeled"],
+            ["Coup de Grace","Combat","Live target <40% threshold modeled"],
+            ["Legend: Alacrity","Stat","Base/max progression toggle modeled; intermediate progression unknown"],
+            ["Legend: Haste","Stat","Max progression toggle modeled; intermediate progression unknown"],
+            ["Legend: Bloodline","Stat","Omnivamp stored/displayed; intermediate progression unknown"],
+            ["Eyeball Collection","Pending","Verified +1.5 AD/stack, but progression input not wired"],
+            ["Hubris","Pending","Needs champion kill count + 30s buff-active state"],
+            ["Tyrant","Combat","Live <50% + adaptive physical + 10s CD modeled"],
+            ["Chain Assault","Scenario","Ability-mark + next 2 hits modeled; re-mark lifecycle needs ability engine"],
+            ["Sudden Impact","Scenario","Mobility trigger + 4s window + true damage modeled"],
+            ["Cheap Shot","Scenario","Impaired-target trigger + true damage + 7s CD modeled"],
+            ["Zombie Ward","Stat","Default 5 stacks = +15 AD modeled"],
+            ["Empowered Attack","Combat","Ranged 80% adaptive physical + 8s CD modeled"],
+            ["Relentless Hunter","Utility","Default max OOC MS displayed; no movement engine"],
+            ["Overgrowth","Blocked: HP","60 stacks = +180 flat HP; ×1.03 final Max HP awaits champion base HP"],
+            ["Bone Plating","Defense-only","Values displayed; needs incoming-damage engine"],
+            ["Second Wind","Defense-only","Values displayed; needs own HP/incoming-damage engine"],
+            ["Perseverance","Utility","Tenacity displayed; immobilize defense needs incoming/CC engine"],
+            ["Revitalize","Utility","Heal/shield amp stored as rule; needs heal/shield engine"],
+            ["Nullifying Orb","Defense-only","Shield value displayed; needs own HP/incoming-damage engine"],
+            ["Unshakeable","Partial","Nearby-enemy % state modeled/displayed; own Armor/MR database pending"],
+            ["Courage of the Colossus","Blocked: HP","Flat shield portion known; full shield needs own Max HP + immobilize event"],
+            ["Font of Life","Blocked: HP","Needs own Max HP/heal state"],
+            ["Demolish","Blocked: HP","Needs own Max HP + turret scenario"],
+            ["Gathering Storm","Stat","Verified 6–21m AD sequence modeled; no extrapolation"],
+            ["Absolute Focus","Scenario","Linear AD modeled with >65% toggle; own live HP engine pending"],
+            ["Scorch","Scenario","Ability-start trigger modeled; exact 1s independent event timing awaits event engine"],
+            ["Axiom Arcanist","Ability-only","Rule displayed; needs ultimate engine"],
+            ["Manaflow Band","Stat","Default full +300 Mana modeled"],
+            ["Transcendence","Partial","+5/+10 AH modeled; Lv9 basic-ability cooldown proc needs ability engine"],
+            ["Celerity","Utility","Rule displayed; needs movement-speed engine"],
+            ["Nimbus Cloak","Utility","Summoner trigger represented; exact MS output not applied to movement engine"],
+            ["Ixtali Seedjar","Utility","Rule displayed; no plant/trinket engine"],
+            ["Hexflash","Utility","Rule displayed; no mobility engine"],
+            ["Botanist","Utility","Rule displayed; no plant engine"],
+        ]
+        adf=pd.DataFrame(audit_rows,columns=["Rune","Engine Status","Audit Note"])
+        st.dataframe(adf,use_container_width=True,hide_index=True)
+        st.caption("Audit: 51/51 runes classified. 'Pending/Blocked' effects are intentionally not converted into fake DPS.")
         counts={tree:len(names) for tree,names in RUNE_TREES.items()}
         st.caption(" • ".join(f"{tree}: {count}" for tree,count in counts.items())+" • Total: 51")
     else:
@@ -1079,4 +1137,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.19 | Rune Breakdown V2 and timeline • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.20 | 51-rune engine audit + adaptive damage fixes • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
