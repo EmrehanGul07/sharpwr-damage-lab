@@ -30,6 +30,7 @@ ITEM_ICON_FILE={
 }
 LOCAL_ITEM_ICON={
 "Stormrazor":"assets/items/Stormrazor_WR_item.webp",
+"The Collector":"assets/items/The_Collector_WR_item.webp",
 "Galeforce":"assets/items/128px-Galeforce_WR_item.png",
 "Serylda's Grudge":"assets/items/128px-Serylda's_Grudge_WR_item.webp",
 "Blade of the Ruined King":"assets/items/Blade_of_the_Ruined_King_WR_item.webp",
