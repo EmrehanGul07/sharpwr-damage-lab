@@ -365,6 +365,7 @@ def stats(n,l,mist=0):
     return {"basead":ba,"ad":ba+g*u+(mist*1.25 if n=="Senna" else 0),
             "ratio":r,"baseas":b,"bba":bba,"lvbas":asg*u}
 def rm(x): return 100/(100+max(0,x))
+def lvl_scale(lo,hi,lvl): return lo+(hi-lo)*(lvl-1)/14
 
 def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
@@ -578,6 +579,9 @@ with tabs[1]:
     first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
     grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
     aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
+    target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
+    mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="mobility_trigger") if "Sudden Impact" in selected_runes else False
+    chain_marked=st.checkbox("Chain Assault — target marked by ability",value=False,key="chain_marked") if "Chain Assault" in selected_runes else False
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     # Rune icon selector is enabled only after verified local rune assets are present.
     st.caption("Primary: one rune from each of its 3 slots. Secondary: one rune from a different tree.")
@@ -672,9 +676,9 @@ with tabs[1]:
         total={k:sum(q[k] for q in qs)+qb[k] for k in K}
         s0=stats(champ,level,mist); maxmana=mana+total["mana"]
         awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
-        ad=s0["ad"]+total["ad"]+awe
+        ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
         # Persistent rune progression only; combat stacks always start at zero.
-        rune_bonus_ad=0.0
+        rune_bonus_ad=15.0 if "Zombie Ward" in selected_sub_runes else 0.0
         rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
         rune_bonus_ah=15.0 if ("Legend: Haste" in selected_sub_runes and haste_full) else 0.0
         rune_omnivamp=(.08 if bloodline_full else .01) if "Legend: Bloodline" in selected_sub_runes else 0.0
@@ -689,6 +693,8 @@ with tabs[1]:
         grasp_next_ready=0.0 if (keystone=="Grasp of the Undying" and grasp_ready) else 3.0
         aery_available=(keystone=="Aery" and aery_ready)
         dark_harvest_ready_at=0.0
+        cheap_shot_ready_at=sudden_impact_ready_at=tyrant_ready_at=empowered_attack_ready_at=0.0
+        chain_hits_left=2 if chain_marked else 0
         while hp2>0 and attacks<500:
             attacks+=1
             dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
@@ -696,7 +702,7 @@ with tabs[1]:
             if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
             if keystone=="Conqueror":
                 # User-confirmed convention for tooltip ranges: linear Lv1 -> Lv15 scaling.
-                _conq_ad_per_stack=3.0+(level-1)/14*2.0
+                _conq_ad_per_stack=lvl_scale(3.0,5.0,level)
                 current_ad=ad+conq_stacks*_conq_ad_per_stack
             else:
                 current_ad=ad
@@ -759,7 +765,7 @@ with tabs[1]:
                 dmg += dmg*.07
             elif keystone=="Empowerment":
                 # Tooltip range uses linear Lv1 -> Lv15 scaling.
-                if empowerment_hits==2: dmg+=40.0+(level-1)/14*125.0
+                if empowerment_hits==2: dmg+=lvl_scale(40.0,165.0,level)
                 # The 8% amp begins after the third hit.
                 if empowerment_active: dmg*=1.08
             elif keystone=="Dark Harvest" and hp_pct<.50 and t>=dark_harvest_ready_at:
@@ -774,7 +780,7 @@ with tabs[1]:
                 grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
                 # Tooltip range is treated as linear Lv1 -> Lv15: 6 at Lv1, 20 at Lv15.
-                base_lt=6.0+(level-1)/14*14.0
+                base_lt=lvl_scale(6.0,20.0,level)
                 bonus_as_pct=(total["as"]+rune_bonus_as+.048*lt_stacks)*100
                 dmg+=base_lt*(1+.0033*bonus_as_pct)
             if "Cut Down" in selected_sub_runes and hp_pct>.60: dmg*=1.065
@@ -783,6 +789,22 @@ with tabs[1]:
                 # Verified tooltip: every champion attack deals 6 + 8% bonus AD adaptive damage.
                 # Current ADC lab resolves adaptive damage as physical when AD is the adaptive stat.
                 dmg+=(6+.08*bonus_ad)*rm(ea)
+            # Domination combat runes. Adaptive damage resolves physical for this ADC lab.
+            if "Cheap Shot" in selected_sub_runes and target_impaired and t>=cheap_shot_ready_at:
+                dmg+=lvl_scale(10,45,level)
+                cheap_shot_ready_at=t+7.0
+            if "Sudden Impact" in selected_sub_runes and mobility_trigger and t<4.0 and t>=sudden_impact_ready_at:
+                dmg+=lvl_scale(10,65,level)
+                sudden_impact_ready_at=t+15.0
+            if "Chain Assault" in selected_sub_runes and chain_hits_left>0:
+                dmg+=(lvl_scale(12,38,level)+.03*bonus_ad+.015*total["ap"])*rm(ea)
+                chain_hits_left-=1
+            if "Tyrant" in selected_sub_runes and hp_pct<.50 and t>=tyrant_ready_at:
+                dmg+=(lvl_scale(20,70,level)+.06*bonus_ad+.03*total["ap"])*rm(ea)
+                tyrant_ready_at=t+10.0
+            if "Empowered Attack" in selected_sub_runes and t>=empowered_attack_ready_at:
+                dmg+=lvl_scale(20,60,level)*.80*rm(ea)
+                empowered_attack_ready_at=t+8.0
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             hp2-=dmg
             if "The Collector" in build:
@@ -921,4 +943,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.13.1 | Linear rune level scaling • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.14 | Precision and Domination rune engine • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
