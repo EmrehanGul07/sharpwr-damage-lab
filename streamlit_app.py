@@ -26,7 +26,24 @@ ITEM_ICON_FILE={
 "Edge of Night":"3814_assassin_t3_edgeofnight.png",
 "Yun Tal Wildarrows":"3032_yuntalwildarrows.png"
 }
+LOCAL_ITEM_ICON={
+"Stormrazor":"assets/items/Stormrazor_WR_item.webp",
+"Galeforce":"assets/items/128px-Galeforce_WR_item.png",
+"Serylda's Grudge":"assets/items/128px-Serylda's_Grudge_WR_item.webp",
+"Blade of the Ruined King":"assets/items/Blade_of_the_Ruined_King_WR_item.webp",
+"Death's Dance":"assets/items/Death's_Dance_WR_item.webp",
+"Duskblade of Draktharr":"assets/items/Duskblade_of_Draktharr_WR_item.webp",
+"Fiendhunter Bolts":"assets/items/Fiendhunter_Bolts_item.webp",
+"Hexoptics C44":"assets/items/Hexoptics_C44_item.webp",
+"Iceborn Gauntlet":"assets/items/Iceborn_Gauntlet_WR_item.webp",
+"Immortal Shieldbow":"assets/items/Immortal_Shieldbow_item.webp",
+"Kraken Slayer":"assets/items/Kraken_Slayer_WR_item.webp",
+"Navori Quickblades":"assets/items/Navori_Quickblades_WR_item.png",
+"Serpent's Fang":"assets/items/Serpent's_Fang_WR_item.png",
+}
 def item_icon(name):
+    local=LOCAL_ITEM_ICON.get(name)
+    if local: return local
     fn=ITEM_ICON_FILE.get(name)
     return CD_ITEM_ICON_BASE+fn if fn else ""
 
