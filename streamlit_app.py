@@ -1551,7 +1551,16 @@ with tabs[3]:
             _state=""
             if _ai=="Yun Tal Wildarrows":
                 _start=min(.25,_ayt*.002); _pre=min(.25,_start+max(0,_k-1)*.002); _post=min(.25,_start+_k*.002)
-                _state=f"Permanent crit {100*_pre:.1f}% → {100*_post:.1f}%"
+                _yt_until_a=-1.0; _yt_cd_a=0.0
+                for _rr in _alog[:_k]:
+                    _tt=float(_rr[1]); _cc=float(_rr[3])/100.0
+                    if _yt_cd_a<=_tt:
+                        _yt_until_a=_tt+6.0; _yt_cd_a=_tt+25.0
+                    else:
+                        _yt_cd_a=max(_tt,_yt_cd_a-(1.0+_cc))
+                _active="ON" if _t<_yt_until_a else "OFF"
+                _remain=max(0.0,_yt_cd_a-_t)
+                _state=f"Permanent crit {100*_pre:.1f}% → {100*_post:.1f}% • Flurry {_active} • CD {_remain:.2f}s"
             elif _ai=="Terminus":
                 _dark=min(3,_k//2); _light=min(3,(_k+1)//2)
                 _state=f"Light {_light}/3 • Dark {_dark}/3 • Dark pen {_dark*10}%"
