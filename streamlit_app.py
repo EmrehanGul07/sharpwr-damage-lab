@@ -994,6 +994,72 @@ with tabs[0]:
             st.caption(f"{len(_pair_df)} legal unique two-item combinations tested. LDR, Mortal Reminder, Serylda's Grudge and Terminus are mutually exclusive. Ranking is DPS-first; value remains a separate metric and is not folded into an overall score.")
 
 
+        st.divider()
+        st.markdown("### 3-Item Tier List")
+        st.caption("Tests every legal unique three-item combination with the same benchmark settings. Duplicate items are excluded and the penetration-item purchase restriction is preserved.")
+        _triple_rows=[]
+        for _i in range(len(_build_items)):
+            for _j in range(_i+1,len(_build_items)):
+                for _k in range(_j+1,len(_build_items)):
+                    _triple=(_build_items[_i],_build_items[_j],_build_items[_k])
+                    if sum(1 for _x in _triple if _x in _exclusive_pen_items)>1:
+                        continue
+                    _trow,_=sim_build(
+                        tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_triple,F,
+                        mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                        target_aa_reduction=tier_aa_reduction,
+                        yuntal_start_stacks=tier_yuntal_stacks,
+                        base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                        ult=tier_ult,execs=tier_execs,
+                        active_ready=(tier_scenario=="First Contact")
+                    )
+                    _gold=float(_trow[1]); _dps=float(_trow[4])
+                    _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                    _bonus=_dps-baseline
+                    _value=(_bonus/_gold*1000) if _gold else 0.0
+                    _triple_rows.append([" + ".join(_triple),_triple[0],_triple[1],_triple[2],_gold,_dps,_gain,_bonus,_value,float(_trow[2]),int(_trow[3])])
+        _triple_df=pd.DataFrame(_triple_rows,columns=["Build","Item 1","Item 2","Item 3","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        _triple_df.insert(0,"Rank",range(1,len(_triple_df)+1))
+        if len(_triple_df):
+            _tb=_triple_df.iloc[0]
+            _tv=_triple_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
+            _t1,_t2,_t3=st.columns(3)
+            _t1.metric("Best 3-Item Build",_tb["Build"])
+            _t2.metric("3-Item DPS",f"{float(_tb['DPS']):.1f}")
+            _t3.metric("Best Value / 1000g",f"{float(_tv['Bonus DPS / 1000g']):.1f}",_tv["Build"])
+
+            _triple_html=['<div class="triple-rank-grid">']
+            for _,_r in _triple_df.head(24).iterrows():
+                _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
+                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
+                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names)
+                _triple_html.append(
+                    f'<div class="triple-rank-card">'
+                    f'<div class="triple-rank-num">#{int(_r["Rank"])}</div>'
+                    f'<div class="triple-icons">{_imgs}</div>'
+                    f'<div class="triple-name">{_label}</div>'
+                    f'<div class="triple-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
+                    f'<div class="triple-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div>'
+                    f'</div>'
+                )
+            _triple_html.append('</div>')
+            st.markdown("""<style>
+            .triple-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px;margin:8px 0 16px}
+            .triple-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+            .triple-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+            .triple-icons{display:flex;justify-content:center;gap:4px}.triple-icons img{width:43px;height:43px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+            .triple-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+            .triple-name{font-size:10px;font-weight:750;line-height:1.18;min-height:46px;margin-top:5px}.triple-name span{color:#c9a84c}
+            .triple-dps{font-size:15px;font-weight:850}.triple-dps span{font-size:9px;font-weight:650;opacity:.62}
+            .triple-sub{font-size:9px;opacity:.62;white-space:nowrap}
+            @media(max-width:640px){.triple-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.triple-icons img{width:38px;height:38px}}
+            </style>""",unsafe_allow_html=True)
+            st.markdown("".join(_triple_html),unsafe_allow_html=True)
+            with st.expander("Detailed 3-item ranking table"):
+                st.dataframe(_triple_df,use_container_width=True,hide_index=True)
+            st.caption(f"{len(_triple_df)} legal unique three-item combinations tested. Ranking is DPS-first; value remains separate and no weighted overall score is used.")
+
+
 with tabs[1]:
     st.subheader("Build Lab")
 
