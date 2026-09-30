@@ -680,11 +680,12 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     return [it,q["gold"],round(t,3),k,round(total_sim_damage/t,1) if t else float("inf")],log
 
 
-def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False):
+def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None):
     """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
     items=list(items)
     s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
-    total=lambda key: sum(float(q[key]) for q in qs)
+    bootq=dct(B[boot]) if boot in B else dct(())
+    total=lambda key: sum(float(q[key]) for q in qs)+float(bootq.get(key,0))
     mana=base_mana+total("mana")
     awe=.02*mana if any(x in items for x in ("Manamune","Muramana")) else 0.0
     ad=s["ad"]+total("ad")+awe
@@ -795,8 +796,9 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
         t+=1/asp
         if hp<=0: break
     total_damage=sum(float(x[6]) for x in log)
-    gold=sum(float(q["gold"]) for q in qs)
-    return [" + ".join(items),gold,round(t,3),k,round(total_damage/t,1) if t else float("inf")],log
+    gold=sum(float(q["gold"]) for q in qs)+float(bootq.get("gold",0))
+    _label=" + ".join(items)+((" + "+boot) if boot else "")
+    return [_label,gold,round(t,3),k,round(total_damage/t,1) if t else float("inf")],log
 
 # Shared scenario defaults/state. UI belongs inside each tab rather than above the tabs.
 champ=st.session_state.get("build_champ",list(C)[0])
@@ -1058,6 +1060,63 @@ with tabs[0]:
             with st.expander("Detailed 3-item ranking table"):
                 st.dataframe(_triple_df,use_container_width=True,hide_index=True)
             st.caption(f"{len(_triple_df)} legal unique three-item combinations tested. Ranking is DPS-first; value remains separate and no weighted overall score is used.")
+
+
+        st.markdown("### Boots + 3-Item Tier List")
+        st.caption("Adds one offensive boot slot to the strongest legal 3-item cores. Kept bounded so normal Streamlit reruns stay responsive.")
+        _offensive_boots=["Gluttonous Greaves","Berserker's Greaves","Gunmetal Greaves","Boots of Dynamism","Armorcrusher Boots"]
+        _boot_core_candidates=_triple_df.head(min(250,len(_triple_df)))
+        _boot3_rows=[]
+        for _,_cr in _boot_core_candidates.iterrows():
+            _core=(str(_cr["Item 1"]),str(_cr["Item 2"]),str(_cr["Item 3"]))
+            for _boot in _offensive_boots:
+                _brow,_=sim_build(
+                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core,F,
+                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                    target_aa_reduction=tier_aa_reduction,
+                    yuntal_start_stacks=tier_yuntal_stacks,
+                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                    ult=tier_ult,execs=tier_execs,
+                    active_ready=(tier_scenario=="First Contact"),boot=_boot
+                )
+                _gold=float(_brow[1]); _dps=float(_brow[4])
+                _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
+                _boot3_rows.append([" + ".join(_core)+" + "+_boot,_core[0],_core[1],_core[2],_boot,_gold,_dps,_gain,_bonus,_value,float(_brow[2]),int(_brow[3])])
+        _boot3_df=pd.DataFrame(_boot3_rows,columns=["Build","Item 1","Item 2","Item 3","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        _boot3_df.insert(0,"Rank",range(1,len(_boot3_df)+1))
+        if len(_boot3_df):
+            _bb=_boot3_df.iloc[0]
+            _bv=_boot3_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
+            _b1,_b2,_b3=st.columns(3)
+            _b1.metric("Best Boots + 3 Core",_bb["Build"])
+            _b2.metric("Booted DPS",f"{float(_bb['DPS']):.1f}")
+            _b3.metric("Best Value / 1000g",f"{float(_bv['Bonus DPS / 1000g']):.1f}",_bv["Build"])
+            _boot_html=['<div class="boot3-rank-grid">']
+            for _,_r in _boot3_df.head(24).iterrows():
+                _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
+                _boot=str(_r["Boots"])
+                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
+                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
+                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
+                _boot_html.append(f'<div class="boot3-rank-card"><div class="boot3-rank-num">#{int(_r["Rank"])}</div><div class="boot3-icons">{_imgs}</div><div class="boot3-name">{_label}</div><div class="boot3-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="boot3-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
+            _boot_html.append('</div>')
+            st.markdown("""<style>
+            .boot3-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:10px;margin:8px 0 16px}
+            .boot3-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+            .boot3-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+            .boot3-icons{display:flex;justify-content:center;gap:4px}.boot3-icons img{width:40px;height:40px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+            .boot3-icons .boot-slot{border-color:#c9a84c}
+            .boot3-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+            .boot3-name{font-size:9.5px;font-weight:750;line-height:1.16;min-height:58px;margin-top:5px}.boot3-name span{color:#c9a84c}
+            .boot3-dps{font-size:15px;font-weight:850}.boot3-dps span{font-size:9px;font-weight:650;opacity:.62}
+            .boot3-sub{font-size:9px;opacity:.62;white-space:nowrap}
+            @media(max-width:640px){.boot3-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.boot3-icons img{width:34px;height:34px}}
+            </style>""",unsafe_allow_html=True)
+            st.markdown("".join(_boot_html),unsafe_allow_html=True)
+            with st.expander("Detailed Boots + 3-item ranking table"):
+                st.dataframe(_boot3_df,use_container_width=True,hide_index=True)
+            st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Immortal Treads is temporarily excluded until its conditional +5% damage passive is modeled.")
 
 
 with tabs[1]:
