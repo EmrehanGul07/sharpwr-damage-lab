@@ -444,6 +444,32 @@ hr{border-color:#202b3a!important}
 .sharp-section-head.final{border:1px solid rgba(216,180,93,.28);border-left:3px solid #d8b45d;border-radius:10px;background:linear-gradient(90deg,rgba(216,180,93,.11),rgba(16,24,36,.35))}
 @media(max-width:640px){.sharp-section-head{padding:11px 10px;gap:7px}.sharp-section-head strong{font-size:16px}.sharp-section-head em{display:none}}
 
+
+/* Build Lab / Rune Forge */
+.buildlab-hero{margin:4px 0 18px;padding:18px 20px;border:1px solid #263246;border-radius:15px;background:linear-gradient(115deg,rgba(17,27,41,.92),rgba(10,15,23,.9));position:relative;overflow:hidden}
+.buildlab-hero:after{content:"";position:absolute;right:-45px;top:-75px;width:190px;height:190px;border-radius:50%;border:1px solid rgba(216,180,93,.12)}
+.buildlab-hero span{display:block;font-size:8px;font-weight:900;letter-spacing:.18em;color:#d8b45d}.buildlab-hero strong{display:block;font-size:25px;margin-top:2px}.buildlab-hero p{margin:5px 0 0;color:#8592a3;font-size:11px}
+.rune-forge-head{display:flex;align-items:center;gap:10px;margin:25px 0 9px;padding:12px 14px;border:1px solid rgba(216,180,93,.22);border-radius:12px;background:linear-gradient(90deg,rgba(216,180,93,.08),rgba(12,18,27,.45))}
+.rune-forge-head .gem{width:29px;height:29px;display:grid;place-items:center;border:1px solid rgba(216,180,93,.45);transform:rotate(45deg);border-radius:5px;color:#efd17c;background:#15170f}.rune-forge-head .gem b{transform:rotate(-45deg);font-size:12px}
+.rune-forge-head span{display:block;font-size:8px;font-weight:900;letter-spacing:.15em;color:#b99a51}.rune-forge-head strong{display:block;font-size:17px;color:#edf2f7}
+.wr-eq-wrap{padding:15px 14px 9px!important;border-radius:15px!important;box-shadow:inset 0 1px rgba(255,255,255,.025),0 12px 30px rgba(0,0,0,.14)}
+div[data-testid="stColumn"]:has(.wr-eq-label){padding:6px!important;border-right:1px solid rgba(128,145,165,.10)}
+div[data-testid="stColumn"]:has(.wr-eq-label):last-child{border-right:0}
+.wr-eq-label{text-align:center!important}.wr-eq-name{text-align:left!important;color:#e9eef4!important}
+.wr-eq-empty{background:rgba(5,9,14,.36)!important}
+.wr-rune-section{margin-top:24px!important}.wr-rune-section span{background:#080d14;padding:0 9px}
+div[data-testid="stColumn"]:has(.wr-tree-marker) div[data-testid="stImage"] img{border-color:#2b384b!important;background:radial-gradient(circle at 50% 35%,#1a2636,#080d14 72%)!important}
+div[data-testid="stColumn"]:has(.wr-tree-marker):hover div[data-testid="stImage"] img{border-color:#d8b45d!important;box-shadow:0 8px 24px rgba(0,0,0,.35),0 0 22px rgba(216,180,93,.09)!important}
+div[data-testid="stColumn"]:has(.wr-tree-selected) div[data-testid="stImage"] img{border-color:#d8b45d!important;box-shadow:0 0 0 1px rgba(216,180,93,.24),0 0 24px rgba(216,180,93,.10)!important}
+.wr-tree-name{color:#aeb9c7!important;font-size:10px!important;font-weight:800!important;letter-spacing:.04em}
+div[data-testid="stColumn"]:has(.wr-pick-marker){border-radius:11px;transition:background .15s ease}
+div[data-testid="stColumn"]:has(.wr-pick-marker):hover{background:rgba(216,180,93,.035)}
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{box-shadow:0 7px 17px rgba(0,0,0,.25)!important}
+div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{border-color:#d8b45d!important;box-shadow:0 0 0 2px rgba(216,180,93,.16),0 0 22px rgba(216,180,93,.14)!important}
+.wr-icon-name{color:#9eabba!important;font-size:9px!important;line-height:1.15!important}
+.rune-status{display:flex;gap:6px;flex-wrap:wrap;margin:5px 0 14px}.rune-status span{padding:5px 8px;border:1px solid #29364a;border-radius:999px;background:#0b111a;color:#8492a4;font-size:8px;font-weight:850;letter-spacing:.07em}.rune-status .ok{color:#e8ca75;border-color:rgba(216,180,93,.34);background:rgba(216,180,93,.055)}
+@media(max-width:640px){.buildlab-hero{padding:15px}.rune-forge-head{padding:10px}.rune-forge-head strong{font-size:15px}div[data-testid="stColumn"]:has(.wr-eq-label){border-right:0}}
+
 /* Premium leaderboard pass */
 .pair-rank-grid,.triple-rank-grid,.boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{counter-reset:sharpRank}
 .pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{overflow:hidden;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
@@ -1333,7 +1359,7 @@ with tabs[0]:
 
 
 with tabs[1]:
-    st.subheader("Build Lab")
+    st.markdown("""<div class="buildlab-hero"><span>SHARPWR • LOADOUT WORKBENCH</span><strong>Build Lab</strong><p>Configure champion, target, runes and items. Every choice feeds the same combat engine used by the benchmark rankings.</p></div>""",unsafe_allow_html=True)
 
     # Build Lab owns the manual champion/target/scenario controls.
     _bc1,_bc2=st.columns(2)
@@ -1359,7 +1385,7 @@ with tabs[1]:
     if champ=="Jhin": st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
 
     # Legal rune loadout: equip one slot at a time; completed pickers collapse.
-    st.markdown("**Rune Loadout**")
+    st.markdown("""<div class="rune-forge-head"><div class="gem"><b>✦</b></div><div><span>RUNE FORGE</span><strong>Configure Rune Loadout</strong></div></div>""",unsafe_allow_html=True)
     sub_trees=["Precision","Domination","Resolve","Sorcery"]
 
     # Explicit equipped state: None means the user still needs to choose that slot.
@@ -1372,6 +1398,9 @@ with tabs[1]:
     }
     for _k,_v in _rune_defaults.items():
         if _k not in st.session_state: st.session_state[_k]=_v
+    _rune_count=sum(bool(st.session_state.get(_k)) for _k in _rune_defaults)
+    _rune_state_class="ok" if _rune_count==5 else ""
+    st.markdown(f'<div class="rune-status"><span class="{_rune_state_class}">{_rune_count}/5 RUNES EQUIPPED</span><span>1 KEYSTONE</span><span>3 PRIMARY</span><span>1 SECONDARY</span></div>',unsafe_allow_html=True)
 
     st.markdown('<div class="wr-eq-wrap">',unsafe_allow_html=True)
     _eqcols=st.columns(5,gap="small")
