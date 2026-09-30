@@ -1013,7 +1013,7 @@ with tabs[0]:
         st.markdown(f"**{tier_champ} Lv{tier_level} • VS {tier_target.split(' • ')[0]} • {tier_scenario}**")
         # Premium icon-first ranking: keep the numeric table compact, but make each ranked item visually identifiable.
         _rank_html=['<div class="tier-rank-grid">']
-        for _,_r in df.iterrows():
+        for _,_r in df.head(10).iterrows():
             _name=str(_r["Item"]); _icon=item_icon(_name)
             _rank_html.append(
                 f'<div class="tier-rank-card">'
@@ -2004,16 +2004,17 @@ with tabs[1]:
             st.metric("Total Max Single Hit",f"{max_hit:.1f}")
 
 with tabs[2]:
-    st.subheader("Item Value")
+    st.markdown('<div class="combat-result-head"><div><span>GOLD & PERFORMANCE</span><strong>Item Value</strong></div><em>MAKE EVERY PURCHASE COUNT</em></div>',unsafe_allow_html=True)
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
     rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
     proc_items=["Fiendhunter Bolts","Rapid Firecannon","Phantom Dancer","Kraken Slayer","Statikk Shiv","Guinsoo\'s Rageblade","Essence Reaver","The Collector","Terminus","Stormrazor","Yun Tal Wildarrows","Trinity Force","Duskblade of Draktharr","Iceborn Gauntlet"]
-    st.markdown("**Item proc?**")
-    st.caption("ON = proc is used whenever its trigger/cooldown allows during the fight. OFF = proc disabled. Raw item stats remain active.")
     proc_states={}
-    pc=st.columns(4)
-    for i,pit in enumerate(proc_items):
-        proc_states[pit]=pc[i%4].checkbox(pit,value=True,key=f"iv_proc_{pit}")
+    with st.expander("Proc settings · customize item effects"):
+        st.caption("ON = proc is used whenever its trigger/cooldown allows during the fight. OFF = proc disabled. Raw item stats remain active.")
+        pc=st.columns(3)
+        for i,pit in enumerate(proc_items):
+            proc_states[pit]=pc[i%3].checkbox(pit,value=True,key=f"iv_proc_{pit}")
+    st.caption(f"{champ} · Level {level} · {hp:,.0f} target HP · {armor:g} Armor · {mr:g} MR · {sum(proc_states.values())}/{len(proc_states)} item effects enabled")
     if champ!="Jhin":
         rows=[]
         for it,v0 in F.items():
@@ -2022,11 +2023,44 @@ with tabs[2]:
             dps=row[4]; rows.append([item_icon(it),it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
         val=pd.DataFrame(rows,columns=["Icon","Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
         val.insert(0,"Rank",range(1,len(val)+1))
-        st.dataframe(val,use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
+        _iv_best=val.iloc[0]
+        _iv_raw=val.loc[val["Raw Gold Efficiency %"].idxmax()]
+        _iv_damage=val.loc[val["DPS"].idxmax()]
+        _iv_cols=st.columns(3)
+        _iv_cols[0].metric("Best DPS / 1000g",f"{_iv_best['DPS / 1000g']:.1f}",str(_iv_best["Item"]),delta_color="off")
+        _iv_cols[1].metric("Highest Raw Efficiency",f"{_iv_raw['Raw Gold Efficiency %']:.1f}%",str(_iv_raw["Item"]),delta_color="off")
+        _iv_cols[2].metric("Highest Item DPS",f"{_iv_damage['DPS']:.1f}",str(_iv_damage["Item"]),delta_color="off")
+        st.markdown('<div class="combat-stat-title">VALUE LEADERBOARD · TOP 10</div>',unsafe_allow_html=True)
+        st.markdown("""<style>
+        .value-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 22px}
+        .value-card{position:relative;min-width:0;padding:18px 12px 14px;border:1px solid #263246;border-radius:15px;background:linear-gradient(160deg,#111a27,#0a1018);text-align:center;transition:border-color .16s ease}
+        .value-card:first-child{border-color:#b9974d;background:linear-gradient(160deg,#252317,#10151d)}
+        .value-card:hover{border-color:#d8b45d}.value-rank{position:absolute;top:9px;left:10px;font-size:10px;color:#d8b45d;font-weight:800}
+        .value-card img{width:56px;height:56px;object-fit:cover;border-radius:11px;border:1px solid #394355;margin:6px 0 10px}
+        .value-name{font-size:12px;font-weight:750;color:#edf2f8;min-height:36px;line-height:1.4;overflow-wrap:anywhere}
+        .value-score{font-size:25px;font-weight:850;color:#f0d58a;line-height:1.3;margin-top:5px}.value-unit{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:#91a0b3}
+        .value-detail{border-top:1px solid #273140;margin-top:12px;padding-top:10px;display:flex;justify-content:space-between;gap:4px;font-size:10px;color:#aeb9c7}
+        @media(max-width:1000px){.value-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+        @media(max-width:640px){.value-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.value-card{padding:15px 8px 12px}.value-score{font-size:22px}}
+        </style>""",unsafe_allow_html=True)
+        _iv_cards=['<div class="value-grid">']
+        for _,_r in val.head(10).iterrows():
+            _iv_name=html.escape(str(_r["Item"]))
+            _iv_cards.append(f'<div class="value-card"><span class="value-rank">#{int(_r["Rank"]):02d}</span><img src="{html.escape(str(_r["Icon"]))}" alt="{_iv_name}"><div class="value-name">{_iv_name}</div><div class="value-score">{float(_r["DPS / 1000g"]):.1f}</div><div class="value-unit">DPS / 1000 GOLD</div><div class="value-detail"><span>{int(_r["Cost"]):,}g</span><span>{float(_r["Raw Gold Efficiency %"]):.1f}% raw</span></div></div>')
+        st.markdown("".join(_iv_cards)+"</div>",unsafe_allow_html=True)
+        with st.expander("Detailed item value table",expanded=True):
+            _iv_left,_iv_right=st.columns([2,1])
+            _iv_query=_iv_left.text_input("Find an item",placeholder="Search item name…",key="iv_search")
+            _iv_sort=_iv_right.selectbox("Sort by",["DPS / 1000g","Raw Gold Efficiency %","DPS","Cost"],key="iv_sort")
+            _iv_table=val[val["Item"].str.contains(_iv_query.strip(),case=False,regex=False)].sort_values(_iv_sort,ascending=_iv_sort=="Cost")
+            st.caption(f"{len(_iv_table)} of {len(val)} items · Rank refers to DPS / 1000g")
+            st.dataframe(_iv_table,use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
+    else:
+        st.info("Jhin item value rankings are pending dedicated four-shot and reload modeling.")
 
 with tabs[3]:
-    st.subheader("Database")
+    st.markdown('<div class="combat-result-head"><div><span>THE RESEARCH LIBRARY</span><strong>Database</strong></div><em>STATS · RUNES · ENGINE AUDITS</em></div>',unsafe_allow_html=True)
     dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True)
     if dbpick=="Runes":
         st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
@@ -2197,10 +2231,17 @@ with tabs[3]:
         st.caption(f"Target: {_atarget} • {_afull:.0f} HP • {_aar:.0f} Armor • {_amr:.0f} MR • Bonus HP {_abonus:.0f} • AA reduction {_ared*100:.0f}%")
     else:
         DB=F if dbpick=="Completed items" else P if dbpick=="Components" else B
+        _db_cols=st.columns(3)
+        _db_cols[0].metric("Records",len(DB))
+        _db_cols[1].metric("Lowest Cost",f"{min(dct(v)['gold'] for v in DB.values()):,.0f}g")
+        _db_cols[2].metric("Highest Cost",f"{max(dct(v)['gold'] for v in DB.values()):,.0f}g")
+        _db_query=st.text_input("Find a record",placeholder="Search item or boots name…",key="db_item_search")
         rows=[]
         for n,v0 in DB.items():
-            q=dct(v0); rows.append([n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
-        st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
+            if _db_query.strip().casefold() not in n.casefold(): continue
+            q=dct(v0); rows.append([boot_icon(n) if dbpick=="Boots" else item_icon(n),n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
+        st.caption(f"{len(rows)} of {len(DB)} records · Base stats")
+        st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.40 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.41 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
