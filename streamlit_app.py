@@ -635,11 +635,7 @@ with tabs[0]:
     tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
 
     _sq=_target_profile_at_level(SQUISHY_JINX_PROFILE,tier_level)
-    p1,p2,p3=st.columns(3)
-    p1.metric("VS Squishy • HP",f"{_sq['hp']:.0f}")
-    p2.metric("Armor",f"{_sq['armor']:.0f}")
-    p3.metric("MR",f"{_sq['mr']:.0f}")
-    st.caption("Squishy benchmark = Jinx progression. Missing checkpoint levels are linearly interpolated. Fighter and Tank profiles: coming later.")
+    st.caption("VS Squishy benchmark active. Fighter and Tank profiles: coming later.")
 
     te1,te2=st.columns(2)
     tier_dist=te1.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
