@@ -1448,7 +1448,7 @@ with tabs[2]:
 
 with tabs[3]:
     st.subheader("Database")
-    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes"],horizontal=True)
+    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit"],horizontal=True)
     if dbpick=="Runes":
         st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
         tree_filter=st.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
@@ -1523,6 +1523,53 @@ with tabs[3]:
         else: st.error(f"{len(_tests)-_passed} rune regression check(s) FAILED.")
         counts={tree:len(names) for tree,names in RUNE_TREES.items()}
         st.caption(" • ".join(f"{tree}: {count}" for tree,count in counts.items())+" • Total: 51")
+    elif dbpick=="Item Engine Audit":
+        st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
+        _audit_items=["Yun Tal Wildarrows","Terminus","Guinsoo's Rageblade","Kraken Slayer","Blade of the Ruined King","Hexoptics C44"]
+        _ai=st.selectbox("Audit item",_audit_items,key="item_engine_audit_item")
+        _ac1,_ac2,_ac3=st.columns(3)
+        _achamp=_ac1.selectbox("Attacker",list(C),index=list(C).index("Jinx") if "Jinx" in C else 0,key="item_audit_champ")
+        _alvl=_ac2.slider("Level",1,15,15,key="item_audit_level")
+        _atarget=_ac3.selectbox("Target",list(TARGET_PROFILES),index=list(TARGET_PROFILES).index("Tank • Ornn"),key="item_audit_target")
+        _aprof=_target_profile_at_level(TARGET_PROFILES[_atarget],_alvl)
+        _afull=float(_aprof["hp"]); _aar=float(_aprof["armor"]); _amr=float(_aprof["mr"]); _ared=float(_aprof.get("aa_reduction",0))
+        _anatural={"Squishy • Jinx":_afull,"Bruiser • Darius":660+148*gu(_alvl),"Tank • Ornn":690+132*gu(_alvl)}[_atarget]
+        _abonus=max(0.0,_afull-float(_anatural))
+        _ax1,_ax2=st.columns(2)
+        _adist=_ax1.number_input("Attack distance",0.0,1000.0,550.0,25.0,key="item_audit_dist")
+        _ayt_default=0 if _alvl<=5 else (125 if _alvl>=9 else round(125*(_alvl-5)/4))
+        _ayt=_ax2.number_input("Yun Tal starting stacks",0,125,int(_ayt_default),1,key=f"item_audit_yt_{_alvl}")
+        _ares,_alog=sim(_achamp,_alvl,_afull,_aar,_amr,_ai,F,0,_abonus,_adist,0.0,False,False,False,0,True,_ared,False,_ayt)
+        st.metric("Simulated DPS",f"{_ares[4]:.1f}")
+        _rows=[]
+        # sim log: attack, time, AS, crit%, effective armor, target HP before, damage, HP after, notes
+        for _r in _alog:
+            _k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note=_r
+            _state=""
+            if _ai=="Yun Tal Wildarrows":
+                _start=min(.25,_ayt*.002); _pre=min(.25,_start+max(0,_k-1)*.002); _post=min(.25,_start+_k*.002)
+                _state=f"Permanent crit {100*_pre:.1f}% → {100*_post:.1f}%"
+            elif _ai=="Terminus":
+                _dark=min(3,_k//2); _light=min(3,(_k+1)//2)
+                _state=f"Light {_light}/3 • Dark {_dark}/3 • Dark pen {_dark*10}%"
+            elif _ai=="Guinsoo's Rageblade":
+                _rb=min(4,_k); _after_full=max(0,_k-4); _ph=_after_full%3
+                _state=f"Seething {_rb}/4 • Phantom counter {_ph}/3"
+            elif _ai=="Kraken Slayer":
+                _state=f"Bring It Down counter {_k%3}/3"
+            elif _ai=="Blade of the Ruined King":
+                _state=f"Target HP before AA {_before:.1f}"
+            elif _ai=="Hexoptics C44":
+                _amp=0 if _adist<100 else min(10,int((_adist-100)//50)+1)
+                _state=f"Distance {_adist:.0f} • Magnification +{_amp}%"
+            _rows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note,_state])
+        _trace=pd.DataFrame(_rows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Item State"])
+        st.dataframe(_trace,use_container_width=True,hide_index=True)
+        if _ai=="Yun Tal Wildarrows":
+            st.info("Yun Tal trace currently exposes permanent-crit growth and Flurry trigger notes. Flurry cooldown reduction is executed inside sim(); a dedicated per-hit remaining-CD field would require extending sim()'s log schema.")
+        elif _ai=="Hexoptics C44":
+            st.caption("C44 distance is fixed for the entire simulation. With unchanged distance, every AA uses the same Magnification step.")
+        st.caption(f"Target: {_atarget} • {_afull:.0f} HP • {_aar:.0f} Armor • {_amr:.0f} MR • Bonus HP {_abonus:.0f} • AA reduction {_ared*100:.0f}%")
     else:
         DB=F if dbpick=="Completed items" else P if dbpick=="Components" else B
         rows=[]
