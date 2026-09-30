@@ -516,7 +516,7 @@ def _target_profile_at_level(profile,lvl):
     return {k:profile[lo][k]+(profile[hi][k]-profile[lo][k])*t for k in ("hp","armor","mr")}
 
 
-def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True):
+def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
@@ -584,7 +584,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         phy+=onp; mag+=onm
         if it=="Lord Dominik's Regards":
             amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
-        dmg=phy*rm(ea)+mag*rm(mr)+true; before=hp; hp-=dmg
+        dmg=phy*rm(ea)+mag*rm(mr)+true\n        if target_aa_reduction: dmg*=1-target_aa_reduction\n        before=hp; hp-=dmg
         if it=="The Collector" and item_proc:
             th=min(1,.05+.001*execs)
             if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
@@ -686,7 +686,7 @@ with tabs[1]:
     bonus_hp=_tu.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
     dist=_tv.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
     mana=_tw.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
-    with st.expander("Proc / scenario switches"):
+    target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")\n    target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0\n    with st.expander("Proc / scenario switches"):
         spell=st.checkbox("Ability cast before first AA (Spellblade ready)",spell,key="build_spell")
         energized=st.checkbox("Start with Energized/Jolt proc ready",energized,key="build_energized")
         ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",ult,key="build_ult")
@@ -1079,7 +1079,7 @@ with tabs[1]:
             if "Lord Dominik's Regards" in build:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
             em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
-            dmg=phy*rm(ea)+mag*rm(em)+true
+            dmg=phy*rm(ea)+mag*rm(em)+true\n            if target_aa_reduction: dmg*=1-target_aa_reduction
 
             # Rune effects read the live state before this hit.
             hp_pct=hp2/hp if hp else 0
