@@ -936,48 +936,153 @@ energized=bool(st.session_state.get("build_energized",True))
 ult=bool(st.session_state.get("build_ult",True))
 execs=int(st.session_state.get("build_execs",0))
 
+
+def _tab_hero(kicker,title,description):
+    st.markdown(f'<div class="buildlab-hero"><span>{html.escape(kicker)}</span><strong>{html.escape(title)}</strong><p>{html.escape(description)}</p></div>',unsafe_allow_html=True)
+
+def _setup_heading(step,kicker,title):
+    st.markdown(f'<div class="setup-head"><span class="setup-step">{html.escape(step)}</span><div><small>{html.escape(kicker)}</small><strong>{html.escape(title)}</strong></div></div>',unsafe_allow_html=True)
+
+def _champion_profile(name,lvl,mist_count=0):
+    profile=stats(name,lvl,mist_count)
+    slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(name,name)
+    portrait=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{slug}.png"
+    attack_speed=profile["baseas"]+profile["ratio"]*(profile["bba"]+profile["lvbas"])
+    st.markdown(f'<div class="champion-profile"><img src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div></div>',unsafe_allow_html=True)
+
+def _target_readout(target_hp,target_armor,target_mr,reduction=0):
+    st.markdown(f'<div class="target-readout"><span><b>{target_hp:,.0f}</b> HP</span><span><b>{target_armor:g}</b> Armor</span><span><b>{target_mr:g}</b> MR</span><span><b>{reduction*100:.0f}%</b> AA reduction</span></div>',unsafe_allow_html=True)
+
+def _audit_badges(rows,status_index=1):
+    counts={}
+    for row in rows: counts[row[status_index]]=counts.get(row[status_index],0)+1
+    badges="".join(f'<span class="audit-badge {"pending" if state.startswith(("Pending","Blocked")) else "partial" if state in ("Partial","Scenario","Trigger Lite") else "modeled"}">{html.escape(state)} <b>{count}</b></span>' for state,count in counts.items())
+    st.markdown(f'<div class="audit-badges">{badges}</div>',unsafe_allow_html=True)
+
+st.markdown("""<style>
+.setup-head{display:flex;align-items:center;gap:10px;margin:0 0 16px}.setup-step{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #6b5931;border-radius:9px;color:#f0d58a;font-size:11px;font-weight:850;background:#211e15}
+.setup-head strong{display:block;color:#edf2f8;font-size:17px}.setup-head small{display:block;font-size:9px;letter-spacing:.12em;color:#8796a9;text-transform:uppercase}
+.champion-profile{display:flex;gap:18px;align-items:center;margin-top:12px;padding:17px;border:1px solid #394052;border-radius:13px;background:linear-gradient(120deg,#1c2534,#0b111b)}
+.champion-profile img{width:86px;height:86px;border-radius:15px;object-fit:cover;border:1px solid #b9974d;box-shadow:0 8px 24px #0005}
+.champion-profile .identity{min-width:0;flex:1}.champion-profile .name{font-size:24px;font-weight:850;color:#f2f5fa;line-height:1.2}.champion-profile .level{font-size:10px;letter-spacing:.1em;color:#d8b45d;margin-top:4px}
+.champion-stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:14px}.champion-stats b{display:block;font-size:18px;color:#edf2f8}.champion-stats span{font-size:9px;letter-spacing:.07em;color:#8f9bac}
+.target-readout{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:15px;padding:12px 14px;border:1px solid #303e50;border-radius:11px;background:#090f18;font-size:11px;color:#a7b6c8}.target-readout b{color:#dce7f4}
+.combat-flags{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}.combat-flags span{font-size:9px;font-weight:750;letter-spacing:.03em;border:1px solid #2e3d50;border-radius:7px;padding:6px 9px;color:#8b9aae;background:#0a111b}.combat-flags span.active{border-color:#7d693c;background:#211e14;color:#f0d58a}
+.wr-icon-name,.wr-tree-name{color:#aebbcf!important}
+div[data-testid="stColumn"]:has(.wr-selected) .wr-icon-name,div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#f0d58a!important}
+@media(max-width:640px){
+  .champion-profile{gap:12px;padding:13px}.champion-profile img{width:68px;height:68px}.champion-profile .name{font-size:21px}.champion-stats{gap:18px;margin-top:10px}.champion-stats b{font-size:16px}
+  div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-pick-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-tree-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-eq-label),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .build-slot-marker){flex-wrap:wrap!important;gap:10px!important}
+  div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-pick-marker),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-tree-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important;padding:8px 4px!important;background:#0d1520;border:1px solid #29364a;border-radius:12px}
+  div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-eq-label),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.build-slot-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important}
+  div[data-testid="stHorizontalBlock"]:has(.wr-pick-marker)>div[data-testid="stColumn"]:not(:has(.wr-pick-marker)),div[data-testid="stHorizontalBlock"]:has(.wr-tree-marker)>div[data-testid="stColumn"]:not(:has(.wr-tree-marker)){display:none!important}
+  div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton{position:static!important;left:auto!important;transform:none!important;width:100%!important;height:auto!important;margin:3px 0 0!important;padding:0!important}
+  div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button{position:static!important;inset:auto!important;min-height:44px!important;height:44px!important;width:100%!important;opacity:1!important;color:#e8eef7!important;background:#182435!important;border:1px solid #3e4e65!important;font-size:11px!important}
+  div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button *,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button *{opacity:1!important}
+  .wr-icon-name{height:34px!important;font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere}.wr-tree-name{min-height:20px}.build-slot-name{overflow-wrap:anywhere}
+  div[data-testid="stColumn"]:has(.wr-eq-label) .stButton button,div[data-testid="stColumn"]:has(.build-slot-marker) .stButton button{min-height:44px!important;font-size:11px!important}
+  div[data-testid="stColumn"]:has(.wr-eq-label) div[data-testid="stImage"] img{max-width:100%!important}
+}
+@media(prefers-reduced-motion:reduce){div[data-testid="stColumn"]:has(.wr-pick-marker) *,div[data-testid="stColumn"]:has(.wr-tree-marker) *{transition:none!important}}
+</style>""",unsafe_allow_html=True)
+
+st.markdown("""<style>
+.value-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 22px}
+.value-card{position:relative;min-width:0;padding:18px 12px 14px;border:1px solid #263246;border-radius:15px;background:linear-gradient(160deg,#111a27,#0a1018);text-align:center;transition:border-color .16s ease}
+.value-card:first-child{border-color:#b9974d;background:linear-gradient(160deg,#252317,#10151d)}
+.value-card:hover{border-color:#d8b45d}.value-rank{position:absolute;top:9px;left:10px;font-size:10px;color:#d8b45d;font-weight:800}
+.value-card img{width:56px;height:56px;object-fit:cover;border-radius:11px;border:1px solid #394355;margin:6px 0 10px}
+.value-name{font-size:12px;font-weight:750;color:#edf2f8;min-height:36px;line-height:1.4;overflow-wrap:anywhere}
+.value-score{font-size:25px;font-weight:850;color:#f0d58a;line-height:1.3;margin-top:5px}.value-unit{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:#91a0b3}
+.value-detail{border-top:1px solid #273140;margin-top:12px;padding-top:10px;display:flex;justify-content:space-between;gap:4px;font-size:10px;color:#aeb9c7}
+@media(max-width:1000px){.value-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.value-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.value-card{padding:15px 8px 12px}.value-score{font-size:22px}}
+</style>""",unsafe_allow_html=True)
+st.markdown("""<style>
+/* Shared final design system: panels, rankings, states and responsive navigation. */
+[data-testid="stWidgetLabel"] p,div[role="radiogroup"] label p,[data-testid="stCheckbox"] label p{color:#d8e2f0!important}
+[data-testid="stCaptionContainer"] p{color:#91a0b4!important}
+div[data-baseweb="select"]>div{color:#eef3f8!important}
+[data-testid="stNumberInput"] input,[data-testid="stTextInput"] input{color:#eef3f8!important}
+[data-testid="stMetricDelta"]{color:#aebdd0!important}
+
+.buildlab-hero strong{font-size:28px;letter-spacing:-.03em}.buildlab-hero p{font-size:12px;line-height:1.6;max-width:850px}
+[data-testid="stBaseButton-primary"]{border-color:#b49347!important;background:linear-gradient(120deg,#d8b45d,#f0d58a)!important;color:#10141b!important;min-height:48px!important}
+[data-testid="stBaseButton-primary"]:hover{color:#10141b!important;border-color:#f5dda0!important;box-shadow:0 4px 20px #d8b45d22!important}
+.audit-badges{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.audit-badge{border:1px solid #344359;background:#111b29;color:#b6c5d8;padding:6px 9px;font-size:10px;border-radius:8px}.audit-badge b{margin-left:5px}.audit-badge.modeled{border-color:#2c6559;color:#9fdbc7;background:#0d221f}.audit-badge.pending{border-color:#745134;color:#e8bd86;background:#21180e}.audit-badge.partial{border-color:#655b3a;color:#e3d294;background:#201e11}
+.empty-state{padding:28px 20px;text-align:center;border:1px dashed #3b4b62;border-radius:14px;background:#0b121c;margin:18px 0}.empty-state strong{display:block;font-size:17px;color:#dce7f5}.empty-state p{margin:7px 0 0;font-size:12px;color:#8c9eb4}
+.tier-rank-card,.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{padding:18px 12px 14px!important;border-radius:15px!important;background:linear-gradient(160deg,#111a27,#0a1018)!important;border-color:#263246!important;color:#e9eff7!important;box-shadow:0 8px 22px #0002!important}
+.tier-rank-card:first-child,.pair-rank-card:first-child,.triple-rank-card:first-child,.boot3-rank-card:first-child,.boot4-rank-card:first-child,.full-rank-card:first-child{border-color:#b9974d!important;background:linear-gradient(160deg,#252317,#10151d)!important}
+.tier-rank-name,.pair-rank-name,.triple-rank-name,.boot3-name,.boot4-name,.full-name{font-size:11px!important;line-height:1.4!important;color:#dce6f3!important;overflow-wrap:anywhere}
+.tier-rank-dps,.pair-dps,.triple-dps,.boot3-dps,.boot4-dps,.full-dps{font-size:23px!important;color:#f0d58a!important;line-height:1.4!important}
+.tier-rank-sub,.pair-sub,.triple-sub,.boot3-sub,.boot4-sub,.full-sub{font-size:10px!important;color:#a4b3c6!important;opacity:1!important;white-space:normal!important;line-height:1.5!important}
+.pair-icons,.triple-icons,.boot3-icons,.boot4-icons,.full-icons{flex-wrap:wrap;gap:5px!important}
+[data-testid="stDataFrame"]{max-width:100%;overflow:auto}.stButton button:focus-visible{outline:2px solid #f0d58a!important;outline-offset:3px!important}
+div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button:disabled{cursor:default!important}
+@media(max-width:1000px){.boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){
+ [data-testid="stMainBlockContainer"]{padding-left:12px!important;padding-right:12px!important}
+ div[data-testid="stTabs"] [data-baseweb="tab-list"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;width:100%;overflow:visible!important}
+ div[data-testid="stTabs"] button[data-baseweb="tab"]{min-width:0;width:100%;padding:0 8px!important;height:44px!important;justify-content:center;font-size:12px}
+ .buildlab-hero{padding:16px}.buildlab-hero strong{font-size:25px}
+ .tier-rank-grid,.pair-rank-grid,.triple-rank-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{grid-template-columns:minmax(0,1fr)!important;gap:10px!important}
+ .triple-rank-card:first-child,.boot3-rank-card:first-child,.boot4-rank-card:first-child,.full-rank-card:first-child,.pair-rank-card:first-child{grid-column:auto!important}
+ .tier-rank-card,.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{padding:17px 10px 12px!important}
+ .full-icons img,.boot4-icons img,.boot3-icons img{width:38px!important;height:38px!important}.full-name,.boot4-name,.boot3-name{min-height:0!important;margin:10px 0!important}
+ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button:disabled{color:#728299!important;background:#0c131e!important;border-color:#263448!important}
+ .combat-hero{grid-template-columns:repeat(2,minmax(0,1fr))!important}.combat-kpi{min-width:0}.combat-kpi .value{font-size:26px!important}.combat-kpi .sub{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){.stButton button,.tier-rank-card,.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{transition:none!important;transform:none!important}}
+</style>""",unsafe_allow_html=True)
+
 tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database"])
 
 with tabs[0]:
-    st.subheader("Item Tier List")
-    st.caption("Enemy champion selection removed. Items are tested against fixed level-based target profiles.")
+    _tab_hero("SHARPWR • ITEM BENCHMARKS","Item Tier List","Compare legal builds against fixed target profiles. Top 10 cards highlight the leaders; detailed tables retain every tested result.")
 
-    tc1,tc2=st.columns(2)
-    tier_champ=tc1.selectbox("Champion",list(C),index=list(C).index(champ),key="tier_champ")
-    tier_level=tc2.slider("Level",1,15,level,key="tier_level")
-    tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
+    _tier_left,_tier_right=st.columns(2,gap="medium")
+    with _tier_left,st.container(border=True):
+        _setup_heading("01","YOUR CHAMPION","Champion Profile")
+        tier_champ=st.selectbox("Champion",list(C),index=list(C).index(champ),key="tier_champ")
+        tier_level=st.slider("Level",1,15,level,key="tier_level")
+        tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
+        _champion_profile(tier_champ,tier_level,tier_mist)
+    with _tier_right,st.container(border=True):
+        _setup_heading("02","FIXED BENCHMARK","Target Profile")
+        tier_target=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="tier_target",label_visibility="collapsed")
+        _target=_target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
+        _target_readout(_target["hp"],_target["armor"],_target["mr"],_target.get("aa_reduction",0))
+        st.caption("Darius / Ornn apply 10% basic-attack reduction from level 5. Starting HP is configured below.")
 
-    tier_target=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="tier_target")
-    _target=_target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
-    st.caption("Fixed benchmark target active. Darius/Ornn automatically apply the 10% Steelcaps/Armored Advance basic-attack reduction from Lv5 onward.")
-
-    st.markdown("**Scenario Preset**")
     _scenario_defs={
         "Standard Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Fresh all-in from full HP. Item stacks start at 0 and build naturally."},
         "First Contact":{"hp_pct":100,"spell":True,"energized":True,"ult":False,"desc":"Fresh target with first-contact triggers prepared: Spellblade + Energized ready."},
         "Extended Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Sustained all-in from 0 stacks. Current engine still measures target TTK; fixed-duration damage is not enabled yet."},
         "Low HP Target":{"hp_pct":35,"spell":False,"energized":False,"ult":False,"desc":"Finisher test: target starts at 35% HP; defenses and boot mitigation stay unchanged."},
     }
-    tier_scenario=st.radio("Combat Scenario",list(_scenario_defs),horizontal=True,key="tier_scenario",label_visibility="collapsed")
-    _sc=_scenario_defs[tier_scenario]
-    st.caption(_sc["desc"])
+    with st.container(border=True):
+        _setup_heading("03","COMBAT CONDITIONS","Scenario Setup")
+        tier_scenario=st.radio("Combat Scenario",list(_scenario_defs),horizontal=True,key="tier_scenario")
+        _sc=_scenario_defs[tier_scenario]
+        st.caption(_sc["desc"])
 
-    with st.expander("Advanced Scenario Settings"):
-        ta1,ta2=st.columns(2)
-        tier_start_hp_pct=ta1.slider("Target Starting HP %",1,100,int(_sc["hp_pct"]),1,key=f"tier_hp_pct_{tier_scenario}")
-        tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
-        ta3,ta4=st.columns(2)
-        tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
-        tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
-        # Tier-list benchmark progression: Yun Tal is assumed newly bought at Lv5
-        # (0 permanent stacks) and naturally reaches its 125-stack / +25% crit cap
-        # by Lv9. Intermediate levels grow linearly; combat AAs continue stacking it.
-        _tier_yuntal_default = 0 if tier_level <= 5 else (125 if tier_level >= 9 else round(125*(tier_level-5)/4))
-        tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}",help="Benchmark default: Lv5 = 0, Lv6 = 31, Lv7 = 62/63, Lv8 = 94, Lv9+ = 125. Ranged attacks continue granting +0.2% permanent crit during combat.")
-        tb1,tb2,tb3=st.columns(3)
-        tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
-        tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
-        tier_ult=tb3.checkbox("Ultimate pre-cast",value=_sc["ult"],key=f"tier_ult_{tier_scenario}")
+        with st.expander("Advanced Scenario Settings"):
+            ta1,ta2=st.columns(2)
+            tier_start_hp_pct=ta1.slider("Target Starting HP %",1,100,int(_sc["hp_pct"]),1,key=f"tier_hp_pct_{tier_scenario}")
+            tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
+            ta3,ta4=st.columns(2)
+            tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
+            tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+            # Tier-list benchmark progression: Yun Tal is assumed newly bought at Lv5
+            # (0 permanent stacks) and naturally reaches its 125-stack / +25% crit cap
+            # by Lv9. Intermediate levels grow linearly; combat AAs continue stacking it.
+            _tier_yuntal_default = 0 if tier_level <= 5 else (125 if tier_level >= 9 else round(125*(tier_level-5)/4))
+            tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}",help="Benchmark default: Lv5 = 0, Lv6 = 31, Lv7 = 62/63, Lv8 = 94, Lv9+ = 125. Ranged attacks continue granting +0.2% permanent crit during combat.")
+            tb1,tb2,tb3=st.columns(3)
+            tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
+            tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
+            tier_ult=tb3.checkbox("Ultimate pre-cast",value=_sc["ult"],key=f"tier_ult_{tier_scenario}")
 
     if tier_champ=="Jhin":
         st.warning("Jhin is excluded until the 4-shot + reload model is added.")
@@ -1046,7 +1151,8 @@ with tabs[0]:
             for _it in F:
                 _cat,_status,_note=ITEM_SCENARIO_AUDIT.get(_it,("static stats","modeled","Static offensive stats only."))
                 _audit_rows.append([_it,_cat,_status,_note])
-            st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
+            _audit_badges(_audit_rows,status_index=2)
+        st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
 
 
         st.divider()
@@ -1373,60 +1479,32 @@ with tabs[0]:
             with st.expander("Detailed full-build ranking table"):
                 st.dataframe(_full_df,width="stretch",hide_index=True)
             st.caption(f"{len(_full_df)} unique full builds tested by expanding the top {len(_full_seed)} Boots + 4 results. Full build = 5 completed items + 1 Tier 3 boot; Tier 2 boots are excluded.")
+    else:
+        st.markdown('<div class="empty-state"><strong>Your benchmark is ready</strong><p>Choose a champion, target and scenario, then calculate to reveal the Top 10 rankings.</p></div>',unsafe_allow_html=True)
 
 
 with tabs[1]:
-    st.markdown("""<div class="buildlab-hero"><span>SHARPWR • LOADOUT WORKBENCH</span><strong>Build Lab</strong><p>Configure champion, target, runes and items. Every choice feeds the same combat engine used by the benchmark rankings.</p></div>""",unsafe_allow_html=True)
-    st.markdown("""<style>
-    .setup-head{display:flex;align-items:center;gap:10px;margin:0 0 16px}.setup-step{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #6b5931;border-radius:9px;color:#f0d58a;font-size:11px;font-weight:850;background:#211e15}
-    .setup-head strong{display:block;color:#edf2f8;font-size:17px}.setup-head small{display:block;font-size:9px;letter-spacing:.12em;color:#8796a9;text-transform:uppercase}
-    .champion-profile{display:flex;gap:18px;align-items:center;margin-top:12px;padding:17px;border:1px solid #394052;border-radius:13px;background:linear-gradient(120deg,#1c2534,#0b111b)}
-    .champion-profile img{width:86px;height:86px;border-radius:15px;object-fit:cover;border:1px solid #b9974d;box-shadow:0 8px 24px #0005}
-    .champion-profile .identity{min-width:0;flex:1}.champion-profile .name{font-size:24px;font-weight:850;color:#f2f5fa;line-height:1.2}.champion-profile .level{font-size:10px;letter-spacing:.1em;color:#d8b45d;margin-top:4px}
-    .champion-stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:14px}.champion-stats b{display:block;font-size:18px;color:#edf2f8}.champion-stats span{font-size:9px;letter-spacing:.07em;color:#8f9bac}
-    .target-readout{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:15px;padding:12px 14px;border:1px solid #303e50;border-radius:11px;background:#090f18;font-size:11px;color:#a7b6c8}.target-readout b{color:#dce7f4}
-    .combat-flags{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}.combat-flags span{font-size:9px;font-weight:750;letter-spacing:.03em;border:1px solid #2e3d50;border-radius:7px;padding:6px 9px;color:#8b9aae;background:#0a111b}.combat-flags span.active{border-color:#7d693c;background:#211e14;color:#f0d58a}
-    .wr-icon-name,.wr-tree-name{color:#aebbcf!important}
-    div[data-testid="stColumn"]:has(.wr-selected) .wr-icon-name,div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#f0d58a!important}
-    @media(max-width:640px){
-      .champion-profile{gap:12px;padding:13px}.champion-profile img{width:68px;height:68px}.champion-profile .name{font-size:21px}.champion-stats{gap:18px;margin-top:10px}.champion-stats b{font-size:16px}
-      div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-pick-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-tree-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-eq-label),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .build-slot-marker){flex-wrap:wrap!important;gap:10px!important}
-      div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-pick-marker),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-tree-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important;padding:8px 4px!important;background:#0d1520;border:1px solid #29364a;border-radius:12px}
-      div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-eq-label),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.build-slot-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important}
-      div[data-testid="stHorizontalBlock"]:has(.wr-pick-marker)>div[data-testid="stColumn"]:not(:has(.wr-pick-marker)),div[data-testid="stHorizontalBlock"]:has(.wr-tree-marker)>div[data-testid="stColumn"]:not(:has(.wr-tree-marker)){display:none!important}
-      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton{position:static!important;left:auto!important;transform:none!important;width:100%!important;height:auto!important;margin:3px 0 0!important;padding:0!important}
-      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button{position:static!important;inset:auto!important;min-height:44px!important;height:44px!important;width:100%!important;opacity:1!important;color:#e8eef7!important;background:#182435!important;border:1px solid #3e4e65!important;font-size:11px!important}
-      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button *,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button *{opacity:1!important}
-      .wr-icon-name{height:34px!important;font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere}.wr-tree-name{min-height:20px}.build-slot-name{overflow-wrap:anywhere}
-      div[data-testid="stColumn"]:has(.wr-eq-label) .stButton button,div[data-testid="stColumn"]:has(.build-slot-marker) .stButton button{min-height:44px!important;font-size:11px!important}
-      div[data-testid="stColumn"]:has(.wr-eq-label) div[data-testid="stImage"] img{max-width:100%!important}
-    }
-    @media(prefers-reduced-motion:reduce){div[data-testid="stColumn"]:has(.wr-pick-marker) *,div[data-testid="stColumn"]:has(.wr-tree-marker) *{transition:none!important}}
-    </style>""",unsafe_allow_html=True)
-
+    _tab_hero("SHARPWR • LOADOUT WORKBENCH","Build Lab","Configure champion, target, runes and items. Build a full loadout and inspect its combat performance.")
     # Build Lab owns the manual champion/target/scenario controls.
     _champ_panel,_target_panel=st.columns([1,1],gap="medium")
     with _champ_panel,st.container(border=True):
-        st.markdown('<div class="setup-head"><span class="setup-step">01</span><div><small>YOUR CHAMPION</small><strong>Champion Profile</strong></div></div>',unsafe_allow_html=True)
+        _setup_heading("01","YOUR CHAMPION","Champion Profile")
         champ=st.selectbox("Champion",list(C),index=list(C).index(champ),key="build_champ")
         level=st.slider("Level",1,15,level,key="build_level")
         mist=st.number_input("Senna Mist",0,500,int(mist),20,key="build_mist") if champ=="Senna" else 0
         s=stats(champ,level,mist)
-        _portrait_slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(champ,champ)
-        _portrait_url=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{_portrait_slug}.png"
-        _profile_as=s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"])
-        st.markdown(f'<div class="champion-profile"><img src="{html.escape(_portrait_url)}" alt="{html.escape(champ)} portrait"><div class="identity"><div class="name">{html.escape(champ)}</div><div class="level">LEVEL {level} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{s["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{_profile_as:.3f}</b><span>ATTACK SPEED</span></div></div></div></div>',unsafe_allow_html=True)
+        _champion_profile(champ,level,mist)
     with _target_panel,st.container(border=True):
-        st.markdown('<div class="setup-head"><span class="setup-step">02</span><div><small>YOUR OPPONENT</small><strong>Target Defense</strong></div></div>',unsafe_allow_html=True)
+        _setup_heading("02","YOUR OPPONENT","Target Defense")
         hp=st.number_input("Target HP",100,20000,int(hp),100,key="build_target_hp")
         _ty,_tz=st.columns(2)
         armor=_ty.number_input("Target Armor",0.0,1000.0,float(armor),5.0,key="build_target_armor")
         mr=_tz.number_input("Target MR",0.0,1000.0,float(mr),5.0,key="build_target_mr")
         target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")
         target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0
-        st.markdown(f'<div class="target-readout"><span><b>{hp:,}</b> HP</span><span><b>{armor:g}</b> Armor</span><span><b>{mr:g}</b> MR</span><span><b>{target_aa_reduction*100:.0f}%</b> AA reduction</span></div>',unsafe_allow_html=True)
+        _target_readout(hp,armor,mr,target_aa_reduction)
     with st.container(border=True):
-        st.markdown('<div class="setup-head"><span class="setup-step">03</span><div><small>STARTING CONDITIONS</small><strong>Combat Setup</strong></div></div>',unsafe_allow_html=True)
+        _setup_heading("03","STARTING CONDITIONS","Combat Setup")
         _proc_cols=st.columns(3)
         spell=_proc_cols[0].checkbox("Spellblade ready",spell,key="build_spell",help="Ability cast before the first basic attack.")
         energized=_proc_cols[1].checkbox("Energized ready",energized,key="build_energized",help="Start with Energized / Jolt proc ready.")
@@ -1522,51 +1600,52 @@ with tabs[1]:
     combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
     # Progression controls are generated for every selected rune that needs persistent state.
     selected_runes=[keystone]+selected_sub_runes
-    dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if "Dark Harvest" in selected_runes else 0
-    eyeball_stacks=st.number_input("Eyeball Collection stacks",0,8,8,1,key="eyeball_stacks") if "Eyeball Collection" in selected_runes else 0
-    hubris_kills=st.number_input("Hubris — champion kill count",0,100,0,1,key="hubris_kills") if "Hubris" in selected_runes else 0
-    hubris_active=st.checkbox("Hubris — 30s Adaptive Force buff active",value=False,key="hubris_active") if "Hubris" in selected_runes else False
-    alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
-    haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
-    bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
-    # Ability Trigger Engine Lite: shared combat events drive rune triggers.
-    _needs_ability_event=any(r in selected_runes for r in ["Arcane Comet","Chain Assault","Scorch","Transcendence","Manaflow Band"])
-    _needs_basic_event=("Transcendence" in selected_runes)
-    _needs_ult_event=("Axiom Arcanist" in selected_runes)
-    _needs_immobilize=any(r in selected_runes for r in ["Ice Overlord","Courage of the Colossus","Perseverance"])
-    _needs_mobility=("Sudden Impact" in selected_runes)
-    _needs_summoner=("Nimbus Cloak" in selected_runes)
-    _needs_takedown=any(r in selected_runes for r in ["Triumph","Hubris","Axiom Arcanist"])
+    with st.expander("Rune combat settings · progression & triggers"):
+        dark_harvest_souls=st.number_input("Dark Harvest souls",0,500,0,1,key="dh_souls") if "Dark Harvest" in selected_runes else 0
+        eyeball_stacks=st.number_input("Eyeball Collection stacks",0,8,8,1,key="eyeball_stacks") if "Eyeball Collection" in selected_runes else 0
+        hubris_kills=st.number_input("Hubris — champion kill count",0,100,0,1,key="hubris_kills") if "Hubris" in selected_runes else 0
+        hubris_active=st.checkbox("Hubris — 30s Adaptive Force buff active",value=False,key="hubris_active") if "Hubris" in selected_runes else False
+        alacrity_full=st.checkbox("Legend: Alacrity — full progression (+21% AS total)",value=False,key="alacrity_full") if "Legend: Alacrity" in selected_runes else False
+        haste_full=st.checkbox("Legend: Haste — full progression (+15 Ability Haste)",value=False,key="haste_full") if "Legend: Haste" in selected_runes else False
+        bloodline_full=st.checkbox("Legend: Bloodline — full progression (+8% Omnivamp total)",value=False,key="bloodline_full") if "Legend: Bloodline" in selected_runes else False
+        # Ability Trigger Engine Lite: shared combat events drive rune triggers.
+        _needs_ability_event=any(r in selected_runes for r in ["Arcane Comet","Chain Assault","Scorch","Transcendence","Manaflow Band"])
+        _needs_basic_event=("Transcendence" in selected_runes)
+        _needs_ult_event=("Axiom Arcanist" in selected_runes)
+        _needs_immobilize=any(r in selected_runes for r in ["Ice Overlord","Courage of the Colossus","Perseverance"])
+        _needs_mobility=("Sudden Impact" in selected_runes)
+        _needs_summoner=("Nimbus Cloak" in selected_runes)
+        _needs_takedown=any(r in selected_runes for r in ["Triumph","Hubris","Axiom Arcanist"])
 
-    if any([_needs_ability_event,_needs_basic_event,_needs_ult_event,_needs_immobilize,_needs_mobility,_needs_summoner,_needs_takedown]):
-        st.markdown("**Combat Events — Trigger Engine Lite**")
-        st.caption("These are trigger events only; champion ability damage is not calculated.")
-    ability_hit=st.checkbox("Ability Hit",value=False,key="evt_ability_hit") if _needs_ability_event else False
-    basic_ability_hit=st.checkbox("Basic Ability Hit",value=False,key="evt_basic_hit") if _needs_basic_event else False
-    ultimate_hit=st.checkbox("Ultimate Hit / Cast",value=False,key="evt_ultimate_hit") if _needs_ult_event else False
-    immobilize_event=st.checkbox("Immobilized enemy champion",value=False,key="evt_immobilize") if _needs_immobilize else False
-    mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="evt_mobility") if _needs_mobility else False
-    summoner_used=st.checkbox("Summoner Spell Used",value=False,key="evt_summoner") if _needs_summoner else False
-    takedown_event=st.checkbox("Champion Takedown",value=False,key="evt_takedown") if _needs_takedown else False
+        if any([_needs_ability_event,_needs_basic_event,_needs_ult_event,_needs_immobilize,_needs_mobility,_needs_summoner,_needs_takedown]):
+            st.markdown("**Combat Events — Trigger Engine Lite**")
+            st.caption("These are trigger events only; champion ability damage is not calculated.")
+        ability_hit=st.checkbox("Ability Hit",value=False,key="evt_ability_hit") if _needs_ability_event else False
+        basic_ability_hit=st.checkbox("Basic Ability Hit",value=False,key="evt_basic_hit") if _needs_basic_event else False
+        ultimate_hit=st.checkbox("Ultimate Hit / Cast",value=False,key="evt_ultimate_hit") if _needs_ult_event else False
+        immobilize_event=st.checkbox("Immobilized enemy champion",value=False,key="evt_immobilize") if _needs_immobilize else False
+        mobility_trigger=st.checkbox("Dash / leap / blink / teleport / stealth used",value=False,key="evt_mobility") if _needs_mobility else False
+        summoner_used=st.checkbox("Summoner Spell Used",value=False,key="evt_summoner") if _needs_summoner else False
+        takedown_event=st.checkbox("Champion Takedown",value=False,key="evt_takedown") if _needs_takedown else False
 
-    # Existing rune-specific states that are not generic combat events.
-    first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
-    grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
-    aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
-    comet_ability_hit=ability_hit
-    comet_total_hits=st.number_input("Arcane Comet — previous champion hits",0,999,0,1,key="comet_hits") if "Arcane Comet" in selected_runes else 0
-    fleet_ready=st.checkbox("Fleet Footwork — start at 100 Energy",value=False,key="fleet_ready") if "Fleet Footwork" in selected_runes else False
-    target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
-    chain_marked=ability_hit if "Chain Assault" in selected_runes else False
-    own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
-    battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
-    absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
-    scorch_ability_hit=ability_hit
-    nearby_enemies=st.slider("Unshakeable — nearby enemy champions",0,3,3,1,key="unshakeable_enemies") if "Unshakeable" in selected_runes else 0
-    overgrowth_stacks=st.number_input("Overgrowth — stacks",0,999,60,1,key="overgrowth_stacks") if "Overgrowth" in selected_runes else 0
-    font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
-    game_minute=st.slider("Gathering Storm — game minute",0,21,15,1,key="gathering_storm_minute") if "Gathering Storm" in selected_runes else 0
-    axiom_ult_scenario=ultimate_hit if "Axiom Arcanist" in selected_runes else False
+        # Existing rune-specific states that are not generic combat events.
+        first_strike_ready=st.checkbox("First Strike — proc ready at combat start",value=True,key="first_strike_ready") if "First Strike" in selected_runes else False
+        grasp_ready=st.checkbox("Grasp — already 3s in champion combat",value=False,key="grasp_ready") if "Grasp of the Undying" in selected_runes else False
+        aery_ready=st.checkbox("Aery — available at combat start",value=True,key="aery_ready") if "Aery" in selected_runes else False
+        comet_ability_hit=ability_hit
+        comet_total_hits=st.number_input("Arcane Comet — previous champion hits",0,999,0,1,key="comet_hits") if "Arcane Comet" in selected_runes else 0
+        fleet_ready=st.checkbox("Fleet Footwork — start at 100 Energy",value=False,key="fleet_ready") if "Fleet Footwork" in selected_runes else False
+        target_impaired=st.checkbox("Target is movement-impaired",value=False,key="target_impaired") if "Cheap Shot" in selected_runes else False
+        chain_marked=ability_hit if "Chain Assault" in selected_runes else False
+        own_hp_pct=st.slider("Your current Health",0,100,100,1,format="%d%%",key="rune_own_hp") if "Last Stand" in selected_runes else 100
+        battle_seconds=st.number_input("Battle Zeal — seconds already in champion combat",0,3,0,1,key="battle_zeal_seconds") if "Battle Zeal" in selected_runes else 0
+        absolute_focus_active=st.checkbox("Absolute Focus — above 65% Health",value=True,key="absolute_focus_active") if "Absolute Focus" in selected_runes else False
+        scorch_ability_hit=ability_hit
+        nearby_enemies=st.slider("Unshakeable — nearby enemy champions",0,3,3,1,key="unshakeable_enemies") if "Unshakeable" in selected_runes else 0
+        overgrowth_stacks=st.number_input("Overgrowth — stacks",0,999,60,1,key="overgrowth_stacks") if "Overgrowth" in selected_runes else 0
+        font_ally_near=st.checkbox("Font of Life — injured ally nearby",value=False,key="font_ally_near") if "Font of Life" in selected_runes else False
+        game_minute=st.slider("Gathering Storm — game minute",0,21,15,1,key="gathering_storm_minute") if "Gathering Storm" in selected_runes else 0
+        axiom_ult_scenario=ultimate_hit if "Axiom Arcanist" in selected_runes else False
 
     st.caption(f"Loadout: {keystone} • {primary_tree}: {primary_1} / {primary_2} / {primary_3} • {secondary_tree}: {secondary_rune}")
     _passive_notes=[]
@@ -1645,7 +1724,7 @@ with tabs[1]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button("Equipped" if _selected else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
+                if st.button("Equipped" if _selected else "Build full" if len(build)>=5 else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
                     _new=list(st.session_state.build_items_v2)
                     if _name not in _new and len(_new)<5:
                         _new.append(_name); st.session_state.build_items_v2=_new
@@ -2045,8 +2124,20 @@ with tabs[1]:
             st.metric("Total Max Single Hit",f"{max_hit:.1f}")
 
 with tabs[2]:
-    st.markdown('<div class="combat-result-head"><div><span>GOLD & PERFORMANCE</span><strong>Item Value</strong></div><em>MAKE EVERY PURCHASE COUNT</em></div>',unsafe_allow_html=True)
+    _tab_hero("SHARPWR • GOLD & PERFORMANCE","Item Value","Find the strongest purchases for your selected champion and target. Compare combat output and directly priced raw stats.")
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
+    _iv_champion,_iv_target=st.columns(2,gap="medium")
+    with _iv_champion,st.container(border=True):
+        _setup_heading("01","ACTIVE CHAMPION","Champion Profile")
+        _champion_profile(champ,level,mist)
+        st.caption("Champion and level follow your Build Lab selection.")
+    with _iv_target,st.container(border=True):
+        _setup_heading("02","ACTIVE BENCHMARK","Target Conditions")
+        # Item Value's existing single-item model does not apply target boots.
+        _target_readout(hp,armor,mr)
+        st.caption("Uses Build Lab HP, Armor and MR. Target boot reduction and runes are excluded from this single-item comparison.")
+        _iv_flags=[("Spellblade",spell),("Energized",energized),("Ultimate pre-cast",ult)]
+        st.markdown('<div class="combat-flags">'+"".join(f'<span class="{"active" if on else ""}">{name} · {"ON" if on else "OFF"}</span>' for name,on in _iv_flags)+f'<span>{dist:g} ATTACK DISTANCE</span></div>',unsafe_allow_html=True)
     rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
     proc_items=["Fiendhunter Bolts","Rapid Firecannon","Phantom Dancer","Kraken Slayer","Statikk Shiv","Guinsoo\'s Rageblade","Essence Reaver","The Collector","Terminus","Stormrazor","Yun Tal Wildarrows","Trinity Force","Duskblade of Draktharr","Iceborn Gauntlet"]
     proc_states={}
@@ -2072,18 +2163,6 @@ with tabs[2]:
         _iv_cols[1].metric("Highest Raw Efficiency",f"{_iv_raw['Raw Gold Efficiency %']:.1f}%",str(_iv_raw["Item"]),delta_color="off")
         _iv_cols[2].metric("Highest Item DPS",f"{_iv_damage['DPS']:.1f}",str(_iv_damage["Item"]),delta_color="off")
         st.markdown('<div class="combat-stat-title">VALUE LEADERBOARD · TOP 10</div>',unsafe_allow_html=True)
-        st.markdown("""<style>
-        .value-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:12px 0 22px}
-        .value-card{position:relative;min-width:0;padding:18px 12px 14px;border:1px solid #263246;border-radius:15px;background:linear-gradient(160deg,#111a27,#0a1018);text-align:center;transition:border-color .16s ease}
-        .value-card:first-child{border-color:#b9974d;background:linear-gradient(160deg,#252317,#10151d)}
-        .value-card:hover{border-color:#d8b45d}.value-rank{position:absolute;top:9px;left:10px;font-size:10px;color:#d8b45d;font-weight:800}
-        .value-card img{width:56px;height:56px;object-fit:cover;border-radius:11px;border:1px solid #394355;margin:6px 0 10px}
-        .value-name{font-size:12px;font-weight:750;color:#edf2f8;min-height:36px;line-height:1.4;overflow-wrap:anywhere}
-        .value-score{font-size:25px;font-weight:850;color:#f0d58a;line-height:1.3;margin-top:5px}.value-unit{font-size:9px;text-transform:uppercase;letter-spacing:.09em;color:#91a0b3}
-        .value-detail{border-top:1px solid #273140;margin-top:12px;padding-top:10px;display:flex;justify-content:space-between;gap:4px;font-size:10px;color:#aeb9c7}
-        @media(max-width:1000px){.value-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-        @media(max-width:640px){.value-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.value-card{padding:15px 8px 12px}.value-score{font-size:22px}}
-        </style>""",unsafe_allow_html=True)
         _iv_cards=['<div class="value-grid">']
         for _,_r in val.head(10).iterrows():
             _iv_name=html.escape(str(_r["Item"]))
@@ -2095,22 +2174,37 @@ with tabs[2]:
             _iv_sort=_iv_right.selectbox("Sort by",["DPS / 1000g","Raw Gold Efficiency %","DPS","Cost"],key="iv_sort")
             _iv_table=val[val["Item"].str.contains(_iv_query.strip(),case=False,regex=False)].sort_values(_iv_sort,ascending=_iv_sort=="Cost")
             st.caption(f"{len(_iv_table)} of {len(val)} items · Rank refers to DPS / 1000g")
+            if _iv_table.empty: st.info("No items match this search. Try another item name.")
             st.dataframe(_iv_table,use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
     else:
         st.info("Jhin item value rankings are pending dedicated four-shot and reload modeling.")
 
 with tabs[3]:
-    st.markdown('<div class="combat-result-head"><div><span>THE RESEARCH LIBRARY</span><strong>Database</strong></div><em>STATS · RUNES · ENGINE AUDITS</em></div>',unsafe_allow_html=True)
-    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True)
+    _tab_hero("SHARPWR • RESEARCH LIBRARY","Database","Explore item stats, verified rune effects and engine coverage. Search records or inspect the combat audits.")
+    with st.container(border=True):
+        _setup_heading("01","BROWSE RECORDS","Database Explorer")
+        dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True,key="db_category")
     if dbpick=="Runes":
         st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
-        tree_filter=st.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
+        _rune_filter_left,_rune_filter_right=st.columns([1,2])
+        tree_filter=_rune_filter_left.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
+        _rune_query=_rune_filter_right.text_input("Find a rune",placeholder="Search name or effect…",key="rune_db_search")
+
         rune_rows=[]
         for rn,rv in RUNE_DATABASE.items():
             if tree_filter!="All" and rv["tree"]!=tree_filter: continue
+            if _rune_query.strip().casefold() not in (rn+" "+rv["tooltip"]).casefold(): continue
             rune_rows.append([rn,rv["tree"],rv["kind"],rv["tooltip"]])
-        st.dataframe(pd.DataFrame(rune_rows,columns=["Rune","Tree","Type","Verified tooltip / effect"]),use_container_width=True,hide_index=True)
+        st.caption(f"{len(rune_rows)} of {len(RUNE_DATABASE)} rune records")
+        if rune_rows:
+            st.dataframe(pd.DataFrame(rune_rows,columns=["Rune","Tree","Type","Verified tooltip / effect"]),width="stretch",hide_index=True)
+            with st.expander("Read full rune description"):
+                _inspect=st.selectbox("Rune",[row[0] for row in rune_rows],key="rune_db_inspect")
+                st.markdown(f"**{_inspect}** · {RUNE_DATABASE[_inspect]['tree']}")
+                st.write(RUNE_DATABASE[_inspect]["tooltip"])
+        else:
+            st.info("No runes match this search. Try a different name or effect.")
         st.markdown("**Rune Engine Audit**")
         audit_rows=[
             ["First Strike","Partial","Damage works; engagement/cooldown/gold lifecycle not fully simulated"],
@@ -2166,7 +2260,8 @@ with tabs[3]:
             ["Botanist","Utility","Rule displayed; no plant engine"],
         ]
         adf=pd.DataFrame(audit_rows,columns=["Rune","Engine Status","Audit Note"])
-        st.dataframe(adf,use_container_width=True,hide_index=True)
+        _audit_badges(audit_rows)
+        st.dataframe(adf,width="stretch",hide_index=True)
         st.caption("Audit: 51/51 runes classified. 'Pending/Blocked' effects are intentionally not converted into fake DPS.")
         st.markdown("**Rune Engine Test Suite**")
         _tests=_rune_self_tests()
@@ -2282,7 +2377,8 @@ with tabs[3]:
             if _db_query.strip().casefold() not in n.casefold(): continue
             q=dct(v0); rows.append([boot_icon(n) if dbpick=="Boots" else item_icon(n),n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
         st.caption(f"{len(rows)} of {len(DB)} records · Base stats")
+        if not rows: st.info("No records match this search. Try another item or boots name.")
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.42 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.43 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
