@@ -641,21 +641,33 @@ with tabs[0]:
     _target=_target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
     st.caption("Fixed benchmark target active. Darius/Ornn automatically apply the 10% Steelcaps/Armored Advance basic-attack reduction from Lv5 onward.")
 
-    te1,te2=st.columns(2)
-    tier_dist=te1.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
-    tier_mana=te2.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
+    st.markdown("**Scenario Preset**")
+    _scenario_defs={
+        "Standard Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Fresh all-in from full HP. Item stacks start at 0 and build naturally."},
+        "First Contact":{"hp_pct":100,"spell":True,"energized":True,"ult":False,"desc":"Fresh target with first-contact triggers prepared: Spellblade + Energized ready."},
+        "Extended Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Sustained all-in from 0 stacks. Current engine still measures target TTK; fixed-duration damage is not enabled yet."},
+        "Low HP Target":{"hp_pct":35,"spell":False,"energized":False,"ult":False,"desc":"Finisher test: target starts at 35% HP; defenses and boot mitigation stay unchanged."},
+    }
+    tier_scenario=st.radio("Combat Scenario",list(_scenario_defs),horizontal=True,key="tier_scenario",label_visibility="collapsed")
+    _sc=_scenario_defs[tier_scenario]
+    st.caption(_sc["desc"])
 
-    st.markdown("**Scenario assumptions**")
-    ts1,ts2,ts3=st.columns(3)
-    tier_spell=ts1.checkbox("Spellblade ready",value=spell,key="tier_spell")
-    tier_energized=ts2.checkbox("Energized proc ready",value=energized,key="tier_energized")
-    tier_ult=ts3.checkbox("Ultimate cast before combat",value=ult,key="tier_ult")
-    tier_execs=st.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+    with st.expander("Advanced Scenario Settings"):
+        ta1,ta2=st.columns(2)
+        tier_start_hp_pct=ta1.slider("Target Starting HP %",1,100,int(_sc["hp_pct"]),1,key=f"tier_hp_pct_{tier_scenario}")
+        tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
+        ta3,ta4=st.columns(2)
+        tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
+        tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+        tb1,tb2,tb3=st.columns(3)
+        tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
+        tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
+        tier_ult=tb3.checkbox("Ultimate pre-cast",value=_sc["ult"],key=f"tier_ult_{tier_scenario}")
 
     if tier_champ=="Jhin":
         st.warning("Jhin is excluded until the 4-shot + reload model is added.")
     elif st.button(f"⚔️ CALCULATE VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
-        tier_hp=float(_target["hp"]); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"]); tier_bonus_hp=0.0
+        tier_full_hp=float(_target["hp"]); tier_hp=tier_full_hp*(tier_start_hp_pct/100.0); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"]); tier_bonus_hp=0.0
         tier_aa_reduction=float(_target.get("aa_reduction",0))
         base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
         base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0,target_aa_reduction=tier_aa_reduction)
@@ -670,11 +682,11 @@ with tabs[0]:
         df.insert(0,"Rank",range(1,len(df)+1))
         best_dps=df.iloc[0]; best_value=df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]; best_gain=df.sort_values(["DPS Gain %","DPS"],ascending=[False,False]).iloc[0]
         m1,m2,m3,m4=st.columns(4)
-        m1.metric(f"Best Item • VS {tier_target.split(' • ')[0]}",best_dps["Item"])
+        m1.metric(f"Best Item • {tier_scenario}",best_dps["Item"])
         m2.metric("Best DPS",f"{best_dps['DPS']:.1f}")
         m3.metric("Best DPS Gain",f"{best_gain['DPS Gain %']:.1f}%",best_gain["Item"])
         m4.metric("Best Value / 1000g",f"{best_value['Bonus DPS / 1000g']:.1f}",best_value["Item"])
-        st.markdown(f"**VS {tier_target.split(' • ')[0]} — Full Ranking**")
+        st.markdown(f"**{tier_champ} Lv{tier_level} • VS {tier_target.split(' • ')[0]} • {tier_scenario}**")
         # Premium icon-first ranking: keep the numeric table compact, but make each ranked item visually identifiable.
         _rank_html=['<div class="tier-rank-grid">']
         for _,_r in df.iterrows():
