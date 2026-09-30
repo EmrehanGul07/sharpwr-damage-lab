@@ -1083,7 +1083,8 @@ with tabs[1]:
             if "Lord Dominik's Regards" in build:
                 amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
             em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
-            dmg=phy*rm(ea)+mag*rm(em)+true\n            if target_aa_reduction: dmg*=1-target_aa_reduction
+            dmg=phy*rm(ea)+mag*rm(em)+true
+            if target_aa_reduction: dmg*=1-target_aa_reduction
 
             # Rune effects read the live state before this hit.
             hp_pct=hp2/hp if hp else 0
