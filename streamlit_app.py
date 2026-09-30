@@ -507,6 +507,15 @@ def stats(n,l,mist=0):
 def rm(x): return 100/(100+max(0,x))
 def lvl_scale(lo,hi,lvl): return lo+(hi-lo)*(lvl-1)/14
 
+# Target benchmark profiles. Only Squishy is populated for now from user-tested Jinx checkpoints.
+SQUISHY_JINX_PROFILE={1:{"hp":630,"armor":35,"mr":30},5:{"hp":1014,"armor":51,"mr":35},6:{"hp":1122,"armor":56,"mr":36},8:{"hp":1353,"armor":66,"mr":39},9:{"hp":1475,"armor":71,"mr":40},11:{"hp":1734,"armor":81,"mr":43},12:{"hp":1871,"armor":87,"mr":45},14:{"hp":2159,"armor":99,"mr":48},15:{"hp":2310,"armor":105,"mr":50}}
+def _target_profile_at_level(profile,lvl):
+    lvl=int(lvl)
+    if lvl in profile: return dict(profile[lvl])
+    levels=sorted(profile); lo=max(x for x in levels if x<lvl); hi=min(x for x in levels if x>lvl); t=(lvl-lo)/(hi-lo)
+    return {k:profile[lo][k]+(profile[hi][k]-profile[lo][k])*t for k in ("hp","armor","mr")}
+
+
 def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
     awe=.02*mana if it in ("Manamune","Muramana") else 0
@@ -618,21 +627,23 @@ tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 D
 
 with tabs[0]:
     st.subheader("Item Tier List")
-    st.caption("Pick the champion and target here, then every completed item is tested alone. Boots are excluded.")
+    st.caption("Enemy champion selection removed. Items are tested against fixed level-based target profiles.")
 
     tc1,tc2=st.columns(2)
     tier_champ=tc1.selectbox("Champion",list(C),index=list(C).index(champ),key="tier_champ")
     tier_level=tc2.slider("Level",1,15,level,key="tier_level")
     tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
 
-    te1,te2,te3=st.columns(3)
-    tier_hp=te1.number_input("Enemy HP",100,20000,int(hp),100,key="tier_hp")
-    tier_armor=te2.number_input("Enemy Armor",0.0,1000.0,float(armor),5.0,key="tier_armor")
-    tier_mr=te3.number_input("Enemy MR",0.0,1000.0,float(mr),5.0,key="tier_mr")
-    te4,te5,te6=st.columns(3)
-    tier_bonus_hp=te4.number_input("Enemy Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="tier_bonus_hp")
-    tier_dist=te5.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
-    tier_mana=te6.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
+    _sq=_target_profile_at_level(SQUISHY_JINX_PROFILE,tier_level)
+    p1,p2,p3=st.columns(3)
+    p1.metric("VS Squishy • HP",f"{_sq['hp']:.0f}")
+    p2.metric("Armor",f"{_sq['armor']:.0f}")
+    p3.metric("MR",f"{_sq['mr']:.0f}")
+    st.caption("Squishy benchmark = Jinx progression. Missing checkpoint levels are linearly interpolated. Fighter and Tank profiles: coming later.")
+
+    te1,te2=st.columns(2)
+    tier_dist=te1.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
+    tier_mana=te2.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
 
     st.markdown("**Scenario assumptions**")
     ts1,ts2,ts3=st.columns(3)
@@ -643,24 +654,29 @@ with tabs[0]:
 
     if tier_champ=="Jhin":
         st.warning("Jhin is excluded until the 4-shot + reload model is added.")
-    elif st.button("⚔️ CALCULATE ITEM TIER LIST",type="primary",use_container_width=True,key="tiercalc"):
-        # Naked baseline uses the same engine with a zero-stat pseudo item.
+    elif st.button("⚔️ CALCULATE VS SQUISHY",type="primary",use_container_width=True,key="tiercalc"):
+        tier_hp=float(_sq["hp"]); tier_armor=float(_sq["armor"]); tier_mr=float(_sq["mr"]); tier_bonus_hp=0.0
         base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
         base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0)
         baseline=base_row[4]
         rows=[]
         for it in F:
             row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs)
-            gain=(row[4]/baseline-1)*100 if baseline else 0
-            rows.append([it,row[1],row[4],gain,row[2],row[3]])
-        df=pd.DataFrame(rows,columns=["Item","Gold","DPS","DPS Gain %","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+            gold=float(row[1]); dps=float(row[4]); gain=(dps/baseline-1)*100 if baseline else 0
+            bonus_dps=dps-baseline; value=(bonus_dps/gold*1000) if gold else 0
+            rows.append([it,gold,dps,gain,bonus_dps,value,row[2],row[3]])
+        df=pd.DataFrame(rows,columns=["Item","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
         df.insert(0,"Rank",range(1,len(df)+1))
-        m1,m2,m3=st.columns(3)
-        m1.metric("No-item DPS",f"{baseline:.1f}")
-        m2.metric("Highest DPS",f"{df.iloc[0]['DPS']:.1f}")
-        m3.metric("Top item",df.iloc[0]["Item"])
+        best_dps=df.iloc[0]; best_value=df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]; best_gain=df.sort_values(["DPS Gain %","DPS"],ascending=[False,False]).iloc[0]
+        m1,m2,m3,m4=st.columns(4)
+        m1.metric("Best Item • VS Squishy",best_dps["Item"])
+        m2.metric("Best DPS",f"{best_dps['DPS']:.1f}")
+        m3.metric("Best DPS Gain",f"{best_gain['DPS Gain %']:.1f}%",best_gain["Item"])
+        m4.metric("Best Value / 1000g",f"{best_value['Bonus DPS / 1000g']:.1f}",best_value["Item"])
+        st.markdown("**VS Squishy — Full Ranking**")
         st.dataframe(df,use_container_width=True,hide_index=True)
-        st.caption("DPS Gain % = improvement over the same champion with no item against this exact target. Item passives use the scenario switches above.")
+        st.caption("Value = (item DPS − naked champion DPS) / item gold × 1000. The champion's base DPS is not counted as item value.")
+        st.info("VS Fighter — coming later  •  VS Tank — coming later")
 
 with tabs[1]:
     st.subheader("Build Lab")
@@ -1361,4 +1377,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.39 | Rune section dividers • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.40 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
