@@ -710,6 +710,7 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
             phy*=1+amp; note.append(f"C44 {amp*100:.0f}%")
         if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
         if "Terminus" in items: onm+=30
+        if "Wit's End" in items: onm+=40
         rage_extra=False
         if "Guinsoo's Rageblade" in items:
             onm+=30
@@ -734,6 +735,7 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
             onm+=30
             if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
             if "Terminus" in items: onm+=30
+            if "Wit's End" in items: onm+=40
             note.append("Phantom Hit")
         phy+=onp
         dmg=phy*rm(ea)+onm*rm(mr)+true
@@ -1605,7 +1607,7 @@ with tabs[3]:
         _bchamp=_bc1.selectbox("Attacker",list(C),index=list(C).index("Jinx") if "Jinx" in C else 0,key="build_audit_champ")
         _blvl=_bc2.slider("Level",1,15,15,key="build_audit_level")
         _btarget=_bc3.selectbox("Target",list(TARGET_PROFILES),index=list(TARGET_PROFILES).index("Tank • Ornn"),key="build_audit_target")
-        _audited=["Blade of the Ruined King","Guinsoo's Rageblade","Terminus","Kraken Slayer","Yun Tal Wildarrows","Hexoptics C44","Infinity Edge"]
+        _audited=["Blade of the Ruined King","Guinsoo's Rageblade","Wit's End","Terminus","Kraken Slayer","Yun Tal Wildarrows","Hexoptics C44","Infinity Edge"]
         _bi1=st.selectbox("Item 1",_audited,index=0,key="build_audit_i1")
         _bi2=st.selectbox("Item 2",_audited,index=1,key="build_audit_i2")
         if _bi1==_bi2:
@@ -1632,7 +1634,7 @@ with tabs[3]:
                     _state.append(f"Kraken {_kh%3}/3")
                 _brows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note," • ".join(_state)])
             st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),use_container_width=True,hide_index=True)
-            st.caption("Verified interaction: after Rageblade is fully stacked, every Phantom Hit advances Kraken Bring It Down by +1 extra stack. Phantom advances Kraken's counter; it does not simply duplicate Kraken proc damage.")
+            st.caption("Verified interaction: after Rageblade is fully stacked, every Phantom Hit advances Kraken Bring It Down by +1 extra stack. Phantom advances Kraken's counter rather than duplicating Kraken proc damage. Repeatable on-hits currently carried by Phantom include Rageblade, BotRK, Terminus and Wit's End.")
     elif dbpick=="Item Engine Audit":
         st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
         _audit_items=["Yun Tal Wildarrows","Terminus","Guinsoo's Rageblade","Kraken Slayer","Blade of the Ruined King","Hexoptics C44"]
