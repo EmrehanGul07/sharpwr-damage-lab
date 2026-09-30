@@ -456,7 +456,7 @@ F={
 # Tier List combat-mechanic audit: CURRENT simulator coverage.
 ITEM_SCENARIO_AUDIT={
 "Fiendhunter Bolts":("ultimate-trigger","modeled","Opening Barrage uses Ultimate pre-cast."),
-"Rapid Firecannon":("energized","modeled","First Energized hit."),
+"Rapid Firecannon":("energized","modeled","Sharpshooter: 80 bonus magic per Energized proc; kiting benchmark recharges every 7 AAs. Proc also grants +35% bonus attack range, capped at +150 (utility)."),
 "Runaan's Hurricane":("multi-target","not modeled","Extra bolts excluded in single-target ranking."),
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
 "Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
@@ -466,7 +466,7 @@ ITEM_SCENARIO_AUDIT={
 "Nashor's Tooth":("on-hit","modeled","Magic on-hit."),
 "Manamune":("mana-scaling","modeled","Awe AD from mana."),
 "Muramana":("mana/on-hit","modeled","Awe plus mana on-hit."),
-"Statikk Shiv":("energized","modeled","First Energized hit."),
+"Statikk Shiv":("energized","modeled","Electrospark: 60 magic per Energized proc; kiting benchmark recharges every 5 AAs. Bounces hit 3/4/5/6 targets at levels 1/5/9/13 and apply on-hit to secondary targets; bounce value excluded from single-target DPS."),
 "Guinsoo's Rageblade":("stacking/on-hit","modeled","Stacks and phantom on-hit."),
 "Mortal Reminder":("penetration","modeled","Percent armor penetration."),
 "Maw of Malmortius":("defensive","not modeled","Shield/survival excluded."),
@@ -474,7 +474,7 @@ ITEM_SCENARIO_AUDIT={
 "Immortal Shieldbow":("defensive","not modeled","Shield/survival excluded."),
 "The Collector":("execute","modeled","Execute and previous executes."),
 "Terminus":("stacking/on-hit","modeled","Current in-game test: Shadow deals 30 bonus magic on-hit. Juxtaposition grants 10% armor + magic penetration per Dark stack, up to 3 stacks / 30%; no level scaling. Item percent penetration cap 40%. Defensive Light stacks are not scored in DPS."),
-"Stormrazor":("energized","modeled","First Energized hit."),
+"Stormrazor":("energized","modeled","Bolt: 120 bonus magic per Energized proc; kiting benchmark recharges every 7 AAs. Proc grants +45% movement speed for 1.5s (utility)."),
 "Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
 "Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
@@ -608,11 +608,22 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
         if it=="Duskblade of Draktharr" and item_proc and k==1:
             onp+=60+(l-1)/14*100; note.append("Nightstalker")
-        if energized and item_proc and k==1:
-            if it=="Rapid Firecannon": onm+=80; note.append("RFC")
-            if it=="Stormrazor": onm+=120; note.append("Storm")
-            if it=="Statikk Shiv": onm+=60; note.append("Shiv")
-            if it=="Kircheis Shard": onm+=40; note.append("Jolt")
+        if item_proc:
+            # Energized benchmark cadence is based on current in-game kiting tests.
+            # If the fight starts charged, proc on hit 1 and then every N attacks.
+            # Otherwise the first proc arrives on hit N.
+            energized_proc=False
+            if it in ("Rapid Firecannon","Stormrazor"):
+                energized_proc = (k==1 or (k>1 and (k-1)%7==0)) if energized else (k%7==0)
+            elif it=="Statikk Shiv":
+                energized_proc = (k==1 or (k>1 and (k-1)%5==0)) if energized else (k%5==0)
+            elif it=="Kircheis Shard":
+                energized_proc = (k==1) if energized else False
+            if energized_proc:
+                if it=="Rapid Firecannon": onm+=80; note.append("RFC Energized")
+                if it=="Stormrazor": onm+=120; note.append("Storm Energized")
+                if it=="Statikk Shiv": onm+=60; note.append("Shiv Energized")
+                if it=="Kircheis Shard": onm+=40; note.append("Jolt")
         if spell and item_proc and t>=spellblade_ready:
             if it=="Essence Reaver":
                 onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER")
