@@ -74,14 +74,14 @@ def _rune_icon_grid(label, options, state_key, cols=6):
         tip=RUNE_DATABASE.get(name,{}).get("tooltip","")
         tree=RUNE_DATABASE.get(name,{}).get("tree","Rune")
         tiles.append(f'''<div class="tile{edge}">
-          <a class="rune{chosen}" href="{href}" target="_top"><img src="{html.escape(icon)}" alt="{html.escape(name)}"></a>
+          <a class="rune{chosen}" href="{href}" target="_top" aria-label="Select {html.escape(name)}"><img src="{html.escape(icon)}" alt="{html.escape(name)}"></a>
           <div class="card"><div class="ctop"><img src="{html.escape(icon)}"><div><b>{html.escape(name)}</b><small>{html.escape(tree)}</small></div></div>
           <div class="rule"></div><p>{html.escape(tip)}</p><a class="pick" href="{href}" target="_top">Select Rune</a></div>
         </div>''')
     doc='''<style>
     *{box-sizing:border-box}body{margin:0;padding:7px 5px 150px;background:transparent;font-family:Inter,system-ui;color:#e9eef5;overflow:visible}
     .rg{display:grid;grid-template-columns:repeat('''+str(cols)+''',minmax(54px,1fr));gap:9px;overflow:visible}
-    .tile{position:relative;min-width:0;display:flex;justify-content:center}
+    .tile{position:relative;min-width:0;display:flex;justify-content:center}.rune{position:relative;z-index:5;cursor:pointer}
     .rune{display:flex;width:58px;height:58px;padding:3px;border:1px solid #344254;border-radius:12px;background:linear-gradient(145deg,#121b27,#090e15);text-decoration:none;transition:.14s}
     .rune:hover,.rune.chosen{border-color:#d4b15c;box-shadow:0 0 0 1px rgba(212,177,92,.2),0 0 17px rgba(212,177,92,.24);transform:translateY(-1px)}
     .rune img{width:100%;height:100%;object-fit:contain;border-radius:8px}
@@ -223,7 +223,8 @@ def _premium_item_grid(items, selected):
         edge=" edge-left" if col<=2 else (" edge-right" if col>=9 else "")
         # target=_top lets the icon itself navigate the Streamlit app; Python consumes item_pick.
         href="?item_pick="+urllib.parse.quote(name)
-        tiles.append(f'''<div class="tile{sel}{edge}" data-href="{href}" tabindex="0">
+        tiles.append(f'''<div class="tile{sel}{edge}" tabindex="0">
+          <a class="hit" href="{href}" target="_top" aria-label="Add {html.escape(name)} to build"></a>
           <img src="{html.escape(icon)}" alt="{html.escape(name)}">
           <div class="card"><header><img src="{html.escape(icon)}"><div><strong>{html.escape(name)}</strong><em>◆ {int(q["gold"])} Gold</em></div></header>
           <section>{"".join(rows)}</section><footer><span class="desk">Click icon to add to build</span><a class="add" href="{href}" target="_top">Add to Build</a></footer></div></div>''')
@@ -232,7 +233,7 @@ def _premium_item_grid(items, selected):
     .grid{display:grid;grid-template-columns:repeat(10,minmax(58px,1fr));gap:10px;padding:18px 4px 260px}
     .tile{position:relative;display:flex;justify-content:center;align-items:center;height:68px;border:1px solid #343e4e;border-radius:11px;
       background:linear-gradient(145deg,#171e29,#0a0f16);text-decoration:none;transition:.15s;z-index:1;cursor:pointer}
-    .tile>img{width:56px;height:56px;object-fit:cover;border-radius:8px}
+    .tile>img{width:56px;height:56px;object-fit:cover;border-radius:8px}.hit{position:absolute;inset:0;z-index:5;border-radius:11px}
     .tile:hover{border-color:#d1ae55;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20}
     .tile.selected{border-color:#d1ae55;box-shadow:inset 0 0 0 1px rgba(209,174,85,.45)}
     .card{pointer-events:none;visibility:hidden;opacity:0;position:absolute;z-index:100;left:50%;bottom:76px;transform:translateX(-50%) translateY(5px);
@@ -264,7 +265,7 @@ def _premium_item_grid(items, selected):
       .tile:nth-child(4n+2).open .card{left:calc(-100% - 9px)!important}
       .tile:nth-child(4n+3).open .card{left:calc(-200% - 18px)!important}
       .tile:nth-child(4n).open .card{left:calc(-300% - 27px)!important}
-      .desk{display:none}.add{display:block;position:sticky;bottom:0;background:#111925;margin-top:10px}
+      .desk{display:none}.add{display:block;position:sticky;bottom:0;background:#111925;margin-top:10px}.hit{display:none}
     }
     </style></head><body><div class="grid">'''+''.join(tiles)+'''</div>
     <script>
@@ -281,8 +282,6 @@ def _premium_item_grid(items, selected):
             // Card expands in normal grid flow below the tapped row.
             setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start',inline:'nearest'}),30);
           }
-        }else{
-          window.top.location.href=t.dataset.href;
         }
       });
     });
@@ -1212,4 +1211,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.24 | Rune Engine regression test suite • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.25 | Reliable rune/item click targets • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
