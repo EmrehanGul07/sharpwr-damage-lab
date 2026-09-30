@@ -675,7 +675,34 @@ with tabs[0]:
         m3.metric("Best DPS Gain",f"{best_gain['DPS Gain %']:.1f}%",best_gain["Item"])
         m4.metric("Best Value / 1000g",f"{best_value['Bonus DPS / 1000g']:.1f}",best_value["Item"])
         st.markdown(f"**VS {tier_target.split(' • ')[0]} — Full Ranking**")
-        st.dataframe(df,use_container_width=True,hide_index=True)
+        # Premium icon-first ranking: keep the numeric table compact, but make each ranked item visually identifiable.
+        _rank_html=['<div class="tier-rank-grid">']
+        for _,_r in df.iterrows():
+            _name=str(_r["Item"]); _icon=item_icon(_name)
+            _rank_html.append(
+                f'<div class="tier-rank-card">'
+                f'<div class="tier-rank-num">#{int(_r["Rank"])}</div>'
+                f'<img src="{html.escape(_icon)}" alt="{html.escape(_name)}">'
+                f'<div class="tier-rank-name">{html.escape(_name)}</div>'
+                f'<div class="tier-rank-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
+                f'<div class="tier-rank-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k</div>'
+                f'</div>'
+            )
+        _rank_html.append('</div>')
+        st.markdown("""<style>
+        .tier-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px;margin:8px 0 16px}
+        .tier-rank-card{position:relative;text-align:center;padding:10px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+        .tier-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+        .tier-rank-card img{width:54px;height:54px;border-radius:9px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+        .tier-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+        .tier-rank-name{font-size:11px;font-weight:750;line-height:1.15;min-height:26px;margin-top:5px}
+        .tier-rank-dps{font-size:15px;font-weight:850}.tier-rank-dps span{font-size:9px;font-weight:650;opacity:.62}
+        .tier-rank-sub{font-size:9px;opacity:.62;white-space:nowrap}
+        @media(max-width:640px){.tier-rank-grid{grid-template-columns:repeat(3,1fr);gap:7px}.tier-rank-card{padding:9px 4px 7px}.tier-rank-card img{width:48px;height:48px}}
+        </style>""",unsafe_allow_html=True)
+        st.markdown("".join(_rank_html),unsafe_allow_html=True)
+        with st.expander("Detailed ranking table"):
+            st.dataframe(df,use_container_width=True,hide_index=True)
         st.caption("Value = (item DPS − naked champion DPS) / item gold × 1000. The champion's base DPS is not counted as item value.")
 
 
