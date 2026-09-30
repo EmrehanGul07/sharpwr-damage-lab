@@ -92,7 +92,7 @@ def _tree_icon_picker(label, options, state_key, cols=4):
         chosen=name==current
         with row[i]:
             st.markdown('<div class="wr-tree-marker '+('wr-tree-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
-            st.image(TREE_ICON_URL[name],width=54)
+            st.image(TREE_ICON_URL[name],width=72)
             st.markdown(f'<div class="wr-tree-name">{html.escape(name)}</div>',unsafe_allow_html=True)
             if st.button(" ",key=f"{state_key}_tree_{i}",help=None,use_container_width=False):
                 st.session_state[state_key]=name
@@ -324,7 +324,7 @@ st.markdown("""
 div[data-testid="stColumn"]:has(.wr-tree-marker){position:relative;text-align:center}
 div[data-testid="stColumn"]:has(.wr-tree-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0!important}
 div[data-testid="stColumn"]:has(.wr-tree-marker) div[data-testid="stImage"] img{
- width:54px!important;height:54px!important;object-fit:contain;padding:7px;border-radius:14px;
+ width:72px!important;height:72px!important;object-fit:contain;padding:8px;border-radius:16px;
  background:linear-gradient(145deg,#151d28,#090e15);border:1px solid #364152;
  box-shadow:0 5px 15px rgba(0,0,0,.24);transition:.14s ease}
 div[data-testid="stColumn"]:has(.wr-tree-marker):hover div[data-testid="stImage"] img{
@@ -336,8 +336,8 @@ div[data-testid="stColumn"]:has(.wr-tree-selected) div[data-testid="stImage"] im
 div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#a67d16}
 div[data-testid="stColumn"]:has(.wr-tree-marker):hover .wr-tree-name{color:#202a36}
 div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton{
- position:relative!important;left:50%!important;transform:translate(-50%,-82px)!important;
- width:60px!important;height:60px!important;z-index:90!important;margin:0 0 -60px 0!important;padding:0!important}
+ position:relative!important;left:50%!important;transform:translate(-50%,-101px)!important;
+ width:78px!important;height:78px!important;z-index:90!important;margin:0 0 -78px 0!important;padding:0!important}
 div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button{
  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
  padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;
@@ -1353,4 +1353,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.37 | Collapsible equipped rune slots • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.38 | Larger rune tree icons • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
