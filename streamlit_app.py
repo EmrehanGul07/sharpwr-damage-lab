@@ -60,6 +60,22 @@ def rune_icon(name):
         slug=name.lower().replace("&","and").replace("'","").replace(":","").replace(" ","-")
     return f"https://www.riftpatchnotes.com/runes/{slug}.png"
 
+def _equipped_rune_slot(label, state_key):
+    name=st.session_state.get(state_key)
+    st.markdown(f'<div class="wr-eq-label">{html.escape(label)}</div>',unsafe_allow_html=True)
+    if not name:
+        st.markdown('<div class="wr-eq-empty">＋<span>EMPTY</span></div>',unsafe_allow_html=True)
+        return
+    icon=rune_icon(name)
+    a,b=st.columns([1,4],gap="small")
+    with a:
+        if icon: st.image(icon,width=48)
+    with b:
+        st.markdown(f'<div class="wr-eq-name">{html.escape(name)}</div>',unsafe_allow_html=True)
+        if st.button("Remove",key=f"remove_{state_key}",use_container_width=False):
+            st.session_state[state_key]=None
+            st.rerun()
+
 TREE_ICON_URL={
     "Domination":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7200_domination.png",
     "Precision":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7201_precision.png",
@@ -84,9 +100,9 @@ def _tree_icon_picker(label, options, state_key, cols=4):
     return st.session_state.get(state_key,current)
 
 def _rune_icon_grid(label, options, state_key, cols=6):
-    current=st.session_state.get(state_key,options[0] if options else None)
-    if current not in options and options:
-        current=options[0]; st.session_state[state_key]=current
+    current=st.session_state.get(state_key)
+    if current not in options:
+        current=None
     st.markdown(f'<div class="wr-picker-title">{html.escape(label)}</div>',unsafe_allow_html=True)
     if not options: return None
     ncols=min(cols,len(options))
@@ -295,6 +311,13 @@ st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layou
 st.markdown("""
 <style>
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
+.wr-eq-wrap{margin:4px 0 16px;padding:12px 12px 6px;border:1px solid #dfe4ea;border-radius:14px;background:linear-gradient(180deg,#fbfcfd,#f5f7f9)}
+.wr-eq-label{font-size:9px;font-weight:850;letter-spacing:.11em;color:#8a95a3;text-transform:uppercase;margin-bottom:5px}
+.wr-eq-empty{height:54px;border:1px dashed #cbd3dc;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;color:#a4aeba;font-size:19px}
+.wr-eq-empty span{font-size:9px;font-weight:800;letter-spacing:.09em}
+.wr-eq-name{font-size:11px;font-weight:750;color:#27313d;line-height:1.15;margin:3px 0 1px}
+.wr-eq-wrap div[data-testid="stImage"] img{border-radius:10px;border:1px solid #c99f3d;box-shadow:0 0 12px rgba(201,159,61,.15)}
+.wr-eq-wrap .stButton button{font-size:9px!important;min-height:22px!important;height:22px!important;padding:0 8px!important;border-radius:7px!important}
 .wr-tier-label{margin:10px 0 7px;font-size:10px;font-weight:800;letter-spacing:.14em;color:#6d7887}
 .wr-tier-t3{color:#a67d16}.wr-tier-t2{margin-top:2px;color:#6d7887}
 .wr-tree-marker{height:0!important;margin:0!important;padding:0!important}
@@ -637,30 +660,76 @@ with tabs[0]:
 with tabs[1]:
     st.subheader("Build Lab")
 
-    # Legal rune loadout: icon-first selector.
+    # Legal rune loadout: equip one slot at a time; completed pickers collapse.
     st.markdown("**Rune Loadout**")
     sub_trees=["Precision","Domination","Resolve","Sorcery"]
-    keystone=_rune_icon_grid("Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
 
-    primary_tree=_tree_icon_picker("Primary Tree",sub_trees,"build_primary_tree",4)
-    # If the tree changed, make sure all three primary selections belong to it.
-    for _slot in (1,2,3):
-        _key=f"build_primary_slot{_slot}"
-        if st.session_state.get(_key) not in RUNE_SLOTS[primary_tree][_slot]:
-            st.session_state[_key]=RUNE_SLOTS[primary_tree][_slot][0]
-    primary_1=_rune_icon_grid("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],"build_primary_slot1",4)
-    primary_2=_rune_icon_grid("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],"build_primary_slot2",4)
-    primary_3=_rune_icon_grid("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],"build_primary_slot3",4)
+    # Explicit equipped state: None means the user still needs to choose that slot.
+    _rune_defaults={
+        "build_keystone":None,
+        "build_primary_slot1":None,
+        "build_primary_slot2":None,
+        "build_primary_slot3":None,
+        "build_secondary_rune":None,
+    }
+    for _k,_v in _rune_defaults.items():
+        if _k not in st.session_state: st.session_state[_k]=_v
+
+    st.markdown('<div class="wr-eq-wrap">',unsafe_allow_html=True)
+    _eqcols=st.columns(5,gap="small")
+    _eqslots=[
+        ("KEY RUNE","build_keystone"),
+        ("PRIMARY 1","build_primary_slot1"),
+        ("PRIMARY 2","build_primary_slot2"),
+        ("PRIMARY 3","build_primary_slot3"),
+        ("SECONDARY","build_secondary_rune"),
+    ]
+    for _i,(_label,_key) in enumerate(_eqslots):
+        with _eqcols[_i]:
+            _equipped_rune_slot(_label,_key)
+    st.markdown('</div>',unsafe_allow_html=True)
+
+    # Only unresolved slots show their selection UI.
+    if not st.session_state.get("build_keystone"):
+        keystone=_rune_icon_grid("Choose Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
+    else:
+        keystone=st.session_state.build_keystone
+
+    _primary_done=all(st.session_state.get(f"build_primary_slot{x}") for x in (1,2,3))
+    if not _primary_done:
+        primary_tree=_tree_icon_picker("Primary Tree",sub_trees,"build_primary_tree",4)
+        # Tree changes invalidate only equipped primary runes that do not belong to the new tree.
+        for _slot in (1,2,3):
+            _key=f"build_primary_slot{_slot}"
+            if st.session_state.get(_key) not in RUNE_SLOTS[primary_tree][_slot]:
+                st.session_state[_key]=None
+        if not st.session_state.get("build_primary_slot1"):
+            primary_1=_rune_icon_grid("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],"build_primary_slot1",4)
+        else: primary_1=st.session_state.build_primary_slot1
+        if not st.session_state.get("build_primary_slot2"):
+            primary_2=_rune_icon_grid("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],"build_primary_slot2",4)
+        else: primary_2=st.session_state.build_primary_slot2
+        if not st.session_state.get("build_primary_slot3"):
+            primary_3=_rune_icon_grid("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],"build_primary_slot3",4)
+        else: primary_3=st.session_state.build_primary_slot3
+    else:
+        primary_tree=st.session_state.get("build_primary_tree","Precision")
+        primary_1=st.session_state.build_primary_slot1
+        primary_2=st.session_state.build_primary_slot2
+        primary_3=st.session_state.build_primary_slot3
 
     _secondary_trees=[x for x in sub_trees if x!=primary_tree]
     secondary_tree=st.session_state.get("build_secondary_tree",_secondary_trees[0])
     if secondary_tree not in _secondary_trees:
         secondary_tree=_secondary_trees[0]; st.session_state.build_secondary_tree=secondary_tree
-    secondary_tree=_tree_icon_picker("Secondary Tree",_secondary_trees,"build_secondary_tree",3)
-    secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
-    if st.session_state.get("build_secondary_rune") not in secondary_options:
-        st.session_state.build_secondary_rune=secondary_options[0]
-    secondary_rune=_rune_icon_grid("Secondary Rune",secondary_options,"build_secondary_rune",6)
+        st.session_state.build_secondary_rune=None
+    if not st.session_state.get("build_secondary_rune"):
+        secondary_tree=_tree_icon_picker("Secondary Tree",_secondary_trees,"build_secondary_tree",3)
+        secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
+        secondary_rune=_rune_icon_grid("Choose Secondary Rune",secondary_options,"build_secondary_rune",6)
+    else:
+        secondary_rune=st.session_state.build_secondary_rune
+
     selected_sub_runes=[primary_1,primary_2,primary_3,secondary_rune]
     combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
     # Progression controls are generated for every selected rune that needs persistent state.
@@ -1284,4 +1353,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.36 | Icon-first rune tree picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.37 | Collapsible equipped rune slots • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
