@@ -932,9 +932,14 @@ with tabs[0]:
         st.caption("Tests every unique two-item combination with the same champion, target profile and scenario above. Duplicate items are excluded.")
         _build_items=[_it for _it in F if float(dct(F[_it])["gold"])>0]
         _pair_rows=[]
+        # Wild Rift purchase restriction: only one of these penetration items
+        # can exist in the same build.
+        _exclusive_pen_items={"Lord Dominik's Regards","Mortal Reminder","Serylda's Grudge","Terminus"}
         for _i in range(len(_build_items)):
             for _j in range(_i+1,len(_build_items)):
                 _pair=(_build_items[_i],_build_items[_j])
+                if sum(1 for _x in _pair if _x in _exclusive_pen_items)>1:
+                    continue
                 _prow,_=sim_build(
                     tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_pair,F,
                     mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
@@ -986,7 +991,7 @@ with tabs[0]:
             st.markdown("".join(_pair_html),unsafe_allow_html=True)
             with st.expander("Detailed 2-item ranking table"):
                 st.dataframe(_pair_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_pair_df)} unique two-item combinations tested. Ranking is DPS-first; value remains a separate metric and is not folded into an overall score.")
+            st.caption(f"{len(_pair_df)} legal unique two-item combinations tested. LDR, Mortal Reminder, Serylda's Grudge and Terminus are mutually exclusive. Ranking is DPS-first; value remains a separate metric and is not folded into an overall score.")
 
 
 with tabs[1]:
