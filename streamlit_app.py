@@ -438,6 +438,31 @@ hr{border-color:#202b3a!important}
 .triple-rank-card:hover,.boot3-rank-card:hover,.boot4-rank-card:hover,.full-rank-card:hover{border-color:#d8b45d!important;box-shadow:0 13px 30px rgba(0,0,0,.26)}
 .triple-rank-num,.boot3-rank-num,.boot4-rank-num,.full-rank-num{color:#e4c46f!important}
 @media(max-width:700px){[data-testid="stMainBlockContainer"]{padding-left:.7rem;padding-right:.7rem}.sharp-hero{padding:20px 17px;border-radius:16px}.sharp-badges span{font-size:7px}div[data-testid="stTabs"] button[data-baseweb="tab"]{padding:0 9px;font-size:11px}.sharp-sub{font-size:11px}}
+
+.sharp-section-head{position:relative;display:flex;align-items:baseline;gap:10px;margin:30px 0 5px;padding:14px 16px;border-left:2px solid #d8b45d;border-bottom:1px solid #202b3a;background:linear-gradient(90deg,rgba(216,180,93,.075),transparent 58%)}
+.sharp-section-head span{font-size:8px;font-weight:900;letter-spacing:.15em;color:#b99a51}.sharp-section-head strong{font-size:20px;letter-spacing:-.025em;color:#eef3f8}.sharp-section-head em{margin-left:auto;font-size:8px;font-style:normal;font-weight:850;letter-spacing:.13em;color:#667589}
+.sharp-section-head.final{border:1px solid rgba(216,180,93,.28);border-left:3px solid #d8b45d;border-radius:10px;background:linear-gradient(90deg,rgba(216,180,93,.11),rgba(16,24,36,.35))}
+@media(max-width:640px){.sharp-section-head{padding:11px 10px;gap:7px}.sharp-section-head strong{font-size:16px}.sharp-section-head em{display:none}}
+
+/* Premium leaderboard pass */
+.pair-rank-grid,.triple-rank-grid,.boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{counter-reset:sharpRank}
+.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{overflow:hidden;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.pair-rank-card:first-child,.triple-rank-card:first-child,.boot3-rank-card:first-child,.boot4-rank-card:first-child,.full-rank-card:first-child{
+ grid-column:span 2;border-color:rgba(216,180,93,.62)!important;
+ background:radial-gradient(420px 130px at 50% 0%,rgba(216,180,93,.16),transparent 70%),linear-gradient(180deg,#171d24,#0b1017)!important;
+ box-shadow:0 16px 38px rgba(0,0,0,.30),inset 0 1px rgba(240,213,138,.14)!important}
+.pair-rank-card:first-child:before,.triple-rank-card:first-child:before,.boot3-rank-card:first-child:before,.boot4-rank-card:first-child:before,.full-rank-card:first-child:before{
+ content:"BEST DPS";position:absolute;right:9px;top:8px;padding:4px 7px;border:1px solid rgba(216,180,93,.45);border-radius:999px;
+ color:#f0d58a;background:rgba(30,24,11,.78);font-size:7px;font-weight:900;letter-spacing:.12em}
+.pair-rank-card:first-child .pair-dps,.triple-rank-card:first-child .triple-dps,.boot3-rank-card:first-child .boot3-dps,.boot4-rank-card:first-child .boot4-dps,.full-rank-card:first-child .full-dps{font-size:21px;color:#f3d77f}
+.pair-rank-card:first-child img,.triple-rank-card:first-child img,.boot3-rank-card:first-child img,.boot4-rank-card:first-child img,.full-rank-card:first-child img{box-shadow:0 0 0 1px rgba(216,180,93,.22),0 7px 16px rgba(0,0,0,.26)}
+[data-testid="stSlider"] [data-baseweb="slider"]{padding-top:8px}
+[data-testid="stSlider"] [role="slider"]{box-shadow:0 0 0 3px rgba(216,180,93,.14)}
+[data-testid="stNumberInput"] button{background:#101824!important;border-color:#29364a!important}
+[data-testid="stTooltipHoverTarget"] svg{color:#7e8a9b}
+@media(max-width:640px){
+ .pair-rank-card:first-child,.triple-rank-card:first-child,.boot3-rank-card:first-child,.boot4-rank-card:first-child,.full-rank-card:first-child{grid-column:span 2}
+}
 </style>
 """,unsafe_allow_html=True)
 st.markdown("""
@@ -982,7 +1007,7 @@ with tabs[0]:
 
 
         st.divider()
-        st.markdown("### 2-Item Tier List")
+        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 02</span><strong>2-Item Tier List</strong><em>DUO CORE</em></div>""",unsafe_allow_html=True)
         st.caption("Tests every unique two-item combination with the same champion, target profile and scenario above. Duplicate items are excluded.")
         _build_items=[_it for _it in F if float(dct(F[_it])["gold"])>0]
         _pair_rows=[]
@@ -1049,7 +1074,7 @@ with tabs[0]:
 
 
         st.divider()
-        st.markdown("### 3-Item Tier List")
+        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 03</span><strong>3-Item Tier List</strong><em>CORE BUILD</em></div>""",unsafe_allow_html=True)
         st.caption("Tests every legal unique three-item combination with the same benchmark settings. Duplicate items are excluded and the penetration-item purchase restriction is preserved.")
         _triple_rows=[]
         for _i in range(len(_build_items)):
@@ -1114,7 +1139,7 @@ with tabs[0]:
             st.caption(f"{len(_triple_df)} legal unique three-item combinations tested. Ranking is DPS-first; value remains separate and no weighted overall score is used.")
 
 
-        st.markdown("### Boots + 3-Item Tier List")
+        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 04</span><strong>Boots + 3 Items</strong><em>POWER SPIKE</em></div>""",unsafe_allow_html=True)
         st.caption("Adds one offensive boot slot to the strongest legal 3-item cores. Kept bounded so normal Streamlit reruns stay responsive.")
         _offensive_boots=["Immortal Treads","Gunmetal Greaves","Armorcrusher Boots"]
         _boot_core_candidates=_triple_df.head(min(250,len(_triple_df)))
@@ -1171,7 +1196,7 @@ with tabs[0]:
             st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Tier 2 boots are excluded from ranking; the optimizer compares Tier 3 offensive boots only. Immortal Treads uses the existing benchmark assumption that its Above 50% HP +5% damage passive is active.")
 
 
-        st.markdown("### Boots + 4-Item Tier List")
+        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 05</span><strong>Boots + 4 Items</strong><em>LATE GAME</em></div>""",unsafe_allow_html=True)
         st.caption("Expands the strongest Boots + 3 builds by one different completed item. Duplicate builds are deduplicated and the penetration-item restriction is preserved.")
         _boot4_seed=_boot3_df.head(min(300,len(_boot3_df)))
         _boot4_seen=set()
@@ -1239,7 +1264,7 @@ with tabs[0]:
             st.caption(f"{len(_boot4_df)} unique Boots + 4 builds tested by expanding the top {len(_boot4_seed)} Boots + 3 results. Tier 2 boots remain excluded.")
 
 
-        st.markdown("### Full Build Tier List • Boots + 5 Items")
+        st.markdown("""<div class="sharp-section-head final"><span>BUILD STAGE 06</span><strong>Full Build Tier List</strong><em>5 ITEMS + BOOTS</em></div>""",unsafe_allow_html=True)
         st.caption("Final 6-slot optimizer: one Tier 3 offensive boot plus five different completed items. It expands the strongest Boots + 4 results, deduplicates identical full builds, and preserves the penetration-item restriction.")
         _full_seed=_boot4_df.head(min(400,len(_boot4_df)))
         _full_seen=set()
