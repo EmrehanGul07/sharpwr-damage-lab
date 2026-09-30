@@ -394,10 +394,60 @@ div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionConta
  div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important;transform:translate(-50%,-99px)!important;margin-bottom:-62px!important}
  .wr-hover-card{display:none!important}
 }
+
+/* ===== SharpWR Premium Shell V1 ===== */
+:root{--sw-bg:#070b11;--sw-panel:#0d131d;--sw-panel2:#111a27;--sw-line:#263246;--sw-gold:#d8b45d;--sw-gold2:#f0d58a;--sw-text:#eef3f8;--sw-muted:#8f9bac}
+.stApp{background:
+ radial-gradient(900px 420px at 12% -8%,rgba(44,76,118,.22),transparent 62%),
+ radial-gradient(760px 380px at 92% 0%,rgba(180,137,47,.10),transparent 60%),
+ linear-gradient(180deg,#080d14 0%,#06090e 100%);color:var(--sw-text)}
+[data-testid="stHeader"]{background:rgba(7,11,17,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(216,180,93,.10)}
+[data-testid="stMainBlockContainer"]{max-width:1480px;padding-top:1.35rem;padding-bottom:5rem}
+#MainMenu,footer{visibility:hidden}
+.sharp-hero{position:relative;overflow:hidden;margin:0 0 18px;padding:25px 28px 23px;border:1px solid rgba(216,180,93,.24);border-radius:20px;
+ background:linear-gradient(120deg,rgba(17,27,41,.96),rgba(9,14,22,.96) 64%,rgba(46,36,17,.62));box-shadow:0 18px 55px rgba(0,0,0,.28)}
+.sharp-hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid rgba(216,180,93,.10);border-radius:50%;right:-125px;top:-205px;box-shadow:0 0 80px rgba(216,180,93,.08)}
+.sharp-kicker{font-size:10px;font-weight:850;letter-spacing:.22em;color:var(--sw-gold);margin-bottom:6px}
+.sharp-title{font-size:clamp(34px,5vw,58px);font-weight:900;letter-spacing:-.045em;line-height:.98;color:#f5f8fb}.sharp-title span{color:var(--sw-gold2)}
+.sharp-sub{margin-top:9px;color:#aab5c3;font-size:13px}.sharp-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
+.sharp-badges span{font-size:8px;font-weight:850;letter-spacing:.12em;padding:5px 8px;border-radius:999px;border:1px solid #303c4d;background:#0a1018;color:#aeb9c7}
+div[data-testid="stTabs"] [data-baseweb="tab-list"]{gap:6px;padding:6px;border:1px solid #202b3b;border-radius:14px;background:rgba(10,15,23,.84);box-shadow:0 10px 28px rgba(0,0,0,.18)}
+div[data-testid="stTabs"] button[data-baseweb="tab"]{height:42px;border-radius:10px;padding:0 18px;color:#8f9aaa;font-weight:750}
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"]{color:#f0d58a;background:linear-gradient(180deg,#1b2431,#111923);box-shadow:inset 0 0 0 1px rgba(216,180,93,.34)}
+div[data-testid="stTabs"] [data-baseweb="tab-highlight"]{display:none}
+h1,h2,h3{letter-spacing:-.025em}h2{font-weight:850!important}h3{margin-top:1.7rem!important;padding-top:.8rem;border-top:1px solid rgba(216,180,93,.13);font-weight:820!important}
+[data-testid="stCaptionContainer"]{color:#8290a2}
+div[data-testid="stVerticalBlockBorderWrapper"]>div{border-color:#263246!important;background:linear-gradient(180deg,rgba(16,24,36,.76),rgba(9,14,22,.76));border-radius:15px!important}
+div[data-baseweb="select"]>div,[data-baseweb="input"]>div{background:#0d141e!important;border-color:#29364a!important;border-radius:10px!important}
+div[data-baseweb="select"]>div:hover,[data-baseweb="input"]>div:hover{border-color:#52627a!important}
+div[role="radiogroup"]{gap:7px;flex-wrap:wrap}
+div[role="radiogroup"] label{background:#0c131d;border:1px solid #263246;border-radius:10px;padding:6px 10px;margin:0!important}
+div[role="radiogroup"] label:has(input:checked){border-color:rgba(216,180,93,.62);background:#17180f}
+.stButton>button{border-radius:10px!important;border:1px solid #303d50!important;background:linear-gradient(180deg,#151e2b,#0c121b)!important;color:#e9eef5!important;font-weight:750!important;box-shadow:none!important}
+.stButton>button:hover{border-color:#d8b45d!important;color:#f0d58a!important;transform:translateY(-1px)}
+[data-testid="stMetric"]{padding:13px 15px;border:1px solid #263246;border-radius:13px;background:linear-gradient(180deg,rgba(17,26,39,.88),rgba(10,15,23,.88))}
+[data-testid="stMetricLabel"]{color:#8794a5!important;font-size:10px!important;text-transform:uppercase;letter-spacing:.08em}
+[data-testid="stMetricValue"]{font-weight:850!important;color:#f1f4f8!important}
+[data-testid="stDataFrame"]{border:1px solid #263246;border-radius:13px;overflow:hidden;background:#0a1018}
+[data-testid="stExpander"]{border:1px solid #263246!important;border-radius:12px!important;background:rgba(11,17,26,.72)!important}
+hr{border-color:#202b3a!important}
+.wr-eq-wrap{border-color:#29364a!important;background:linear-gradient(180deg,#111a27,#0a1018)!important}
+.wr-eq-name{color:#e7edf4!important}.wr-eq-label{color:#7f8da0!important}.wr-eq-empty{border-color:#344156!important;color:#647287!important}
+.wr-picker-title{color:#dbe3ec!important}.wr-tier-label{color:#7f8da0!important}.wr-tier-t3{color:#d8b45d!important}
+.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{background:linear-gradient(180deg,rgba(17,26,39,.92),rgba(9,14,22,.92))!important;border-color:#263246!important;box-shadow:0 8px 22px rgba(0,0,0,.13)}
+.triple-rank-card:hover,.boot3-rank-card:hover,.boot4-rank-card:hover,.full-rank-card:hover{border-color:#d8b45d!important;box-shadow:0 13px 30px rgba(0,0,0,.26)}
+.triple-rank-num,.boot3-rank-num,.boot4-rank-num,.full-rank-num{color:#e4c46f!important}
+@media(max-width:700px){[data-testid="stMainBlockContainer"]{padding-left:.7rem;padding-right:.7rem}.sharp-hero{padding:20px 17px;border-radius:16px}.sharp-badges span{font-size:7px}div[data-testid="stTabs"] button[data-baseweb="tab"]{padding:0 9px;font-size:11px}.sharp-sub{font-size:11px}}
 </style>
 """,unsafe_allow_html=True)
-st.title("⚔️ SharpWR Damage Lab — V5")
-st.caption("Patch 7.3a • Full items + components • single-target ADC auto-attack lab")
+st.markdown("""
+<div class="sharp-hero">
+  <div class="sharp-kicker">SHARPWR • COMBAT ANALYTICS</div>
+  <div class="sharp-title">Damage <span>Lab</span></div>
+  <div class="sharp-sub">Wild Rift ADC build intelligence • Patch 7.3a</div>
+  <div class="sharp-badges"><span>AA ENGINE</span><span>ITEM BENCHMARKS</span><span>FULL BUILD OPTIMIZER</span></div>
+</div>
+""",unsafe_allow_html=True)
 
 # base AD, AD/lvl, AS ratio, base AS, base bonus AS, AS/lvl
 C={
