@@ -1189,6 +1189,74 @@ with tabs[0]:
             st.caption(f"{len(_boot4_df)} unique Boots + 4 builds tested by expanding the top {len(_boot4_seed)} Boots + 3 results. Tier 2 boots remain excluded.")
 
 
+        st.markdown("### Full Build Tier List • Boots + 5 Items")
+        st.caption("Final 6-slot optimizer: one Tier 3 offensive boot plus five different completed items. It expands the strongest Boots + 4 results, deduplicates identical full builds, and preserves the penetration-item restriction.")
+        _full_seed=_boot4_df.head(min(400,len(_boot4_df)))
+        _full_seen=set()
+        _full_rows=[]
+        for _,_seed in _full_seed.iterrows():
+            _core4=tuple(str(_seed[f"Item {x}"]) for x in range(1,5))
+            _boot=str(_seed["Boots"])
+            for _fifth in _build_items:
+                if _fifth in _core4:
+                    continue
+                _core5=tuple(sorted(_core4+(_fifth,)))
+                if sum(1 for _x in _core5 if _x in _exclusive_pen_items)>1:
+                    continue
+                _key=(_boot,)+_core5
+                if _key in _full_seen:
+                    continue
+                _full_seen.add(_key)
+                _row,_=sim_build(
+                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core5,F,
+                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                    target_aa_reduction=tier_aa_reduction,
+                    yuntal_start_stacks=tier_yuntal_stacks,
+                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                    ult=tier_ult,execs=tier_execs,
+                    active_ready=(tier_scenario=="First Contact"),boot=_boot
+                )
+                _gold=float(_row[1]); _dps=float(_row[4])
+                _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
+                _full_rows.append([" + ".join(_core5)+" + "+_boot,*_core5,_boot,_gold,_dps,_gain,_bonus,_value,float(_row[2]),int(_row[3])])
+        _full_df=pd.DataFrame(_full_rows,columns=["Build","Item 1","Item 2","Item 3","Item 4","Item 5","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        _full_df.insert(0,"Rank",range(1,len(_full_df)+1))
+        if len(_full_df):
+            _fb=_full_df.iloc[0]
+            _fv=_full_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
+            _f1,_f2,_f3=st.columns(3)
+            _f1.metric("Best Full Build",_fb["Build"])
+            _f2.metric("Full Build DPS",f"{float(_fb['DPS']):.1f}")
+            _f3.metric("Best Value / 1000g",f"{float(_fv['Bonus DPS / 1000g']):.1f}",_fv["Build"])
+
+            _full_html=['<div class="full-rank-grid">']
+            for _,_r in _full_df.head(24).iterrows():
+                _names=[str(_r[f"Item {x}"]) for x in range(1,6)]
+                _boot=str(_r["Boots"])
+                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
+                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
+                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
+                _full_html.append(f'<div class="full-rank-card"><div class="full-rank-num">#{int(_r["Rank"])}</div><div class="full-icons">{_imgs}</div><div class="full-name">{_label}</div><div class="full-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="full-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
+            _full_html.append('</div>')
+            st.markdown("""<style>
+            .full-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:10px;margin:8px 0 16px}
+            .full-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+            .full-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+            .full-icons{display:flex;justify-content:center;gap:3px}.full-icons img{width:34px;height:34px;border-radius:7px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+            .full-icons .boot-slot{border-color:#c9a84c}
+            .full-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+            .full-name{font-size:8.8px;font-weight:750;line-height:1.13;min-height:80px;margin-top:5px}.full-name span{color:#c9a84c}
+            .full-dps{font-size:15px;font-weight:850}.full-dps span{font-size:9px;font-weight:650;opacity:.62}
+            .full-sub{font-size:9px;opacity:.62;white-space:nowrap}
+            @media(max-width:640px){.full-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.full-icons img{width:25px;height:25px}}
+            </style>""",unsafe_allow_html=True)
+            st.markdown("".join(_full_html),unsafe_allow_html=True)
+            with st.expander("Detailed full-build ranking table"):
+                st.dataframe(_full_df,width="stretch",hide_index=True)
+            st.caption(f"{len(_full_df)} unique full builds tested by expanding the top {len(_full_seed)} Boots + 4 results. Full build = 5 completed items + 1 Tier 3 boot; Tier 2 boots are excluded.")
+
+
 with tabs[1]:
     st.subheader("Build Lab")
 
