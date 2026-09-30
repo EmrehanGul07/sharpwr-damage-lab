@@ -920,15 +920,11 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
     _label=" + ".join(items)+((" + "+boot) if boot else "")
     return [_label,gold,round(t,3),k,round(total_damage/t,1) if t else float("inf")],log
 
-# Shared scenario defaults/state. UI belongs inside each tab rather than above the tabs.
+# Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
 champ=st.session_state.get("build_champ",list(C)[0])
 level=int(st.session_state.get("build_level",9))
 mist=int(st.session_state.get("build_mist",40 if champ=="Senna" else 0)) if champ=="Senna" else 0
 s=stats(champ,level,mist)
-hp=float(st.session_state.get("build_target_hp",2500))
-armor=float(st.session_state.get("build_target_armor",0.0))
-mr=float(st.session_state.get("build_target_mr",0.0))
-bonus_hp=float(st.session_state.get("build_target_bonus_hp",0.0))
 dist=float(st.session_state.get("build_dist",550.0))
 mana=float(st.session_state.get("build_mana",0.0))
 spell=bool(st.session_state.get("build_spell",True))
@@ -936,6 +932,12 @@ energized=bool(st.session_state.get("build_energized",True))
 ult=bool(st.session_state.get("build_ult",True))
 execs=int(st.session_state.get("build_execs",0))
 
+
+def _benchmark_target(name,lvl):
+    target=dict(_target_profile_at_level(TARGET_PROFILES[name],lvl))
+    natural_hp={"Squishy • Jinx":target["hp"],"Bruiser • Darius":660+148*gu(lvl),"Tank • Ornn":690+132*gu(lvl)}[name]
+    target["bonus_hp"]=max(0.0,target["hp"]-natural_hp)
+    return target
 
 def _tab_hero(kicker,title,description):
     st.markdown(f'<div class="buildlab-hero"><span>{html.escape(kicker)}</span><strong>{html.escape(title)}</strong><p>{html.escape(description)}</p></div>',unsafe_allow_html=True)
@@ -1048,9 +1050,9 @@ with tabs[0]:
     _tier_left,_tier_right=st.columns(2,gap="medium")
     with _tier_left,st.container(border=True):
         _setup_heading("01","YOUR CHAMPION","Champion Profile")
-        tier_champ=st.selectbox("Champion",list(C),index=list(C).index(champ),key="tier_champ")
-        tier_level=st.slider("Level",1,15,level,key="tier_level")
-        tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
+        tier_champ=st.selectbox("Champion",list(C),index=0,key="tier_champ")
+        tier_level=st.slider("Level",1,15,9,key="tier_level")
+        tier_mist=st.number_input("Senna Mist",0,500,40,20,key="tier_mist") if tier_champ=="Senna" else 0
         _champion_profile(tier_champ,tier_level,tier_mist)
     with _tier_right,st.container(border=True):
         _setup_heading("02","FIXED BENCHMARK","Target Profile")
@@ -1074,10 +1076,10 @@ with tabs[0]:
         with st.expander("Advanced Scenario Settings"):
             ta1,ta2=st.columns(2)
             tier_start_hp_pct=ta1.slider("Target Starting HP %",1,100,int(_sc["hp_pct"]),1,key=f"tier_hp_pct_{tier_scenario}")
-            tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
+            tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,550.0,25.0,key="tier_dist")
             ta3,ta4=st.columns(2)
-            tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
-            tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+            tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,0.0,50.0,key="tier_mana")
+            tier_execs=ta4.number_input("Collector previous executes",0,500,0,1,key="tier_execs")
             # Tier-list benchmark progression: Yun Tal is assumed newly bought at Lv5
             # (0 permanent stacks) and naturally reaches its 125-stack / +25% crit cap
             # by Lv9. Intermediate levels grow linearly; combat AAs continue stacking it.
@@ -1499,14 +1501,14 @@ with tabs[1]:
         s=stats(champ,level,mist)
         _champion_profile(champ,level,mist)
     with _target_panel,st.container(border=True):
-        _setup_heading("02","YOUR OPPONENT","Target Defense")
-        hp=st.number_input("Target HP",100,20000,int(hp),100,key="build_target_hp")
-        _ty,_tz=st.columns(2)
-        armor=_ty.number_input("Target Armor",0.0,1000.0,float(armor),5.0,key="build_target_armor")
-        mr=_tz.number_input("Target MR",0.0,1000.0,float(mr),5.0,key="build_target_mr")
-        target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")
-        target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0
+        _setup_heading("02","FIXED BENCHMARK","Target Profile")
+        build_target_profile=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="build_target_profile",label_visibility="collapsed")
+        _build_target=_benchmark_target(build_target_profile,level)
+        hp=float(_build_target["hp"]); armor=float(_build_target["armor"]); mr=float(_build_target["mr"])
+        bonus_hp=float(_build_target["bonus_hp"])
+        target_aa_reduction=float(_build_target.get("aa_reduction",0))
         _target_readout(hp,armor,mr,target_aa_reduction)
+        st.caption("Stats follow this tab's level. Darius / Ornn apply 10% basic-attack reduction from level 5.")
     with st.container(border=True):
         _setup_heading("03","STARTING CONDITIONS","Combat Setup")
         _proc_cols=st.columns(3)
@@ -1516,7 +1518,7 @@ with tabs[1]:
         with st.expander("Advanced combat settings"):
             _adv_left,_adv_right=st.columns(2)
             dist=_adv_left.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
-            bonus_hp=_adv_right.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
+            st.caption(f"Target bonus HP from profile: {bonus_hp:,.0f}")
             mana=_adv_left.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
             execs=_adv_right.number_input("Collector previous executes",0,500,int(execs),1,key="build_execs")
         _flags=[("SPELLBLADE",spell),("ENERGIZED",energized),("ULTIMATE PRE-CAST",ult)]
@@ -2072,7 +2074,7 @@ with tabs[1]:
             hit_phy*=1+ldramp; hit_mag*=1+ldramp; hit_true*=1+ldramp
             parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
         max_em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
-        max_hit=hit_phy*rm(max_ea)+hit_mag*rm(max_em)+hit_true
+        max_hit=(hit_phy*rm(max_ea)+hit_mag*rm(max_em)+hit_true)*(1-target_aa_reduction)
         if boot=="Immortal Treads" and immortal_above_half:
             max_hit*=1.05
             parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
@@ -2122,8 +2124,9 @@ with tabs[1]:
             br=[]
             for pn,pt,pv in parts:
                 dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(max_em) if pt=="Magic" else pv
+                dealt*=1-target_aa_reduction
                 br.append([pn,pt,round(pv,1),round(dealt,1)])
-            st.table(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage After Resist"]))
+            st.table(pd.DataFrame(br,columns=["Source","Type","Raw Damage","Damage Dealt"]))
             st.metric("Total Max Single Hit",f"{max_hit:.1f}")
 
 with tabs[2]:
@@ -2131,16 +2134,32 @@ with tabs[2]:
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
     _iv_champion,_iv_target=st.columns(2,gap="medium")
     with _iv_champion,st.container(border=True):
-        _setup_heading("01","ACTIVE CHAMPION","Champion Profile")
-        _champion_profile(champ,level,mist)
-        st.caption("Champion and level follow your Build Lab selection.")
+        _setup_heading("01","YOUR CHAMPION","Champion Profile")
+        iv_champ=st.selectbox("Champion",list(C),index=0,key="iv_champ")
+        iv_level=st.slider("Level",1,15,9,key="iv_level")
+        iv_mist=st.number_input("Senna Mist",0,500,40,20,key="iv_mist") if iv_champ=="Senna" else 0
+        _champion_profile(iv_champ,iv_level,iv_mist)
     with _iv_target,st.container(border=True):
-        _setup_heading("02","ACTIVE BENCHMARK","Target Conditions")
-        # Item Value's existing single-item model does not apply target boots.
-        _target_readout(hp,armor,mr)
-        st.caption("Uses Build Lab HP, Armor and MR. Target boot reduction and runes are excluded from this single-item comparison.")
-        _iv_flags=[("Spellblade",spell),("Energized",energized),("Ultimate pre-cast",ult)]
-        st.markdown('<div class="combat-flags">'+"".join(f'<span class="{"active" if on else ""}">{name} · {"ON" if on else "OFF"}</span>' for name,on in _iv_flags)+f'<span>{dist:g} ATTACK DISTANCE</span></div>',unsafe_allow_html=True)
+        _setup_heading("02","FIXED BENCHMARK","Target Profile")
+        iv_target_profile=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="iv_target_profile",label_visibility="collapsed")
+        _iv_benchmark=_benchmark_target(iv_target_profile,iv_level)
+        iv_hp=float(_iv_benchmark["hp"]); iv_armor=float(_iv_benchmark["armor"]); iv_mr=float(_iv_benchmark["mr"])
+        iv_bonus_hp=float(_iv_benchmark["bonus_hp"]); iv_reduction=float(_iv_benchmark.get("aa_reduction",0))
+        _target_readout(iv_hp,iv_armor,iv_mr,iv_reduction)
+        st.caption("Stats follow this tab's level. Darius / Ornn apply 10% basic-attack reduction from level 5. Runes are excluded from single-item value.")
+    with st.container(border=True):
+        _setup_heading("03","STARTING CONDITIONS","Combat Setup")
+        _iv_proc_cols=st.columns(3)
+        iv_spell=_iv_proc_cols[0].checkbox("Spellblade ready",value=True,key="iv_spell")
+        iv_energized=_iv_proc_cols[1].checkbox("Energized ready",value=True,key="iv_energized")
+        iv_ult=_iv_proc_cols[2].checkbox("Ultimate pre-cast",value=True,key="iv_ult")
+        with st.expander("Advanced combat settings"):
+            _iv_a,_iv_b=st.columns(2)
+            iv_dist=_iv_a.number_input("Attack distance",0.0,1000.0,550.0,25.0,key="iv_dist")
+            iv_mana=_iv_b.number_input("Champion Max Mana before item",0.0,5000.0,0.0,50.0,key="iv_mana")
+            iv_execs=_iv_a.number_input("Collector previous executes",0,500,0,1,key="iv_execs")
+        _iv_flags=[("Spellblade",iv_spell),("Energized",iv_energized),("Ultimate pre-cast",iv_ult)]
+        st.markdown('<div class="combat-flags">'+"".join(f'<span class="{"active" if on else ""}">{name} · {"ON" if on else "OFF"}</span>' for name,on in _iv_flags)+f'<span>{iv_dist:g} ATTACK DISTANCE</span></div>',unsafe_allow_html=True)
     rates={"ad":500/12,"as":400/.12,"crit":500/.10,"ap":500/20,"hp":500/150,"armor":500/20,"mr":500/20,"ah":300/5}
     proc_items=["Fiendhunter Bolts","Rapid Firecannon","Phantom Dancer","Kraken Slayer","Statikk Shiv","Guinsoo\'s Rageblade","Essence Reaver","The Collector","Terminus","Stormrazor","Yun Tal Wildarrows","Trinity Force","Duskblade of Draktharr","Iceborn Gauntlet"]
     proc_states={}
@@ -2149,12 +2168,12 @@ with tabs[2]:
         pc=st.columns(3)
         for i,pit in enumerate(proc_items):
             proc_states[pit]=pc[i%3].checkbox(pit,value=True,key=f"iv_proc_{pit}")
-    st.caption(f"{champ} · Level {level} · {hp:,.0f} target HP · {armor:g} Armor · {mr:g} MR · {sum(proc_states.values())}/{len(proc_states)} item effects enabled")
-    if champ!="Jhin":
+    st.caption(f"{iv_champ} · Level {iv_level} · {iv_target_profile} · {iv_hp:,.0f} HP · {iv_armor:g} Armor · {iv_mr:g} MR · {sum(proc_states.values())}/{len(proc_states)} item effects enabled")
+    if iv_champ!="Jhin":
         rows=[]
         for it,v0 in F.items():
             q=dct(v0); raw=sum(q[k]*rates[k] for k in rates)
-            row,_=sim(champ,level,hp,armor,mr,it,F,mist,bonus_hp,dist,mana,spell,energized,ult,execs,proc_states.get(it,True))
+            row,_=sim(iv_champ,iv_level,iv_hp,iv_armor,iv_mr,it,F,iv_mist,iv_bonus_hp,iv_dist,iv_mana,iv_spell,iv_energized,iv_ult,iv_execs,proc_states.get(it,True),target_aa_reduction=iv_reduction)
             dps=row[4]; rows.append([item_icon(it),it,q["gold"],round(raw),round(raw/q["gold"]*100,1),dps,round(dps/q["gold"]*1000,1)])
         val=pd.DataFrame(rows,columns=["Icon","Item","Cost","Priced Raw Stats","Raw Gold Efficiency %","DPS","DPS / 1000g"]).sort_values("DPS / 1000g",ascending=False).reset_index(drop=True)
         val.insert(0,"Rank",range(1,len(val)+1))
@@ -2384,4 +2403,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.43 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.44 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
