@@ -679,6 +679,69 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     total_sim_damage=sum(float(x[6]) for x in log)
     return [it,q["gold"],round(t,3),k,round(total_sim_damage/t,1) if t else float("inf")],log
 
+
+def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0):
+    """Shared multi-item AA engine. V1 carries the six audited item mechanics."""
+    items=list(items)
+    s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
+    total=lambda key: sum(float(q[key]) for q in qs)
+    ad=s["ad"]+total("ad")
+    hp=float(hp0); t=0.; k=0; log=[]
+    rb=light=dark=rage_hits=0
+    ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
+    while hp>0 and k<500:
+        k+=1
+        dyn=(.08*rb if "Guinsoo's Rageblade" in items else 0.0)
+        if "Yun Tal Wildarrows" in items and t<yt_until: dyn+=.35
+        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn))
+        crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if "Yun Tal Wildarrows" in items else 0))
+        cd=2.3 if "Infinity Edge" in items else 2.0
+        if n=="Senna": cd*=.9
+        pct=total("pctpen")+(.10*dark if "Terminus" in items else 0)
+        if "Terminus" in items: pct=min(.40,pct)
+        ea=max(0,arm*(1-pct)-total("flatpen"))
+        phy=ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
+        if "Hexoptics C44" in items:
+            amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01)
+            phy*=1+amp; note.append(f"C44 {amp*100:.0f}%")
+        if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
+        if "Terminus" in items: onm+=30
+        rage_extra=False
+        if "Guinsoo's Rageblade" in items:
+            onm+=30
+            if rb>=4:
+                rage_hits+=1
+                if rage_hits>=3: rage_extra=True; rage_hits=0
+        if "Kraken Slayer" in items and k%3==0:
+            base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
+            onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
+        if rage_extra:
+            # Phantom Hit repeats repeatable on-hit effects in this audited V1:
+            # Rageblade, BotRK and Terminus. It does not repeat every-N-attack Kraken.
+            onm+=30
+            if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
+            if "Terminus" in items: onm+=30
+            note.append("Phantom Hit")
+        phy+=onp
+        dmg=phy*rm(ea)+onm*rm(mr)+true
+        if target_aa_reduction: dmg*=1-target_aa_reduction
+        before=hp; hp-=dmg
+        if "Guinsoo's Rageblade" in items: rb=min(4,rb+1)
+        if "Terminus" in items:
+            if k%2: light=min(3,light+1)
+            else: dark=min(3,dark+1)
+        if "Yun Tal Wildarrows" in items:
+            ytcrit=min(.25,ytcrit+.002)
+            if yt_cd<=t:
+                yt_until=t+6; yt_cd=t+25; note.append("Flurry")
+            else: yt_cd=max(t,yt_cd-(1.0+crit))
+        log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note),rb,light,dark])
+        t+=1/asp
+        if hp<=0: break
+    total_damage=sum(float(x[6]) for x in log)
+    gold=sum(float(q["gold"]) for q in qs)
+    return [" + ".join(items),gold,round(t,3),k,round(total_damage/t,1) if t else float("inf")],log
+
 # Shared scenario defaults/state. UI belongs inside each tab rather than above the tabs.
 champ=st.session_state.get("build_champ",list(C)[0])
 level=int(st.session_state.get("build_level",9))
@@ -1448,7 +1511,7 @@ with tabs[2]:
 
 with tabs[3]:
     st.subheader("Database")
-    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit"],horizontal=True)
+    dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True)
     if dbpick=="Runes":
         st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
         tree_filter=st.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
@@ -1523,6 +1586,35 @@ with tabs[3]:
         else: st.error(f"{len(_tests)-_passed} rune regression check(s) FAILED.")
         counts={tree:len(names) for tree,names in RUNE_TREES.items()}
         st.caption(" • ".join(f"{tree}: {count}" for tree,count in counts.items())+" • Total: 51")
+    elif dbpick=="Build Engine Audit":
+        st.caption("Multi-item engine V1: one shared AA timeline for audited item interactions. Start with BotRK + Rageblade.")
+        _bc1,_bc2,_bc3=st.columns(3)
+        _bchamp=_bc1.selectbox("Attacker",list(C),index=list(C).index("Jinx") if "Jinx" in C else 0,key="build_audit_champ")
+        _blvl=_bc2.slider("Level",1,15,15,key="build_audit_level")
+        _btarget=_bc3.selectbox("Target",list(TARGET_PROFILES),index=list(TARGET_PROFILES).index("Tank • Ornn"),key="build_audit_target")
+        _audited=["Blade of the Ruined King","Guinsoo's Rageblade","Terminus","Kraken Slayer","Yun Tal Wildarrows","Hexoptics C44","Infinity Edge"]
+        _bi1=st.selectbox("Item 1",_audited,index=0,key="build_audit_i1")
+        _bi2=st.selectbox("Item 2",_audited,index=1,key="build_audit_i2")
+        if _bi1==_bi2:
+            st.warning("Choose two different items.")
+        else:
+            _bp=_target_profile_at_level(TARGET_PROFILES[_btarget],_blvl)
+            _bhp=float(_bp["hp"]); _bar=float(_bp["armor"]); _bmr=float(_bp["mr"]); _bred=float(_bp.get("aa_reduction",0))
+            _bnatural={"Squishy • Jinx":_bhp,"Bruiser • Darius":660+148*gu(_blvl),"Tank • Ornn":690+132*gu(_blvl)}[_btarget]
+            _bbonus=max(0.0,_bhp-float(_bnatural))
+            _byt=125 if "Yun Tal Wildarrows" in (_bi1,_bi2) and _blvl>=9 else 0
+            _bres,_blog=sim_build(_bchamp,_blvl,_bhp,_bar,_bmr,[_bi1,_bi2],F,0,_bbonus,550.0,_bred,_byt)
+            st.metric("Build DPS",f"{_bres[4]:.1f}")
+            _brows=[]
+            for _r in _blog:
+                _k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note,_rb,_light,_dark=_r
+                _state=[]
+                if "Guinsoo's Rageblade" in (_bi1,_bi2): _state.append(f"Rageblade {_rb}/4")
+                if "Terminus" in (_bi1,_bi2): _state.append(f"Terminus L{_light}/3 D{_dark}/3")
+                if "Blade of the Ruined King" in (_bi1,_bi2): _state.append(f"BotRK HP {_before:.1f}")
+                _brows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note," • ".join(_state)])
+            st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),use_container_width=True,hide_index=True)
+            st.caption("V1 interaction rule: Rageblade Phantom Hit repeats Rageblade, BotRK and Terminus repeatable on-hits; Kraken's every-third-attack proc is not duplicated.")
     elif dbpick=="Item Engine Audit":
         st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
         _audit_items=["Yun Tal Wildarrows","Terminus","Guinsoo's Rageblade","Kraken Slayer","Blade of the Ruined King","Hexoptics C44"]
