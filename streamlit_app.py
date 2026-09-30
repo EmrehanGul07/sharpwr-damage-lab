@@ -1064,7 +1064,7 @@ with tabs[0]:
 
         st.markdown("### Boots + 3-Item Tier List")
         st.caption("Adds one offensive boot slot to the strongest legal 3-item cores. Kept bounded so normal Streamlit reruns stay responsive.")
-        _offensive_boots=["Gluttonous Greaves","Berserker's Greaves","Gunmetal Greaves","Boots of Dynamism","Armorcrusher Boots"]
+        _offensive_boots=["Gunmetal Greaves","Armorcrusher Boots"]
         _boot_core_candidates=_triple_df.head(min(250,len(_triple_df)))
         _boot3_rows=[]
         for _,_cr in _boot_core_candidates.iterrows():
@@ -1116,7 +1116,7 @@ with tabs[0]:
             st.markdown("".join(_boot_html),unsafe_allow_html=True)
             with st.expander("Detailed Boots + 3-item ranking table"):
                 st.dataframe(_boot3_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Immortal Treads is temporarily excluded until its conditional +5% damage passive is modeled.")
+            st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Tier 2 boots are excluded from ranking; the optimizer compares Tier 3 offensive boots only. Immortal Treads remains excluded until its conditional +5% damage passive is modeled.")
 
 
 with tabs[1]:
