@@ -68,17 +68,15 @@ def _rune_icon_grid(label, options, state_key, cols=6):
     if not options: return None
     ncols=min(cols,len(options))
     for start in range(0,len(options),ncols):
-        grid=st.columns(ncols,gap="small")
+        row=st.columns(ncols,gap="small")
         for j,name in enumerate(options[start:start+ncols]):
             i=start+j; icon=rune_icon(name); chosen=name==current
-            with grid[j]:
+            with row[j]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
-                if icon: st.image(icon,width=58)
-                st.caption(name)
-                if st.button("select",key=f"{state_key}__{i}__{name}",
-                             help=RUNE_DATABASE.get(name,{}).get("tooltip",""),
-                             use_container_width=True):
+                if icon: st.image(icon,width=66)
+                if st.button(" ",key=f"{state_key}__{i}__{name}",help=name+" • "+RUNE_DATABASE.get(name,{}).get("tooltip",""),use_container_width=False):
                     st.session_state[state_key]=name; st.rerun()
+        st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     return st.session_state.get(state_key,current)
 
 ITEM_ICON_FILE={
@@ -270,41 +268,43 @@ import pandas as pd
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
 st.markdown("""
 <style>
-/* Premium native selectors: real Streamlit buttons remain clickable, but visually disappear. */
-.wr-picker-title{margin:.65rem 0 .25rem;font-size:.92rem;font-weight:700;color:#d9e1eb;letter-spacing:.02em}
-.wr-selected-label{font-size:.72rem;color:#d7b75f;text-align:center;margin-top:-.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-div[data-testid="stColumn"]:has(.wr-pick-marker){
-  position:relative;border:1px solid #2c3746;border-radius:13px;
-  background:linear-gradient(145deg,#141c27,#090e15);
-  padding:.42rem .28rem .28rem!important;min-height:82px;
-  transition:border-color .15s,box-shadow .15s,transform .15s;
+/* Icon-first native pickers. Streamlit buttons remain real click targets. */
+.wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
+.wr-pick-marker{height:0!important;margin:0!important;padding:0!important;overflow:hidden}
+div[data-testid="stColumn"]:has(.wr-pick-marker){position:relative;min-width:0}
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{
+  display:flex;justify-content:center;margin:0!important;padding:0!important;
 }
-div[data-testid="stColumn"]:has(.wr-pick-marker):hover{
-  border-color:#b9974b;box-shadow:0 8px 24px rgba(0,0,0,.30),0 0 0 1px rgba(213,178,88,.12);
-  transform:translateY(-1px);
-}
-div[data-testid="stColumn"]:has(.wr-selected){
-  border-color:#d2ae54;box-shadow:0 0 0 1px rgba(210,174,84,.35),0 0 18px rgba(210,174,84,.16);
-}
-div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{
-  width:58px!important;height:58px!important;object-fit:cover;border-radius:9px;
+  width:66px!important;height:66px!important;object-fit:cover;border-radius:11px;
+  border:1px solid #344154;background:#0c121a;
+  box-shadow:0 5px 15px rgba(0,0,0,.25);transition:.14s ease;
 }
-.wr-pick-marker{height:0;margin:0;padding:0;overflow:hidden}
+div[data-testid="stColumn"]:has(.wr-pick-marker):hover div[data-testid="stImage"] img{
+  transform:translateY(-2px);border-color:#b9974c;box-shadow:0 8px 22px rgba(0,0,0,.38);
+}
+div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{
+  border:2px solid #d5b45b!important;
+  box-shadow:0 0 0 2px rgba(213,180,91,.15),0 0 18px rgba(213,180,91,.25)!important;
+}
+/* Invisible native button stretched over the icon. */
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{
-  position:absolute;inset:0;z-index:20;margin:0!important;
+  position:absolute!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;
+  width:70px!important;height:70px!important;z-index:50!important;margin:0!important;padding:0!important;
 }
-div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton>button{
-  width:100%!important;height:100%!important;min-height:0!important;
-  opacity:0!important;border:0!important;padding:0!important;cursor:pointer!important;
+div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  min-height:0!important;padding:0!important;margin:0!important;border:0!important;
+  background:transparent!important;box-shadow:none!important;color:transparent!important;
+  opacity:.01!important;cursor:pointer!important;
 }
-div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionContainer"]{
-  text-align:center;font-size:.68rem;line-height:1.05;color:#aab4c1;
-  margin-top:.22rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button *{opacity:0!important}
+/* Picker captions are intentionally hidden: name/stats remain in native tooltip. */
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionContainer"]{display:none!important}
+.wr-grid-gap{height:8px}
 @media(max-width:900px){
-  div[data-testid="stColumn"]:has(.wr-pick-marker){min-height:74px;padding:.3rem .18rem!important}
-  div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:52px!important;height:52px!important}
+ div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:58px!important;height:58px!important}
+ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important}
 }
 </style>
 """,unsafe_allow_html=True)
@@ -717,27 +717,28 @@ with tabs[1]:
             slot_cols[_i].caption("Empty slot")
 
     st.markdown('<div class="wr-picker-title">Items</div>',unsafe_allow_html=True)
-    st.caption("Select up to 5 completed items.")
+    st.caption("Select up to 5 completed items. Hover an icon for name and stats.")
     _item_names=list(F)
-    _item_cols=st.columns(10,gap="small")
-    for _ii,_name in enumerate(_item_names):
-        _col=_item_cols[_ii%10]
-        _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
-        _parts=[f"{int(_q['gold'])}g"]
-        for _key,_label in STAT_LABELS:
-            _v=_q.get(_key,0)
-            if _v:
-                _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
-        with _col:
-            st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'"></div>',unsafe_allow_html=True)
-            if _icon: st.image(_icon,width=58)
-            st.caption(_name)
-            if st.button("select",key=f"native_item_{_ii}",help=_name+" • "+" • ".join(_parts),
-                         use_container_width=True,disabled=_selected or len(build)>=5):
-                _new=list(st.session_state.build_items_v2)
-                if _name not in _new and len(_new)<5:
-                    _new.append(_name); st.session_state.build_items_v2=_new
-                st.rerun()
+    _ncols=10
+    for _start in range(0,len(_item_names),_ncols):
+        _row=st.columns(_ncols,gap="small")
+        for _j,_name in enumerate(_item_names[_start:_start+_ncols]):
+            _ii=_start+_j; _col=_row[_j]
+            _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
+            _parts=[f"{int(_q['gold'])}g"]
+            for _key,_label in STAT_LABELS:
+                _v=_q.get(_key,0)
+                if _v: _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
+            with _col:
+                st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'"></div>',unsafe_allow_html=True)
+                if _icon: st.image(_icon,width=66)
+                if st.button(" ",key=f"native_item_{_ii}",help=_name+" • "+" • ".join(_parts),
+                             use_container_width=False,disabled=_selected or len(build)>=5):
+                    _new=list(st.session_state.build_items_v2)
+                    if _name not in _new and len(_new)<5:
+                        _new.append(_name); st.session_state.build_items_v2=_new
+                    st.rerun()
+        st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     st.markdown('<div class="wr-picker-title">Boots</div>',unsafe_allow_html=True)
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
@@ -751,9 +752,8 @@ with tabs[1]:
         with _col:
             _sel=st.session_state.build_boot_v2==_name
             st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'"></div>',unsafe_allow_html=True)
-            if _icon: st.image(_icon,width=58)
-            st.caption(_name)
-            if st.button("select",key=f"pick_boot_{_i}",help=_name+" • "+" • ".join(_parts),use_container_width=True):
+            if _icon: st.image(_icon,width=66)
+            if st.button(" ",key=f"pick_boot_{_i}",help=_name+" • "+" • ".join(_parts),use_container_width=False):
                 st.session_state.build_boot_v2=_name; st.session_state.preview_boot=_name; st.rerun()
     boot=st.session_state.build_boot_v2
     _bq=dct(B[boot]); _bicon=boot_icon(boot)
@@ -1220,4 +1220,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.28 | Icon-first native premium selectors • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.29 | Square icon-only native picker grid • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
