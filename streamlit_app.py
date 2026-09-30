@@ -688,7 +688,9 @@ with tabs[1]:
     bonus_hp=_tu.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
     dist=_tv.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
     mana=_tw.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
-    target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")\n    target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0\n    with st.expander("Proc / scenario switches"):
+    target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")
+    target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0
+    with st.expander("Proc / scenario switches"):
         spell=st.checkbox("Ability cast before first AA (Spellblade ready)",spell,key="build_spell")
         energized=st.checkbox("Start with Energized/Jolt proc ready",energized,key="build_energized")
         ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",ult,key="build_ult")
