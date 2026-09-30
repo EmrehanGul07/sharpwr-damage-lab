@@ -1005,6 +1005,7 @@ st.markdown("""<style>
 div[data-baseweb="select"]>div{color:#eef3f8!important}
 [data-testid="stNumberInput"] input,[data-testid="stTextInput"] input{color:#eef3f8!important}
 [data-testid="stMetricDelta"]{color:#aebdd0!important}
+[data-testid="stMetricValue"]{font-size:clamp(20px,2.3vw,32px)!important;max-width:100%}
 
 .buildlab-hero strong{font-size:28px;letter-spacing:-.03em}.buildlab-hero p{font-size:12px;line-height:1.6;max-width:850px}
 .stButton>button[kind="primary"]{border-color:#b49347!important;background:linear-gradient(120deg,#d8b45d,#f0d58a)!important;color:#10141b!important;min-height:48px!important}
@@ -1155,7 +1156,7 @@ with tabs[0]:
                 _cat,_status,_note=ITEM_SCENARIO_AUDIT.get(_it,("static stats","modeled","Static offensive stats only."))
                 _audit_rows.append([_it,_cat,_status,_note])
             _audit_badges(_audit_rows,status_index=2)
-        st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
+            st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
 
 
         st.divider()
@@ -1541,19 +1542,18 @@ with tabs[1]:
     _rune_state_class="ok" if _rune_count==5 else ""
     st.markdown(f'<div class="rune-status"><span class="{_rune_state_class}">{_rune_count}/5 RUNES EQUIPPED</span><span>1 KEYSTONE</span><span>3 PRIMARY</span><span>1 SECONDARY</span></div>',unsafe_allow_html=True)
 
-    st.markdown('<div class="wr-eq-wrap">',unsafe_allow_html=True)
-    _eqcols=st.columns(5,gap="small")
-    _eqslots=[
-        ("KEY RUNE","build_keystone"),
-        ("PRIMARY 1","build_primary_slot1"),
-        ("PRIMARY 2","build_primary_slot2"),
-        ("PRIMARY 3","build_primary_slot3"),
-        ("SECONDARY","build_secondary_rune"),
-    ]
-    for _i,(_label,_key) in enumerate(_eqslots):
-        with _eqcols[_i]:
-            _equipped_rune_slot(_label,_key)
-    st.markdown('</div>',unsafe_allow_html=True)
+    with st.container(border=True):
+        _eqcols=st.columns(5,gap="small")
+        _eqslots=[
+            ("KEY RUNE","build_keystone"),
+            ("PRIMARY 1","build_primary_slot1"),
+            ("PRIMARY 2","build_primary_slot2"),
+            ("PRIMARY 3","build_primary_slot3"),
+            ("SECONDARY","build_secondary_rune"),
+        ]
+        for _i,(_label,_key) in enumerate(_eqslots):
+            with _eqcols[_i]:
+                _equipped_rune_slot(_label,_key)
 
     # Only unresolved slots show their selection UI.
     if not st.session_state.get("build_keystone"):
