@@ -312,6 +312,11 @@ st.markdown("""
 <style>
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
 .wr-eq-wrap{margin:4px 0 16px;padding:12px 12px 6px;border:1px solid #dfe4ea;border-radius:14px;background:linear-gradient(180deg,#fbfcfd,#f5f7f9)}
+.wr-rune-section{display:flex;align-items:center;gap:10px;margin:18px 0 9px}
+.wr-rune-section:before,.wr-rune-section:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,#cfd6df)}
+.wr-rune-section:after{background:linear-gradient(90deg,#cfd6df,transparent)}
+.wr-rune-section span{font-size:10px;font-weight:850;letter-spacing:.14em;color:#697586;white-space:nowrap}
+.wr-rune-section.key span{color:#a67d16}.wr-rune-section.primary span{color:#68778d}.wr-rune-section.secondary span{color:#806b9d}
 .wr-eq-label{font-size:9px;font-weight:850;letter-spacing:.11em;color:#8a95a3;text-transform:uppercase;margin-bottom:5px}
 .wr-eq-empty{height:54px;border:1px dashed #cbd3dc;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:6px;color:#a4aeba;font-size:19px}
 .wr-eq-empty span{font-size:9px;font-weight:800;letter-spacing:.09em}
@@ -691,12 +696,14 @@ with tabs[1]:
 
     # Only unresolved slots show their selection UI.
     if not st.session_state.get("build_keystone"):
+        st.markdown('<div class="wr-rune-section key"><span>KEY RUNE</span></div>',unsafe_allow_html=True)
         keystone=_rune_icon_grid("Choose Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
     else:
         keystone=st.session_state.build_keystone
 
     _primary_done=all(st.session_state.get(f"build_primary_slot{x}") for x in (1,2,3))
     if not _primary_done:
+        st.markdown('<div class="wr-rune-section primary"><span>PRIMARY RUNES</span></div>',unsafe_allow_html=True)
         primary_tree=_tree_icon_picker("Primary Tree",sub_trees,"build_primary_tree",4)
         # Tree changes invalidate only equipped primary runes that do not belong to the new tree.
         for _slot in (1,2,3):
@@ -724,6 +731,7 @@ with tabs[1]:
         secondary_tree=_secondary_trees[0]; st.session_state.build_secondary_tree=secondary_tree
         st.session_state.build_secondary_rune=None
     if not st.session_state.get("build_secondary_rune"):
+        st.markdown('<div class="wr-rune-section secondary"><span>SECONDARY RUNE</span></div>',unsafe_allow_html=True)
         secondary_tree=_tree_icon_picker("Secondary Tree",_secondary_trees,"build_secondary_tree",3)
         secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
         secondary_rune=_rune_icon_grid("Choose Secondary Rune",secondary_options,"build_secondary_rune",6)
@@ -1353,4 +1361,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.38 | Larger rune tree icons • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.39 | Rune section dividers • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
