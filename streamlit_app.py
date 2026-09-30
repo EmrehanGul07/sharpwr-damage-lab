@@ -1067,25 +1067,27 @@ with tabs[0]:
         st.caption("Adds one offensive boot slot to every legal three-item core. This is the bridge toward the real 6-slot build format: Boots + 5 legendary items.")
         _offensive_boots=["Gluttonous Greaves","Immortal Treads","Berserker's Greaves","Gunmetal Greaves","Boots of Dynamism","Armorcrusher Boots"]
         _boot3_rows=[]
-        for _i in range(len(_build_items)):
-            for _j in range(_i+1,len(_build_items)):
-                for _k in range(_j+1,len(_build_items)):
-                    _core=(_build_items[_i],_build_items[_j],_build_items[_k])
-                    if sum(1 for _x in _core if _x in _exclusive_pen_items)>1:
-                        continue
-                    for _boot in _offensive_boots:
-                        _brow,_=sim_build(
-                            tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core,F,
-                            mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                            target_aa_reduction=tier_aa_reduction,
-                            yuntal_start_stacks=tier_yuntal_stacks,
-                            base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                            ult=tier_ult,execs=tier_execs,
-                            active_ready=(tier_scenario=="First Contact"),boot=_boot
-                        )
-                        _gold=float(_brow[1]); _dps=float(_brow[4]); _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                        _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
-                        _boot3_rows.append([" + ".join(_core)+" + "+_boot,_core[0],_core[1],_core[2],_boot,_gold,_dps,_gain,_bonus,_value,float(_brow[2]),int(_brow[3])])
+        # Performance guard: re-use the already simulated 3-item ranking instead of
+        # brute-forcing every core six more times. Boots are evaluated across the
+        # strongest 250 legal cores, keeping the app responsive while we validate
+        # the boots layer. Full exhaustive 6-slot search will use a dedicated
+        # optimized search path rather than blocking a Streamlit rerun.
+        _boot_core_candidates=_triple_df.head(min(250,len(_triple_df)))
+        for _,_cr in _boot_core_candidates.iterrows():
+            _core=(str(_cr["Item 1"]),str(_cr["Item 2"]),str(_cr["Item 3"]))
+            for _boot in _offensive_boots:
+                _brow,_=sim_build(
+                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core,F,
+                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                    target_aa_reduction=tier_aa_reduction,
+                    yuntal_start_stacks=tier_yuntal_stacks,
+                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                    ult=tier_ult,execs=tier_execs,
+                    active_ready=(tier_scenario=="First Contact"),boot=_boot
+                )
+                _gold=float(_brow[1]); _dps=float(_brow[4]); _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
+                _boot3_rows.append([" + ".join(_core)+" + "+_boot,_core[0],_core[1],_core[2],_boot,_gold,_dps,_gain,_bonus,_value,float(_brow[2]),int(_brow[3])])
         _boot3_df=pd.DataFrame(_boot3_rows,columns=["Build","Item 1","Item 2","Item 3","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
         _boot3_df.insert(0,"Rank",range(1,len(_boot3_df)+1))
         if len(_boot3_df):
@@ -1118,7 +1120,7 @@ with tabs[0]:
             st.markdown("".join(_boot_html),unsafe_allow_html=True)
             with st.expander("Detailed Boots + 3-item ranking table"):
                 st.dataframe(_boot3_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_boot3_df)} legal core + offensive-boots combinations tested. Defensive/utility boots are intentionally not DPS-ranked yet.")
+            st.caption(f"{len(_boot3_df)} boots combinations tested across the top {len(_boot_core_candidates)} legal 3-item cores. This performance guard prevents the Streamlit rerun from brute-forcing every core × every boot. Defensive/utility boots are intentionally not DPS-ranked yet.")
 
 
 with tabs[1]:
