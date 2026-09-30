@@ -656,8 +656,18 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             if k%2: light=min(3,light+1)
             else: dark=min(3,dark+1)
         if it=="Yun Tal Wildarrows" and item_proc:
+            # Practice Makes Perfect: ranged AAs permanently grant +0.2% crit (max +25%).
+            # Flurry (7.3a): first champion attack grants +35% AS for 6s, base CD 25s.
+            # Every AA reduces remaining Flurry CD by 1s; a crit reduces it by 2s instead.
+            # Crit is deterministic expected-value in this benchmark, so use the expected
+            # reduction 1 + crit seconds per attack (1s non-crit, 2s crit).
             ytcrit=min(.25,ytcrit+.002)
-            if yt_cd<=t: yt_until=t+6; yt_cd=t+20; note.append("Flurry")
+            if yt_cd<=t:
+                yt_until=t+6
+                yt_cd=t+25
+                note.append("Flurry")
+            else:
+                yt_cd=max(t,yt_cd-(1.0+crit))
         if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: fh-=1
         log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note)])
         # Count the full attack interval for every landed attack, including the killing hit.
