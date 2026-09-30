@@ -688,6 +688,10 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
     ad=s["ad"]+total("ad")
     hp=float(hp0); t=0.; k=0; log=[]
     rb=light=dark=rage_hits=0
+    # Kraken is a real hit counter in multi-item builds. User verified in-game:
+    # once Rageblade is fully stacked, every 3rd Rageblade hit (Phantom Hit)
+    # advances Bring It Down by an additional stack.
+    kraken_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     while hp>0 and k<500:
         k+=1
@@ -712,12 +716,21 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
             if rb>=4:
                 rage_hits+=1
                 if rage_hits>=3: rage_extra=True; rage_hits=0
-        if "Kraken Slayer" in items and k%3==0:
-            base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
-            onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
+        if "Kraken Slayer" in items:
+            kraken_hits+=1
+            if rage_extra:
+                # In-game verified: Rageblade Phantom Hit counts as one extra
+                # Bring It Down stack. It advances the counter; it does not
+                # blindly duplicate Kraken damage.
+                kraken_hits+=1
+            if kraken_hits>=3:
+                base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
+                onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
+                kraken_hits-=3
         if rage_extra:
             # Phantom Hit repeats repeatable on-hit effects in this audited V1:
-            # Rageblade, BotRK and Terminus. It does not repeat every-N-attack Kraken.
+            # Rageblade, BotRK and Terminus. Kraken is handled by its own
+            # Bring It Down counter above (+1 extra stack on Phantom Hit).
             onm+=30
             if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
             if "Terminus" in items: onm+=30
@@ -1612,9 +1625,14 @@ with tabs[3]:
                 if "Guinsoo's Rageblade" in (_bi1,_bi2): _state.append(f"Rageblade {_rb}/4")
                 if "Terminus" in (_bi1,_bi2): _state.append(f"Terminus L{_light}/3 D{_dark}/3")
                 if "Blade of the Ruined King" in (_bi1,_bi2): _state.append(f"BotRK HP {_before:.1f}")
+                if "Kraken Slayer" in (_bi1,_bi2):
+                    # Reconstruct the verified Bring It Down state from the trace:
+                    # +1 each AA, plus +1 on every Phantom Hit.
+                    _kh=sum(1+(1 if "Phantom Hit" in str(_x[8]) else 0) for _x in _blog[:_k])
+                    _state.append(f"Kraken {_kh%3}/3")
                 _brows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note," • ".join(_state)])
             st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),use_container_width=True,hide_index=True)
-            st.caption("V1 interaction rule: Rageblade Phantom Hit repeats Rageblade, BotRK and Terminus repeatable on-hits; Kraken's every-third-attack proc is not duplicated.")
+            st.caption("Verified interaction: after Rageblade is fully stacked, every Phantom Hit advances Kraken Bring It Down by +1 extra stack. Phantom advances Kraken's counter; it does not simply duplicate Kraken proc damage.")
     elif dbpick=="Item Engine Audit":
         st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
         _audit_items=["Yun Tal Wildarrows","Terminus","Guinsoo's Rageblade","Kraken Slayer","Blade of the Ruined King","Hexoptics C44"]
