@@ -60,6 +60,29 @@ def rune_icon(name):
         slug=name.lower().replace("&","and").replace("'","").replace(":","").replace(" ","-")
     return f"https://www.riftpatchnotes.com/runes/{slug}.png"
 
+TREE_ICON_URL={
+    "Domination":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7200_domination.png",
+    "Precision":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7201_precision.png",
+    "Sorcery":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7202_sorcery.png",
+    "Resolve":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7204_resolve.png",
+}
+def _tree_icon_picker(label, options, state_key, cols=4):
+    current=st.session_state.get(state_key,options[0] if options else None)
+    if current not in options and options:
+        current=options[0]; st.session_state[state_key]=current
+    st.markdown(f'<div class="wr-picker-title">{html.escape(label)}</div>',unsafe_allow_html=True)
+    row=st.columns(min(cols,len(options)),gap="small")
+    for i,name in enumerate(options):
+        chosen=name==current
+        with row[i]:
+            st.markdown('<div class="wr-tree-marker '+('wr-tree-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
+            st.image(TREE_ICON_URL[name],width=54)
+            st.markdown(f'<div class="wr-tree-name">{html.escape(name)}</div>',unsafe_allow_html=True)
+            if st.button(" ",key=f"{state_key}_tree_{i}",help=None,use_container_width=False):
+                st.session_state[state_key]=name
+                st.rerun()
+    return st.session_state.get(state_key,current)
+
 def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
     if current not in options and options:
@@ -274,6 +297,29 @@ st.markdown("""
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
 .wr-tier-label{margin:10px 0 7px;font-size:10px;font-weight:800;letter-spacing:.14em;color:#6d7887}
 .wr-tier-t3{color:#a67d16}.wr-tier-t2{margin-top:2px;color:#6d7887}
+.wr-tree-marker{height:0!important;margin:0!important;padding:0!important}
+div[data-testid="stColumn"]:has(.wr-tree-marker){position:relative;text-align:center}
+div[data-testid="stColumn"]:has(.wr-tree-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0!important}
+div[data-testid="stColumn"]:has(.wr-tree-marker) div[data-testid="stImage"] img{
+ width:54px!important;height:54px!important;object-fit:contain;padding:7px;border-radius:14px;
+ background:linear-gradient(145deg,#151d28,#090e15);border:1px solid #364152;
+ box-shadow:0 5px 15px rgba(0,0,0,.24);transition:.14s ease}
+div[data-testid="stColumn"]:has(.wr-tree-marker):hover div[data-testid="stImage"] img{
+ transform:translateY(-2px);border-color:#b9974c;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+div[data-testid="stColumn"]:has(.wr-tree-selected) div[data-testid="stImage"] img{
+ border:2px solid #d5b45b!important;background:linear-gradient(145deg,#211d12,#0d1015);
+ box-shadow:0 0 0 2px rgba(213,180,91,.13),0 0 18px rgba(213,180,91,.22)!important}
+.wr-tree-name{margin-top:5px;font-size:11px;font-weight:750;letter-spacing:.025em;color:#596474;text-align:center}
+div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#a67d16}
+div[data-testid="stColumn"]:has(.wr-tree-marker):hover .wr-tree-name{color:#202a36}
+div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton{
+ position:relative!important;left:50%!important;transform:translate(-50%,-82px)!important;
+ width:60px!important;height:60px!important;z-index:90!important;margin:0 0 -60px 0!important;padding:0!important}
+div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button{
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;
+ color:transparent!important;opacity:.01!important;cursor:pointer!important}
+div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button *{opacity:0!important}
 .wr-pick-marker{height:0!important;margin:0!important;padding:0!important;overflow:visible!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker){position:relative;min-width:0;overflow:visible!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0!important;padding:0!important}
@@ -596,17 +642,12 @@ with tabs[1]:
     sub_trees=["Precision","Domination","Resolve","Sorcery"]
     keystone=_rune_icon_grid("Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
 
-    st.markdown("**Primary Tree**")
-    _tc=st.columns(4)
-    primary_tree=st.session_state.get("build_primary_tree","Precision")
-    for _i,_tree in enumerate(sub_trees):
-        if _tc[_i].button(("✓ " if primary_tree==_tree else "")+_tree,key=f"tree_{_tree}",use_container_width=True):
-            st.session_state.build_primary_tree=_tree
-            st.session_state.build_primary_slot1=RUNE_SLOTS[_tree][1][0]
-            st.session_state.build_primary_slot2=RUNE_SLOTS[_tree][2][0]
-            st.session_state.build_primary_slot3=RUNE_SLOTS[_tree][3][0]
-            st.rerun()
-    primary_tree=st.session_state.get("build_primary_tree","Precision")
+    primary_tree=_tree_icon_picker("Primary Tree",sub_trees,"build_primary_tree",4)
+    # If the tree changed, make sure all three primary selections belong to it.
+    for _slot in (1,2,3):
+        _key=f"build_primary_slot{_slot}"
+        if st.session_state.get(_key) not in RUNE_SLOTS[primary_tree][_slot]:
+            st.session_state[_key]=RUNE_SLOTS[primary_tree][_slot][0]
     primary_1=_rune_icon_grid("Primary • Slot 1",RUNE_SLOTS[primary_tree][1],"build_primary_slot1",4)
     primary_2=_rune_icon_grid("Primary • Slot 2",RUNE_SLOTS[primary_tree][2],"build_primary_slot2",4)
     primary_3=_rune_icon_grid("Primary • Slot 3",RUNE_SLOTS[primary_tree][3],"build_primary_slot3",4)
@@ -615,15 +656,10 @@ with tabs[1]:
     secondary_tree=st.session_state.get("build_secondary_tree",_secondary_trees[0])
     if secondary_tree not in _secondary_trees:
         secondary_tree=_secondary_trees[0]; st.session_state.build_secondary_tree=secondary_tree
-    st.markdown("**Secondary Tree**")
-    _sc=st.columns(3)
-    for _i,_tree in enumerate(_secondary_trees):
-        if _sc[_i].button(("✓ " if secondary_tree==_tree else "")+_tree,key=f"secondary_tree_{_tree}",use_container_width=True):
-            st.session_state.build_secondary_tree=_tree
-            st.session_state.build_secondary_rune=RUNE_SLOTS[_tree][1][0]
-            st.rerun()
-    secondary_tree=st.session_state.get("build_secondary_tree",_secondary_trees[0])
+    secondary_tree=_tree_icon_picker("Secondary Tree",_secondary_trees,"build_secondary_tree",3)
     secondary_options=sum((RUNE_SLOTS[secondary_tree][slot] for slot in (1,2,3)),[])
+    if st.session_state.get("build_secondary_rune") not in secondary_options:
+        st.session_state.build_secondary_rune=secondary_options[0]
     secondary_rune=_rune_icon_grid("Secondary Rune",secondary_options,"build_secondary_rune",6)
     selected_sub_runes=[primary_1,primary_2,primary_3,secondary_rune]
     combat_rune=next((r for r in selected_sub_runes if r in {"Cut Down","Coup de Grace","Brutal","Legend: Alacrity"}),"None")
@@ -1248,4 +1284,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.35 | Tiered T3/T2 boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.36 | Icon-first rune tree picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
