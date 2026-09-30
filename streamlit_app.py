@@ -470,6 +470,22 @@ div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{bor
 .rune-status{display:flex;gap:6px;flex-wrap:wrap;margin:5px 0 14px}.rune-status span{padding:5px 8px;border:1px solid #29364a;border-radius:999px;background:#0b111a;color:#8492a4;font-size:8px;font-weight:850;letter-spacing:.07em}.rune-status .ok{color:#e8ca75;border-color:rgba(216,180,93,.34);background:rgba(216,180,93,.055)}
 @media(max-width:640px){.buildlab-hero{padding:15px}.rune-forge-head{padding:10px}.rune-forge-head strong{font-size:15px}div[data-testid="stColumn"]:has(.wr-eq-label){border-right:0}}
 
+
+/* Build Forge V2 */
+.build-forge-head{display:flex;align-items:center;gap:11px;margin:28px 0 10px;padding:13px 15px;border:1px solid rgba(216,180,93,.22);border-radius:12px;background:linear-gradient(90deg,rgba(216,180,93,.08),rgba(12,18,27,.45))}
+.build-forge-head .forge-icon{width:31px;height:31px;display:grid;place-items:center;border:1px solid rgba(216,180,93,.42);border-radius:8px;background:#15170f;color:#efd17c;font-size:14px}
+.build-forge-head span{display:block;font-size:8px;font-weight:900;letter-spacing:.15em;color:#b99a51}.build-forge-head strong{display:block;font-size:17px;color:#edf2f7}
+.build-summary{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 13px}.build-summary span{padding:5px 8px;border:1px solid #29364a;border-radius:999px;background:#0b111a;color:#8492a4;font-size:8px;font-weight:850;letter-spacing:.06em}.build-summary .ready{color:#e8ca75;border-color:rgba(216,180,93,.34);background:rgba(216,180,93,.055)}
+.build-slot-marker{height:0}.build-slot-name{min-height:28px;margin:4px 0 3px;text-align:center;color:#aeb9c7;font-size:9px;font-weight:800;line-height:1.12}
+div[data-testid="stColumn"]:has(.build-slot-marker){text-align:center;padding:10px 5px 7px;border:1px solid #263246;border-radius:12px;background:linear-gradient(180deg,#101925,#090e15)}
+div[data-testid="stColumn"]:has(.build-slot-marker) div[data-testid="stImage"]{display:flex;justify-content:center}
+div[data-testid="stColumn"]:has(.build-slot-marker) div[data-testid="stImage"] img{width:58px!important;height:58px!important;border-radius:10px;border:1px solid rgba(216,180,93,.28);box-shadow:0 8px 18px rgba(0,0,0,.28)}
+div[data-testid="stColumn"]:has(.build-slot-marker) .stButton button{font-size:8px!important;min-height:25px!important;height:25px!important;padding:0 7px!important}
+.build-empty-slot{height:58px;width:58px;margin:0 auto;border:1px dashed #35445a;border-radius:10px;display:grid;place-items:center;background:#080d14;color:#59687b;font-size:24px}
+.boot-equipped{display:flex;align-items:center;gap:11px;margin:7px 0 14px;padding:10px 12px;border:1px solid rgba(216,180,93,.22);border-radius:11px;background:linear-gradient(90deg,rgba(216,180,93,.055),rgba(11,17,26,.65))}
+.boot-equipped img{width:43px;height:43px;border-radius:8px;border:1px solid #d8b45d}.boot-equipped span{font-size:8px;font-weight:900;letter-spacing:.12em;color:#9a8754}.boot-equipped strong{display:block;color:#edf2f7;font-size:12px;margin-top:2px}
+@media(max-width:640px){.build-forge-head{padding:10px}.build-forge-head strong{font-size:15px}.build-slot-name{font-size:8px}}
+
 /* Premium leaderboard pass */
 .pair-rank-grid,.triple-rank-grid,.boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{counter-reset:sharpRank}
 .pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{overflow:hidden;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
@@ -1551,19 +1567,23 @@ with tabs[1]:
     if "build_items_v2" not in st.session_state:
         st.session_state.build_items_v2=list(F)[:5]
 
-    st.markdown("### Equipped Build")
+    st.markdown("""<div class="build-forge-head"><div class="forge-icon">◆</div><div><span>BUILD FORGE</span><strong>Assemble Full Loadout</strong></div></div>""",unsafe_allow_html=True)
     build=list(st.session_state.build_items_v2)
-    slot_cols=st.columns(5)
+    _item_gold=sum(float(dct(F[_x])["gold"]) for _x in build)
+    _build_ready=len(build)==5 and len(set(build))==5
+    st.markdown(f'<div class="build-summary"><span class="{"ready" if _build_ready else ""}">{len(build)}/5 ITEMS</span><span>{int(_item_gold):,}g ITEM COST</span><span>+ 1 BOOTS SLOT</span></div>',unsafe_allow_html=True)
+    slot_cols=st.columns(5,gap="small")
     for _i in range(5):
-        if _i<len(build):
-            _it=build[_i]; _url=item_icon(_it)
-            if _url: slot_cols[_i].image(_url,width=58)
-            slot_cols[_i].markdown(f"**{_it}**")
-            if slot_cols[_i].button("✕ Remove",key=f"remove_item_{_i}",use_container_width=True):
-                build.pop(_i); st.session_state.build_items_v2=build; st.rerun()
-        else:
-            slot_cols[_i].markdown("### ＋")
-            slot_cols[_i].caption("Empty slot")
+        with slot_cols[_i]:
+            st.markdown('<div class="build-slot-marker"></div>',unsafe_allow_html=True)
+            if _i<len(build):
+                _it=build[_i]; _url=item_icon(_it)
+                if _url: st.image(_url,width=58)
+                st.markdown(f'<div class="build-slot-name">{html.escape(_it)}</div>',unsafe_allow_html=True)
+                if st.button("✕ Remove",key=f"remove_item_{_i}",use_container_width=True):
+                    build.pop(_i); st.session_state.build_items_v2=build; st.rerun()
+            else:
+                st.markdown('<div class="build-empty-slot">＋</div><div class="build-slot-name">EMPTY SLOT</div>',unsafe_allow_html=True)
 
     st.markdown('<div class="wr-picker-title">Items</div>',unsafe_allow_html=True)
     st.caption("Hover for item details • click the icon to equip.")
@@ -1630,6 +1650,8 @@ with tabs[1]:
                     st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     boot=st.session_state.build_boot_v2
+    _bq=dct(B[boot])
+    st.markdown(f'<div class="boot-equipped"><img src="{html.escape(boot_icon(boot))}"><div><span>EQUIPPED BOOTS</span><strong>{html.escape(boot)} • {int(_bq["gold"]):,}g</strong></div></div>',unsafe_allow_html=True)
 
     immortal_above_half=False
     if boot=="Immortal Treads":
