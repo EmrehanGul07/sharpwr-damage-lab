@@ -602,26 +602,21 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         t+=1/asp
     return [it,q["gold"],round(t,3),k,round(hp0/t,1) if t else float("inf")],log
 
-champ=st.selectbox("Champion",list(C)); level=st.slider("Level",1,15,9)
-mist=st.number_input("Senna Mist",0,500,40,20) if champ=="Senna" else 0
+# Shared scenario defaults/state. UI belongs inside each tab rather than above the tabs.
+champ=st.session_state.get("build_champ",list(C)[0])
+level=int(st.session_state.get("build_level",9))
+mist=int(st.session_state.get("build_mist",40 if champ=="Senna" else 0)) if champ=="Senna" else 0
 s=stats(champ,level,mist)
-a,b=st.columns(2); a.metric("Automatic raw AD",f"{s['ad']:.2f}"); b.metric("Naked AS",f"{s['baseas']+s['ratio']*(s['bba']+s['lvbas']):.4f}")
-if champ=="Jhin":
-    conv=(s["bba"]+s["lvbas"])*.30+level*.03
-    st.metric("Jhin Whisper AD (naked preview)",f"{s['ad']*(1+conv):.2f}",help="Bonus AS ×30% + Crit ×40% + Level ×3%; generic combat remains experimental.")
-
-x,y,z=st.columns(3)
-hp=x.number_input("Target HP",100,20000,2500,100); armor=y.number_input("Target Armor",0.,1000.,0.,5.); mr=z.number_input("Target MR",0.,1000.,0.,5.)
-u,v,w=st.columns(3)
-bonus_hp=u.number_input("Target Bonus HP",0.0,10000.0,0.0,100.0); dist=v.number_input("Attack distance",0.0,1000.0,550.0,25.0); mana=w.number_input("Champion Max Mana before item",0.0,5000.0,0.0,50.0)
-with st.expander("Proc / scenario switches"):
-    spell=st.checkbox("Ability cast before first AA (Spellblade ready)",True)
-    energized=st.checkbox("Start with Energized/Jolt proc ready",True)
-    ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",True)
-    execs=st.number_input("Collector previous executes",0,500,0,1)
-
-if champ=="Jhin":
-    st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
+hp=float(st.session_state.get("build_target_hp",2500))
+armor=float(st.session_state.get("build_target_armor",0.0))
+mr=float(st.session_state.get("build_target_mr",0.0))
+bonus_hp=float(st.session_state.get("build_target_bonus_hp",0.0))
+dist=float(st.session_state.get("build_dist",550.0))
+mana=float(st.session_state.get("build_mana",0.0))
+spell=bool(st.session_state.get("build_spell",True))
+energized=bool(st.session_state.get("build_energized",True))
+ult=bool(st.session_state.get("build_ult",True))
+execs=int(st.session_state.get("build_execs",0))
 
 tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database"])
 
@@ -676,6 +671,27 @@ with tabs[0]:
 
 with tabs[1]:
     st.subheader("Build Lab")
+
+    # Build Lab owns the manual champion/target/scenario controls.
+    _bc1,_bc2=st.columns(2)
+    champ=_bc1.selectbox("Champion",list(C),index=list(C).index(champ),key="build_champ")
+    level=_bc2.slider("Level",1,15,level,key="build_level")
+    mist=st.number_input("Senna Mist",0,500,int(mist),20,key="build_mist") if champ=="Senna" else 0
+    s=stats(champ,level,mist)
+    _tx,_ty,_tz=st.columns(3)
+    hp=_tx.number_input("Target HP",100,20000,int(hp),100,key="build_target_hp")
+    armor=_ty.number_input("Target Armor",0.0,1000.0,float(armor),5.0,key="build_target_armor")
+    mr=_tz.number_input("Target MR",0.0,1000.0,float(mr),5.0,key="build_target_mr")
+    _tu,_tv,_tw=st.columns(3)
+    bonus_hp=_tu.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
+    dist=_tv.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
+    mana=_tw.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
+    with st.expander("Proc / scenario switches"):
+        spell=st.checkbox("Ability cast before first AA (Spellblade ready)",spell,key="build_spell")
+        energized=st.checkbox("Start with Energized/Jolt proc ready",energized,key="build_energized")
+        ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",ult,key="build_ult")
+        execs=st.number_input("Collector previous executes",0,500,int(execs),1,key="build_execs")
+    if champ=="Jhin": st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
 
     # Legal rune loadout: equip one slot at a time; completed pickers collapse.
     st.markdown("**Rune Loadout**")
