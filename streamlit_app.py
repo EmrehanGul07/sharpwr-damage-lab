@@ -969,7 +969,7 @@ with tabs[0]:
             _p3.metric("Best Value / 1000g",f"{float(_pv['Bonus DPS / 1000g']):.1f}",_pv["Build"])
 
             _pair_html=['<div class="pair-rank-grid">']
-            for _,_r in _pair_df.head(24).iterrows():
+            for _,_r in _pair_df.head(10).iterrows():
                 _n1=str(_r["Item 1"]); _n2=str(_r["Item 2"])
                 _pair_html.append(
                     f'<div class="pair-rank-card">'
@@ -1033,7 +1033,7 @@ with tabs[0]:
             _t3.metric("Best Value / 1000g",f"{float(_tv['Bonus DPS / 1000g']):.1f}",_tv["Build"])
 
             _triple_html=['<div class="triple-rank-grid">']
-            for _,_r in _triple_df.head(24).iterrows():
+            for _,_r in _triple_df.head(10).iterrows():
                 _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
                 _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
                 _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names)
@@ -1095,7 +1095,7 @@ with tabs[0]:
             _b2.metric("Booted DPS",f"{float(_bb['DPS']):.1f}")
             _b3.metric("Best Value / 1000g",f"{float(_bv['Bonus DPS / 1000g']):.1f}",_bv["Build"])
             _boot_html=['<div class="boot3-rank-grid">']
-            for _,_r in _boot3_df.head(24).iterrows():
+            for _,_r in _boot3_df.head(10).iterrows():
                 _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
                 _boot=str(_r["Boots"])
                 _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
@@ -1163,7 +1163,7 @@ with tabs[0]:
             _b43.metric("Best Value / 1000g",f"{float(_b4value['Bonus DPS / 1000g']):.1f}",_b4value["Build"])
 
             _b4html=['<div class="boot4-rank-grid">']
-            for _,_r in _boot4_df.head(24).iterrows():
+            for _,_r in _boot4_df.head(10).iterrows():
                 _names=[str(_r[f"Item {x}"]) for x in range(1,5)]
                 _boot=str(_r["Boots"])
                 _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
@@ -1231,7 +1231,7 @@ with tabs[0]:
             _f3.metric("Best Value / 1000g",f"{float(_fv['Bonus DPS / 1000g']):.1f}",_fv["Build"])
 
             _full_html=['<div class="full-rank-grid">']
-            for _,_r in _full_df.head(24).iterrows():
+            for _,_r in _full_df.head(10).iterrows():
                 _names=[str(_r[f"Item {x}"]) for x in range(1,6)]
                 _boot=str(_r["Boots"])
                 _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
