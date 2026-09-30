@@ -1120,6 +1120,74 @@ with tabs[0]:
             st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Tier 2 boots are excluded from ranking; the optimizer compares Tier 3 offensive boots only. Immortal Treads uses the existing benchmark assumption that its Above 50% HP +5% damage passive is active.")
 
 
+        st.markdown("### Boots + 4-Item Tier List")
+        st.caption("Expands the strongest Boots + 3 builds by one different completed item. Duplicate builds are deduplicated and the penetration-item restriction is preserved.")
+        _boot4_seed=_boot3_df.head(min(300,len(_boot3_df)))
+        _boot4_seen=set()
+        _boot4_rows=[]
+        for _,_seed in _boot4_seed.iterrows():
+            _core3=(str(_seed["Item 1"]),str(_seed["Item 2"]),str(_seed["Item 3"]))
+            _boot=str(_seed["Boots"])
+            for _fourth in _build_items:
+                if _fourth in _core3:
+                    continue
+                _core4=tuple(sorted(_core3+(_fourth,)))
+                if sum(1 for _x in _core4 if _x in _exclusive_pen_items)>1:
+                    continue
+                _key=(_boot,)+_core4
+                if _key in _boot4_seen:
+                    continue
+                _boot4_seen.add(_key)
+                _row,_=sim_build(
+                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core4,F,
+                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                    target_aa_reduction=tier_aa_reduction,
+                    yuntal_start_stacks=tier_yuntal_stacks,
+                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                    ult=tier_ult,execs=tier_execs,
+                    active_ready=(tier_scenario=="First Contact"),boot=_boot
+                )
+                _gold=float(_row[1]); _dps=float(_row[4])
+                _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
+                _boot4_rows.append([" + ".join(_core4)+" + "+_boot,*_core4,_boot,_gold,_dps,_gain,_bonus,_value,float(_row[2]),int(_row[3])])
+        _boot4_df=pd.DataFrame(_boot4_rows,columns=["Build","Item 1","Item 2","Item 3","Item 4","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        _boot4_df.insert(0,"Rank",range(1,len(_boot4_df)+1))
+        if len(_boot4_df):
+            _b4best=_boot4_df.iloc[0]
+            _b4value=_boot4_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
+            _b41,_b42,_b43=st.columns(3)
+            _b41.metric("Best Boots + 4 Build",_b4best["Build"])
+            _b42.metric("Boots + 4 DPS",f"{float(_b4best['DPS']):.1f}")
+            _b43.metric("Best Value / 1000g",f"{float(_b4value['Bonus DPS / 1000g']):.1f}",_b4value["Build"])
+
+            _b4html=['<div class="boot4-rank-grid">']
+            for _,_r in _boot4_df.head(24).iterrows():
+                _names=[str(_r[f"Item {x}"]) for x in range(1,5)]
+                _boot=str(_r["Boots"])
+                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
+                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
+                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
+                _b4html.append(f'<div class="boot4-rank-card"><div class="boot4-rank-num">#{int(_r["Rank"])}</div><div class="boot4-icons">{_imgs}</div><div class="boot4-name">{_label}</div><div class="boot4-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="boot4-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
+            _b4html.append('</div>')
+            st.markdown("""<style>
+            .boot4-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:10px;margin:8px 0 16px}
+            .boot4-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+            .boot4-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+            .boot4-icons{display:flex;justify-content:center;gap:3px}.boot4-icons img{width:37px;height:37px;border-radius:7px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+            .boot4-icons .boot-slot{border-color:#c9a84c}
+            .boot4-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+            .boot4-name{font-size:9px;font-weight:750;line-height:1.14;min-height:69px;margin-top:5px}.boot4-name span{color:#c9a84c}
+            .boot4-dps{font-size:15px;font-weight:850}.boot4-dps span{font-size:9px;font-weight:650;opacity:.62}
+            .boot4-sub{font-size:9px;opacity:.62;white-space:nowrap}
+            @media(max-width:640px){.boot4-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.boot4-icons img{width:29px;height:29px}}
+            </style>""",unsafe_allow_html=True)
+            st.markdown("".join(_b4html),unsafe_allow_html=True)
+            with st.expander("Detailed Boots + 4-item ranking table"):
+                st.dataframe(_boot4_df,width="stretch",hide_index=True)
+            st.caption(f"{len(_boot4_df)} unique Boots + 4 builds tested by expanding the top {len(_boot4_seed)} Boots + 3 results. Tier 2 boots remain excluded.")
+
+
 with tabs[1]:
     st.subheader("Build Lab")
 
