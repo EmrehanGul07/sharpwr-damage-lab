@@ -64,20 +64,20 @@ def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
     if current not in options and options:
         current=options[0]; st.session_state[state_key]=current
-    st.markdown(f"##### {label}")
+    st.markdown(f'<div class="wr-picker-title">{html.escape(label)}</div>',unsafe_allow_html=True)
     if not options: return None
     ncols=min(cols,len(options))
-    # Each native button remains the actual interaction target; icon/name are presentation only.
     for start in range(0,len(options),ncols):
         grid=st.columns(ncols,gap="small")
         for j,name in enumerate(options[start:start+ncols]):
-            i=start+j; col=grid[j]; icon=rune_icon(name)
-            with col:
+            i=start+j; icon=rune_icon(name); chosen=name==current
+            with grid[j]:
+                st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
                 if icon: st.image(icon,width=58)
-                chosen=name==current
-                if st.button(("◆ " if chosen else "")+name,key=f"{state_key}__{i}__{name}",
+                st.caption(name)
+                if st.button("select",key=f"{state_key}__{i}__{name}",
                              help=RUNE_DATABASE.get(name,{}).get("tooltip",""),
-                             use_container_width=True,type="primary" if chosen else "secondary"):
+                             use_container_width=True):
                     st.session_state[state_key]=name; st.rerun()
     return st.session_state.get(state_key,current)
 
@@ -270,19 +270,41 @@ import pandas as pd
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
 st.markdown("""
 <style>
-/* Build Lab V2 — premium skin on reliable native Streamlit controls */
-div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]{
-  transition:transform .12s ease;
+/* Premium native selectors: real Streamlit buttons remain clickable, but visually disappear. */
+.wr-picker-title{margin:.65rem 0 .25rem;font-size:.92rem;font-weight:700;color:#d9e1eb;letter-spacing:.02em}
+.wr-selected-label{font-size:.72rem;color:#d7b75f;text-align:center;margin-top:-.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+div[data-testid="stColumn"]:has(.wr-pick-marker){
+  position:relative;border:1px solid #2c3746;border-radius:13px;
+  background:linear-gradient(145deg,#141c27,#090e15);
+  padding:.42rem .28rem .28rem!important;min-height:82px;
+  transition:border-color .15s,box-shadow .15s,transform .15s;
 }
-div[data-testid="stColumn"] > div:has(button[key*="build_"]),
-div[data-testid="stColumn"] > div:has(button[key*="native_item_"]){
-  border-radius:14px;
+div[data-testid="stColumn"]:has(.wr-pick-marker):hover{
+  border-color:#b9974b;box-shadow:0 8px 24px rgba(0,0,0,.30),0 0 0 1px rgba(213,178,88,.12);
+  transform:translateY(-1px);
 }
-button[kind="secondary"]{
-  border-radius:10px;
+div[data-testid="stColumn"]:has(.wr-selected){
+  border-color:#d2ae54;box-shadow:0 0 0 1px rgba(210,174,84,.35),0 0 18px rgba(210,174,84,.16);
 }
-div[data-testid="stImage"] img{
-  border-radius:10px;
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0}
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{
+  width:58px!important;height:58px!important;object-fit:cover;border-radius:9px;
+}
+.wr-pick-marker{height:0;margin:0;padding:0;overflow:hidden}
+div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{
+  position:absolute;inset:0;z-index:20;margin:0!important;
+}
+div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton>button{
+  width:100%!important;height:100%!important;min-height:0!important;
+  opacity:0!important;border:0!important;padding:0!important;cursor:pointer!important;
+}
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionContainer"]{
+  text-align:center;font-size:.68rem;line-height:1.05;color:#aab4c1;
+  margin-top:.22rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+@media(max-width:900px){
+  div[data-testid="stColumn"]:has(.wr-pick-marker){min-height:74px;padding:.3rem .18rem!important}
+  div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:52px!important;height:52px!important}
 }
 </style>
 """,unsafe_allow_html=True)
@@ -694,12 +716,12 @@ with tabs[1]:
             slot_cols[_i].markdown("### ＋")
             slot_cols[_i].caption("Empty slot")
 
-    st.markdown("### Items")
-    st.caption("5 completed items • hover/tap the + button for stats")
+    st.markdown('<div class="wr-picker-title">Items</div>',unsafe_allow_html=True)
+    st.caption("Select up to 5 completed items.")
     _item_names=list(F)
-    _item_cols=st.columns(8,gap="small")
+    _item_cols=st.columns(10,gap="small")
     for _ii,_name in enumerate(_item_names):
-        _col=_item_cols[_ii%8]
+        _col=_item_cols[_ii%10]
         _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
         _parts=[f"{int(_q['gold'])}g"]
         for _key,_label in STAT_LABELS:
@@ -707,37 +729,32 @@ with tabs[1]:
             if _v:
                 _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
         with _col:
-            if _icon: st.image(_icon,width=60)
+            st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'"></div>',unsafe_allow_html=True)
+            if _icon: st.image(_icon,width=58)
             st.caption(_name)
-            if st.button("◆ EQUIPPED" if _selected else "＋ ADD",key=f"native_item_{_ii}",
-                         help=_name+" • "+" • ".join(_parts),use_container_width=True,
-                         type="primary" if _selected else "secondary",
-                         disabled=_selected or len(build)>=5):
+            if st.button("select",key=f"native_item_{_ii}",help=_name+" • "+" • ".join(_parts),
+                         use_container_width=True,disabled=_selected or len(build)>=5):
                 _new=list(st.session_state.build_items_v2)
                 if _name not in _new and len(_new)<5:
                     _new.append(_name); st.session_state.build_items_v2=_new
                 st.rerun()
-    st.markdown("**Boots**")
+    st.markdown('<div class="wr-picker-title">Boots</div>',unsafe_allow_html=True)
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
-    boot_cols=st.columns(7)
+    boot_cols=st.columns(7,gap="small")
     for _i,_name in enumerate(B):
-        _col=boot_cols[_i%7]
-        _icon=boot_icon(_name)
-        if _icon: _col.image(_icon,width=56)
-        _q=dct(B[_name])
+        _col=boot_cols[_i%7]; _icon=boot_icon(_name); _q=dct(B[_name])
         _parts=[f"{int(_q['gold'])}g"]
         for _key,_label in STAT_LABELS:
             _v=_q.get(_key,0)
-            if not _v: continue
-            _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
-        if _col.button(("◆ " if st.session_state.build_boot_v2==_name else "")+_name,key=f"pick_boot_{_i}",
-                       help="Select / preview "+_name+" • "+" • ".join(_parts),use_container_width=True,
-                       type="primary" if st.session_state.build_boot_v2==_name else "secondary",
-                       disabled=False):
-            st.session_state.build_boot_v2=_name
-            st.session_state.preview_boot=_name
-            st.rerun()
+            if _v: _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
+        with _col:
+            _sel=st.session_state.build_boot_v2==_name
+            st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'"></div>',unsafe_allow_html=True)
+            if _icon: st.image(_icon,width=58)
+            st.caption(_name)
+            if st.button("select",key=f"pick_boot_{_i}",help=_name+" • "+" • ".join(_parts),use_container_width=True):
+                st.session_state.build_boot_v2=_name; st.session_state.preview_boot=_name; st.rerun()
     boot=st.session_state.build_boot_v2
     _bq=dct(B[boot]); _bicon=boot_icon(boot)
     _brows=[]
@@ -1203,4 +1220,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.27 | Premium native Build Lab UI • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.28 | Icon-first native premium selectors • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
