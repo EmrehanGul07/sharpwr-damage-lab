@@ -705,6 +705,7 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
         pct=total("pctpen")+(.10*dark if "Terminus" in items else 0)
         if "Terminus" in items: pct=min(.40,pct)
         ea=max(0,arm*(1-pct)-total("flatpen"))
+        # Patch 7.3 Rageblade no longer disables critical strikes; crit remains normal AA expected damage.
         phy=ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
 
         if "Hexoptics C44" in items:
