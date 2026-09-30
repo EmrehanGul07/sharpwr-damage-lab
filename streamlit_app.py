@@ -453,6 +453,46 @@ F={
 "Iceborn Gauntlet":(3000,0,0,0,0,300,250,50,0,30,0,0,0,0),
 "Death's Dance":(3200,50,0,0,0,0,0,45,0,15,0,0,0,0)}
 
+# Tier List combat-mechanic audit: CURRENT simulator coverage.
+ITEM_SCENARIO_AUDIT={
+"Fiendhunter Bolts":("ultimate-trigger","modeled","Opening Barrage uses Ultimate pre-cast."),
+"Rapid Firecannon":("energized","modeled","First Energized hit."),
+"Runaan's Hurricane":("multi-target","not modeled","Extra bolts excluded in single-target ranking."),
+"Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
+"Navori Quickblades":("ability-cooldown","not modeled","Ability cooldown refund excluded."),
+"Wit's End":("on-hit","modeled","Magic on-hit each attack."),
+"Hexoptics C44":("distance","modeled","Uses attack distance."),
+"Kraken Slayer":("every-N-hit","modeled","Proc every third attack."),
+"Nashor's Tooth":("on-hit","modeled","Magic on-hit."),
+"Manamune":("mana-scaling","modeled","Awe AD from mana."),
+"Muramana":("mana/on-hit","modeled","Awe plus mana on-hit."),
+"Statikk Shiv":("energized","modeled","First Energized hit."),
+"Guinsoo's Rageblade":("stacking/on-hit","modeled","Stacks and phantom on-hit."),
+"Mortal Reminder":("penetration","modeled","Percent armor penetration."),
+"Maw of Malmortius":("defensive","not modeled","Shield/survival excluded."),
+"Essence Reaver":("spell-trigger","modeled","Proc when ability-before-AA is enabled."),
+"Immortal Shieldbow":("defensive","not modeled","Shield/survival excluded."),
+"The Collector":("execute","modeled","Execute and previous executes."),
+"Terminus":("stacking/on-hit","modeled","On-hit and penetration stacks."),
+"Stormrazor":("energized","modeled","First Energized hit."),
+"Yun Tal Wildarrows":("combat-state","partial","Combat proc exists; advanced state is partial."),
+"Galeforce":("active","not modeled","Active excluded."),
+"Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
+"Blade of the Ruined King":("current-HP/on-hit","modeled","Current-HP on-hit recalculated each attack."),
+"Guardian Angel":("defensive","not modeled","Revive excluded."),
+"Bloodthirster":("sustain","not modeled","Sustain is not scored as DPS."),
+"Lord Dominik's Regards":("bonus-HP scaling","partial","Penetration modeled; amp needs target Bonus HP."),
+"Trinity Force":("spell-trigger","modeled","Spellblade when ability-before-AA is enabled."),
+"Infinity Edge":("crit modifier","modeled","Critical damage modifier."),
+"Serylda's Grudge":("penetration/utility","partial","Penetration modeled; slow excluded."),
+"Serpent's Fang":("shield-counter","not modeled","Needs target shield state."),
+"Youmuu's Ghostblade":("movement/combat-state","partial","Static stats modeled; passive not fully scored."),
+"Duskblade of Draktharr":("first-hit","modeled","First-hit Nightstalker damage."),
+"Edge of Night":("defensive","not modeled","Spell shield excluded."),
+"Iceborn Gauntlet":("spell-trigger","modeled","Spellblade damage; slow utility excluded."),
+"Death's Dance":("defensive","not modeled","Damage delay/survival excluded."),
+}
+
 P={
 "Pickaxe":(800,20,0,0,0,0,0,0,0,0,0,0,0,0),
 "Sheen":(800,0,0,0,0,0,0,0,0,10,0,0,0,0),
@@ -716,6 +756,13 @@ with tabs[0]:
         with st.expander("Detailed ranking table"):
             st.dataframe(df,use_container_width=True,hide_index=True)
         st.caption("Value = (item DPS − naked champion DPS) / item gold × 1000. The champion's base DPS is not counted as item value.")
+        with st.expander("Scenario Engine • Item Passive Audit"):
+            st.caption("Modeled = explicit combat logic. Partial = only part is represented. Not modeled = DPS rank is not full in-game value.")
+            _audit_rows=[]
+            for _it in F:
+                _cat,_status,_note=ITEM_SCENARIO_AUDIT.get(_it,("static stats","modeled","Static offensive stats only."))
+                _audit_rows.append([_it,_cat,_status,_note])
+            st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
 
 
 with tabs[1]:
