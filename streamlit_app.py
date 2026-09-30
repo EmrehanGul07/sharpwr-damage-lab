@@ -461,7 +461,7 @@ ITEM_SCENARIO_AUDIT={
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
 "Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
 "Wit's End":("on-hit","modeled","Magic on-hit each attack."),
-"Hexoptics C44":("distance","modeled","Uses attack distance."),
+"Hexoptics C44":("distance","modeled","Magnification: 0% below 100 range, then +1% per 50 range; 10% cap at 550."),
 "Kraken Slayer":("every-N-hit","modeled","Proc every third attack."),
 "Nashor's Tooth":("on-hit","modeled","Magic on-hit."),
 "Manamune":("mana-scaling","modeled","Awe AD from mana."),
@@ -475,7 +475,7 @@ ITEM_SCENARIO_AUDIT={
 "The Collector":("execute","modeled","Execute and previous executes."),
 "Terminus":("stacking/on-hit","modeled","On-hit and penetration stacks."),
 "Stormrazor":("energized","modeled","First Energized hit."),
-"Yun Tal Wildarrows":("combat-state","partial","Combat proc exists; advanced state is partial."),
+"Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
 "Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
 "Blade of the Ruined King":("current-HP/on-hit","modeled","Current-HP on-hit recalculated each attack."),
@@ -487,7 +487,7 @@ ITEM_SCENARIO_AUDIT={
 "Serylda's Grudge":("penetration/utility","partial","Penetration modeled; slow excluded."),
 "Serpent's Fang":("shield-counter","not modeled","Needs target shield state."),
 "Youmuu's Ghostblade":("movement/combat-state","partial","Static stats modeled; passive not fully scored."),
-"Duskblade of Draktharr":("first-hit","modeled","First-hit Nightstalker damage."),
+"Duskblade of Draktharr":("first-hit/cooldown","modeled","Nightstalker: 60-160 linear level bonus physical on next champion AA; 10s cooldown, takedown reset metadata."),
 "Edge of Night":("defensive","not modeled","Spell shield excluded."),
 "Iceborn Gauntlet":("spell-trigger","modeled","Spellblade damage; slow utility excluded."),
 "Death's Dance":("defensive","not modeled","Damage delay/survival excluded."),
@@ -562,12 +562,12 @@ def _target_profile_at_level(profile,lvl):
     return out
 
 
-def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0,active_ready=False):
+def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0,active_ready=False,yuntal_start_stacks=0):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
     hp=float(hp0); t=0.; k=0; log=[]
-    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=0.; yt_until=-1.; yt_cd=0.; spellblade_ready=0.
+    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.; spellblade_ready=0.
     fh=3 if it=="Fiendhunter Bolts" and ult else 0
     while hp>0 and k<500:
         k+=1
@@ -589,7 +589,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             phy=ad*(cd*.80); true=ad*.15*crit; note.append("Opening Barrage")
         else: phy=ad*(1+crit*(cd-1))
         if it=="Hexoptics C44":
-            amp=max(0,min(.10,.10*dist/550)); phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.1f}%")
+            amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01); phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
         if it=="Wit's End": onm+=40
         if it=="Nashor's Tooth": onm+=15+.20*q["ap"]
         rage_extra=False
@@ -702,6 +702,7 @@ with tabs[0]:
         ta3,ta4=st.columns(2)
         tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
         tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
+        tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,0,1,key="tier_yuntal_stacks",help="Ranged: +0.2% permanent crit chance per stack, capped at 125 stacks / 25%.")
         tb1,tb2,tb3=st.columns(3)
         tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
         tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
@@ -717,7 +718,7 @@ with tabs[0]:
         baseline=base_row[4]
         rows=[]
         for it in F:
-            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction,active_ready=(tier_scenario=="First Contact"))
+            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction,active_ready=(tier_scenario=="First Contact"),yuntal_start_stacks=tier_yuntal_stacks)
             gold=float(row[1]); dps=float(row[4]); gain=(dps/baseline-1)*100 if baseline else 0
             bonus_dps=dps-baseline; value=(bonus_dps/gold*1000) if gold else 0
             rows.append([it,gold,dps,gain,bonus_dps,value,row[2],row[3]])
