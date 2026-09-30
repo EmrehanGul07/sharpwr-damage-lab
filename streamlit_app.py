@@ -283,8 +283,8 @@ div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{
  border:2px solid #d5b45b!important;box-shadow:0 0 0 2px rgba(213,180,91,.15),0 0 18px rgba(213,180,91,.25)!important}
 /* Real native click target over icon. */
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{
- position:absolute!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;
- width:70px!important;height:70px!important;z-index:80!important;margin:0!important;padding:0!important}
+ position:relative!important;left:50%!important;transform:translate(-50%,-70px)!important;
+ width:70px!important;height:70px!important;z-index:80!important;margin:0 0 -70px 0!important;padding:0!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button{
  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
  padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;
@@ -307,7 +307,7 @@ div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionConta
 .wr-grid-gap{height:12px}
 @media(max-width:900px){
  div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:58px!important;height:58px!important}
- div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important}
+ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important;transform:translate(-50%,-62px)!important;margin-bottom:-62px!important}
  .wr-hover-card{display:none!important}
 }
 </style>
@@ -1224,4 +1224,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.30 | Hover cards + native icon click • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.31 | Native click target aligned over icon • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
