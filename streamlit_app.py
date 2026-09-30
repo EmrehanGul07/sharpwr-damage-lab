@@ -76,6 +76,7 @@ def _rune_icon_grid(label, options, state_key, cols=6):
             with row[j]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'">'+card+'</div>',unsafe_allow_html=True)
                 if icon: st.image(icon,width=66)
+                st.markdown(f'<div class="wr-icon-name">{html.escape(name)}</div>',unsafe_allow_html=True)
                 if st.button(" ",key=f"{state_key}__{i}__{name}",help=None,use_container_width=False):
                     st.session_state[state_key]=name; st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
@@ -283,7 +284,7 @@ div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{
  border:2px solid #d5b45b!important;box-shadow:0 0 0 2px rgba(213,180,91,.15),0 0 18px rgba(213,180,91,.25)!important}
 /* Real native click target over icon. */
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{
- position:relative!important;left:50%!important;transform:translate(-50%,-70px)!important;
+ position:relative!important;left:50%!important;transform:translate(-50%,-98px)!important;
  width:70px!important;height:70px!important;z-index:80!important;margin:0 0 -70px 0!important;padding:0!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button{
  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
@@ -303,11 +304,18 @@ div[data-testid="stColumn"]:has(.wr-pick-marker):hover .wr-hover-card{display:bl
 .wr-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px}
 .wr-card-stat{font-size:11px;color:#b9c5d2}.wr-card-stat b{color:#eef3f8;margin-right:4px}
 .wr-card-text{font-size:11px;line-height:1.45;color:#bdc8d4}
+.wr-icon-name{
+ margin-top:4px;height:24px;display:flex;align-items:flex-start;justify-content:center;
+ text-align:center;font-size:10px;line-height:1.08;font-weight:650;letter-spacing:.015em;
+ color:#aeb9c7;text-shadow:0 1px 8px rgba(0,0,0,.65);overflow:hidden
+}
+div[data-testid="stColumn"]:has(.wr-selected) .wr-icon-name{color:#e0c477}
+div[data-testid="stColumn"]:has(.wr-pick-marker):hover .wr-icon-name{color:#e7edf4}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionContainer"]{display:none!important}
 .wr-grid-gap{height:12px}
 @media(max-width:900px){
  div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:58px!important;height:58px!important}
- div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important;transform:translate(-50%,-62px)!important;margin-bottom:-62px!important}
+ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important;transform:translate(-50%,-90px)!important;margin-bottom:-62px!important}
  .wr-hover-card{display:none!important}
 }
 </style>
@@ -737,6 +745,7 @@ with tabs[1]:
             with _col:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
+                st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
                 if st.button(" ",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
                     _new=list(st.session_state.build_items_v2)
                     if _name not in _new and len(_new)<5:
@@ -757,6 +766,7 @@ with tabs[1]:
             _sel=st.session_state.build_boot_v2==_name
             st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'"></div>',unsafe_allow_html=True)
             if _icon: st.image(_icon,width=66)
+            st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
             if st.button(" ",key=f"pick_boot_{_i}",help=_name+" • "+" • ".join(_parts),use_container_width=False):
                 st.session_state.build_boot_v2=_name; st.session_state.preview_boot=_name; st.rerun()
     boot=st.session_state.build_boot_v2
@@ -1224,4 +1234,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.31 | Native click target aligned over icon • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.32 | Premium icon labels • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
