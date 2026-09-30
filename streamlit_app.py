@@ -753,34 +753,30 @@ with tabs[1]:
                     st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     st.markdown('<div class="wr-picker-title">Boots</div>',unsafe_allow_html=True)
+    st.caption("Hover for boot details • click the icon to equip.")
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
-    boot_cols=st.columns(7,gap="small")
-    for _i,_name in enumerate(B):
-        _col=boot_cols[_i%7]; _icon=boot_icon(_name); _q=dct(B[_name])
-        _parts=[f"{int(_q['gold'])}g"]
-        for _key,_label in STAT_LABELS:
-            _v=_q.get(_key,0)
-            if _v: _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
-        with _col:
-            _sel=st.session_state.build_boot_v2==_name
-            st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'"></div>',unsafe_allow_html=True)
-            if _icon: st.image(_icon,width=66)
-            st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-            if st.button(" ",key=f"pick_boot_{_i}",help=_name+" • "+" • ".join(_parts),use_container_width=False):
-                st.session_state.build_boot_v2=_name; st.session_state.preview_boot=_name; st.rerun()
+    _boot_names=list(B); _boot_ncols=min(7,len(_boot_names))
+    for _start in range(0,len(_boot_names),_boot_ncols):
+        _row=st.columns(_boot_ncols,gap="small")
+        for _j,_name in enumerate(_boot_names[_start:_start+_boot_ncols]):
+            _i=_start+_j; _icon=boot_icon(_name); _q=dct(B[_name]); _sel=st.session_state.build_boot_v2==_name
+            _stats=[]
+            for _key,_label in STAT_NAMES.items():
+                _v=_q.get(_key,0)
+                if _v:
+                    _val=f"{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_v:g}"
+                    _stats.append(f'<div class="wr-card-stat"><b>{html.escape(_val)}</b>{html.escape(_label)}</div>')
+            _card=f'<div class="wr-hover-card"><div class="wr-card-title">{html.escape(_name)}</div><div class="wr-card-sub">◆ {int(_q["gold"])} Gold</div><div class="wr-card-rule"></div><div class="wr-card-stats">{"".join(_stats)}</div></div>'
+            with _row[_j]:
+                st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'">'+_card+'</div>',unsafe_allow_html=True)
+                if _icon: st.image(_icon,width=66)
+                st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
+                if st.button(" ",key=f"pick_boot_{_i}",help=None,use_container_width=False):
+                    st.session_state.build_boot_v2=_name
+                    st.rerun()
+        st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     boot=st.session_state.build_boot_v2
-    _bq=dct(B[boot]); _bicon=boot_icon(boot)
-    _brows=[]
-    for _key,_label in STAT_NAMES.items():
-        _v=_bq.get(_key,0)
-        if not _v: continue
-        _val=f"{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_v:g}"
-        _brows.append(f'<div class="wr-stat"><span class="wr-stat-i">{STAT_GLYPHS[_key]}</span><span><b>{_val}</b><span class="wr-stat-name">{_label}</span></span></div>')
-    _bcard=f"""<div class="wr-card"><div class="wr-card-head"><img src="{html.escape(_bicon)}"><div>
-      <div class="wr-card-name">{html.escape(boot)}</div><div class="wr-card-gold">◆ {int(_bq['gold'])} Gold</div>
-      </div></div><div class="wr-stats">{''.join(_brows)}</div></div>"""
-    st.markdown(_bcard,unsafe_allow_html=True)
 
     immortal_above_half=False
     if boot=="Immortal Treads":
@@ -1234,4 +1230,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.33 | Readable premium icon labels • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.34 | Unified premium boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
