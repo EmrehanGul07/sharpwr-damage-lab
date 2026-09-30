@@ -927,6 +927,68 @@ with tabs[0]:
             st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
 
 
+        st.divider()
+        st.markdown("### 2-Item Tier List")
+        st.caption("Tests every unique two-item combination with the same champion, target profile and scenario above. Duplicate items are excluded.")
+        _build_items=[_it for _it in F if float(dct(F[_it])["gold"])>0]
+        _pair_rows=[]
+        for _i in range(len(_build_items)):
+            for _j in range(_i+1,len(_build_items)):
+                _pair=(_build_items[_i],_build_items[_j])
+                _prow,_=sim_build(
+                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_pair,F,
+                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
+                    target_aa_reduction=tier_aa_reduction,
+                    yuntal_start_stacks=tier_yuntal_stacks,
+                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
+                    ult=tier_ult,execs=tier_execs,
+                    active_ready=(tier_scenario=="First Contact")
+                )
+                _gold=float(_prow[1]); _dps=float(_prow[4])
+                _gain=(_dps/baseline-1)*100 if baseline else 0.0
+                _bonus=_dps-baseline
+                _value=(_bonus/_gold*1000) if _gold else 0.0
+                _pair_rows.append([" + ".join(_pair),_pair[0],_pair[1],_gold,_dps,_gain,_bonus,_value,float(_prow[2]),int(_prow[3])])
+        _pair_df=pd.DataFrame(_pair_rows,columns=["Build","Item 1","Item 2","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
+        _pair_df.insert(0,"Rank",range(1,len(_pair_df)+1))
+        if len(_pair_df):
+            _pb=_pair_df.iloc[0]
+            _pv=_pair_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
+            _p1,_p2,_p3=st.columns(3)
+            _p1.metric("Best 2-Item Build",_pb["Build"])
+            _p2.metric("2-Item DPS",f"{float(_pb['DPS']):.1f}")
+            _p3.metric("Best Value / 1000g",f"{float(_pv['Bonus DPS / 1000g']):.1f}",_pv["Build"])
+
+            _pair_html=['<div class="pair-rank-grid">']
+            for _,_r in _pair_df.head(24).iterrows():
+                _n1=str(_r["Item 1"]); _n2=str(_r["Item 2"])
+                _pair_html.append(
+                    f'<div class="pair-rank-card">'
+                    f'<div class="pair-rank-num">#{int(_r["Rank"])}</div>'
+                    f'<div class="pair-icons"><img src="{html.escape(item_icon(_n1))}" alt="{html.escape(_n1)}"><img src="{html.escape(item_icon(_n2))}" alt="{html.escape(_n2)}"></div>'
+                    f'<div class="pair-name">{html.escape(_n1)}<br><span>+</span> {html.escape(_n2)}</div>'
+                    f'<div class="pair-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
+                    f'<div class="pair-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div>'
+                    f'</div>'
+                )
+            _pair_html.append('</div>')
+            st.markdown("""<style>
+            .pair-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:8px 0 16px}
+            .pair-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
+            .pair-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
+            .pair-icons{display:flex;justify-content:center;gap:5px}.pair-icons img{width:46px;height:46px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
+            .pair-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
+            .pair-name{font-size:10px;font-weight:750;line-height:1.18;min-height:34px;margin-top:5px}.pair-name span{color:#c9a84c}
+            .pair-dps{font-size:15px;font-weight:850}.pair-dps span{font-size:9px;font-weight:650;opacity:.62}
+            .pair-sub{font-size:9px;opacity:.62;white-space:nowrap}
+            @media(max-width:640px){.pair-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.pair-icons img{width:42px;height:42px}}
+            </style>""",unsafe_allow_html=True)
+            st.markdown("".join(_pair_html),unsafe_allow_html=True)
+            with st.expander("Detailed 2-item ranking table"):
+                st.dataframe(_pair_df,use_container_width=True,hide_index=True)
+            st.caption(f"{len(_pair_df)} unique two-item combinations tested. Ranking is DPS-first; value remains a separate metric and is not folded into an overall score.")
+
+
 with tabs[1]:
     st.subheader("Build Lab")
 
