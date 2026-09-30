@@ -643,7 +643,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             onm+=30; note.append("Rageblade phantom on-hit")
         phy+=onp; mag+=onm
         if it=="Lord Dominik's Regards":
-            amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
+            amp=min(.12,max(0,bonus_hp)/125*.01); phy*=1+amp; mag*=1+amp; true*=1+amp
         dmg=phy*rm(ea)+mag*rm(mr)+true
         if target_aa_reduction: dmg*=1-target_aa_reduction
         before=hp; hp-=dmg
@@ -727,7 +727,16 @@ with tabs[0]:
     if tier_champ=="Jhin":
         st.warning("Jhin is excluded until the 4-shot + reload model is added.")
     elif st.button(f"⚔️ CALCULATE VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
-        tier_full_hp=float(_target["hp"]); tier_hp=tier_full_hp*(tier_start_hp_pct/100.0); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"]); tier_bonus_hp=0.0
+        tier_full_hp=float(_target["hp"]); tier_hp=tier_full_hp*(tier_start_hp_pct/100.0); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"])
+        # LDR Giant Slayer uses target BONUS health, not total health.
+        # Jinx benchmark has no bonus-HP items. Darius/Ornn bonus HP is derived
+        # from the user-tested total HP profile minus their natural HP at this level.
+        _target_natural_hp = {
+            "Squishy • Jinx": tier_full_hp,
+            "Bruiser • Darius": 660 + 148*gu(tier_level),
+            "Tank • Ornn": 690 + 132*gu(tier_level),
+        }[tier_target]
+        tier_bonus_hp=max(0.0,tier_full_hp-float(_target_natural_hp))
         tier_aa_reduction=float(_target.get("aa_reduction",0))
         base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
         base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0,target_aa_reduction=tier_aa_reduction)
