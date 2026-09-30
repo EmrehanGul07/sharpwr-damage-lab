@@ -1968,7 +1968,7 @@ with tabs[1]:
             if rune_bonus_as: rune_bits.append(f"+{rune_bonus_as*100:.1f}% AS")
             if rune_bonus_ah: rune_bits.append(f"+{rune_bonus_ah:.0f} AH")
             if rune_omnivamp: rune_bits.append(f"+{rune_omnivamp*100:.0f}% Omnivamp")
-            st.caption("Key Rune: **"+keystone+"** • Primary: **"+primary_tree+"** • Secondary: **"+secondary_rune+"** • "+" • ".join(rune_bits))
+            st.caption("Key Rune: **"+str(keystone or "None")+"** • Primary: **"+str(primary_tree or "None")+"** • Secondary: **"+str(secondary_rune or "None")+"**"+((" • "+" • ".join(rune_bits)) if rune_bits else ""))
         o1,o2,o3,o4=st.columns(4)
         o1.metric("Total AD",f"{ad:.1f}")
         o2.metric("Attack Speed",f"{display_as:.3f}")
