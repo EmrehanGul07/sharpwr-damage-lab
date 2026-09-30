@@ -486,6 +486,7 @@ div[data-testid="stColumn"]:has(.build-slot-marker) .stButton button{font-size:8
 .boot-equipped img{width:43px;height:43px;border-radius:8px;border:1px solid #d8b45d}.boot-equipped span{font-size:8px;font-weight:900;letter-spacing:.12em;color:#9a8754}.boot-equipped strong{display:block;color:#edf2f7;font-size:12px;margin-top:2px}
 @media(max-width:640px){.build-forge-head{padding:10px}.build-forge-head strong{font-size:15px}.build-slot-name{font-size:8px}}
 
+.combat-result-head{margin:30px 0 11px;padding:14px 16px;border:1px solid rgba(216,180,93,.25);border-radius:13px;background:linear-gradient(90deg,rgba(216,180,93,.09),rgba(11,17,26,.72));display:flex;align-items:center;justify-content:space-between}.combat-result-head span{display:block;font-size:8px;font-weight:900;letter-spacing:.16em;color:#b99a51}.combat-result-head strong{font-size:18px}.combat-result-head em{font-style:normal;font-size:8px;color:#768598}.combat-hero{display:grid;grid-template-columns:1.45fr repeat(3,1fr);gap:9px;margin-bottom:10px}.combat-kpi{min-height:105px;padding:14px;border:1px solid #263246;border-radius:13px;background:linear-gradient(180deg,#111a27,#090f17);display:flex;flex-direction:column;justify-content:flex-end}.combat-kpi.hero{border-color:rgba(216,180,93,.48);background:radial-gradient(300px 120px at 30% 0%,rgba(216,180,93,.15),transparent 70%),linear-gradient(180deg,#171d24,#0a1017)}.combat-kpi .label{font-size:8px;font-weight:900;letter-spacing:.13em;color:#77869a}.combat-kpi .value{font-size:27px;font-weight:900;color:#edf3f8}.combat-kpi.hero .value{font-size:40px;color:#f1d27b}.combat-kpi .unit,.combat-kpi .sub{font-size:8px;color:#738196}.build-ribbon{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 16px;padding:10px 12px;border:1px solid #202c3c;border-radius:11px;background:rgba(8,13,20,.72)}.build-ribbon .tag{font-size:8px;font-weight:900;color:#8d9bad}.build-ribbon .piece{padding:5px 7px;border:1px solid #29364a;border-radius:7px;color:#bac5d1;font-size:9px}.build-ribbon .boots{border-color:rgba(216,180,93,.35);color:#e3c56f}.combat-stat-title{margin:18px 0 8px;font-size:9px;font-weight:900;letter-spacing:.14em;color:#8b99aa}@media(max-width:720px){.combat-hero{grid-template-columns:repeat(2,1fr)}.combat-kpi.hero{grid-column:span 2}.combat-result-head em{display:none}}
 /* Premium leaderboard pass */
 .pair-rank-grid,.triple-rank-grid,.boot3-rank-grid,.boot4-rank-grid,.full-rank-grid{counter-reset:sharpRank}
 .pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{overflow:hidden;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
@@ -1953,7 +1954,13 @@ with tabs[1]:
             max_hit*=1.05
             parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
 
-        st.markdown("**Full Build Offensive Stats**")
+        _avg_dps=(hp/t) if t else float("inf")
+        st.markdown('<div class="combat-result-head"><div><span>COMBAT ANALYSIS</span><strong>Build Performance</strong></div><em>SHARPWR DAMAGE ENGINE</em></div>',unsafe_allow_html=True)
+        _dps_text=f"{_avg_dps:.1f}" if t else "∞"
+        st.markdown(f'<div class="combat-hero"><div class="combat-kpi hero"><div class="label">AVERAGE DPS</div><div><span class="value">{_dps_text}</span> <span class="unit">DPS</span></div><div class="sub">Target-death benchmark</div></div><div class="combat-kpi"><div class="label">TIME TO KILL</div><div><span class="value">{t:.3f}</span> <span class="unit">SEC</span></div><div class="sub">{attacks} attacks</div></div><div class="combat-kpi"><div class="label">MAX SINGLE HIT</div><div><span class="value">{max_hit:.1f}</span></div><div class="sub">Highest legal AA setup</div></div><div class="combat-kpi"><div class="label">BUILD COST</div><div><span class="value">{cost:,}</span> <span class="unit">G</span></div><div class="sub">Items + boots</div></div></div>',unsafe_allow_html=True)
+        _pieces="".join(f'<span class="piece">{html.escape(_x)}</span>' for _x in build)
+        st.markdown(f'<div class="build-ribbon"><span class="tag">LOADOUT</span>{_pieces}<span class="piece boots">{html.escape(boot)}</span></div>',unsafe_allow_html=True)
+        st.markdown('<div class="combat-stat-title">OFFENSIVE STAT PROFILE</div>',unsafe_allow_html=True)
         if keystone!="None":
             rune_bits=[]
             if rune_bonus_ad: rune_bits.append(f"+{rune_bonus_ad:.1f} AD")
@@ -1977,10 +1984,7 @@ with tabs[1]:
             m1.metric("Flat Magic Pen",f"{total['flatmpen']:.0f}")
             m2.metric("Magic Pen",f"{total['pctmpen']*100:.0f}%")
 
-        a1,a2,a3,a4=st.columns(4)
-        a1.metric("Build Cost",f"{cost:,}g"); a2.metric("TTK",f"{t:.3f}s")
-        a3.metric("Avg DPS",f"{hp/t:.1f}" if t else "∞"); a4.metric("Max Single Hit",f"{max_hit:.1f}")
-        st.write("**Build:** "+" • ".join(build)+f" • **{boot}**")
+        st.caption(f"Combat completed in {attacks} basic attacks against the configured {int(hp):,} HP target.")
         with st.expander("Rune Combat Breakdown V2"):
             if rune_trace:
                 st.caption("Each rune contribution is separated. Multipliers show their exact damage delta on that hit.")
