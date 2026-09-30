@@ -94,7 +94,7 @@ def _tree_icon_picker(label, options, state_key, cols=4):
             st.markdown('<div class="wr-tree-marker '+('wr-tree-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
             st.image(TREE_ICON_URL[name],width=72)
             st.markdown(f'<div class="wr-tree-name">{html.escape(name)}</div>',unsafe_allow_html=True)
-            if st.button(" ",key=f"{state_key}_tree_{i}",help=None,use_container_width=False):
+            if st.button("Selected" if chosen else "Choose",key=f"{state_key}_tree_{i}",help=None,use_container_width=False):
                 st.session_state[state_key]=name
                 st.rerun()
     return st.session_state.get(state_key,current)
@@ -116,7 +116,7 @@ def _rune_icon_grid(label, options, state_key, cols=6):
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'">'+card+'</div>',unsafe_allow_html=True)
                 if icon: st.image(icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(name)}</div>',unsafe_allow_html=True)
-                if st.button(" ",key=f"{state_key}__{i}__{name}",help=None,use_container_width=False):
+                if st.button("Equip",key=f"{state_key}__{i}__{name}",help=None,use_container_width=False):
                     st.session_state[state_key]=name; st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     return st.session_state.get(state_key,current)
@@ -1377,28 +1377,69 @@ with tabs[0]:
 
 with tabs[1]:
     st.markdown("""<div class="buildlab-hero"><span>SHARPWR • LOADOUT WORKBENCH</span><strong>Build Lab</strong><p>Configure champion, target, runes and items. Every choice feeds the same combat engine used by the benchmark rankings.</p></div>""",unsafe_allow_html=True)
+    st.markdown("""<style>
+    .setup-head{display:flex;align-items:center;gap:10px;margin:0 0 16px}.setup-step{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #6b5931;border-radius:9px;color:#f0d58a;font-size:11px;font-weight:850;background:#211e15}
+    .setup-head strong{display:block;color:#edf2f8;font-size:17px}.setup-head small{display:block;font-size:9px;letter-spacing:.12em;color:#8796a9;text-transform:uppercase}
+    .champion-profile{display:flex;gap:18px;align-items:center;margin-top:12px;padding:17px;border:1px solid #394052;border-radius:13px;background:linear-gradient(120deg,#1c2534,#0b111b)}
+    .champion-profile img{width:86px;height:86px;border-radius:15px;object-fit:cover;border:1px solid #b9974d;box-shadow:0 8px 24px #0005}
+    .champion-profile .identity{min-width:0;flex:1}.champion-profile .name{font-size:24px;font-weight:850;color:#f2f5fa;line-height:1.2}.champion-profile .level{font-size:10px;letter-spacing:.1em;color:#d8b45d;margin-top:4px}
+    .champion-stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:14px}.champion-stats b{display:block;font-size:18px;color:#edf2f8}.champion-stats span{font-size:9px;letter-spacing:.07em;color:#8f9bac}
+    .target-readout{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:15px;padding:12px 14px;border:1px solid #303e50;border-radius:11px;background:#090f18;font-size:11px;color:#a7b6c8}.target-readout b{color:#dce7f4}
+    .combat-flags{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}.combat-flags span{font-size:9px;font-weight:750;letter-spacing:.03em;border:1px solid #2e3d50;border-radius:7px;padding:6px 9px;color:#8b9aae;background:#0a111b}.combat-flags span.active{border-color:#7d693c;background:#211e14;color:#f0d58a}
+    .wr-icon-name,.wr-tree-name{color:#aebbcf!important}
+    div[data-testid="stColumn"]:has(.wr-selected) .wr-icon-name,div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#f0d58a!important}
+    @media(max-width:640px){
+      .champion-profile{gap:12px;padding:13px}.champion-profile img{width:68px;height:68px}.champion-profile .name{font-size:21px}.champion-stats{gap:18px;margin-top:10px}.champion-stats b{font-size:16px}
+      div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-pick-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-tree-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-eq-label),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .build-slot-marker){flex-wrap:wrap!important;gap:10px!important}
+      div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-pick-marker),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-tree-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important;padding:8px 4px!important;background:#0d1520;border:1px solid #29364a;border-radius:12px}
+      div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-eq-label),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.build-slot-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important}
+      div[data-testid="stHorizontalBlock"]:has(.wr-pick-marker)>div[data-testid="stColumn"]:not(:has(.wr-pick-marker)),div[data-testid="stHorizontalBlock"]:has(.wr-tree-marker)>div[data-testid="stColumn"]:not(:has(.wr-tree-marker)){display:none!important}
+      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton{position:static!important;left:auto!important;transform:none!important;width:100%!important;height:auto!important;margin:3px 0 0!important;padding:0!important}
+      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button{position:static!important;inset:auto!important;min-height:44px!important;height:44px!important;width:100%!important;opacity:1!important;color:#e8eef7!important;background:#182435!important;border:1px solid #3e4e65!important;font-size:11px!important}
+      div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button *,div[data-testid="stColumn"]:has(.wr-tree-marker) .stButton button *{opacity:1!important}
+      .wr-icon-name{height:34px!important;font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere}.wr-tree-name{min-height:20px}.build-slot-name{overflow-wrap:anywhere}
+      div[data-testid="stColumn"]:has(.wr-eq-label) .stButton button,div[data-testid="stColumn"]:has(.build-slot-marker) .stButton button{min-height:44px!important;font-size:11px!important}
+      div[data-testid="stColumn"]:has(.wr-eq-label) div[data-testid="stImage"] img{max-width:100%!important}
+    }
+    @media(prefers-reduced-motion:reduce){div[data-testid="stColumn"]:has(.wr-pick-marker) *,div[data-testid="stColumn"]:has(.wr-tree-marker) *{transition:none!important}}
+    </style>""",unsafe_allow_html=True)
 
     # Build Lab owns the manual champion/target/scenario controls.
-    _bc1,_bc2=st.columns(2)
-    champ=_bc1.selectbox("Champion",list(C),index=list(C).index(champ),key="build_champ")
-    level=_bc2.slider("Level",1,15,level,key="build_level")
-    mist=st.number_input("Senna Mist",0,500,int(mist),20,key="build_mist") if champ=="Senna" else 0
-    s=stats(champ,level,mist)
-    _tx,_ty,_tz=st.columns(3)
-    hp=_tx.number_input("Target HP",100,20000,int(hp),100,key="build_target_hp")
-    armor=_ty.number_input("Target Armor",0.0,1000.0,float(armor),5.0,key="build_target_armor")
-    mr=_tz.number_input("Target MR",0.0,1000.0,float(mr),5.0,key="build_target_mr")
-    _tu,_tv,_tw=st.columns(3)
-    bonus_hp=_tu.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
-    dist=_tv.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
-    mana=_tw.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
-    target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")
-    target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0
-    with st.expander("Proc / scenario switches"):
-        spell=st.checkbox("Ability cast before first AA (Spellblade ready)",spell,key="build_spell")
-        energized=st.checkbox("Start with Energized/Jolt proc ready",energized,key="build_energized")
-        ult=st.checkbox("Ultimate cast before combat (Fiendhunter)",ult,key="build_ult")
-        execs=st.number_input("Collector previous executes",0,500,int(execs),1,key="build_execs")
+    _champ_panel,_target_panel=st.columns([1,1],gap="medium")
+    with _champ_panel,st.container(border=True):
+        st.markdown('<div class="setup-head"><span class="setup-step">01</span><div><small>YOUR CHAMPION</small><strong>Champion Profile</strong></div></div>',unsafe_allow_html=True)
+        champ=st.selectbox("Champion",list(C),index=list(C).index(champ),key="build_champ")
+        level=st.slider("Level",1,15,level,key="build_level")
+        mist=st.number_input("Senna Mist",0,500,int(mist),20,key="build_mist") if champ=="Senna" else 0
+        s=stats(champ,level,mist)
+        _portrait_slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(champ,champ)
+        _portrait_url=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{_portrait_slug}.png"
+        _profile_as=s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"])
+        st.markdown(f'<div class="champion-profile"><img src="{html.escape(_portrait_url)}" alt="{html.escape(champ)} portrait"><div class="identity"><div class="name">{html.escape(champ)}</div><div class="level">LEVEL {level} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{s["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{_profile_as:.3f}</b><span>ATTACK SPEED</span></div></div></div></div>',unsafe_allow_html=True)
+    with _target_panel,st.container(border=True):
+        st.markdown('<div class="setup-head"><span class="setup-step">02</span><div><small>YOUR OPPONENT</small><strong>Target Defense</strong></div></div>',unsafe_allow_html=True)
+        hp=st.number_input("Target HP",100,20000,int(hp),100,key="build_target_hp")
+        _ty,_tz=st.columns(2)
+        armor=_ty.number_input("Target Armor",0.0,1000.0,float(armor),5.0,key="build_target_armor")
+        mr=_tz.number_input("Target MR",0.0,1000.0,float(mr),5.0,key="build_target_mr")
+        target_boot=st.selectbox("Target Boots",["None","Plated Steelcaps","Armored Advance"],key="build_target_boot",help="Plated Steelcaps and Armored Advance: 10% less damage from basic attacks.")
+        target_aa_reduction=.10 if target_boot in ("Plated Steelcaps","Armored Advance") else 0.0
+        st.markdown(f'<div class="target-readout"><span><b>{hp:,}</b> HP</span><span><b>{armor:g}</b> Armor</span><span><b>{mr:g}</b> MR</span><span><b>{target_aa_reduction*100:.0f}%</b> AA reduction</span></div>',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown('<div class="setup-head"><span class="setup-step">03</span><div><small>STARTING CONDITIONS</small><strong>Combat Setup</strong></div></div>',unsafe_allow_html=True)
+        _proc_cols=st.columns(3)
+        spell=_proc_cols[0].checkbox("Spellblade ready",spell,key="build_spell",help="Ability cast before the first basic attack.")
+        energized=_proc_cols[1].checkbox("Energized ready",energized,key="build_energized",help="Start with Energized / Jolt proc ready.")
+        ult=_proc_cols[2].checkbox("Ultimate pre-cast",ult,key="build_ult",help="Ultimate cast before combat for Fiendhunter.")
+        with st.expander("Advanced combat settings"):
+            _adv_left,_adv_right=st.columns(2)
+            dist=_adv_left.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
+            bonus_hp=_adv_right.number_input("Target Bonus HP",0.0,10000.0,float(bonus_hp),100.0,key="build_target_bonus_hp")
+            mana=_adv_left.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="build_mana")
+            execs=_adv_right.number_input("Collector previous executes",0,500,int(execs),1,key="build_execs")
+        _flags=[("SPELLBLADE",spell),("ENERGIZED",energized),("ULTIMATE PRE-CAST",ult)]
+        _flag_html="".join(f'<span class="{"active" if enabled else ""}">{name} · {"ON" if enabled else "OFF"}</span>' for name,enabled in _flags)
+        st.markdown(f'<div class="combat-flags">{_flag_html}<span>{dist:g} ATTACK DISTANCE</span></div>',unsafe_allow_html=True)
     if champ=="Jhin": st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
 
     # Legal rune loadout: equip one slot at a time; completed pickers collapse.
@@ -1604,7 +1645,7 @@ with tabs[1]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button(" ",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
+                if st.button("Equipped" if _selected else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
                     _new=list(st.session_state.build_items_v2)
                     if _name not in _new and len(_new)<5:
                         _new.append(_name); st.session_state.build_items_v2=_new
@@ -1646,7 +1687,7 @@ with tabs[1]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button(" ",key=f"pick_boot_{_i}",help=None,use_container_width=False):
+                if st.button("Equipped" if _sel else "Equip",key=f"pick_boot_{_i}",help=None,use_container_width=False):
                     st.session_state.build_boot_v2=_name
                     st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
@@ -2244,4 +2285,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.41 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.42 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
