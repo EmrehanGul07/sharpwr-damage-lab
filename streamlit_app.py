@@ -507,13 +507,19 @@ def stats(n,l,mist=0):
 def rm(x): return 100/(100+max(0,x))
 def lvl_scale(lo,hi,lvl): return lo+(hi-lo)*(lvl-1)/14
 
-# Target benchmark profiles. Only Squishy is populated for now from user-tested Jinx checkpoints.
+# User-tested level benchmark profiles.
 SQUISHY_JINX_PROFILE={1:{"hp":630,"armor":35,"mr":30},5:{"hp":1014,"armor":51,"mr":35},6:{"hp":1122,"armor":56,"mr":36},8:{"hp":1353,"armor":66,"mr":39},9:{"hp":1475,"armor":71,"mr":40},11:{"hp":1734,"armor":81,"mr":43},12:{"hp":1871,"armor":87,"mr":45},14:{"hp":2159,"armor":99,"mr":48},15:{"hp":2310,"armor":105,"mr":50}}
+BRUISER_DARIUS_PROFILE={1:{"hp":660,"armor":47,"mr":40,"aa_reduction":0},5:{"hp":1617,"armor":89,"mr":46,"aa_reduction":.10},6:{"hp":1750,"armor":94,"mr":48,"aa_reduction":.10},8:{"hp":2034,"armor":151,"mr":52,"aa_reduction":.10},9:{"hp":2185,"armor":156,"mr":54,"aa_reduction":.10},11:{"hp":2905,"armor":167,"mr":59,"aa_reduction":.10},12:{"hp":3074,"armor":173,"mr":61,"aa_reduction":.10},14:{"hp":3729,"armor":242,"mr":117,"aa_reduction":.10},15:{"hp":4315,"armor":249,"mr":182,"aa_reduction":.10}}
+TANK_ORNN_PROFILE={1:{"hp":690,"armor":48,"mr":42,"aa_reduction":0},5:{"hp":2065,"armor":93,"mr":48,"aa_reduction":.10},6:{"hp":2264,"armor":98,"mr":50,"aa_reduction":.10},8:{"hp":2989,"armor":154,"mr":54,"aa_reduction":.10},9:{"hp":3264,"armor":162,"mr":56,"aa_reduction":.10},11:{"hp":3943,"armor":264,"mr":61,"aa_reduction":.10},12:{"hp":4173,"armor":270,"mr":63,"aa_reduction":.10},14:{"hp":5086,"armor":352,"mr":131,"aa_reduction":.10},15:{"hp":5698,"armor":415,"mr":184,"aa_reduction":.10}}
+TARGET_PROFILES={"Squishy • Jinx":SQUISHY_JINX_PROFILE,"Bruiser • Darius":BRUISER_DARIUS_PROFILE,"Tank • Ornn":TANK_ORNN_PROFILE}
 def _target_profile_at_level(profile,lvl):
     lvl=int(lvl)
     if lvl in profile: return dict(profile[lvl])
     levels=sorted(profile); lo=max(x for x in levels if x<lvl); hi=min(x for x in levels if x>lvl); t=(lvl-lo)/(hi-lo)
-    return {k:profile[lo][k]+(profile[hi][k]-profile[lo][k])*t for k in ("hp","armor","mr")}
+    out={k:profile[lo][k]+(profile[hi][k]-profile[lo][k])*t for k in ("hp","armor","mr")}
+    # Boots are discrete: Lv1 has none; all benchmark builds from Lv5 onward have Steelcaps/Armored Advance.
+    out["aa_reduction"]=.10 if lvl>=5 and (profile[hi].get("aa_reduction",0) or profile[lo].get("aa_reduction",0)) else 0
+    return out
 
 
 def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0):
@@ -631,8 +637,9 @@ with tabs[0]:
     tier_level=tc2.slider("Level",1,15,level,key="tier_level")
     tier_mist=st.number_input("Senna Mist",0,500,int(mist if tier_champ=="Senna" else 0),20,key="tier_mist") if tier_champ=="Senna" else 0
 
-    _sq=_target_profile_at_level(SQUISHY_JINX_PROFILE,tier_level)
-    st.caption("VS Squishy benchmark active. Fighter and Tank profiles: coming later.")
+    tier_target=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="tier_target")
+    _target=_target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
+    st.caption("Fixed benchmark target active. Darius/Ornn automatically apply the 10% Steelcaps/Armored Advance basic-attack reduction from Lv5 onward.")
 
     te1,te2=st.columns(2)
     tier_dist=te1.number_input("Attack Range / Distance",0.0,1000.0,float(dist),25.0,key="tier_dist")
@@ -647,14 +654,15 @@ with tabs[0]:
 
     if tier_champ=="Jhin":
         st.warning("Jhin is excluded until the 4-shot + reload model is added.")
-    elif st.button("⚔️ CALCULATE VS SQUISHY",type="primary",use_container_width=True,key="tiercalc"):
-        tier_hp=float(_sq["hp"]); tier_armor=float(_sq["armor"]); tier_mr=float(_sq["mr"]); tier_bonus_hp=0.0
+    elif st.button(f"⚔️ CALCULATE VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
+        tier_hp=float(_target["hp"]); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"]); tier_bonus_hp=0.0
+        tier_aa_reduction=float(_target.get("aa_reduction",0))
         base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
-        base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0)
+        base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0,target_aa_reduction=tier_aa_reduction)
         baseline=base_row[4]
         rows=[]
         for it in F:
-            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs)
+            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction)
             gold=float(row[1]); dps=float(row[4]); gain=(dps/baseline-1)*100 if baseline else 0
             bonus_dps=dps-baseline; value=(bonus_dps/gold*1000) if gold else 0
             rows.append([it,gold,dps,gain,bonus_dps,value,row[2],row[3]])
@@ -662,14 +670,14 @@ with tabs[0]:
         df.insert(0,"Rank",range(1,len(df)+1))
         best_dps=df.iloc[0]; best_value=df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]; best_gain=df.sort_values(["DPS Gain %","DPS"],ascending=[False,False]).iloc[0]
         m1,m2,m3,m4=st.columns(4)
-        m1.metric("Best Item • VS Squishy",best_dps["Item"])
+        m1.metric(f"Best Item • VS {tier_target.split(' • ')[0]}",best_dps["Item"])
         m2.metric("Best DPS",f"{best_dps['DPS']:.1f}")
         m3.metric("Best DPS Gain",f"{best_gain['DPS Gain %']:.1f}%",best_gain["Item"])
         m4.metric("Best Value / 1000g",f"{best_value['Bonus DPS / 1000g']:.1f}",best_value["Item"])
-        st.markdown("**VS Squishy — Full Ranking**")
+        st.markdown(f"**VS {tier_target.split(' • ')[0]} — Full Ranking**")
         st.dataframe(df,use_container_width=True,hide_index=True)
         st.caption("Value = (item DPS − naked champion DPS) / item gold × 1000. The champion's base DPS is not counted as item value.")
-        st.info("VS Fighter — coming later  •  VS Tank — coming later")
+
 
 with tabs[1]:
     st.subheader("Build Lab")
