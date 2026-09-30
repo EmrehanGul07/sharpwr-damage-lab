@@ -718,7 +718,11 @@ with tabs[0]:
         ta3,ta4=st.columns(2)
         tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,float(mana),50.0,key="tier_mana")
         tier_execs=ta4.number_input("Collector previous executes",0,500,int(execs),1,key="tier_execs")
-        tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,0,1,key="tier_yuntal_stacks",help="Ranged: +0.2% permanent crit chance per stack, capped at 125 stacks / 25%.")
+        # Tier-list benchmark progression: Yun Tal is assumed newly bought at Lv5
+        # (0 permanent stacks) and naturally reaches its 125-stack / +25% crit cap
+        # by Lv9. Intermediate levels grow linearly; combat AAs continue stacking it.
+        _tier_yuntal_default = 0 if tier_level <= 5 else (125 if tier_level >= 9 else round(125*(tier_level-5)/4))
+        tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}",help="Benchmark default: Lv5 = 0, Lv6 = 31, Lv7 = 62/63, Lv8 = 94, Lv9+ = 125. Ranged attacks continue granting +0.2% permanent crit during combat.")
         tb1,tb2,tb3=st.columns(3)
         tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
         tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
