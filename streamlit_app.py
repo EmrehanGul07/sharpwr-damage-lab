@@ -1535,14 +1535,13 @@ with tabs[3]:
         _afull=float(_aprof["hp"]); _aar=float(_aprof["armor"]); _amr=float(_aprof["mr"]); _ared=float(_aprof.get("aa_reduction",0))
         _anatural={"Squishy • Jinx":_afull,"Bruiser • Darius":660+148*gu(_alvl),"Tank • Ornn":690+132*gu(_alvl)}[_atarget]
         _abonus=max(0.0,_afull-float(_anatural))
+        _adist=550.0
+        _ayt=0
         if _ai=="Yun Tal Wildarrows":
-            _ax1,_ax2=st.columns(2)
-            _adist=_ax1.number_input("Attack distance",0.0,1000.0,550.0,25.0,key="item_audit_dist")
             _ayt_default=0 if _alvl<=5 else (125 if _alvl>=9 else round(125*(_alvl-5)/4))
-            _ayt=_ax2.number_input("Yun Tal starting stacks",0,125,int(_ayt_default),1,key=f"item_audit_yt_{_alvl}")
-        else:
+            _ayt=st.number_input("Yun Tal starting stacks",0,125,int(_ayt_default),1,key=f"item_audit_yt_{_alvl}")
+        elif _ai=="Hexoptics C44":
             _adist=st.number_input("Attack distance",0.0,1000.0,550.0,25.0,key="item_audit_dist")
-            _ayt=0
         _ares,_alog=sim(_achamp,_alvl,_afull,_aar,_amr,_ai,F,0,_abonus,_adist,0.0,False,False,False,0,True,_ared,False,_ayt)
         st.metric("Simulated DPS",f"{_ares[4]:.1f}")
         _rows=[]
