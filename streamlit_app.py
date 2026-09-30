@@ -63,51 +63,24 @@ def rune_icon(name):
 def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
     if current not in options and options:
-        current=options[0]; st.session_state[state_key]=current
+        current=options[0]
+        st.session_state[state_key]=current
     st.markdown(f"**{label}**")
-    tiles=[]
+    if not options: return None
+    # Native Streamlit controls are used for selection. This avoids iframe/query-param
+    # navigation, which is unreliable on Streamlit Community Cloud and embedded/mobile views.
+    ncols=min(cols,len(options))
+    grid=st.columns(ncols)
     for i,name in enumerate(options):
+        col=grid[i%ncols]
         icon=rune_icon(name)
-        chosen=" chosen" if name==current else ""
-        edge=" edge-left" if i%cols==0 else (" edge-right" if i%cols==cols-1 else "")
-        href="?rune_pick="+urllib.parse.quote(state_key+"|"+name,safe="")
+        if icon: col.image(icon,width=52)
         tip=RUNE_DATABASE.get(name,{}).get("tooltip","")
-        tree=RUNE_DATABASE.get(name,{}).get("tree","Rune")
-        tiles.append(f'''<div class="tile{edge}">
-          <a class="rune{chosen}" href="{href}" target="_top" aria-label="Select {html.escape(name)}"><img src="{html.escape(icon)}" alt="{html.escape(name)}"></a>
-          <div class="card"><div class="ctop"><img src="{html.escape(icon)}"><div><b>{html.escape(name)}</b><small>{html.escape(tree)}</small></div></div>
-          <div class="rule"></div><p>{html.escape(tip)}</p><a class="pick" href="{href}" target="_top">Select Rune</a></div>
-        </div>''')
-    doc='''<style>
-    *{box-sizing:border-box}body{margin:0;padding:7px 5px 150px;background:transparent;font-family:Inter,system-ui;color:#e9eef5;overflow:visible}
-    .rg{display:grid;grid-template-columns:repeat('''+str(cols)+''',minmax(54px,1fr));gap:9px;overflow:visible}
-    .tile{position:relative;min-width:0;display:flex;justify-content:center}.rune{position:relative;z-index:5;cursor:pointer}
-    .rune{display:flex;width:58px;height:58px;padding:3px;border:1px solid #344254;border-radius:12px;background:linear-gradient(145deg,#121b27,#090e15);text-decoration:none;transition:.14s}
-    .rune:hover,.rune.chosen{border-color:#d4b15c;box-shadow:0 0 0 1px rgba(212,177,92,.2),0 0 17px rgba(212,177,92,.24);transform:translateY(-1px)}
-    .rune img{width:100%;height:100%;object-fit:contain;border-radius:8px}
-    .card{display:none;position:absolute;z-index:30;top:66px;left:50%;transform:translateX(-50%);width:330px;padding:14px;border:1px solid #3a485a;border-radius:13px;background:linear-gradient(155deg,#111925,#090e15);box-shadow:0 18px 42px rgba(0,0,0,.55);text-align:left}
-    .tile:hover .card{display:block}.edge-left .card{left:0;transform:none}.edge-right .card{left:auto;right:0;transform:none}
-    .ctop{display:flex;gap:10px;align-items:center}.ctop img{width:46px;height:46px;border-radius:8px}.ctop b{display:block;color:#f3d987;font-size:15px}.ctop small{display:block;color:#8593a5;margin-top:3px}
-    .rule{height:1px;background:#293546;margin:10px 0}.card p{font-size:12px;line-height:1.45;color:#c5ced9;margin:0}
-    .pick{display:none;margin-top:11px;padding:8px 10px;border:1px solid #b99648;border-radius:8px;color:#f3d987;text-decoration:none;text-align:center;font-size:12px}
-    @media(max-width:900px),(hover:none){
-      body{padding-bottom:8px}.rg{grid-template-columns:repeat(4,minmax(54px,1fr))}
-      .rune{width:56px;height:56px}.tile{flex-wrap:wrap}.tile:hover .card{display:none}
-      /* Mobile: anchor the expanded card to the full grid width, never to the tapped tile. */
-      .tile:focus-within{position:static}
-      .tile:focus-within .card{
-        display:block;position:absolute;top:auto;left:5px;right:5px;transform:none;
-        width:auto;margin-top:66px;max-width:none
-      }
-      .edge-left .card,.edge-right .card{left:5px;right:5px;transform:none}
-      .pick{display:block}
-    }</style><div class="rg">'''+''.join(tiles)+'''</div>'''
-    # The component itself is an iframe, so mobile expanded cards need real vertical
-    # canvas below the final grid row; otherwise the bottom of the card is clipped.
-    mobile_cols=4
-    visual_rows=max((len(options)+cols-1)//cols,(len(options)+mobile_cols-1)//mobile_cols)
-    components.html(doc,height=visual_rows*78+300,scrolling=False)
-    return current
+        text=("✓ " if name==current else "")+name
+        if col.button(text,key=f"{state_key}__{i}__{name}",help=tip,use_container_width=True):
+            st.session_state[state_key]=name
+            st.rerun()
+    return st.session_state.get(state_key,current)
 
 ITEM_ICON_FILE={
 "Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
@@ -567,14 +540,6 @@ with tabs[1]:
 
     # Legal rune loadout: icon-first selector.
     st.markdown("**Rune Loadout**")
-    _rp=st.query_params.get("rune_pick")
-    if _rp:
-        try:
-            _rk,_rv=urllib.parse.unquote(_rp).split("|",1)
-            if _rk.startswith("build_"): st.session_state[_rk]=_rv
-        except ValueError: pass
-        st.query_params.clear(); st.rerun()
-
     sub_trees=["Precision","Domination","Resolve","Sorcery"]
     keystone=_rune_icon_grid("Key Rune",RUNE_TREES["Key Rune"],"build_keystone",6)
 
@@ -698,18 +663,6 @@ with tabs[1]:
     if "build_items_v2" not in st.session_state:
         st.session_state.build_items_v2=list(F)[:5]
 
-    picked=st.query_params.get("item_pick")
-    if picked:
-        picked=urllib.parse.unquote(picked)
-        cur=list(st.session_state.build_items_v2)
-        if picked in F:
-            st.session_state.preview_item=picked
-            if picked not in cur and len(cur)<5:
-                cur.append(picked)
-                st.session_state.build_items_v2=cur
-        st.query_params.clear()
-        st.rerun()
-
     st.markdown("**Selected Build**")
     build=list(st.session_state.build_items_v2)
     slot_cols=st.columns(5)
@@ -725,7 +678,20 @@ with tabs[1]:
             slot_cols[_i].caption("Empty slot")
 
     st.markdown("**Items**")
-    _premium_item_grid(list(F),build)
+    st.caption("Click + to add an item to an empty build slot. Selected items are disabled.")
+    _item_names=list(F)
+    _item_cols=st.columns(6)
+    for _ii,_name in enumerate(_item_names):
+        _col=_item_cols[_ii%6]
+        _icon=item_icon(_name)
+        if _icon: _col.image(_icon,width=54)
+        _selected=_name in build
+        if _col.button(("✓ " if _selected else "＋ ")+_name,key=f"native_item_{_ii}",help="Selected" if _selected else "Add to build",use_container_width=True,disabled=_selected or len(build)>=5):
+            _new=list(st.session_state.build_items_v2)
+            if _name not in _new and len(_new)<5:
+                _new.append(_name)
+                st.session_state.build_items_v2=_new
+            st.rerun()
     st.markdown("**Boots**")
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
@@ -1211,4 +1177,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.25 | Reliable rune/item click targets • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.26 | Native reliable Build Lab selectors • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
