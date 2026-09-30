@@ -459,7 +459,7 @@ ITEM_SCENARIO_AUDIT={
 "Rapid Firecannon":("energized","modeled","First Energized hit."),
 "Runaan's Hurricane":("multi-target","not modeled","Extra bolts excluded in single-target ranking."),
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
-"Navori Quickblades":("ability-cooldown","not modeled","Ability cooldown refund excluded."),
+"Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
 "Wit's End":("on-hit","modeled","Magic on-hit each attack."),
 "Hexoptics C44":("distance","modeled","Uses attack distance."),
 "Kraken Slayer":("every-N-hit","modeled","Proc every third attack."),
@@ -476,7 +476,7 @@ ITEM_SCENARIO_AUDIT={
 "Terminus":("stacking/on-hit","modeled","On-hit and penetration stacks."),
 "Stormrazor":("energized","modeled","First Energized hit."),
 "Yun Tal Wildarrows":("combat-state","partial","Combat proc exists; advanced state is partial."),
-"Galeforce":("active","not modeled","Active excluded."),
+"Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
 "Blade of the Ruined King":("current-HP/on-hit","modeled","Current-HP on-hit recalculated each attack."),
 "Guardian Angel":("defensive","not modeled","Revive excluded."),
@@ -562,7 +562,7 @@ def _target_profile_at_level(profile,lvl):
     return out
 
 
-def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0):
+def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0,active_ready=False):
     s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
     awe=.02*mana if it in ("Manamune","Muramana") else 0
     ad=s["ad"]+q["ad"]+awe
@@ -582,6 +582,9 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         if it=="Terminus": pct=min(.40,pct)
         ea=max(0,arm*(1-pct)-q["flatpen"])
         true=0.; mag=0.; onp=0.; onm=0.; note=[]
+        if it=="Galeforce" and item_proc and active_ready and k==1:
+            bonus_ad=max(0,ad-s["basead"])
+            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst")
         if it=="Fiendhunter Bolts" and item_proc and fh and t<=8:
             phy=ad*(cd*.80); true=ad*.15*crit; note.append("Opening Barrage")
         else: phy=ad*(1+crit*(cd-1))
@@ -714,7 +717,7 @@ with tabs[0]:
         baseline=base_row[4]
         rows=[]
         for it in F:
-            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction)
+            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction,active_ready=(tier_scenario=="First Contact"))
             gold=float(row[1]); dps=float(row[4]); gain=(dps/baseline-1)*100 if baseline else 0
             bonus_dps=dps-baseline; value=(bonus_dps/gold*1000) if gold else 0
             rows.append([it,gold,dps,gain,bonus_dps,value,row[2],row[3]])
