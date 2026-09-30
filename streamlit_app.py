@@ -71,10 +71,12 @@ def _rune_icon_grid(label, options, state_key, cols=6):
         row=st.columns(ncols,gap="small")
         for j,name in enumerate(options[start:start+ncols]):
             i=start+j; icon=rune_icon(name); chosen=name==current
+            rv=RUNE_DATABASE.get(name,{})
+            card=f'<div class="wr-hover-card"><div class="wr-card-title">{html.escape(name)}</div><div class="wr-card-sub">{html.escape(rv.get("tree","Rune"))}</div><div class="wr-card-rule"></div><div class="wr-card-text">{html.escape(rv.get("tooltip",""))}</div></div>'
             with row[j]:
-                st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
+                st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'">'+card+'</div>',unsafe_allow_html=True)
                 if icon: st.image(icon,width=66)
-                if st.button(" ",key=f"{state_key}__{i}__{name}",help=name+" • "+RUNE_DATABASE.get(name,{}).get("tooltip",""),use_container_width=False):
+                if st.button(" ",key=f"{state_key}__{i}__{name}",help=None,use_container_width=False):
                     st.session_state[state_key]=name; st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     return st.session_state.get(state_key,current)
@@ -268,43 +270,45 @@ import pandas as pd
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
 st.markdown("""
 <style>
-/* Icon-first native pickers. Streamlit buttons remain real click targets. */
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
-.wr-pick-marker{height:0!important;margin:0!important;padding:0!important;overflow:hidden}
-div[data-testid="stColumn"]:has(.wr-pick-marker){position:relative;min-width:0}
-div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{
-  display:flex;justify-content:center;margin:0!important;padding:0!important;
-}
+.wr-pick-marker{height:0!important;margin:0!important;padding:0!important;overflow:visible!important}
+div[data-testid="stColumn"]:has(.wr-pick-marker){position:relative;min-width:0;overflow:visible!important}
+div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0!important;padding:0!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{
-  width:66px!important;height:66px!important;object-fit:cover;border-radius:11px;
-  border:1px solid #344154;background:#0c121a;
-  box-shadow:0 5px 15px rgba(0,0,0,.25);transition:.14s ease;
-}
+ width:66px!important;height:66px!important;object-fit:cover;border-radius:11px;border:1px solid #344154;background:#0c121a;
+ box-shadow:0 5px 15px rgba(0,0,0,.25);transition:.14s ease}
 div[data-testid="stColumn"]:has(.wr-pick-marker):hover div[data-testid="stImage"] img{
-  transform:translateY(-2px);border-color:#b9974c;box-shadow:0 8px 22px rgba(0,0,0,.38);
-}
+ transform:translateY(-2px);border-color:#c6a34e;box-shadow:0 8px 22px rgba(0,0,0,.42)}
 div[data-testid="stColumn"]:has(.wr-selected) div[data-testid="stImage"] img{
-  border:2px solid #d5b45b!important;
-  box-shadow:0 0 0 2px rgba(213,180,91,.15),0 0 18px rgba(213,180,91,.25)!important;
-}
-/* Invisible native button stretched over the icon. */
+ border:2px solid #d5b45b!important;box-shadow:0 0 0 2px rgba(213,180,91,.15),0 0 18px rgba(213,180,91,.25)!important}
+/* Real native click target over icon. */
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{
-  position:absolute!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;
-  width:70px!important;height:70px!important;z-index:50!important;margin:0!important;padding:0!important;
-}
+ position:absolute!important;top:0!important;left:50%!important;transform:translateX(-50%)!important;
+ width:70px!important;height:70px!important;z-index:80!important;margin:0!important;padding:0!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button{
-  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
-  min-height:0!important;padding:0!important;margin:0!important;border:0!important;
-  background:transparent!important;box-shadow:none!important;color:transparent!important;
-  opacity:.01!important;cursor:pointer!important;
-}
+ position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;
+ padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;
+ color:transparent!important;opacity:.01!important;cursor:pointer!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button *{opacity:0!important}
-/* Picker captions are intentionally hidden: name/stats remain in native tooltip. */
+/* Our own hover card. */
+.wr-hover-card{
+ display:none;position:absolute;z-index:70;top:76px;left:50%;transform:translateX(-50%);
+ width:310px;padding:13px 14px;border:1px solid #46546a;border-radius:13px;
+ background:linear-gradient(155deg,#121b27,#080d14);box-shadow:0 18px 44px rgba(0,0,0,.62);
+ pointer-events:none;text-align:left;color:#dce4ee}
+div[data-testid="stColumn"]:has(.wr-pick-marker):hover .wr-hover-card{display:block}
+.wr-card-title{font-size:15px;font-weight:800;color:#f0d27b;margin-bottom:3px}
+.wr-card-sub{font-size:11px;color:#9aa7b6;margin-bottom:9px}
+.wr-card-rule{height:1px;background:#2c3746;margin:8px 0 10px}
+.wr-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px}
+.wr-card-stat{font-size:11px;color:#b9c5d2}.wr-card-stat b{color:#eef3f8;margin-right:4px}
+.wr-card-text{font-size:11px;line-height:1.45;color:#bdc8d4}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stCaptionContainer"]{display:none!important}
-.wr-grid-gap{height:8px}
+.wr-grid-gap{height:12px}
 @media(max-width:900px){
  div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"] img{width:58px!important;height:58px!important}
  div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton{width:62px!important;height:62px!important}
+ .wr-hover-card{display:none!important}
 }
 </style>
 """,unsafe_allow_html=True)
@@ -717,23 +721,23 @@ with tabs[1]:
             slot_cols[_i].caption("Empty slot")
 
     st.markdown('<div class="wr-picker-title">Items</div>',unsafe_allow_html=True)
-    st.caption("Select up to 5 completed items. Hover an icon for name and stats.")
-    _item_names=list(F)
-    _ncols=10
+    st.caption("Hover for item details • click the icon to equip.")
+    _item_names=list(F); _ncols=10
     for _start in range(0,len(_item_names),_ncols):
         _row=st.columns(_ncols,gap="small")
         for _j,_name in enumerate(_item_names[_start:_start+_ncols]):
-            _ii=_start+_j; _col=_row[_j]
-            _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
-            _parts=[f"{int(_q['gold'])}g"]
-            for _key,_label in STAT_LABELS:
+            _ii=_start+_j; _col=_row[_j]; _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
+            _stats=[]
+            for _key,_label in STAT_NAMES.items():
                 _v=_q.get(_key,0)
-                if _v: _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
+                if _v:
+                    _val=f"{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_v:g}"
+                    _stats.append(f'<div class="wr-card-stat"><b>{html.escape(_val)}</b>{html.escape(_label)}</div>')
+            _card=f'<div class="wr-hover-card"><div class="wr-card-title">{html.escape(_name)}</div><div class="wr-card-sub">◆ {int(_q["gold"])} Gold</div><div class="wr-card-rule"></div><div class="wr-card-stats">{"".join(_stats)}</div></div>'
             with _col:
-                st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'"></div>',unsafe_allow_html=True)
+                st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
-                if st.button(" ",key=f"native_item_{_ii}",help=_name+" • "+" • ".join(_parts),
-                             use_container_width=False,disabled=_selected or len(build)>=5):
+                if st.button(" ",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
                     _new=list(st.session_state.build_items_v2)
                     if _name not in _new and len(_new)<5:
                         _new.append(_name); st.session_state.build_items_v2=_new
@@ -1220,4 +1224,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.29 | Square icon-only native picker grid • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.30 | Hover cards + native icon click • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
