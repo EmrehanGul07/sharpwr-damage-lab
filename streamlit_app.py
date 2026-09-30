@@ -660,9 +660,14 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
             if yt_cd<=t: yt_until=t+6; yt_cd=t+20; note.append("Flurry")
         if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: fh-=1
         log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note)])
-        if hp<=0: break
+        # Count the full attack interval for every landed attack, including the killing hit.
+        # Tier-list DPS is based on actual simulated damage dealt over combat time rather
+        # than target HP / timestamp of the killing attack. This preserves differences
+        # between items that kill on the same attack number but deal different damage.
         t+=1/asp
-    return [it,q["gold"],round(t,3),k,round(hp0/t,1) if t else float("inf")],log
+        if hp<=0: break
+    total_sim_damage=sum(float(x[6]) for x in log)
+    return [it,q["gold"],round(t,3),k,round(total_sim_damage/t,1) if t else float("inf")],log
 
 # Shared scenario defaults/state. UI belongs inside each tab rather than above the tabs.
 champ=st.session_state.get("build_champ",list(C)[0])
