@@ -680,22 +680,22 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
     return [it,q["gold"],round(t,3),k,round(total_sim_damage/t,1) if t else float("inf")],log
 
 
-def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0):
-    """Shared multi-item AA engine. V1 carries the six audited item mechanics."""
+def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False):
+    """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
     items=list(items)
     s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
     total=lambda key: sum(float(q[key]) for q in qs)
-    ad=s["ad"]+total("ad")
+    mana=base_mana+total("mana")
+    awe=.02*mana if any(x in items for x in ("Manamune","Muramana")) else 0.0
+    ad=s["ad"]+total("ad")+awe
     hp=float(hp0); t=0.; k=0; log=[]
-    rb=light=dark=rage_hits=0
-    # Kraken is a real hit counter in multi-item builds. User verified in-game:
-    # once Rageblade is fully stacked, every 3rd Rageblade hit (Phantom Hit)
-    # advances Bring It Down by an additional stack.
+    rb=light=dark=rage_hits=pd_stacks=0
     kraken_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
+    spellblade_ready=0.
     while hp>0 and k<500:
         k+=1
-        dyn=(.08*rb if "Guinsoo's Rageblade" in items else 0.0)
+        dyn=(.08*rb if "Guinsoo's Rageblade" in items else 0.0)+(.06*pd_stacks if "Phantom Dancer" in items else 0.0)
         if "Yun Tal Wildarrows" in items and t<yt_until: dyn+=.35
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn))
         crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if "Yun Tal Wildarrows" in items else 0))
@@ -705,42 +705,82 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
         if "Terminus" in items: pct=min(.40,pct)
         ea=max(0,arm*(1-pct)-total("flatpen"))
         phy=ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
+
         if "Hexoptics C44" in items:
             amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01)
-            phy*=1+amp; note.append(f"C44 {amp*100:.0f}%")
+            phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
+        if "Galeforce" in items and active_ready and k==1:
+            bonus_ad=max(0,ad-s["basead"])
+            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst")
         if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
         if "Terminus" in items: onm+=30
         if "Wit's End" in items: onm+=40
+        if "Nashor's Tooth" in items:
+            qn=dct(db["Nashor's Tooth"]); onm+=15+.20*qn["ap"]
+        if "Recurve Bow" in items: onp+=15
+        if "Muramana" in items: onp+=.015*mana
+
         rage_extra=False
         if "Guinsoo's Rageblade" in items:
             onm+=30
             if rb>=4:
                 rage_hits+=1
                 if rage_hits>=3: rage_extra=True; rage_hits=0
+
         if "Kraken Slayer" in items:
-            kraken_hits+=1
-            if rage_extra:
-                # In-game verified: Rageblade Phantom Hit counts as one extra
-                # Bring It Down stack. It advances the counter; it does not
-                # blindly duplicate Kraken damage.
-                kraken_hits+=1
+            kraken_hits+=1+(1 if rage_extra else 0)
             if kraken_hits>=3:
                 base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
                 onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
                 kraken_hits-=3
+
         if rage_extra:
-            # Phantom Hit repeats repeatable on-hit effects in this audited V1:
-            # Rageblade, BotRK and Terminus. Kraken is handled by its own
-            # Bring It Down counter above (+1 extra stack on Phantom Hit).
             onm+=30
             if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
             if "Terminus" in items: onm+=30
             if "Wit's End" in items: onm+=40
+            if "Nashor's Tooth" in items:
+                qn=dct(db["Nashor's Tooth"]); onm+=15+.20*qn["ap"]
+            if "Recurve Bow" in items: onp+=15
+            if "Muramana" in items: onp+=.015*mana
             note.append("Phantom Hit")
+
+        # Recurring Energized cadence mirrors the audited single-item engine.
+        for eit,period,magic,label in (("Rapid Firecannon",7,80,"RFC Energized"),("Stormrazor",7,120,"Storm Energized"),("Statikk Shiv",5,60,"Shiv Energized")):
+            if eit in items:
+                proc=(k==1 or (k>1 and (k-1)%period==0)) if energized else (k%period==0)
+                if proc: onm+=magic; note.append(label)
+        if "Kircheis Shard" in items and energized and k==1:
+            onm+=40; note.append("Jolt")
+
+        if spell and t>=spellblade_ready:
+            triggered=False
+            if "Essence Reaver" in items:
+                onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER"); triggered=True
+            if "Trinity Force" in items:
+                onp+=2*s["basead"]; note.append("Trinity"); triggered=True
+            if "Iceborn Gauntlet" in items:
+                qi=dct(db["Iceborn Gauntlet"]); onp+=s["basead"]+.25*qi["armor"]; note.append("Iceborn"); triggered=True
+            if "Sheen" in items:
+                onp+=s["basead"]; note.append("Sheen"); triggered=True
+            if triggered: spellblade_ready=t+1.5
+
+        if "Duskblade of Draktharr" in items and k==1:
+            onp+=60+(l-1)/14*100; note.append("Nightstalker")
+
         phy+=onp
+        if "Lord Dominik's Regards" in items:
+            gs=min(.12,max(0,bonus_hp)/125*.01)
+            phy*=1+gs; onm*=1+gs; true*=1+gs
+            if gs: note.append(f"Giant Slayer {gs*100:.0f}%")
         dmg=phy*rm(ea)+onm*rm(mr)+true
         if target_aa_reduction: dmg*=1-target_aa_reduction
         before=hp; hp-=dmg
+
+        if "The Collector" in items:
+            th=min(1,.05+.001*execs)
+            if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
+        if "Phantom Dancer" in items: pd_stacks=min(5,pd_stacks+1)
         if "Guinsoo's Rageblade" in items: rb=min(4,rb+1)
         if "Terminus" in items:
             if k%2: light=min(3,light+1)
@@ -750,6 +790,7 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
             if yt_cd<=t:
                 yt_until=t+6; yt_cd=t+25; note.append("Flurry")
             else: yt_cd=max(t,yt_cd-(1.0+crit))
+
         log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note),rb,light,dark])
         t+=1/asp
         if hp<=0: break
@@ -1634,7 +1675,7 @@ with tabs[3]:
                     _state.append(f"Kraken {_kh%3}/3")
                 _brows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note," • ".join(_state)])
             st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),use_container_width=True,hide_index=True)
-            st.caption("Verified interaction: after Rageblade is fully stacked, every Phantom Hit advances Kraken Bring It Down by +1 extra stack. Phantom advances Kraken's counter rather than duplicating Kraken proc damage. Repeatable on-hits currently carried by Phantom include Rageblade, BotRK, Terminus and Wit's End.")
+            st.caption("Build engine now carries the audited AA mechanics used by the single-item simulator: Giant Slayer, Energized cadence, Cloudburst, Nightstalker, Collector execute, Spellblade, Phantom Dancer stacks, mana on-hits and the verified Rageblade interactions. Rageblade + Kraken, Wit's End and Terminus behavior follows the in-game checks.")
     elif dbpick=="Item Engine Audit":
         st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
         _audit_items=["Yun Tal Wildarrows","Terminus","Guinsoo's Rageblade","Kraken Slayer","Blade of the Ruined King","Hexoptics C44"]
