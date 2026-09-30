@@ -462,7 +462,7 @@ ITEM_SCENARIO_AUDIT={
 "Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
 "Wit's End":("on-hit","modeled","Magic on-hit each attack."),
 "Hexoptics C44":("distance","modeled","Magnification: 0% below 100 range, then +1% per 50 range; 10% cap at 550."),
-"Kraken Slayer":("every-N-hit","modeled","Proc every third attack."),
+"Kraken Slayer":("every-N-hit","modeled","Ranged Bring It Down: every 3rd AA deals 120-168 linear level bonus physical; +0.75% damage per 1% target missing HP, capped at +75%."),
 "Nashor's Tooth":("on-hit","modeled","Magic on-hit."),
 "Manamune":("mana-scaling","modeled","Awe AD from mana."),
 "Muramana":("mana/on-hit","modeled","Awe plus mana on-hit."),
@@ -473,7 +473,7 @@ ITEM_SCENARIO_AUDIT={
 "Essence Reaver":("spell-trigger","modeled","Proc when ability-before-AA is enabled."),
 "Immortal Shieldbow":("defensive","not modeled","Shield/survival excluded."),
 "The Collector":("execute","modeled","Execute and previous executes."),
-"Terminus":("stacking/on-hit","modeled","On-hit and penetration stacks."),
+"Terminus":("stacking/on-hit","modeled","Shadow: 35 magic on-hit. Juxtaposition alternates Light/Dark; each stacks 3x for 5s. Dark grants 11% armor + magic penetration per stack (33% max). Light grants 5-8 linear bonus Armor/MR per stack (15-24 max; defensive value not scored in DPS). Item percent penetration cap 40%."),
 "Stormrazor":("energized","modeled","First Energized hit."),
 "Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
 "Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
@@ -578,7 +578,7 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         crit=q["crit"]+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if it=="Yun Tal Wildarrows" else 0)
         crit=min(1,crit); cd=2.3 if it=="Infinity Edge" else 2.
         if n=="Senna": cd*=.9
-        pct=q["pctpen"]+(.10*dark if it=="Terminus" and item_proc else 0)
+        pct=q["pctpen"]+(.11*dark if it=="Terminus" and item_proc else 0)
         if it=="Terminus": pct=min(.40,pct)
         ea=max(0,arm*(1-pct)-q["flatpen"])
         true=0.; mag=0.; onp=0.; onm=0.; note=[]
@@ -599,12 +599,12 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
                 rage_hits+=1
                 if rage_hits>=3:
                     rage_extra=True; rage_hits=0
-        if it=="Terminus": onm+=30
+        if it=="Terminus": onm+=35
         if it=="Recurve Bow": onp+=15
         if it=="Blade of the Ruined King": onp+=max(15,.07*hp)
         if it=="Muramana": onp+=.015*mana
         if it=="Kraken Slayer" and item_proc and k%3==0:
-            base=120+(l-1)/14*48; miss=(hp0-hp)/hp0
+            base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
             onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
         if it=="Duskblade of Draktharr" and item_proc and k==1:
             onp+=60+(l-1)/14*100; note.append("Nightstalker")
@@ -1135,7 +1135,7 @@ with tabs[1]:
             lt_as=.048*lt_stacks if keystone=="Lethal Tempo" else 0.0
             asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn+rune_bonus_as+lt_as))
             cc=crit
-            pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
+            pct=total["pctpen"]+(.11*dark if "Terminus" in build else 0)
             if "Terminus" in build: pct=min(.40,pct)
             ea=max(0,armor*(1-pct)-total["flatpen"])
             true=0.; mag=0.; onp=0.
