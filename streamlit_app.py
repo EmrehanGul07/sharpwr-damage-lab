@@ -584,7 +584,9 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
         phy+=onp; mag+=onm
         if it=="Lord Dominik's Regards":
             amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
-        dmg=phy*rm(ea)+mag*rm(mr)+true\n        if target_aa_reduction: dmg*=1-target_aa_reduction\n        before=hp; hp-=dmg
+        dmg=phy*rm(ea)+mag*rm(mr)+true
+        if target_aa_reduction: dmg*=1-target_aa_reduction
+        before=hp; hp-=dmg
         if it=="The Collector" and item_proc:
             th=min(1,.05+.001*execs)
             if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
