@@ -272,6 +272,8 @@ st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layou
 st.markdown("""
 <style>
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
+.wr-tier-label{margin:10px 0 7px;font-size:10px;font-weight:800;letter-spacing:.14em;color:#6d7887}
+.wr-tier-t3{color:#a67d16}.wr-tier-t2{margin-top:2px;color:#6d7887}
 .wr-pick-marker{height:0!important;margin:0!important;padding:0!important;overflow:visible!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker){position:relative;min-width:0;overflow:visible!important}
 div[data-testid="stColumn"]:has(.wr-pick-marker) div[data-testid="stImage"]{display:flex;justify-content:center;margin:0!important;padding:0!important}
@@ -756,11 +758,27 @@ with tabs[1]:
     st.caption("Hover for boot details • click the icon to equip.")
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
-    _boot_names=list(B); _boot_ncols=min(7,len(_boot_names))
-    for _start in range(0,len(_boot_names),_boot_ncols):
-        _row=st.columns(_boot_ncols,gap="small")
-        for _j,_name in enumerate(_boot_names[_start:_start+_boot_ncols]):
-            _i=_start+_j; _icon=boot_icon(_name); _q=dct(B[_name]); _sel=st.session_state.build_boot_v2==_name
+
+    # Database is stored as seven T2 -> T3 upgrade pairs.
+    _boot_pairs=[
+        ("Gluttonous Greaves","Immortal Treads"),
+        ("Ionian Boots of Lucidity","Crimson Lucidity"),
+        ("Berserker's Greaves","Gunmetal Greaves"),
+        ("Mercury's Treads","Chainlaced Crushers"),
+        ("Plated Steelcaps","Armored Advance"),
+        ("Boots of Mana","Spellslinger's Shoes"),
+        ("Boots of Dynamism","Armorcrusher Boots"),
+    ]
+    _boot_tiers=[
+        ("T3 BOOTS",[t3 for t2,t3 in _boot_pairs],"wr-tier-t3"),
+        ("T2 BOOTS",[t2 for t2,t3 in _boot_pairs],"wr-tier-t2"),
+    ]
+    _boot_index={name:i for i,name in enumerate(B)}
+    for _tier_label,_boot_names,_tier_class in _boot_tiers:
+        st.markdown(f'<div class="wr-tier-label {_tier_class}">{_tier_label}</div>',unsafe_allow_html=True)
+        _row=st.columns(7,gap="small")
+        for _j,_name in enumerate(_boot_names):
+            _i=_boot_index[_name]; _icon=boot_icon(_name); _q=dct(B[_name]); _sel=st.session_state.build_boot_v2==_name
             _stats=[]
             for _key,_label in STAT_NAMES.items():
                 _v=_q.get(_key,0)
@@ -1230,4 +1248,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.34 | Unified premium boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.35 | Tiered T3/T2 boots picker • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
