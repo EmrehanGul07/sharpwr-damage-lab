@@ -63,23 +63,22 @@ def rune_icon(name):
 def _rune_icon_grid(label, options, state_key, cols=6):
     current=st.session_state.get(state_key,options[0] if options else None)
     if current not in options and options:
-        current=options[0]
-        st.session_state[state_key]=current
-    st.markdown(f"**{label}**")
+        current=options[0]; st.session_state[state_key]=current
+    st.markdown(f"##### {label}")
     if not options: return None
-    # Native Streamlit controls are used for selection. This avoids iframe/query-param
-    # navigation, which is unreliable on Streamlit Community Cloud and embedded/mobile views.
     ncols=min(cols,len(options))
-    grid=st.columns(ncols)
-    for i,name in enumerate(options):
-        col=grid[i%ncols]
-        icon=rune_icon(name)
-        if icon: col.image(icon,width=52)
-        tip=RUNE_DATABASE.get(name,{}).get("tooltip","")
-        text=("✓ " if name==current else "")+name
-        if col.button(text,key=f"{state_key}__{i}__{name}",help=tip,use_container_width=True):
-            st.session_state[state_key]=name
-            st.rerun()
+    # Each native button remains the actual interaction target; icon/name are presentation only.
+    for start in range(0,len(options),ncols):
+        grid=st.columns(ncols,gap="small")
+        for j,name in enumerate(options[start:start+ncols]):
+            i=start+j; col=grid[j]; icon=rune_icon(name)
+            with col:
+                if icon: st.image(icon,width=58)
+                chosen=name==current
+                if st.button(("◆ " if chosen else "")+name,key=f"{state_key}__{i}__{name}",
+                             help=RUNE_DATABASE.get(name,{}).get("tooltip",""),
+                             use_container_width=True,type="primary" if chosen else "secondary"):
+                    st.session_state[state_key]=name; st.rerun()
     return st.session_state.get(state_key,current)
 
 ITEM_ICON_FILE={
@@ -269,6 +268,24 @@ def _premium_item_grid(items, selected):
 import pandas as pd
 
 st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
+st.markdown("""
+<style>
+/* Build Lab V2 — premium skin on reliable native Streamlit controls */
+div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]{
+  transition:transform .12s ease;
+}
+div[data-testid="stColumn"] > div:has(button[key*="build_"]),
+div[data-testid="stColumn"] > div:has(button[key*="native_item_"]){
+  border-radius:14px;
+}
+button[kind="secondary"]{
+  border-radius:10px;
+}
+div[data-testid="stImage"] img{
+  border-radius:10px;
+}
+</style>
+""",unsafe_allow_html=True)
 st.title("⚔️ SharpWR Damage Lab — V5")
 st.caption("Patch 7.3a • Full items + components • single-target ADC auto-attack lab")
 
@@ -663,35 +680,43 @@ with tabs[1]:
     if "build_items_v2" not in st.session_state:
         st.session_state.build_items_v2=list(F)[:5]
 
-    st.markdown("**Selected Build**")
+    st.markdown("### Equipped Build")
     build=list(st.session_state.build_items_v2)
     slot_cols=st.columns(5)
     for _i in range(5):
         if _i<len(build):
             _it=build[_i]; _url=item_icon(_it)
             if _url: slot_cols[_i].image(_url,width=58)
-            slot_cols[_i].caption(_it)
-            if slot_cols[_i].button("Remove",key=f"remove_item_{_i}",use_container_width=True):
+            slot_cols[_i].markdown(f"**{_it}**")
+            if slot_cols[_i].button("✕ Remove",key=f"remove_item_{_i}",use_container_width=True):
                 build.pop(_i); st.session_state.build_items_v2=build; st.rerun()
         else:
             slot_cols[_i].markdown("### ＋")
             slot_cols[_i].caption("Empty slot")
 
-    st.markdown("**Items**")
-    st.caption("Click + to add an item to an empty build slot. Selected items are disabled.")
+    st.markdown("### Items")
+    st.caption("5 completed items • hover/tap the + button for stats")
     _item_names=list(F)
-    _item_cols=st.columns(6)
+    _item_cols=st.columns(8,gap="small")
     for _ii,_name in enumerate(_item_names):
-        _col=_item_cols[_ii%6]
-        _icon=item_icon(_name)
-        if _icon: _col.image(_icon,width=54)
-        _selected=_name in build
-        if _col.button(("✓ " if _selected else "＋ ")+_name,key=f"native_item_{_ii}",help="Selected" if _selected else "Add to build",use_container_width=True,disabled=_selected or len(build)>=5):
-            _new=list(st.session_state.build_items_v2)
-            if _name not in _new and len(_new)<5:
-                _new.append(_name)
-                st.session_state.build_items_v2=_new
-            st.rerun()
+        _col=_item_cols[_ii%8]
+        _icon=item_icon(_name); _selected=_name in build; _q=dct(F[_name])
+        _parts=[f"{int(_q['gold'])}g"]
+        for _key,_label in STAT_LABELS:
+            _v=_q.get(_key,0)
+            if _v:
+                _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
+        with _col:
+            if _icon: st.image(_icon,width=60)
+            st.caption(_name)
+            if st.button("◆ EQUIPPED" if _selected else "＋ ADD",key=f"native_item_{_ii}",
+                         help=_name+" • "+" • ".join(_parts),use_container_width=True,
+                         type="primary" if _selected else "secondary",
+                         disabled=_selected or len(build)>=5):
+                _new=list(st.session_state.build_items_v2)
+                if _name not in _new and len(_new)<5:
+                    _new.append(_name); st.session_state.build_items_v2=_new
+                st.rerun()
     st.markdown("**Boots**")
     if "build_boot_v2" not in st.session_state:
         st.session_state.build_boot_v2=list(B)[0]
@@ -706,8 +731,9 @@ with tabs[1]:
             _v=_q.get(_key,0)
             if not _v: continue
             _parts.append(f"{_label} +{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_label} +{_v:g}")
-        if _col.button("✓" if st.session_state.build_boot_v2==_name else "＋",key=f"pick_boot_{_i}",
+        if _col.button(("◆ " if st.session_state.build_boot_v2==_name else "")+_name,key=f"pick_boot_{_i}",
                        help="Select / preview "+_name+" • "+" • ".join(_parts),use_container_width=True,
+                       type="primary" if st.session_state.build_boot_v2==_name else "secondary",
                        disabled=False):
             st.session_state.build_boot_v2=_name
             st.session_state.preview_boot=_name
@@ -1177,4 +1203,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True)
 
 st.divider()
-st.caption("Web V5.26 | Native reliable Build Lab selectors • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.27 | Premium native Build Lab UI • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
