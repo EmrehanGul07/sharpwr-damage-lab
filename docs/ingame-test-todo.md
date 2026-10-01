@@ -98,3 +98,16 @@ Sabit practice rünleri değiştirilmeyecek, MR ayarı değiştirilemediğinde m
 - Validate all 23 PC base-AA windups and projectile speeds against WR; Senna WR rule remains preserved.
 - Jinx AA weapon speeds sourced from PC game files; verify WR parity. Resolve remaining skill speed gaps listed in docs/pc-combat-timing-v563.md.
 - Validate compound projectile trajectories and variant speeds; do not treat stored PC expressions as verified WR timings.
+
+
+## V5.64.0 combat/item audit sonrası
+
+- [ ] Jhin dördüncü AA launch/ammo/reload sırasını ve Jinx rocket mana/weapon geçişini WR'de kontrol et. Offline regressions geçti.
+- [ ] Sivir Q 1450/1200 gidiş/dönüş hızları ve uç nokta dönüşünü WR'de kontrol et; sabit .25s tahmin kaldırıldı.
+- [ ] Yunara manuel mana/MS/range; W linger tick kapsamı.
+- [ ] Caitlyn headshot/crit, Kai'Sa passive level progression, Lucian ikinci shot progression, Senna soul/bonus-AA ve Zeri flat progression.
+- [ ] Kalista hop / Vayne tumble / Draven catch / Xayah lateral feather geometry.
+- [ ] Çoklu-hit Muramana eligibility ve Fiendhunter Lucian ikinci shot sayımı; hasar sınıflandırmasına bağlı AA reduction/proc kapsamı.
+- [ ] Spellblade armed-window expiry için WR tooltip/kaynak doğrulaması.
+
+Tam offline denetim ve provisional liste: [combat-engine-audit-v564.md](combat-engine-audit-v564.md). Bu test sonucu WR birebir eşitlik onayı değildir.
