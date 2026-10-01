@@ -1,4 +1,4 @@
-# Samira fight engine V5.49
+# Samira fight engine V5.50
 
 User-selected instant resolution: every skill applies damage at its button timestamp. No cast, projectile, dash or channel delay. W resolves two hits together, R ten individual crit rolls together; a skill grants one Conqueror/Style event. Attack intervals and cooldowns remain enforced. The legacy optional timed R API is retained for research tests, not offered in the UI.
 
@@ -6,7 +6,7 @@ Selected build supplies AD/AP, attack speed, crit chance/damage, ability haste, 
 
 Skill ranks are derived from champion level using Q,E,W,Q,R,Q,Q,E,R,E,E,W,R,W,W; all rank selectors are removed. E gives rank-based AS for three seconds. Navori AA reduces remaining Q/W/E cooldowns by 15%; Collector tests its configured threshold after AA/skill damage. LDR and Immortal damage amplifiers apply to skills. Legend Haste and Transcendence AH/cooldown effects are connected. E automatically enters melee range; melee passive using the previously accepted level/linear missing-health model. AA procs reuse the shared kernel and item stack state is reported. Yun Tal starts at zero in each replay and gains only from AA. Unsupported offensive runes block replay.
 
-Full fight always runs R at S, then E/W/Q, and attacks when ready until the target dies. No automatic-mode checkbox, manual timestamp input, melee toggle or duration cutoff. A 1000-action safety guard reports a surviving target rather than a false kill. TTK and range are visible. This declared priority is not an optimal-combo claim. Crit defaults to selected items; 50% override is optional. Expected mode uses probability-weighted hits; nonlinear HP/execute paths are approximate. Seeded rolls are reproducible.
+Full fight always runs R at S, then E/W/Q, and attacks when ready until the target dies. No automatic-mode checkbox, manual timestamp input, melee toggle or duration cutoff. A 1000-action safety guard reports a surviving target rather than a false kill. TTK and range are visible. This declared priority is not an optimal-combo claim. UI uses selected item crit chance only, always Expected; isolated skill damage/reference tables, critical-mode/seed controls and crit override are removed. Expected mode uses probability-weighted hits; nonlinear HP/execute paths are approximate. Seeded rolls are reproducible.
 
 Known gaps: mana costs (no mana gating), Style/item buff expiry, precise skill-specific on-hit effects and movement/attack-driven Energized recharge. Defensive stats, healing and incoming damage have no model here. Mana costs must be sourced, never guessed. Item AA mechanics preserve the audited implementation; exact remaining attack-clock changes after temporary buff expiry need follow-up. W's separate hit/stack interaction is compressed under the user's instant-resolution model.
 

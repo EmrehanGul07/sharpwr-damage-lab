@@ -1742,48 +1742,20 @@ with tabs[1]:
             _skill_total={k:sum(q[k] for q in _skill_qs) for k in K}
             _skill_awe=.02*(mana+_skill_total["mana"]) if any(x in build for x in ("Manamune","Muramana")) else 0.
             _skill_ad=stats(champ,level)["ad"]+_skill_total["ad"]+_skill_awe
-            _skill_crit=min(1.,_skill_total["crit"]+yt_bonus_crit)
             _skill_cd=2.3 if "Infinity Edge" in build else 2.
             _fight_haste=_skill_total["ah"]+(15. if "Legend: Haste" in selected_sub_runes and haste_full else 0.)+((10. if level>=5 else 5.) if "Transcendence" in selected_sub_runes else 0.)
             _fight_amp=(1.05 if boot=="Immortal Treads" and immortal_above_half else 1.)*(1+min(.12,max(0,bonus_hp)/125*.01) if "Lord Dominik's Regards" in build else 1.)
-            st.markdown(f"**Combat stats:** {_skill_ad:.1f} AD · {_skill_total['ap']:.0f} AP · {_skill_crit*100:.0f}% crit chance · {_skill_cd*100:.0f}% crit damage · {_fight_haste:.0f} ability haste")
             _ranks=samira_ranks(level)
             _qrank,_wrank,_erank,_rrank=(_ranks[k] for k in ('Q','W','E','R'))
-            _style=6;_shots=10
-            st.caption(f"Automatic skill build at level {level}: Q {_qrank} · W {_wrank} · E {_erank} · R {_rrank}. Priority Q → E → W; R at 5 / 9 / 13. Fight starts at zero Style; reference R rows assume S.")
-            _skill_rows=[]
-            _outcomes=["Normal","Expected"]+(["Critical"] if _skill_crit>0 else [])
-            for _slot,_rank in [("Q",_qrank),("W",_wrank),("E",_erank),("R",_rrank)]:
-                if not _rank or (_slot=="R" and _style<6): continue
-                for _outcome in (_outcomes if _slot in ("Q","R") else ["Normal","Expected"]):
-                    _result=samira_skill(_slot,_rank,_skill_ad,_skill_crit,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome=_outcome,hits=_shots if _slot=="R" else SAMIRA_ABILITIES[_slot]["hits"],base_ad=stats(champ,level)["ad"],mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"])
-                    _skill_rows.append([f"{_slot} · {SAMIRA_ABILITIES[_slot]['name']}",_outcome,_result.hits,round(_result.physical_per_hit,2),round(_result.physical,2),_result.magic,_result.true,round(_result.dealt_physical,2),_result.dealt_magic,_result.dealt_true,round(_result.total,2)])
-            if _skill_rows:
-                st.dataframe(pd.DataFrame(_skill_rows,columns=["Ability","Outcome","Hits","Physical / hit","Raw physical","Raw magic","Raw true","Dealt physical","Dealt magic","Dealt true","Total dealt"]),hide_index=True,use_container_width=True)
-            else:
-                st.info("Learn Q or learn R and reach S style to see skill damage.")
-            if _rrank and _style<6: st.warning("Inferno Trigger unavailable: S style is required.")
-            with st.expander("50% crit chance reference"):
-                st.caption("Reference scenario only; it does not change your build. Expected = 50% normal + 50% critical.")
-                _ref=[]
-                for _slot,_rank in [("Q",_qrank),("R",_rrank)]:
-                    if _rank:
-                        _n=samira_skill(_slot,_rank,_skill_ad,.5,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome="Normal",hits=_shots if _slot=="R" else 1)
-                        _c=samira_skill(_slot,_rank,_skill_ad,.5,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome="Critical",hits=_shots if _slot=="R" else 1)
-                        _ref.append([_slot,round(_n.total,2),round(_c.total,2),round((_n.total+_c.total)/2,2)])
-                if _ref: st.table(pd.DataFrame(_ref,columns=["Ability","Normal","Critical","Expected @ 50% crit"]))
+            st.caption(f"Automatic skill build at level {level}: Q {_qrank} · W {_wrank} · E {_erank} · R {_rrank}. Priority Q → E → W; R at 5 / 9 / 13.")
             st.markdown("**Fight timeline · AA / Q / W / E / R**")
-            st.caption("Stacks start at zero and are earned after landed events. Skills apply damage immediately when pressed. Rejected actions do not grant stacks. R resolves ten separate critical rolls at the same instant.")
+            st.caption("Stacks start at zero and are earned after landed events. Skills apply damage immediately when pressed. Rejected actions do not grant stacks. Every hit uses expected damage weighted by your build’s current crit chance.")
             st.caption("Full fight runs automatically until the target dies. E lands instantly and switches subsequent attacks and skills to melee range. No cast/projectile delays or arbitrary fight-duration cutoff.")
-            _fight_cols=st.columns(2)
-            _fight_mode=_fight_cols[0].selectbox("Critical mode",["Expected","Seeded critical rolls"],key="fight_crit_mode")
-            _fight_seed=_fight_cols[1].number_input("Random seed",0,1000000,1,key="fight_seed")
             st.caption("Build-driven stats: AD/AP, attack speed, crit chance/damage, ability haste and physical/magic penetration. Navori reduces remaining basic cooldowns on AA; E grants temporary AS; Collector checks after damage. All skills resolve instantly. Mana costs remain unavailable; no mana gating is applied.")
-            st.warning("Remaining gaps: mana costs, Style/buff expiry, skill-specific on-hit interactions and movement-driven Energized recharge. Melee passive uses your accepted linear missing-health model. Healing and own survival are excluded. Expected HP-dependent paths approximate averages; seeded rolls simulate individual crit outcomes.")
+            st.warning("Remaining gaps: mana costs, Style/buff expiry, skill-specific on-hit interactions and movement-driven Energized recharge. Melee passive uses your accepted linear missing-health model. Healing and own survival are excluded. Expected HP-dependent paths approximate averages.")
             _supported_fight_runes={"Brutal","Cut Down","Coup de Grace","Battle Zeal","Legend: Alacrity","Legend: Haste","Transcendence"}
             _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in {"Legend: Bloodline","Bone Plating","Second Wind","Perseverance","Overgrowth","Unshakeable"}]
-            _custom_fight_crit=st.checkbox("Override base crit chance for replay",False,key="fight_override_crit")
-            _replay_crit=st.number_input("Base crit chance before Yun Tal stacks (%)",0,100,50,key="fight_base_crit")/100 if _custom_fight_crit else min(1.,_skill_total["crit"])
+            _replay_crit=min(1.,_skill_total["crit"])
             _fight_start_as=min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+((.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.)))
             st.markdown(f"**Fight starting stats:** {_skill_ad:.1f} AD · {_skill_total['ap']:.0f} AP · {_fight_start_as:.3f} AS · {_replay_crit*100:.1f}% crit · {_skill_cd*100:.0f}% crit damage · {_fight_haste:.0f} AH · {_skill_total['pctpen']*100:.0f}% + {_skill_total['flatpen']:.0f} armor penetration · {_skill_total['pctmpen']*100:.0f}% + {_skill_total['flatmpen']:.0f} magic penetration")
             _fight_key=keystone if keystone!="None" else None
@@ -1801,14 +1773,14 @@ with tabs[1]:
                         if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
                         return _hit
                     _fight_base_crit=_replay_crit
-                    _fight_result=replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode=_fight_mode,seed=int(_fight_seed),keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=True,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build)
+                    _fight_result=replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=True,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build)
                     if _fight_result.killed_at is not None: st.success(f"Target defeated · TTK {_fight_result.killed_at:.3f} seconds")
                     else: st.warning("Simulation safety limit reached; target survived. No kill time is reported.")
                     st.caption(f"Landed: {_fight_result.aa_count} AAs / {_fight_result.skill_count} skill casts • Damage {_fight_result.total_damage:.1f} • HP remaining {_fight_result.hp_remaining:.1f}")
                     _fight_rows=[]
                     for _e in _fight_result.log:
-                        _fight_rows.append([round(_e["time"],3),_e["action"],round(_e["AD"],2),round(_e["crit_chance"]*100,2),_e["critical"],round(_e["damage"],2),round(_e["hp_after"],2),str(_e["before"]),str(_e["after"]),str({k:round(v,2) for k,v in _e["cooldowns"].items()}),_e["executed"],"Melee" if _e["melee"] else "Ranged"," / ".join(_e["effects"])])
-                    if _fight_rows: st.dataframe(pd.DataFrame(_fight_rows,columns=["Time","Event","AD","Crit %","Critical roll","Damage","Target HP","Stacks before","Stacks after","Cooldowns remaining","Collector execute","Range","Effects"]),hide_index=True,use_container_width=True)
+                        _fight_rows.append([round(_e["time"],3),_e["action"],round(_e["AD"],2),round(_e["crit_chance"]*100,2),round(_e["damage"],2),round(_e["hp_after"],2),str(_e["before"]),str(_e["after"]),str({k:round(v,2) for k,v in _e["cooldowns"].items()}),_e["executed"],"Melee" if _e["melee"] else "Ranged"," / ".join(_e["effects"])])
+                    if _fight_rows: st.dataframe(pd.DataFrame(_fight_rows,columns=["Time","Event","AD","Crit %","Damage","Target HP","Stacks before","Stacks after","Cooldowns remaining","Collector execute","Range","Effects"]),hide_index=True,use_container_width=True)
                     if _fight_result.rejected: st.dataframe(pd.DataFrame(_fight_result.rejected),hide_index=True,use_container_width=True)
                 except (ValueError,StopIteration) as _err:
                     st.error(f"Timeline could not run: {_err}")
@@ -1818,7 +1790,7 @@ with tabs[1]:
                     _base_cd=SAMIRA_ABILITIES[_slot]["cooldown"][_rank-1]
                     _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_fight_haste/100),2),"Unknown — TODO"])
             if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with item haste","Mana cost"]))
-            st.caption("Mana and unverified skill/item interactions remain TODO. Instant fight totals use the selected build; isolated rows show skill formulas before rune/global amplifiers. W/E cannot crit.")
+            st.caption("Mana and unverified skill/item interactions remain TODO. Fight totals use the selected build and expected damage. W/E cannot crit.")
 
     if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
@@ -2347,4 +2319,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.49 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.50 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
