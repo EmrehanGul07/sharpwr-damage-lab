@@ -6,8 +6,9 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.66.3")
+ensure_engine_revision("5.67.0")
 from combat_replay import replay_payload, replay_html
+from item_consensus import consensus, adopters
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -1026,7 +1027,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.66.3",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.67.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1045,9 +1046,30 @@ with tabs[0]:
                 except (ValueError,LookupError,StopIteration,AttributeError) as _err:
                     _replay_error=str(_err)
             st.session_state["tier_fight_results"]={"signature":_tier_signature,"results":_search,"replay":_replay_data,"replay_error":_replay_error}
+            _history_key=(_tier_signature[0],tier_champ,tier_level,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+            st.session_state.setdefault('combat_rank_history',{}).setdefault(_history_key,{})[tier_target]=_search
         except (ValueError,LookupError,StopIteration) as _err:
             st.error(f"Build search could not run: {_err}")
         finally:_progress.empty()
+    if st.button("Compare all 3 target profiles",key="tier_all_profiles"):
+        _history_key=(_tier_signature[0],tier_champ,tier_level,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+        _history=st.session_state.setdefault('combat_rank_history',{}).setdefault(_history_key,{})
+        _progress=st.progress(0.,text="Comparing three target profiles…")
+        try:
+            for _i,(_name,_profile) in enumerate(TARGET_PROFILES.items()):
+                if _name in _history:continue
+                _t=_target_profile_at_level(_profile,tier_level)
+                _natural={"Squishy • Jinx":_t['hp'],"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[_name]
+                _ev=BuildFightEvaluator(globals(),tier_champ,int(tier_level),float(_t['hp']),float(_t['armor']),float(_t['mr']),mist=tier_mist,bonus_hp=max(0.,_t['hp']-_natural),aa_reduction=float(_t.get('aa_reduction',0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
+                _history[_name]=search_builds(_ev,F,[x for x in TIER3 if x in B],progress=lambda v,text,i=_i:_progress.progress((i+v)/3,text=text))
+        except (ValueError,LookupError,StopIteration) as _err:st.error(f"Comparison could not finish: {_err}")
+        finally:_progress.empty()
+    _history_key=(_tier_signature[0],tier_champ,tier_level,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _history=st.session_state.get('combat_rank_history',{}).get(_history_key,{})
+    if _history:
+        st.markdown("### Items across target profiles")
+        st.caption(f"{tier_champ} · {len(_history)}/3 targets completed. Equal target weighting; Top-3 build appearances weighted 1, 1/2, 1/3. Offensive build coverage, not a complete item power rating.")
+        st.dataframe(pd.DataFrame(consensus(_history)),hide_index=True,width="stretch")
     _saved=st.session_state.get("tier_fight_results")
     if _saved and _saved["signature"]==_tier_signature:
         _search=_saved["results"]
@@ -1744,6 +1766,14 @@ with tabs[1]:
 with tabs[2]:
     _tab_hero("SHARPWR • GOLD & PERFORMANCE","Item Value","Find the strongest purchases for your selected champion and target. Compare combat output and directly priced raw stats.")
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
+    with st.expander("Item adoption across tested champions"):
+        _adoption={}
+        for _key,_runs in st.session_state.get('combat_rank_history',{}).items():
+            if _key[0]=="5.67.0" and _key[2]==tier_level and _key[3:]==(tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana):_adoption[_key[1]]=_runs
+        st.caption(f"Completed Item Tier List runs only · Level {tier_level} · {len(_adoption)}/23 champions. Run other champions with matching starting conditions to extend coverage. Counts items appearing in Top-3 full builds; not gold efficiency or all-match popularity.")
+        _adopters=adopters(_adoption)
+        if _adopters:st.dataframe(pd.DataFrame(_adopters),hide_index=True,width="stretch")
+        else:st.info("Run Item Tier List comparisons to populate this view.")
     _iv_champion,_iv_target=st.columns(2,gap="medium")
     with _iv_champion,st.container(border=True):
         _setup_heading("01","YOUR CHAMPION","Champion Profile")
@@ -2031,4 +2061,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.66.3 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.67.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
