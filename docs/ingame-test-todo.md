@@ -38,3 +38,7 @@ Bu liste kalıcıdır. Akşam test sonuçları geldikçe maddeler kapanacak; bil
 ## Bilerek test istenmeyen kapsam
 
 Rakibin bize hasar vermesi, kendi ölümümüz, kendi regen/lifesteal ile hayatta kalma bu sabit-hedef hasar modelinin kapsamına dahil değil. Başka marksmanların özel ability engine'leri bu Samira denetiminin tamamlanması anlamına gelmez; ayrı aşamalardır.
+
+## All-champion follow-up queue
+
+All 23 champions have an ordered checklist in [marksman-task-queue.md](marksman-task-queue.md). The current list distinguishes collected ability data from pending timeline adapters. Per-champion unresolved mechanics and the five remaining mana slots are recorded there. User-confirmed values must not be re-requested. No unsupported adapter is marked complete.

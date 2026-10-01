@@ -1,0 +1,1985 @@
+{
+  "policy": "WR metadata only; user values retained; unparsed conditional fields stay text",
+  "records": [
+    {
+      "champion": "Kalista",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Martial_Poise",
+      "retrieved_at": "2026-10-01T09:57:47.404988+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Pierce",
+      "retrieved_at": "2026-10-01T09:49:38.394200+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "55 / 60 / 65 / 70",
+        "costtype": "Mana",
+        "cooldown": "8 / 7. 5 / 7 / 6. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Sentinel",
+      "retrieved_at": "2026-10-01T09:49:38.396089+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 5",
+        "cost": "",
+        "costtype": "",
+        "cooldown": "20"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Rend",
+      "retrieved_at": "2026-10-01T09:49:38.397988+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "10 / 9 / 8 / 7"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kalista",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Fate%27s_Call",
+      "retrieved_at": "2026-10-01T09:49:38.401760+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "60 / 55 / 50"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Draw_a_Bead",
+      "retrieved_at": "2026-10-01T09:57:47.405609+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rapid_Fire",
+      "retrieved_at": "2026-10-01T09:49:38.404162+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "none",
+        "costtype": "",
+        "cooldown": "17 / 16 / 15 / 14"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rocket_Jump",
+      "retrieved_at": "2026-10-01T09:49:38.405278+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "60",
+        "costtype": "mana",
+        "cooldown": "22 / 19 / 16 / 13"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Explosive_Charge",
+      "retrieved_at": "2026-10-01T09:49:47.377685+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "545 – 685 (based on level)",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "100% of Tristana's windup time",
+        "cost": "55 / 60 / 65 / 70",
+        "costtype": "mana",
+        "cooldown": "15 / 14 / 13 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Tristana",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot",
+      "retrieved_at": "2026-10-01T09:49:47.386342+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "545 – 685 (based on level)",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Deadly_Venom",
+      "retrieved_at": "2026-10-01T09:57:47.406153+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Ambush",
+      "retrieved_at": "2026-10-01T09:49:47.403167+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "40",
+        "costtype": "Mana",
+        "cooldown": "15"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Venom_Cask",
+      "retrieved_at": "2026-10-01T09:49:47.452767+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0.25 to 0.1 (based on bonus attack speed) (estimated)",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "12 / 11 / 10 / 9"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Contaminate",
+      "retrieved_at": "2026-10-01T09:49:47.457828+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "global",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "35 / 45 / 55 / 65",
+        "costtype": "Mana",
+        "cooldown": "16 / 15 / 14 / 13"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Twitch",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Spray_and_Pray",
+      "retrieved_at": "2026-10-01T09:49:47.478090+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Twitch's attack range",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Draven",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/League_of_Draven",
+      "retrieved_at": "2026-10-01T09:57:47.408526+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Draven",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Spinning_Axe",
+      "retrieved_at": "2026-10-01T09:49:53.385868+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "45",
+        "costtype": "mana",
+        "cooldown": "10 / 9 / 8 / 7"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Draven",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Blood_Rush",
+      "retrieved_at": "2026-10-01T09:49:53.406611+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "40 / 35 / 30 / 25",
+        "costtype": "Mana",
+        "cooldown": "10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Draven",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Stand_Aside",
+      "retrieved_at": "2026-10-01T09:49:53.416517+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1100",
+        "effect radius": "",
+        "width": "260",
+        "speed": "1400",
+        "cast time": "0. 25",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "15 / 14 / 13 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Draven",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Whirling_Death",
+      "retrieved_at": "2026-10-01T09:49:53.436247+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Global",
+        "effect radius": "",
+        "width": "320",
+        "speed": "2000",
+        "cast time": "0. 5",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Icathian_Surprise",
+      "retrieved_at": "2026-10-01T09:57:47.412950+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "400",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Caustic_Spittle",
+      "retrieved_at": "2026-10-01T09:49:53.439377+00:00",
+      "parameters": {
+        "range": "1200",
+        "target range": "",
+        "effect radius": "",
+        "width": "140",
+        "speed": "1650",
+        "cast time": "Basic attack timer",
+        "cost": "40",
+        "costtype": "Mana",
+        "cooldown": "7"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Bio-Arcane_Barrage",
+      "retrieved_at": "2026-10-01T09:49:53.467949+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "40",
+        "costtype": "Mana",
+        "cooldown": "17"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Void_Ooze",
+      "retrieved_at": "2026-10-01T09:49:59.573479+00:00",
+      "parameters": {
+        "range": "1360",
+        "target range": "",
+        "effect radius": "",
+        "width": "240",
+        "speed": "1400",
+        "cast time": "0. 25",
+        "cost": "40 / 55 / 70 / 85 / 100",
+        "costtype": "Mana",
+        "cooldown": "12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Living_Artillery",
+      "retrieved_at": "2026-10-01T09:49:59.630782+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1300 / 1425 / 1550 / 1675 / 1800",
+        "effect radius": "240",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "40 – 400 (based on stacks)",
+        "costtype": "Mana",
+        "cooldown": "2 / 1. 75 / 1. 5 / 1. 25 / 1"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Vayne",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Night_Hunter",
+      "retrieved_at": "2026-10-01T09:57:47.416762+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Vayne",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Tumble",
+      "retrieved_at": "2026-10-01T09:49:59.650268+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "5 / 4 / 3 / 2"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Vayne",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Silver_Bolts",
+      "retrieved_at": "2026-10-01T09:49:59.680796+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "45",
+        "costtype": "Mana",
+        "cooldown": "18 / 17 / 16 / 15"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Vayne",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Condemn",
+      "retrieved_at": "2026-10-01T09:49:59.714690+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "90",
+        "costtype": "Mana",
+        "cooldown": "21 / 18 / 15 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Vayne",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Final_Hour",
+      "retrieved_at": "2026-10-01T09:49:59.716706+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Frost_Shot",
+      "retrieved_at": "2026-10-01T09:57:53.362103+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Ranger%27s_Focus",
+      "retrieved_at": "2026-10-01T09:50:05.431303+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "50",
+        "costtype": "Mana + 4 Focus",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Volley",
+      "retrieved_at": "2026-10-01T09:50:05.463216+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "1200",
+        "width": "20",
+        "speed": "2000",
+        "cast time": "",
+        "cost": "50",
+        "costtype": "Mana",
+        "cooldown": "16 / 13. 5 / 11 / 8. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Hawkshot",
+      "retrieved_at": "2026-10-01T09:50:05.466538+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Global",
+        "effect radius": "1000",
+        "width": "",
+        "speed": "1400",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": "45 / 40 / 35 / 30"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Enchanted_Crystal_Arrow",
+      "retrieved_at": "2026-10-01T09:50:05.492545+00:00",
+      "parameters": {
+        "range": "Global",
+        "target range": "",
+        "effect radius": "400 / 350",
+        "width": "260",
+        "speed": "1500 - 2100",
+        "cast time": "",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Varus",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Living_Vengeance",
+      "retrieved_at": "2026-10-01T09:57:53.386720+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Varus",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+      "retrieved_at": "2026-10-01T09:50:05.500279+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "75 / 80 / 85 / 90",
+        "costtype": "mana",
+        "cooldown": "15 / 14 / 13 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Varus",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Blighted_Quiver",
+      "retrieved_at": "2026-10-01T09:50:05.525090+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "",
+        "costtype": "",
+        "cooldown": "25"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Varus",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Hail_of_Arrows",
+      "retrieved_at": "2026-10-01T09:50:12.007183+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 35",
+        "cost": "80",
+        "costtype": "mana",
+        "cooldown": "13 / 12 / 11 / 10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Varus",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption",
+      "retrieved_at": "2026-10-01T09:50:12.057820+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "75 / 65 / 55"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts",
+      "retrieved_at": "2026-10-01T09:57:53.416527+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers",
+      "retrieved_at": "2026-10-01T09:50:12.073104+00:00",
+      "parameters": {
+        "range": "1000",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "50",
+        "costtype": "Mana",
+        "cooldown": "10 / 9 / 8 / 7"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Deadly_Plumage",
+      "retrieved_at": "2026-10-01T09:50:12.080108+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "50",
+        "costtype": "Mana",
+        "cooldown": "17 / 16 / 15 / 14"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+      "retrieved_at": "2026-10-01T09:50:12.084721+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "Global",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "40",
+        "costtype": "Mana",
+        "cooldown": "11 / 10 / 9 / 8"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Featherstorm",
+      "retrieved_at": "2026-10-01T09:50:12.136812+00:00",
+      "parameters": {
+        "range": "1000",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Samira",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Daredevil_Impulse",
+      "retrieved_at": "2026-10-01T09:57:53.436821+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Samira",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair",
+      "retrieved_at": "2026-10-01T09:50:20.278983+00:00",
+      "parameters": {
+        "range": "950 / 400",
+        "target range": "340",
+        "effect radius": "",
+        "width": "120 / 130",
+        "speed": "2600",
+        "cast time": "0. 25",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "6. 5 / 5 / 3. 5 / 2"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Samira",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl",
+      "retrieved_at": "2026-10-01T09:50:20.336305+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "325",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 1",
+        "cost": "60",
+        "costtype": "Mana",
+        "cooldown": "22 / 20 / 18 / 16"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Samira",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush",
+      "retrieved_at": "2026-10-01T09:50:20.360509+00:00",
+      "parameters": {
+        "range": "650 / 800 / -150",
+        "target range": "600",
+        "effect radius": "",
+        "width": "300",
+        "speed": "1600",
+        "cast time": "none",
+        "cost": "40",
+        "costtype": "Mana",
+        "cooldown": "20 / 17 / 14 / 11"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Samira",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger",
+      "retrieved_at": "2026-10-01T09:50:20.372058+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "600",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "6 Style + 60 / 30 / 0",
+        "costtype": "mana",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Love_Tap",
+      "retrieved_at": "2026-10-01T09:57:53.441719+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Double_Up",
+      "retrieved_at": "2026-10-01T09:50:20.423100+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Miss Fortune's attack range",
+        "effect radius": "500",
+        "width": "",
+        "speed": "1400",
+        "cast time": "Basic Attack Timer",
+        "cost": "35",
+        "costtype": "Mana",
+        "cooldown": "6 / 5 / 4 / 3"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Strut",
+      "retrieved_at": "2026-10-01T09:50:20.427262+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Make_It_Rain",
+      "retrieved_at": "2026-10-01T09:50:26.699823+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1000",
+        "effect radius": "200",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "65 / 70 / 75 / 80",
+        "costtype": "Mana",
+        "cooldown": "14. 5 / 13 / 11. 5 / 10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Bullet_Time",
+      "retrieved_at": "2026-10-01T09:50:26.708808+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "1450",
+        "width": "40",
+        "speed": "2000",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Second_Skin",
+      "retrieved_at": "2026-10-01T09:57:53.464506+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "2750",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Icathian_Rain",
+      "retrieved_at": "2026-10-01T09:50:26.719978+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "600",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "55",
+        "costtype": "Mana",
+        "cooldown": "9 / 8 / 7 / 6"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Void_Seeker",
+      "retrieved_at": "2026-10-01T09:50:26.723552+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "3000",
+        "effect radius": "",
+        "width": "200",
+        "speed": "1750",
+        "cast time": "0. 34 – 0. 227 (based on bonus attack speed)",
+        "cost": "60 / 65 / 70 / 75",
+        "costtype": "Mana",
+        "cooldown": "20 / 18 / 16 / 14"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Supercharge",
+      "retrieved_at": "2026-10-01T09:50:26.769863+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "1 – 0. 5 (based on bonus attack speed)",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "16 / 14 / 12 / 10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Killer_Instinct",
+      "retrieved_at": "2026-10-01T09:50:26.781536+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "400",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Corki",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Hextech_Munitions",
+      "retrieved_at": "2026-10-01T09:57:59.555967+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Corki",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Phosphorus_Bomb",
+      "retrieved_at": "2026-10-01T09:50:36.774443+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "750",
+        "effect radius": "225",
+        "width": "",
+        "speed": "1100",
+        "cast time": "0. 25",
+        "cost": "60 / 65 / 70 / 75",
+        "costtype": "mana",
+        "cooldown": "9 / 8 / 7 / 6"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Corki",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Valkyrie",
+      "retrieved_at": "2026-10-01T09:50:36.781155+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "550",
+        "effect radius": "125",
+        "width": "",
+        "speed": "650 + 100% movement speed",
+        "cast time": "none",
+        "cost": "80 / 85 / 90 / 95",
+        "costtype": "mana",
+        "cooldown": "18 / 16 / 14 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Corki",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Gatling_Gun",
+      "retrieved_at": "2026-10-01T09:50:36.788337+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "600",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "50 / 60 / 70 / 80",
+        "costtype": "mana",
+        "cooldown": "10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Corki",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Missile_Barrage",
+      "retrieved_at": "2026-10-01T09:50:36.790410+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1100 \\ 1175",
+        "effect radius": "150 \\ 300",
+        "width": "80",
+        "speed": "2000",
+        "cast time": "0. 175",
+        "cost": "20",
+        "costtype": "mana + 1 Ammo",
+        "cooldown": "2"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Lucian",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Lightslinger",
+      "retrieved_at": "2026-10-01T09:57:59.560797+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Lucian",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Piercing_Light",
+      "retrieved_at": "2026-10-01T09:50:36.851436+00:00",
+      "parameters": {
+        "range": "1000",
+        "target range": "500",
+        "effect radius": "",
+        "width": "120",
+        "speed": "",
+        "cast time": "0. 4 – 0. 25 (based on bonus attack speed)",
+        "cost": "50 / 60 / 70 / 80",
+        "costtype": "Mana",
+        "cooldown": "9. 5 / 8 / 6. 5 / 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Lucian",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Ardent_Blaze",
+      "retrieved_at": "2026-10-01T09:50:36.856616+00:00",
+      "parameters": {
+        "range": "800",
+        "target range": "",
+        "effect radius": "",
+        "width": "110",
+        "speed": "1600",
+        "cast time": "0. 25",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "13 / 11. 5 / 10 / 8. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Lucian",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Relentless_Pursuit",
+      "retrieved_at": "2026-10-01T09:50:43.786908+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "425",
+        "effect radius": "",
+        "width": "",
+        "speed": "1350",
+        "cast time": "none",
+        "cost": "45 / 30 / 15 / 0",
+        "costtype": "Mana",
+        "cooldown": "20. 5 / 18 / 15. 5 / 13"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Lucian",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/The_Culling",
+      "retrieved_at": "2026-10-01T09:50:43.812744+00:00",
+      "parameters": {
+        "range": "1200 / 1140 (plus offset)",
+        "target range": "",
+        "effect radius": "",
+        "width": "220 (plus offset)",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Smolder",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Dragon_Practice",
+      "retrieved_at": "2026-10-01T09:57:59.565566+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Smolder",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Super_Scorcher_Breath",
+      "retrieved_at": "2026-10-01T09:50:43.907276+00:00",
+      "parameters": {
+        "range": "500",
+        "target range": "100% attack range",
+        "effect radius": "285 / 150",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "30",
+        "costtype": "mana",
+        "cooldown": "5. 5 / 5 / 4. 5 / 4"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Smolder",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Achooo%21",
+      "retrieved_at": "2026-10-01T09:50:43.925294+00:00",
+      "parameters": {
+        "range": "1250",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 35",
+        "cost": "50 / 55 / 60 / 65",
+        "costtype": "mana",
+        "cooldown": "12 / 11 / 10 / 9"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Smolder",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Flap%2C_Flap%2C_Flap",
+      "retrieved_at": "2026-10-01T09:52:23.110580+00:00",
+      "parameters": {
+        "range": "700",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "1800",
+        "cast time": "none",
+        "cost": "65",
+        "costtype": "mana",
+        "cooldown": "18 / 16 / 14 / 12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Smolder",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/MMOOOMMMM%21",
+      "retrieved_at": "2026-10-01T09:57:59.573586+00:00",
+      "parameters": {
+        "range": "3300 / -500",
+        "target range": "",
+        "effect radius": "1000",
+        "width": "300",
+        "speed": "",
+        "cast time": "0. 75",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Headshot",
+      "retrieved_at": "2026-10-01T09:57:59.579620+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "3000",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Piltover_Peacemaker",
+      "retrieved_at": "2026-10-01T09:50:54.808738+00:00",
+      "parameters": {
+        "range": "1150",
+        "target range": "",
+        "effect radius": "",
+        "width": "120 / 180",
+        "speed": "2200",
+        "cast time": "0. 625",
+        "cost": "50 / 60 / 70 / 80",
+        "costtype": "mana",
+        "cooldown": "9 / 8 / 7 / 6"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Yordle_Snap_Trap",
+      "retrieved_at": "2026-10-01T09:50:54.841324+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "675",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "20",
+        "costtype": "Mana + 1 Charge",
+        "cooldown": "0. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/90_Caliber_Net",
+      "retrieved_at": "2026-10-01T09:50:54.907357+00:00",
+      "parameters": {
+        "range": "725",
+        "target range": "",
+        "effect radius": "140",
+        "width": "",
+        "speed": "1600",
+        "cast time": "0. 15",
+        "cost": "75",
+        "costtype": "mana",
+        "cooldown": "16 / 14 / 12 / 10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Ace_in_the_Hole",
+      "retrieved_at": "2026-10-01T09:50:54.945507+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1750 / 2250 / 2750",
+        "effect radius": "",
+        "width": "80",
+        "speed": "3200",
+        "cast time": "0. 375",
+        "cost": "100",
+        "costtype": "mana",
+        "cooldown": "65 / 55 / 45"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Get_Excited%21",
+      "retrieved_at": "2026-10-01T09:59:56.789325+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21",
+      "retrieved_at": "2026-10-01T09:52:23.114417+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "250",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "20",
+        "costtype": "Mana per attack with Fishbones",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Zap%21",
+      "retrieved_at": "2026-10-01T09:52:23.116979+00:00",
+      "parameters": {
+        "range": "1500",
+        "target range": "",
+        "effect radius": "",
+        "width": "120",
+        "speed": "3300",
+        "cast time": "0. 6",
+        "cost": "50 / 60 / 70 / 80",
+        "costtype": "Mana",
+        "cooldown": "8 / 7 / 6 / 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Flame_Chompers%21",
+      "retrieved_at": "2026-10-01T09:52:23.118607+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "925",
+        "effect radius": "225",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "15 / 13 / 11 / 9"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jinx",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Super_Mega_Death_Rocket%21",
+      "retrieved_at": "2026-10-01T09:52:23.120309+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Global",
+        "effect radius": "400 / 1000 / 1000",
+        "width": "280",
+        "speed": "1700 / 2200",
+        "cast time": "0. 6",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "50 / 45 / 40"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Rising_Spell_Force",
+      "retrieved_at": "2026-10-01T09:58:08.544103+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Mystic_Shot",
+      "retrieved_at": "2026-10-01T09:51:03.351024+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1200",
+        "effect radius": "",
+        "width": "120",
+        "speed": "2000",
+        "cast time": "0. 25",
+        "cost": "30 / 35 / 40 / 45",
+        "costtype": "Mana",
+        "cooldown": "4. 5 / 4 / 3. 5 / 3"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Essence_Flux",
+      "retrieved_at": "2026-10-01T09:51:03.369919+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1200",
+        "effect radius": "",
+        "width": "160",
+        "speed": "1700",
+        "cast time": "0. 25",
+        "cost": "50",
+        "costtype": "Mana",
+        "cooldown": "10"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Arcane_Shift",
+      "retrieved_at": "2026-10-01T09:51:03.377902+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "475",
+        "effect radius": "750",
+        "width": "",
+        "speed": "2000",
+        "cast time": "0. 25",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "24 / 20. 5 / 17 / 13. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Trueshot_Barrage",
+      "retrieved_at": "2026-10-01T09:51:03.392265+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Global",
+        "effect radius": "",
+        "width": "320",
+        "speed": "2000,",
+        "cast time": "1",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Living_Battery",
+      "retrieved_at": "2026-10-01T09:58:08.601670+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Electrocute%21",
+      "retrieved_at": "2026-10-01T09:53:47.336832+00:00",
+      "parameters": {
+        "range": "700",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "30",
+        "costtype": "Mana",
+        "cooldown": "7. 5 / 6 / 4. 5 / 3"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Ultrashock_Laser",
+      "retrieved_at": "2026-10-01T09:51:10.310863+00:00",
+      "parameters": {
+        "range": "1200 \\ 1500",
+        "target range": "",
+        "effect radius": "",
+        "width": "80 \\ 200",
+        "speed": "2500",
+        "cast time": "0. 55 – 0. 3 (based on bonus attack speed)",
+        "cost": "50",
+        "costtype": "Mana",
+        "cooldown": "12 / 11 / 10 / 9"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Spark_Surge",
+      "retrieved_at": "2026-10-01T09:51:10.318859+00:00",
+      "parameters": {
+        "range": "300",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "600 + 100% movement speed",
+        "cast time": "None",
+        "cost": "80",
+        "costtype": "Mana",
+        "cooldown": "22 / 19. 5 / 17 / 14. 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Zeri",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Lightning_Crash",
+      "retrieved_at": "2026-10-01T09:51:10.329154+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "640",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "70 / 65 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Whisper",
+      "retrieved_at": "2026-10-01T09:58:08.613548+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Dancing_Grenade",
+      "retrieved_at": "2026-10-01T09:51:10.333447+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "45 / 50 / 55 / 60",
+        "costtype": "Mana",
+        "cooldown": "6. 5 / 6 / 5. 5 / 5"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish",
+      "retrieved_at": "2026-10-01T09:51:10.355143+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 75",
+        "cost": "60 / 65 / 70 / 75",
+        "costtype": "Mana",
+        "cooldown": "12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Captive_Audience",
+      "retrieved_at": "2026-10-01T09:51:17.098010+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "0. 25",
+        "cost": "35 / 40 / 45 / 50",
+        "costtype": "Mana + 1 Charge",
+        "cooldown": "2"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call",
+      "retrieved_at": "2026-10-01T09:51:17.160440+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "1 / 0. 25",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Fleet_of_Foot",
+      "retrieved_at": "2026-10-01T09:58:08.616130+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Boomerang_Blade",
+      "retrieved_at": "2026-10-01T09:51:17.210284+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1250",
+        "effect radius": "",
+        "width": "180 / 200",
+        "speed": "1450 / 1200",
+        "cast time": "0. 25 – 0. 1 (based on Bonus AS)",
+        "cost": "55 / 60 / 65 / 70",
+        "costtype": "Mana",
+        "cooldown": "9. 5 / 9 / 8. 5 / 8"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Ricochet",
+      "retrieved_at": "2026-10-01T09:51:17.216387+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "500",
+        "width": "",
+        "speed": "1750 / 1000",
+        "cast time": "none",
+        "cost": "60",
+        "costtype": "Mana",
+        "cooldown": "12"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Spell_Shield",
+      "retrieved_at": "2026-10-01T09:51:17.220231+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "",
+        "costtype": "",
+        "cooldown": "22 / 20 / 18 / 16"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Sivir",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/On_the_Hunt",
+      "retrieved_at": "2026-10-01T09:51:17.223131+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "1000",
+        "width": "",
+        "speed": "",
+        "cast time": "none",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "80 / 70 / 60"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Senna",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Absolution",
+      "retrieved_at": "2026-10-01T09:58:08.634592+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "2000 \\ 750",
+        "width": "",
+        "speed": "",
+        "cast time": "",
+        "cost": "",
+        "costtype": "",
+        "cooldown": ""
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Senna",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Piercing_Darkness",
+      "retrieved_at": "2026-10-01T09:51:24.607577+00:00",
+      "parameters": {
+        "range": "1300",
+        "target range": "600 - 1100",
+        "effect radius": "",
+        "width": "100 / 280",
+        "speed": "",
+        "cast time": "0. 4 -0. 25",
+        "cost": "70 / 80 / 90 / 100",
+        "costtype": "Mana",
+        "cooldown": "15"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Senna",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Last_Embrace",
+      "retrieved_at": "2026-10-01T09:51:24.642692+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "1300",
+        "effect radius": "280",
+        "width": "140",
+        "speed": "1200",
+        "cast time": "0. 25",
+        "cost": "55 / 60 / 65 / 70",
+        "costtype": "Mana",
+        "cooldown": "11"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Senna",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Curse_of_the_Black_Mist",
+      "retrieved_at": "2026-10-01T09:51:24.656798+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "",
+        "effect radius": "400",
+        "width": "",
+        "speed": "",
+        "cast time": "1",
+        "cost": "70",
+        "costtype": "Mana",
+        "cooldown": "22 / 20 / 18 / 16"
+      },
+      "status": "retrieved"
+    },
+    {
+      "champion": "Senna",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Dawning_Shadow",
+      "retrieved_at": "2026-10-01T09:51:24.675205+00:00",
+      "parameters": {
+        "range": "",
+        "target range": "Global",
+        "effect radius": "",
+        "width": "320 / 2400",
+        "speed": "17000",
+        "cast time": "1",
+        "cost": "100",
+        "costtype": "Mana",
+        "cooldown": "85 / 80 / 75"
+      },
+      "status": "retrieved"
+    }
+  ]
+}
