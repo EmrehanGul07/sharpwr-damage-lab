@@ -10,6 +10,7 @@ import math
 from damage_classification import event_profile,ability_magnification,component_profile,magnification
 from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
+from combat_timing import attack_windup,attack_travel
 from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,jhin_attack_damage,RawDamage
 
 
@@ -417,7 +418,7 @@ def replay_marksman(events,**p):
             add('feather_attacks',3,cap=5,duration=7.5)
             if slot=='W':buff('plumage_as',4,(.4,.45,.5,.55)[r-1]);return True
             if slot=='E':s['recall_count']=len(kit.feathers);kit.feathers=[]
-            if slot=='R':lock=max(lock,t+1.5);aa_lock=lock;kit.unresolved.add('Xayah R 1.5s untargetable lock provisional WR timing')
+            if slot=='R':lock=max(lock,t+1.5);arrival=lock+kit.travel(slot,gap);aa_lock=lock;kit.unresolved.add('Xayah R 1.5s untargetable lock provisional WR timing')
         if c=="Kog'Maw" and slot=='W':buff('barrage',8,r);return True
         if c=='Miss Fortune':
             if slot=='W':buff('strut_as',4,(.45,.6,.75,.9)[r-1]);return True
@@ -427,7 +428,7 @@ def replay_marksman(events,**p):
             if slot=='R':
                 channel=t+3;root_until=channel
                 count=(12,14,16)[r-1]
-                for j in range(count):queue(t+3*j/count,'skill_hit',slot='R',cid=cid,index=j)
+                for j in range(count):queue(t+kit.travel('R',gap)+3*j/count,'skill_hit',slot='R',cid=cid,index=j)
                 return True
         if c=='Lucian':
             s['lightslinger']=1;s['lightslinger_until']=t+3.5
@@ -436,11 +437,11 @@ def replay_marksman(events,**p):
                 channel=t+3
                 count=max(1,int(20+20*probability()*(critd-1)))
                 kit.unresolved.add('Lucian R bullet rounding/cap uses floor of tooltip candidate')
-                for j in range(count):queue(t+3*j/count,'skill_hit',slot='R',cid=cid,index=j)
+                for j in range(count):queue(t+kit.travel('R',gap)+3*j/count,'skill_hit',slot='R',cid=cid,index=j)
                 return True
         if c=="Kai'Sa" and slot=='E':
-            kit.unresolved.add('Kai’Sa E AS-dependent charge duration unresolved: provisional 1s charge')
-            lock=t+1;aa_lock=lock;kit.state['mobile_cast_until']=lock;queue(lock,'buff',key='supercharge_as',duration=4,value=(.4,.5,.6,.7)[r-1]);return True
+            kit.unresolved.add('Kai’Sa E charge uses user-authorized PC AS-dependent timing')
+            lock=t+duration;aa_lock=lock;kit.state['mobile_cast_until']=lock;queue(lock,'buff',key='supercharge_as',duration=4,value=(.4,.5,.6,.7)[r-1]);return True
         if c=='Yunara':
             if slot=='Q':s['unleash']=0;buff('unbound_as',5,(.25,.35,.45,.55)[r-1]);return True
             if slot=='R':
@@ -475,7 +476,7 @@ def replay_marksman(events,**p):
             if slot=='Q':queue(arrival+.25,'skill_hit',slot='Q',cid=cid,index=1);kit.unresolved.add('Sivir Q return travel unresolved: provisional 0.25s return delay')
         if c=='Jhin' and slot=='R':
             lock=t+1;channel=t+2;root_until=channel;ready['R']=channel+kit.cd('R')/(1+haste/100)
-            for j in range(4):queue(t+1+.25*(j+1),'skill_hit',slot='R',cid=cid,index=j)
+            for j in range(4):queue(t+1+kit.travel('R',gap)+.25*(j+1),'skill_hit',slot='R',cid=cid,index=j)
             return True
         if c=='Draven' and slot=='R':queue(arrival+kit.travel('R',gap),'skill_hit',slot='R',cid=cid,index=1)
         queue(arrival,'skill_hit',slot=slot,cid=cid,index=0)
@@ -483,12 +484,12 @@ def replay_marksman(events,**p):
     def start_attack():
         nonlocal aa_clock,aa_lock
         bonus=total_as()[1].get('bonus_as_total',0.)
-        windup=p.get('aa_windup') or 0.
+        windup=attack_windup(name,bonus) if p.get('aa_windup') is None else p['aa_windup']
         if name=='Senna':
             windup=.5/(1+.6*bonus)
             kit.unresolved.add('Senna WR base windup 0.5s with 60% AS scaling; level-dependent modifier unresolved')
         kit.state['aa_windup']=windup;aa_clock=1.;aa_lock=t+windup
-        queue(t+windup,'aa_hit',cid=('AA',aa_count+1))
+        queue(t+windup+attack_travel(name,gap,weapon=kit.weapon,ultimate=kit.active('ultimate_ad',t)),'aa_hit',cid=('AA',aa_count+1))
     priority=p.get('skill_priority',('Q','W','E'));use_e=p.get('use_e',True)
     action_policy=p.get('action_policy','skill_first')
     if action_policy not in ('skill_first','aa_weave'):raise ValueError('Invalid action policy')

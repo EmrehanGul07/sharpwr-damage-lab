@@ -241,8 +241,12 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                         if action=='E':
                             flying_until=t+1.25
                             count=max(5,int(5+.0154*dragon+.5))
-                            for bolt in range(count):queue.append((t+1.25*bolt/(count-1),order+bolt/100,'E hit',(cast_seq,bolt)))
-                        else:queue.append((t,order,action+' hit',(cast_seq,0)))
+                            for bolt in range(count):queue.append((t+gap/1800+1.25*bolt/(count-1),order+bolt/100,'E hit',(cast_seq,bolt)))
+                        else:
+                            from combat_timing import skill_cast_time,skill_travel
+                            duration=skill_cast_time(champion,action,attack_stats(t)[1]['bonus_as_total'],level) or 0.
+                            cast_until=t+duration
+                            queue.append((cast_until+(skill_travel(champion,action,gap) or 0.),order,action+' hit',(cast_seq,0,gap)))
                     elif action=='E':
                         dash_start=t;dash_end=t+650/1600;dash_origin=position
                         dash_destination=position+(650 if target_position>=position else -650)
@@ -260,15 +264,16 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     bonus_as=(.048*lt if keystone=='Lethal Tempo' and t<lt_expiry else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
                     total_bonus_as=starting_bonus_as+bonus_as
                     if aa_stats:total_bonus_as=attack_stats(t)[1]['bonus_as_total']
-                    windup=(base_windup/(1+.5*total_bonus_as)) if base_windup is not None else (aa_windup or 0)
+                    from combat_timing import attack_windup,attack_travel
+                    windup=(base_windup/(1+.5*total_bonus_as)) if base_windup is not None else attack_windup(champion,total_bonus_as) if aa_windup is None else aa_windup
                     attack_windup_until=t+windup
-                    arrival=t+windup+(gap/2800 if gap>200 else 0)
+                    arrival=t+windup+attack_travel(champion,gap,melee=gap<=200)
                     aa_remaining=1.;aa_clock_time=t
                     next_aa=t+1/attack_stats(t)[0]
                     queue.append((arrival,order,'AA hit',(cast_seq,0,t,gap<=200,windup)));queue.sort(key=lambda x:(x[0],x[1]));continue
             else:
                 limit=({'AA':float('inf'),'Q':float('inf'),'W':325,'E':250,'R tick':600} if champion=='Samira' else {'AA':float('inf'),'Q':float('inf'),'W':1000,'E':700,'R tick':2000,'R':2000,'Burn tick':float('inf')})[action]
-                if gap>limit+1e-8:continue
+                if gap>limit+1e-8 and not (champion=='Smolder' and action=='Q'):continue
             melee=cast_id[3] if impact and action=='AA' else gap<=200
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
         if t>=style_expiry and (not timed_combat or t>=channel_until):style=0;last_style=None
@@ -290,7 +295,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                 w_id+=1;w_until=t
                 queue.append((channel_until,order+1,'R end',None))
             # First and last impact bounds are explicit model assumptions, not cast-time inference.
-            for shot in range(10):queue.append((t+(2.013*shot/9 if timed_combat else (0. if instant_skills else r_duration*shot/9)),order+shot/100,'R tick',(r_cast_id,shot)))
+            for shot in range(10):queue.append((t+((gap/2800+2.013*shot/9) if timed_combat else (0. if instant_skills else r_duration*shot/9)),order+shot/100,'R tick',(r_cast_id,shot)))
             queue.sort(key=lambda x:(x[0],x[1]));continue
         effects=[]
         before_hp=health;before={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
@@ -394,6 +399,6 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action in ('AA','Q','W','E') and action!=last_style:style=min(6,style+1);last_style=action
         if action in ('AA','Q','W','E'):style_expiry=t+6.
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-        log.append({'time':t,'action':action,'damage_classification':classification,'damage_components':components,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
+        log.append({'time':t,'action':action,'damage_classification':classification,'damage_components':components,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'cast_distance':cast_id[2] if timed_combat and champion=='Smolder' and impact and action in ('Q','W','R') and len(cast_id)>2 else None,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
         if health<=0:killed=t
     return FightResult(log,rejected,health,aa,casts,total,killed)

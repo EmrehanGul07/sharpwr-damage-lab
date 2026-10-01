@@ -92,3 +92,9 @@ Sabit practice rünleri değiştirilmeyecek, MR ayarı değiştirilemediğinde m
 - [ ] Ashe Q first arrow vs remaining four arrows: confirm Magnification split without replacing existing total-damage coefficients.
 - [ ] WR Kraken/Spellblade/other item BasicAttack vs Proc membership; PC item examples are not sufficient evidence.
 - [ ] Resolve remaining unknown WR ability labels from docs/damage-classification-v562.md, especially Yunara, Jhin W/R and Tristana R.
+
+
+## PC timing proxy verification (V5.63.0)
+- Validate all 23 PC base-AA windups and projectile speeds against WR; Senna WR rule remains preserved.
+- Jinx AA weapon speeds sourced from PC game files; verify WR parity. Resolve remaining skill speed gaps listed in docs/pc-combat-timing-v563.md.
+- Validate compound projectile trajectories and variant speeds; do not treat stored PC expressions as verified WR timings.

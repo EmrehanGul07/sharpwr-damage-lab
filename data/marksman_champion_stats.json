@@ -1,12 +1,15 @@
 {
   "schema_version": 1,
   "retrieval_date": "2026-10-01",
-  "policy": "Fill only missing fields. Preserve existing AD/AS values. No PC stat fallback. Wiki values are source references, not independently verified patch-7.3a measurements.",
+  "policy": "Fill only missing fields. Preserve existing AD/AS values. No PC stat fallback. Wiki values are source references, not independently verified patch-7.3a measurements. PC AA timing fields are explicitly authorized proxies; WR combat values remain unchanged.",
   "units": {
     "regen": "per 5 seconds",
     "movement_speed": "game units per second",
     "attack_range": "game units",
-    "timing": "as specified by source parameter; blank remains null"
+    "timing": "as specified by source parameter; blank remains null",
+    "attack_windup": "fraction of PC base attack interval",
+    "base_attack_windup_seconds": "seconds at PC base AS; WR scaling applied at runtime",
+    "attack_projectile_speed": "game units / second; 0 = explicitly non-projectile"
   },
   "growth_model": "coefficients stored as supplied; no inferred level-growth formula introduced",
   "champions": [
@@ -35,11 +38,12 @@
         "attack_range": 550,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": 0.0599999986588954,
+        "attack_windup": 0.35999999865889537,
+        "windup_modifier": 0.75,
+        "attack_projectile_speed": 2600.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.5187319865401951
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -117,6 +121,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
@@ -134,10 +160,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:45.250643+00:00",
@@ -279,8 +301,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Tristana",
@@ -307,11 +335,12 @@
         "attack_range": 545,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.151993364095687,
+        "attack_windup": 0.14800663590431298,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2250.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.22561987180535514
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -389,6 +418,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
@@ -406,10 +457,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:45.251213+00:00",
@@ -551,8 +598,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Twitch",
@@ -579,11 +632,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.0980840176343917,
+        "attack_windup": 0.2019159823656083,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2500.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2973725808035468
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -661,6 +715,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
@@ -678,10 +754,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:45.251556+00:00",
@@ -823,8 +895,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Draven",
@@ -849,13 +927,14 @@
         "mr_growth": 1.4,
         "movement_speed": 340,
         "attack_range": 575,
-        "attack_cast_time": null,
-        "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_cast_time": 0.230000004172325,
+        "attack_total_time": 1.47300004959106,
+        "attack_delay_offset": -0.118840597569942,
+        "attack_windup": 0.1561439215403818,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 1600.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.22996159284297762
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -933,6 +1012,38 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
@@ -948,12 +1059,6 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:45.254446+00:00",
@@ -1095,8 +1200,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Kog'Maw",
@@ -1123,11 +1234,12 @@
         "attack_range": 500,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.13377659022808,
+        "attack_windup": 0.16622340977192,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 1800.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2499600146946165
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -1205,6 +1317,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
@@ -1222,10 +1356,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:54.004859+00:00",
@@ -1367,8 +1497,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Vayne",
@@ -1395,11 +1531,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.124561406672,
+        "attack_windup": 0.175438593328,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.26662400201823705
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -1477,6 +1614,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
@@ -1494,10 +1653,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:54.039660+00:00",
@@ -1639,8 +1794,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Ashe",
@@ -1667,11 +1828,12 @@
         "attack_range": 625,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.0807017534971237,
+        "attack_windup": 0.21929824650287627,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2500.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.33328000988279066
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -1749,6 +1911,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
@@ -1766,10 +1950,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:54.075447+00:00",
@@ -1911,8 +2091,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Varus",
@@ -1939,11 +2125,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.124561406672,
+        "attack_windup": 0.175438593328,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.26662400201823705
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -2021,6 +2208,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
@@ -2038,10 +2247,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:42:54.117495+00:00",
@@ -2183,8 +2388,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Xayah",
@@ -2209,13 +2420,14 @@
         "mr_growth": 1.4,
         "movement_speed": 335,
         "attack_range": 575,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.282999992370605,
+        "attack_total_time": 1.60000002384185,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_windup": 0.17687499259598624,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2500.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2688069796291584
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -2293,6 +2505,33 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
@@ -2308,12 +2547,7 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:01.894308+00:00",
@@ -2455,8 +2689,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Samira",
@@ -2483,11 +2723,12 @@
         "attack_range": 525,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.150000006,
+        "attack_windup": 0.149999994,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2800.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2279635167173252
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -2565,6 +2806,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
@@ -2582,10 +2845,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:01.919230+00:00",
@@ -2727,8 +2986,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Miss Fortune",
@@ -2755,11 +3020,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.151993364095687,
+        "attack_windup": 0.14800663590431298,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.22561987180535514
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -2837,6 +3103,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
@@ -2854,10 +3142,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:02.038556+00:00",
@@ -2999,8 +3283,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Yunara",
@@ -3025,13 +3315,14 @@
         "mr_growth": null,
         "movement_speed": null,
         "attack_range": null,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.25,
+        "attack_total_time": 1.538,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_windup": 0.1625487646293888,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2500.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.250075022506752
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -3039,7 +3330,34 @@
         "as_ratio": "existing_user_preserved",
         "base_as": "existing_user_preserved",
         "base_bonus_as": "existing_user_preserved",
-        "as_growth": "existing_user_preserved"
+        "as_growth": "existing_user_preserved",
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Yunara",
       "wiki_last_change_patch": null,
@@ -3060,12 +3378,7 @@
         "mr_growth",
         "movement_speed",
         "attack_range",
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:02.044662+00:00",
@@ -3204,8 +3517,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Kai'Sa",
@@ -3230,13 +3549,14 @@
         "mr_growth": 1.4,
         "movement_speed": 340,
         "attack_range": 575,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.25,
+        "attack_total_time": 1.55200004577636,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_windup": 0.16108246947566424,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2501280581920252
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -3314,6 +3634,33 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
@@ -3329,12 +3676,7 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:02.044696+00:00",
@@ -3476,8 +3818,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Corki",
@@ -3504,11 +3852,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.0299999993294477,
+        "attack_windup": 0.2700000006705523,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.41925465942632345
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -3586,6 +3935,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
@@ -3603,10 +3974,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:09.727851+00:00",
@@ -3748,8 +4115,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Lucian",
@@ -3776,11 +4149,12 @@
         "attack_range": 525,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.150000005960464,
+        "attack_windup": 0.14999999403953598,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2800.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.23510970852591848
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -3858,6 +4232,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
@@ -3875,10 +4271,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:09.808651+00:00",
@@ -4020,8 +4412,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Smolder",
@@ -4048,11 +4446,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.13377659,
+        "attack_windup": 0.16622341,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 1800.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.26053826018808773
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -4130,6 +4529,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
@@ -4147,10 +4568,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:09.836209+00:00",
@@ -4292,8 +4709,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Caitlyn",
@@ -4320,11 +4743,12 @@
         "attack_range": 675,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.122916668653488,
+        "attack_windup": 0.177083331346512,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2500.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2600342604207224
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -4402,6 +4826,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
@@ -4419,10 +4865,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:09.848478+00:00",
@@ -4564,8 +5006,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Jinx",
@@ -4590,13 +5038,14 @@
         "mr_growth": 1.4,
         "movement_speed": 335,
         "attack_range": 575,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.270000010728836,
+        "attack_total_time": 1.60000002384185,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_windup": 0.16875000419095232,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2750.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.2700000067055237
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -4674,6 +5123,34 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "source": "https://raw.communitydragon.org/16.19/game/data/characters/jinx/jinx.bin.json",
+          "record": "Characters/Jinx/Spells/JinxBasicAttack",
+          "movement_type": "FixedSpeedMovement",
+          "mSpeed": 2750.0
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
@@ -4689,12 +5166,7 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:17.505368+00:00",
@@ -4836,8 +5308,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Ezreal",
@@ -4864,11 +5342,12 @@
         "attack_range": 575,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.111613474786281,
+        "attack_windup": 0.18838652521371899,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2000.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.30141844034195037
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -4946,6 +5425,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
@@ -4963,10 +5464,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:17.529513+00:00",
@@ -5108,8 +5605,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Zeri",
@@ -5136,11 +5639,12 @@
         "attack_range": 700,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.14375,
+        "attack_windup": 0.15625,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 0.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.23746200607902734
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -5218,6 +5722,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
@@ -5235,10 +5761,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:17.543045+00:00",
@@ -5380,8 +5902,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Jhin",
@@ -5406,13 +5934,14 @@
         "mr_growth": 1.4,
         "movement_speed": 340,
         "attack_range": 575,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.25,
+        "attack_total_time": 1.60000002384185,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_windup": 0.15624999767169437,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 2600.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.24999999627471098
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -5490,6 +6019,33 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
@@ -5505,12 +6061,7 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:17.586649+00:00",
@@ -5652,8 +6203,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Sivir",
@@ -5680,11 +6237,12 @@
         "attack_range": 525,
         "attack_cast_time": null,
         "attack_total_time": null,
-        "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": null,
-        "attack_projectile_speed": null,
-        "gameplay_radius": null
+        "attack_delay_offset": -0.180000007152557,
+        "attack_windup": 0.11999999284744298,
+        "windup_modifier": 1.0,
+        "attack_projectile_speed": 1750.0,
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.19199998855590877
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -5762,6 +6320,28 @@
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
           "parameter": "range",
           "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "attack_delay_offset": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_delay_offset",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "missile_speed",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
@@ -5779,10 +6359,6 @@
       "unavailable_fields": [
         "attack_cast_time",
         "attack_total_time",
-        "attack_delay_offset",
-        "attack_windup",
-        "windup_modifier",
-        "attack_projectile_speed",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:24.153759+00:00",
@@ -5924,8 +6500,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     },
     {
       "name": "Senna",
@@ -5950,13 +6532,14 @@
         "mr_growth": 1.4,
         "movement_speed": 340,
         "attack_range": 625,
-        "attack_cast_time": null,
-        "attack_total_time": null,
+        "attack_cast_time": 0.5,
+        "attack_total_time": 1.60000002384185,
         "attack_delay_offset": null,
-        "attack_windup": null,
-        "windup_modifier": 0.60000002384186,
+        "attack_windup": 0.31249999534338874,
+        "windup_modifier": 0.600000023841857,
         "attack_projectile_speed": 0,
-        "gameplay_radius": null
+        "gameplay_radius": null,
+        "base_attack_windup_seconds": 0.49999999254942196
       },
       "field_sources": {
         "base_ad": "existing_user_preserved",
@@ -6036,14 +6619,31 @@
           "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
         },
         "windup_modifier": {
-          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
-          "parameter": "windup_modifier",
-          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         },
         "attack_projectile_speed": {
           "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
           "parameter": "missile_speed",
           "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "attack_cast_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_cast_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_total_time": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "parameter": "attack_total_time",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "attack_windup": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
+        },
+        "base_attack_windup_seconds": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+          "game": "PC LoL proxy; user authorized"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
@@ -6059,10 +6659,7 @@
         "crit_mod": ""
       },
       "unavailable_fields": [
-        "attack_cast_time",
-        "attack_total_time",
         "attack_delay_offset",
-        "attack_windup",
         "gameplay_radius"
       ],
       "retrieved_at": "2026-10-01T07:43:24.160070+00:00",
@@ -6204,8 +6801,14 @@
           "role": "geometry",
           "tags": [],
           "status": "not_a_damage_instance"
+        },
+        "base_attack_windup_seconds": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
         }
-      }
+      },
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
     }
   ]
 }

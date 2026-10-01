@@ -1,0 +1,50 @@
+{
+  "Jinx aa_minigun": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/jinx/jinx.bin.json",
+    "record": "Characters/Jinx/Spells/JinxBasicAttack",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 2750.0
+  },
+  "Jinx aa_rockets": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/jinx/jinx.bin.json",
+    "record": "Characters/Jinx/Spells/JinxQAbility/JinxQAttack",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 2000.0
+  },
+  "Varus E": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/varus/varus.bin.json",
+    "record": "Characters/Varus/Spells/VarusEMissile",
+    "movement_type": "FixedTimeMovement",
+    "mTravelTime": 0.5
+  },
+  "Xayah R": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json",
+    "record": "Characters/Xayah/Spells/XayahRAbility/XayahRMissile",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 4000.0
+  },
+  "Xayah Q_raw_only": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json",
+    "record": "Characters/Xayah/Spells/XayahQAbility/XayahQMissile1",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 400.0
+  },
+  "Samira R": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/samira/samira.bin.json",
+    "record": "Characters/Samira/Spells/SamiraRAbility/SamiraRMissile",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 2800.0
+  },
+  "Kai'Sa Q": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/kaisa/kaisa.bin.json",
+    "record": "Characters/Kaisa/Spells/KaisaQAbility/KaisaQLeftMissile1",
+    "movement_type": "FixedTimeSplineMovement",
+    "mTravelTime": 0.4000000059604645
+  },
+  "Jhin E": {
+    "source": "https://raw.communitydragon.org/16.19/game/data/characters/jhin/jhin.bin.json",
+    "record": "Characters/Jhin/Spells/JhinEAbility/JhinETrap",
+    "movement_type": "FixedSpeedMovement",
+    "mSpeed": 1600.0
+  }
+}

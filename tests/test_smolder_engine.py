@@ -18,13 +18,16 @@ class SmolderTests(unittest.TestCase):
     def test_auto_ranks_and_mana(self):
         for lv in range(1,16):self.assertEqual(sum(champion_ranks('Smolder',lv).values()),lv)
         r=self.fight([(0,'W'),(1,'Q'),(2,'R')],w_rank=1)
-        self.assertEqual([x['mana'] for x in r.log],[950,924,828])
+        for x,cost,start in zip(r.log,(50,30,100),(0,1,2)):
+            expected=(1000-50 if start==0 else 1000-80 if start==1 else 1000-180)+4*x['time']
+            self.assertAlmostEqual(x['mana'],expected)
         self.assertEqual([x['dragon_stacks'] for x in r.log],[1,2,3])
     def test_burn_ticks_and_execute(self):
         r=self.fight([(0,'Q')],initial_stacks=175)
         ticks=[x for x in r.log if x['action']=='Burn tick']
         self.assertEqual(len(ticks),7)
-        self.assertEqual([x['time'] for x in ticks],[0,.5,1,1.5,2,2.5,3])
+        first=next(x['time'] for x in r.log if x['action']=='Q')
+        for i,x in enumerate(ticks):self.assertAlmostEqual(x['time'],first+i*.5)
         self.assertAlmostEqual(sum(x['damage'] for x in ticks),(.00025*75+.00005*175)*10000)
         r=self.fight([(0,'Q')],initial_stacks=175,hp=100)
         self.assertEqual(r.hp_remaining,0)
@@ -47,7 +50,7 @@ class SmolderTests(unittest.TestCase):
         self.assertFalse(r.rejected)
         q=[x for x in r.log if x['action']=='Q']
         self.assertTrue(q)
-        self.assertTrue(all(x['distance']<=550+1e-8 for x in q))
+        self.assertTrue(all(x['cast_distance']<=550+1e-8 for x in q))
         self.assertTrue(any(x['action']=='AA' and x['distance']>550 for x in r.log))
     def test_no_mana_auto_keeps_attacking(self):
         r=self.fight(automatic_until=5,max_mana=0,mana_regen_per_5s=0)

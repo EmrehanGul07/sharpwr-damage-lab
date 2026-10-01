@@ -3,7 +3,7 @@ from fight_engine import FightEvent, replay_samira, samira_ranks
 
 class ReplayTests(unittest.TestCase):
     def run_fight(self,actions,**kw):
-        args=dict(level=15,ad=100,attack_speed=1,crit_chance=.5,crit_damage=2,hp=10000,armor=0,q_rank=4);args.update(kw)
+        args=dict(aa_windup=0.,level=15,ad=100,attack_speed=1,crit_chance=.5,crit_damage=2,hp=10000,armor=0,q_rank=4);args.update(kw)
         return replay_samira([FightEvent(t,a) for t,a in actions],**args)
     def test_50_percent_expected(self):
         r=self.run_fight([(0,'Q')],q_rank=1)

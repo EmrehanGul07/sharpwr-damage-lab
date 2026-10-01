@@ -37,7 +37,9 @@ class Kit:
         self.feathers=[];self.ammo=4 if champion in ('Jhin','Corki') else None;self.recharge_at=None
         self.reloading_until=-1.;self.last_style=None
         if champion=='Yunara':self.unresolved.add('Yunara core mana/MS/range await manual WR data; resource and spatial timing remain unresolved')
-        self.unresolved.add('Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback')
+        self.unresolved.add('AA windup/projectile use user-authorized PC timing proxies with WR AS scaling')
+        from combat_timing import database
+        if database()[champion]['aa']['projectile_speed'] is None:self.unresolved.add(f'{champion} AA projectile speed absent from PC wiki: explicit instant-flight fallback')
     def rank(self,slot):return self.ranks.get(slot,0)
     def cost(self,slot,t):
         if self.name=='Yunara' and t<self.buff_end.get('transcend',-1) and slot in ('Q','W','E'):return 0.
@@ -59,7 +61,10 @@ class Kit:
         if v is None:self.unresolved.add(f'{self.name} {slot} cooldown unresolved');return None
         return v[self.rank(slot)-1]
     def cast_time(self,slot,t,bonus_as=0.):
+        from combat_timing import skill_cast_time
+        sourced=skill_cast_time(self.name,slot,bonus_as,self.level)
         v=self.data[slot]['cast_time_seconds']
+        if v is None and sourced is not None:return sourced
         if self.name=='Senna' and slot=='Q':
             self.unresolved.add('Senna Q level modifier unresolved: 80% of sourced WR base AA windup')
             return .4/(1+.6*bonus_as)
@@ -83,6 +88,9 @@ class Kit:
         self.unresolved.add(f'{self.name} {slot} range unresolved: conservative AA-range targeting')
         return self.attack_range(t)
     def travel(self,slot,gap):
+        from combat_timing import skill_travel
+        sourced=skill_travel(self.name,slot,gap)
+        if sourced is not None:return sourced
         v=self.data[slot]['projectile_speed']
         # E dash values are movement speed, not attack missiles.
         if slot=='E' and self.name in ('Lucian','Zeri'):return 0.

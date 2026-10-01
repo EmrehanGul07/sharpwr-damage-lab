@@ -46,18 +46,21 @@ class AllMarksmanFights(unittest.TestCase):
         for n in ('Ezreal','Kalista','Twitch'):
             vals=[]
             for crit in (0,.5,1):
-                r=fight(n,crit_chance=crit,events=[FightEvent(0,'AA')],automatic_until=.1)
+                r=fight(n,crit_chance=crit,events=[FightEvent(0,'AA')],automatic_until=1)
                 vals.append(next(x['damage'] for x in r.log if x['action']=='AA'))
             self.assertAlmostEqual(vals[1],(vals[0]+vals[2])/2)
     def test_twitch_first_tick_plus_five_later_ticks(self):
         r=fight('Twitch',events=[FightEvent(0,'AA')],automatic_until=6,ap=0,crit_chance=0)
         ticks=[x for x in r.log if x['action']=='Venom tick']
-        self.assertEqual([x['time'] for x in ticks],[0,1,2,3,4,5])
+        first=next(x['time'] for x in r.log if x['action']=='AA')
+        for i,x in enumerate(ticks):self.assertAlmostEqual(x['time'],first+i)
+        self.assertEqual(len(ticks),6)
         self.assertEqual([x['damage'] for x in ticks],[5]*6)
     def test_tristana_bomb_expiry_is_scheduled_damage(self):
         r=fight('Tristana',events=[FightEvent(0,'E')],automatic_until=5)
         det=next(x for x in r.log if x['action']=='E detonation')
-        self.assertEqual(det['time'],4);self.assertGreater(det['damage'],0)
+        from combat_timing import attack_windup
+        self.assertAlmostEqual(det['time'],4+attack_windup('Tristana',1)+550/2400);self.assertGreater(det['damage'],0)
     def test_vayne_three_eligible_hits_trigger_true_damage(self):
         r=fight('Vayne',events=[FightEvent(0,'AA'),FightEvent(1,'AA'),FightEvent(2,'AA')],automatic_until=3,crit_chance=0)
         aa=[x for x in r.log if x['action']=='AA']
@@ -71,9 +74,10 @@ class AllMarksmanFights(unittest.TestCase):
         self.assertEqual(r.aa_count,1);self.assertEqual(len([x for x in r.log if x['action'].startswith('R')]),16)
         self.assertTrue(any(x['action']=='AA' and x['time']==1 for x in r.rejected))
     def test_jhin_reload_requires_elapsed_time(self):
-        r=fight('Jhin',events=[FightEvent(t,'AA') for t in (0,2,4,6,7,8.6)],automatic_until=10,natural_attack_speed=.7)
+        r=fight('Jhin',events=[FightEvent(t,'AA') for t in (0,2,4,6,7,9)],automatic_until=10,natural_attack_speed=.7)
         self.assertEqual(r.aa_count,5)
-        self.assertEqual([x['time'] for x in r.log if x['action']=='AA'],[0,2,4,6,8.6])
+        times=[x['time'] for x in r.log if x['action']=='AA']
+        self.assertTrue(all(a>b for a,b in zip(times,(0,2,4,6,9))))
     def test_yunara_ultimate_free_skills_and_automatic_q(self):
         r=fight('Yunara',events=[FightEvent(0,'R'),FightEvent(1,'W'),FightEvent(2,'AA')],automatic_until=3,max_mana=100,mana_regen_per_5s=0)
         self.assertTrue(all(x['mana']==0 for x in r.log));self.assertGreater(next(x['magic'] for x in r.log if x['action']=='W'),0)

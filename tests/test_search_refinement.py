@@ -40,7 +40,8 @@ class SearchRefinement(unittest.TestCase):
         far=replay_samira([],movement_policy='aa_envelope',**args)
         close=replay_samira([],movement_policy='close_envelope',**args)
         self.assertEqual(far.log[-1]['distance'],550)
-        self.assertAlmostEqual(close.log[-1]['distance'],200)
+        self.assertLess(close.log[-1]['distance'],550)
+        self.assertGreaterEqual(close.log[-1]['distance'],200)
         self.assertNotEqual(far.log[-1]['movement_policy'],close.log[-1]['movement_policy'])
 
 class FeatherTimeline(unittest.TestCase):

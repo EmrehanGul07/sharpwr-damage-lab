@@ -1,0 +1,1923 @@
+{
+  "policy": "PC reference authorized by user; WR damage, ranks, resources, AS stats preserved. Base AA windup follows Samira policy; current windup = base / (1 + 0.5 * WR bonus AS), except preserved WR Senna rule. Compound speeds retained, never guessed.",
+  "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+  "champions": {
+    "Kalista": {
+      "aa": {
+        "pc_base_as": 0.694,
+        "windup_fraction": 0.35999999865889537,
+        "base_windup_seconds": 0.5187319865401951,
+        "projectile_speed": 2600.0,
+        "windup_modifier": 0.75,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Martial_Poise",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Pierce",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "2400",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 2400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Sentinel",
+          "cast_time_expression": "{{fd|0.5}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.5,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Rend",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Fate's_Call",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        }
+      }
+    },
+    "Tristana": {
+      "aa": {
+        "pc_base_as": 0.656,
+        "windup_fraction": 0.14800663590431298,
+        "base_windup_seconds": 0.22561987180535514,
+        "projectile_speed": 2250.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Draw_a_Bead",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rapid_Fire",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Rocket_Jump",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{tt|1100|Can differ based on dash range/terrain interference}}",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1100.0,
+          "speed_variants": [
+            {
+              "speed": 1100.0,
+              "label": "Can differ based on dash range/terrain interference"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Explosive_Charge",
+          "cast_time_expression": "{{as|100% of '''Tristana's''' windup time|as}} ({{fd|{{#expr:(1/{{ccd|Tristana|as_base}})*{{ccd|Tristana|windup}}round2}}}} at {{as|'''base''' attack speed}})",
+          "speed_expression": "2400",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 2400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Buster_Shot",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{dv|{{tt|2000|Missile speed}}|{{tt|1500|Knockback speed, can differ slightly based on circumstance}}}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2000.0,
+              "label": "Missile speed"
+            },
+            {
+              "speed": 1500.0,
+              "label": "Knockback speed, can differ slightly based on circumstance"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        }
+      }
+    },
+    "Twitch": {
+      "aa": {
+        "pc_base_as": 0.679,
+        "windup_fraction": 0.2019159823656083,
+        "base_windup_seconds": 0.2973725808035468,
+        "projectile_speed": 2500.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {
+          "ultimate": 5000
+        },
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Deadly_Venom",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Ambush",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom_Cask",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1400",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Contaminate",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "false",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "non_projectile"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Spray_and_Pray",
+          "cast_time_expression": "none",
+          "speed_expression": "5000",
+          "projectile_expression": "true",
+          "range_expression": "{{tip|er|icononly = true}} {{tt|1100 (+ 100% '''bonus''' {{sti|attack range}})|Bolt missile travel range}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 5000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Draven": {
+      "aa": {
+        "pc_base_as": 0.679,
+        "windup_fraction": 0.1561439215403818,
+        "base_windup_seconds": 0.22996159284297762,
+        "projectile_speed": 1600.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/League_of_Draven",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Spinning_Axe",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "Special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "inherits_basic_attack",
+          "inherited_speed": 1600.0
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Blood_Rush",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Stand_Aside",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1400",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Draven/Whirling_Death",
+          "cast_time_expression": "{{fd|0.5}}",
+          "speed_expression": "2000",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.5,
+          "speed_scalar": 2000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Kog'Maw": {
+      "aa": {
+        "pc_base_as": 0.665,
+        "windup_fraction": 0.16622340977192,
+        "base_windup_seconds": 0.2499600146946165,
+        "projectile_speed": 1800.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Icathian_Surprise",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Caustic_Spittle",
+          "cast_time_expression": "Basic attack timer",
+          "speed_expression": "1650",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} 1200",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 1650.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Bio-Arcane_Barrage",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Void_Ooze",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1400",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} 1360",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kog'Maw/Living_Artillery",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        }
+      }
+    },
+    "Vayne": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.175438593328,
+        "base_windup_seconds": 0.26662400201823705,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Night_Hunter",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Tumble",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|500 + {{as|100% movement speed}}|Dash speed}}",
+          "projectile_expression": "",
+          "range_expression": "{{tt|300|Dash distance}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Silver_Bolts",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Condemn",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{dv|{{tt|2200|Missile speed}}|{{tt|2000|Knockback speed}}}}",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2200.0,
+              "label": "Missile speed"
+            },
+            {
+              "speed": 2000.0,
+              "label": "Knockback speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Final_Hour",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        }
+      }
+    },
+    "Ashe": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.21929824650287627,
+        "base_windup_seconds": 0.33328000988279066,
+        "projectile_speed": 2500.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Frost_Shot",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Ranger's_Focus",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "inherits_basic_attack",
+          "inherited_speed": 2500.0
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Volley",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "2000",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 2000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Hawkshot",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1400",
+          "projectile_expression": "special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Enchanted_Crystal_Arrow",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{pp|1500 to 2100 by 200|type=Seconds traveled|changedisplay=true|formula=1500 base speed + 200 acceleration}}",
+          "projectile_expression": "True",
+          "range_expression": "Global",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_expression"
+        }
+      }
+    },
+    "Varus": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.175438593328,
+        "base_windup_seconds": 0.26662400201823705,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Living_Vengeance",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Piercing_Arrow",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|1900|Missile speed}}",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|er|icononly = true}} {{pp|type=channel time|895 to 1595|0 to 1.5 by 0.25|formula=825{{plus}}70{{plus}}(116.66 per 0.25 seconds). ''This is capped at 1.5 seconds.''}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 1900.0,
+          "speed_variants": [
+            {
+              "speed": 1900.0,
+              "label": "Missile speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Blighted_Quiver",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Hail_of_Arrows",
+          "cast_time_expression": "{{fd|0.2419}}",
+          "speed_expression": "",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.2419,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_fixed_time",
+          "game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/varus/varus.bin.json",
+            "record": "Characters/Varus/Spells/VarusEMissile",
+            "movement_type": "FixedTimeMovement",
+            "mTravelTime": 0.5
+          },
+          "fixed_travel_seconds": 0.5
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Chain_of_Corruption",
+          "cast_time_expression": "{{fd|0.2419}}",
+          "speed_expression": "{{tt|1500|Missile speed}}",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} {{tt|1370|Missile plus area check total range}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.2419,
+          "speed_scalar": 1500.0,
+          "speed_variants": [
+            {
+              "speed": 1500.0,
+              "label": "Missile speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Xayah": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.17687499259598624,
+        "base_windup_seconds": 0.2688069796291584,
+        "projectile_speed": 2500.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Clean_Cuts",
+          "cast_time_expression": "",
+          "speed_expression": "4000",
+          "projectile_expression": "special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 4000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Double_Daggers",
+          "cast_time_expression": "{{pp|type='''bonus''' attack speed|round=3|0.25;0.033*7;0.033*6;0.033*5;0.033*4;0.1|key1=%|0;27.15;74.29;121.43;168.58;214.3|formula=0.25-(0.07 per 100% '''bonus''' attack speed). ''This is capped at 60% reduction at 214.3% '''bonus''' attack speed.''|color=attack speed}}",
+          "speed_expression": "",
+          "projectile_expression": "special",
+          "range_expression": "1100",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "raw_asset_only_runtime_override_unresolved",
+          "raw_game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json",
+            "record": "Characters/Xayah/Spells/XayahQAbility/XayahQMissile1",
+            "movement_type": "FixedSpeedMovement",
+            "mSpeed": 400.0
+          }
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Deadly_Plumage",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|3000|Spline missile speed}}",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 3000.0,
+          "speed_variants": [
+            {
+              "speed": 3000.0,
+              "label": "Spline missile speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Bladecaller",
+          "cast_time_expression": "none",
+          "speed_expression": "4000",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 4000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Featherstorm",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 4000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_game_movement",
+          "game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json",
+            "record": "Characters/Xayah/Spells/XayahRAbility/XayahRMissile",
+            "movement_type": "FixedSpeedMovement",
+            "mSpeed": 4000.0
+          }
+        }
+      }
+    },
+    "Samira": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.149999994,
+        "base_windup_seconds": 0.2279635167173252,
+        "projectile_speed": 2800.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Daredevil_Impulse",
+          "cast_time_expression": "",
+          "speed_expression": "{{dv|{{tt|2050|Empowered attack dash speed}}|{{tt|2800|Empowered attack bolt missiles speed}}}}",
+          "projectile_expression": "special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2050.0,
+              "label": "Empowered attack dash speed"
+            },
+            {
+              "speed": 2800.0,
+              "label": "Empowered attack bolt missiles speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Flair",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{tt|2600|Gun}}",
+          "projectile_expression": "special",
+          "range_expression": "{{dv|{{tip|cr|icononly = true}} {{tt|950|Gun shot missile range}}|{{tip|cr|icononly = true}} {{tt|400|Cone range strictly forward, cone origin is 200 units behind Samira but can't hit if the unit is closer than 50 units from the cone origin}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 2600.0,
+          "speed_variants": [
+            {
+              "speed": 2600.0,
+              "label": "Gun"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Blade_Whirl",
+          "cast_time_expression": "{{fd|0.1}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.1,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Wild_Rush",
+          "cast_time_expression": "none",
+          "speed_expression": "1600",
+          "projectile_expression": "",
+          "range_expression": "{{dv|{{tt|650|Fixed dash distance}}|{{tip|er|icononly = true}} {{tt|775|Center-to-edge; Dash hitbox length}}|{{tip|er|icononly = true}} {{tt|-125|Center-to-edge; Dash hitbox behind Samira}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 1600.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira/Inferno_Trigger",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 2800.0,
+          "speed_variants": [],
+          "speed_status": "sourced_game_movement",
+          "game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/samira/samira.bin.json",
+            "record": "Characters/Samira/Spells/SamiraRAbility/SamiraRMissile",
+            "movement_type": "FixedSpeedMovement",
+            "mSpeed": 2800.0
+          }
+        }
+      }
+    },
+    "Miss Fortune": {
+      "aa": {
+        "pc_base_as": 0.656,
+        "windup_fraction": 0.14800663590431298,
+        "base_windup_seconds": 0.22561987180535514,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss_Fortune/Love_Tap",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss_Fortune/Double_Up",
+          "cast_time_expression": "Basic Attack Timer",
+          "speed_expression": "1400",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 1400.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss_Fortune/Strut",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss_Fortune/Make_It_Rain",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Miss_Fortune/Bullet_Time",
+          "cast_time_expression": "{{fd|0.001}}",
+          "speed_expression": "2000",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.001,
+          "speed_scalar": 2000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Yunara": {
+      "aa": {
+        "pc_base_as": 0.65,
+        "windup_fraction": 0.1625487646293888,
+        "base_windup_seconds": 0.250075022506752,
+        "projectile_speed": 2500.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Vow_of_the_First_Lands",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation_of_Spirit",
+          "cast_time_expression": "none",
+          "speed_expression": "{{dv|{{tt|10000|Empowered attack missile speed}}|{{tt|2000|Spread attack missile speed}}}}",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 10000.0,
+              "label": "Empowered attack missile speed"
+            },
+            {
+              "speed": 2000.0,
+              "label": "Spread attack missile speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc_of_Judgment",
+          "cast_time_expression": "{{pp|0.45 to 0.225 for 11|0 to 100|key1=%|type='''bonus''' attack speed|label1= Bonus AS|color=attack speed|round=3}}",
+          "speed_expression": "{{dv|{{tt|2150|Normal missile speed}}|{{tt|150|Lingering missile speed}}}}",
+          "projectile_expression": "true",
+          "range_expression": "1150",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2150.0,
+              "label": "Normal missile speed"
+            },
+            {
+              "speed": 150.0,
+              "label": "Lingering missile speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Kanmei's_Steps",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Transcend_One's_Self",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        }
+      }
+    },
+    "Kai'Sa": {
+      "aa": {
+        "pc_base_as": 0.644,
+        "windup_fraction": 0.16108246947566424,
+        "base_windup_seconds": 0.2501280581920252,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Second_Skin",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Icathian_Rain",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_fixed_time",
+          "game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/kaisa/kaisa.bin.json",
+            "record": "Characters/Kaisa/Spells/KaisaQAbility/KaisaQLeftMissile1",
+            "movement_type": "FixedTimeSplineMovement",
+            "mTravelTime": 0.4000000059604645
+          },
+          "fixed_travel_seconds": 0.4000000059604645
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Void_Seeker",
+          "cast_time_expression": "{{fd|0.4}}",
+          "speed_expression": "1750",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.4,
+          "speed_scalar": 1750.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Supercharge",
+          "cast_time_expression": "{{as|{{pp|type='''bonus''' attack speed|1.2;1.155;1.089;0.99;0.924;0.858;0.792;0.726;0.693;0.66;0.627;0.6|key1=%|0;3.90;10.20;21.22;29.88;39.87;51.52;65.29;73.17;81.82;91.39;100|formula= 1.2 /(1 + '''bonus''' attack speed/100) . ''This is capped at 0.6 seconds.''}}|attack speed}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Killer_Instinct",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|3800|estimated}}",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 3800.0,
+          "speed_variants": [
+            {
+              "speed": 3800.0,
+              "label": "estimated"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Corki": {
+      "aa": {
+        "pc_base_as": 0.644,
+        "windup_fraction": 0.2700000006705523,
+        "base_windup_seconds": 0.41925465942632345,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Hextech_Munitions",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Phosphorus_Bomb",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1100",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1100.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Valkyrie",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|650 + {{as|100% movement speed}}|Dash speed}}",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_expression"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Gatling_Gun",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "False",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "non_projectile"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Corki/Missile_Barrage",
+          "cast_time_expression": "{{fd|0.175}}",
+          "speed_expression": "{{tt|2000|Missile speed for both standard and Big One missiles}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.175,
+          "speed_scalar": 2000.0,
+          "speed_variants": [
+            {
+              "speed": 2000.0,
+              "label": "Missile speed for both standard and Big One missiles"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Lucian": {
+      "aa": {
+        "pc_base_as": 0.638,
+        "windup_fraction": 0.14999999403953598,
+        "base_windup_seconds": 0.23510970852591848,
+        "projectile_speed": 2800.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Lightslinger",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Piercing_Light",
+          "cast_time_expression": "{{pp|0.4 to 0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "False",
+          "range_expression": "{{tip|er|icononly = true}} 1000",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "non_projectile"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Ardent_Blaze",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1600",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} 900",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1600.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/Relentless_Pursuit",
+          "cast_time_expression": "none",
+          "speed_expression": "1350",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 1350.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/The_Culling",
+          "cast_time_expression": "none",
+          "speed_expression": "2800",
+          "projectile_expression": "True",
+          "range_expression": "{{dv|{{tip|cr|icononly = true}} {{tt|1200|Individual missile range}}|{{tip|er|icononly = true}} 1140{{plus}}{{tt|offset|See notes}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": 2800.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Smolder": {
+      "aa": {
+        "pc_base_as": 0.638,
+        "windup_fraction": 0.16622341,
+        "base_windup_seconds": 0.26053826018808773,
+        "projectile_speed": 1800.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Dragon_Practice",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Super_Scorcher_Breath",
+          "cast_time_expression": "{{as|100% of '''Smolder's''' windup time|as}} ({{ap|(1/{{ccd|Smolder|as_base}})*{{ccd|Smolder|windup}}|round=3}} at {{as|'''base''' attack speed}})",
+          "speed_expression": "{{dv|{{tt|1800|Fireball}}|{{tt|900|Tier 2 missiles}}}}",
+          "projectile_expression": "true",
+          "range_expression": "{{tt|500|Tier 2 missiles}}",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1800.0,
+              "label": "Fireball"
+            },
+            {
+              "speed": 900.0,
+              "label": "Tier 2 missiles"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Achooo!",
+          "cast_time_expression": "{{fd|0.35}}",
+          "speed_expression": "{{dv|{{tt|2000|Initial speed}}|{{tt|400|End speed}}}}",
+          "projectile_expression": "true",
+          "range_expression": "1500",
+          "status": "retrieved",
+          "cast_time_seconds": 0.35,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2000.0,
+              "label": "Initial speed"
+            },
+            {
+              "speed": 400.0,
+              "label": "End speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/MMOOOMMMM!",
+          "cast_time_expression": "{{fd|0.75}}",
+          "speed_expression": "1700",
+          "projectile_expression": "true",
+          "range_expression": "{{dv|{{tt|4250|Wave forward range}}|{{tt|-600|Wave backwards range}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.75,
+          "speed_scalar": 1700.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Flap,_Flap,_Flap",
+          "cast_time_expression": "none",
+          "speed_expression": "{{tt|1800|Bolt speed}}",
+          "projectile_expression": "",
+          "range_expression": "700",
+          "status": "retrieved",
+          "cast_time_seconds": 0,
+          "speed_scalar": 1800.0,
+          "speed_variants": [
+            {
+              "speed": 1800.0,
+              "label": "Bolt speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Caitlyn": {
+      "aa": {
+        "pc_base_as": 0.681,
+        "windup_fraction": 0.177083331346512,
+        "base_windup_seconds": 0.2600342604207224,
+        "projectile_speed": 2500.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Headshot",
+          "cast_time_expression": "",
+          "speed_expression": "{{tt|3000|Headshots missile speed}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 3000.0,
+          "speed_variants": [
+            {
+              "speed": 3000.0,
+              "label": "Headshots missile speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Piltover_Peacemaker",
+          "cast_time_expression": "{{fd|0.625}}",
+          "speed_expression": "2200",
+          "projectile_expression": "True",
+          "range_expression": "{{dv|{{tip|cr|icononly = true}} 1300|{{tip|er|icononly = true}} 1240}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.625,
+          "speed_scalar": 2200.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Yordle_Snap_Trap",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/90_Caliber_Net",
+          "cast_time_expression": "{{fd|0.15}}",
+          "speed_expression": "{{dv|{{tt|1600|Missile speed}}|{{tt|1000|Dash speed}}}}",
+          "projectile_expression": "True",
+          "range_expression": "{{dv|{{tip|cr|icononly = true}} 800|{{tip|er|icononly = true}} 740}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.15,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1600.0,
+              "label": "Missile speed"
+            },
+            {
+              "speed": 1000.0,
+              "label": "Dash speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Caitlyn/Ace_in_the_Hole",
+          "cast_time_expression": "{{fd|0.375}}",
+          "speed_expression": "3200",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.375,
+          "speed_scalar": 3200.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Jinx": {
+      "aa": {
+        "pc_base_as": 0.625,
+        "windup_fraction": 0.16875000419095232,
+        "base_windup_seconds": 0.2700000067055237,
+        "projectile_speed": 2750.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {
+          "minigun": 2750.0,
+          "rockets": 2000.0
+        },
+        "status": "sourced_riot_game_files",
+        "game_file_source": "https://raw.communitydragon.org/16.19/game/data/characters/jinx/jinx.bin.json"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Get_Excited!",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Switcheroo!",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Zap!",
+          "cast_time_expression": "{{pp|0.6 to 0.4 for 11|0 to 250|key1=%|type='''bonus''' attack speed|color=attack speed}}",
+          "speed_expression": "3300",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} {{tt|1500|standard missile end collision behaviour}}",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 3300.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Flame_Chompers!",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "Special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_in_source"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Super_Mega_Death_Rocket!",
+          "cast_time_expression": "{{fd|0.6}}",
+          "speed_expression": "{{dv|{{tt|1700|Initial missile speed}}|{{tt|2200|Increased missile speed after travelling over 1350 units}}}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.6,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1700.0,
+              "label": "Initial missile speed"
+            },
+            {
+              "speed": 2200.0,
+              "label": "Increased missile speed after travelling over 1350 units"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        }
+      }
+    },
+    "Ezreal": {
+      "aa": {
+        "pc_base_as": 0.625,
+        "windup_fraction": 0.18838652521371899,
+        "base_windup_seconds": 0.30141844034195037,
+        "projectile_speed": 2000.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Rising_Spell_Force",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Mystic_Shot",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "2000",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 2000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Essence_Flux",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1700",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1700.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Arcane_Shift",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{tt|2000|Homing missile speed}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 2000.0,
+          "speed_variants": [
+            {
+              "speed": 2000.0,
+              "label": "Homing missile speed"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Trueshot_Barrage",
+          "cast_time_expression": "1",
+          "speed_expression": "2000",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 1.0,
+          "speed_scalar": 2000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Zeri": {
+      "aa": {
+        "pc_base_as": 0.658,
+        "windup_fraction": 0.15625,
+        "base_windup_seconds": 0.23746200607902734,
+        "projectile_speed": 0.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced_non_projectile"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Living_Battery",
+          "cast_time_expression": "",
+          "speed_expression": "{{tt|N/A|Non-projectile}}",
+          "projectile_expression": "false",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_expression"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Burst_Fire",
+          "cast_time_expression": "",
+          "speed_expression": "{{dv|{{tt|2600|Active spray missile speed}}|{{tt|3400|Empowered spray missile speed while Overcharged}}}}",
+          "projectile_expression": "true",
+          "range_expression": "{{tip|cr|icononly = true}} {{tt|750|Active spray missile reaches}} + 100% '''bonus''' {{sti|attack range}}",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 2600.0,
+              "label": "Active spray missile speed"
+            },
+            {
+              "speed": 3400.0,
+              "label": "Empowered spray missile speed while Overcharged"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Ultrashock_Laser",
+          "cast_time_expression": "{{as|{{pp|type='''bonus''' attack speed|round=3|0.55;0.528;0.495;0.462;0.429;0.396;0.363;0.33;0.3|key1=%|0;24.4444;61.1111;97.7778;134.444;171.111;207.778;244.444;277.778|formula=0.55-0.09 per 100% '''bonus''' attack speed. ''This is capped at 45.5% reduction at 277.8% '''bonus''' attack speed.''}}}}",
+          "speed_expression": "{{tt|2500|Initial missile}}",
+          "projectile_expression": "special",
+          "range_expression": "{{dv|{{tip|cr|icononly = true}} {{tt|1200|Initial missile}}|{{tip|er|icononly = true}} {{tt|-50 – 1550|1600 units total empowered length}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 2500.0,
+          "speed_variants": [
+            {
+              "speed": 2500.0,
+              "label": "Initial missile"
+            }
+          ],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Spark_Surge",
+          "cast_time_expression": "None",
+          "speed_expression": "600 + {{as|100% movement speed|ms}}",
+          "projectile_expression": "",
+          "range_expression": "{{tt|300|Standard dash distance}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "sourced_expression"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Lightning_Crash",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "false",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "non_projectile"
+        }
+      }
+    },
+    "Jhin": {
+      "aa": {
+        "pc_base_as": 0.625,
+        "windup_fraction": 0.15624999767169437,
+        "base_windup_seconds": 0.24999999627471098,
+        "projectile_speed": 2600.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Whisper",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Dancing_Grenade",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "{{dv|{{tt|1800|Initial missile speed}}|{{tt|600|Bounce missile speed}}}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1800.0,
+              "label": "Initial missile speed"
+            },
+            {
+              "speed": 600.0,
+              "label": "Bounce missile speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Deadly_Flourish",
+          "cast_time_expression": "{{fd|0.75}}",
+          "speed_expression": "",
+          "projectile_expression": "True",
+          "range_expression": "{{dv|{{tip|er|icononly = true}} {{tt|2520|Estimated}}|{{tt|-20|Backwards range}}}}",
+          "status": "retrieved",
+          "cast_time_seconds": 0.75,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_in_source"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Captive_Audience",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "",
+          "projectile_expression": "Special",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1600.0,
+          "speed_variants": [],
+          "speed_status": "sourced_game_movement",
+          "game_movement": {
+            "source": "https://raw.communitydragon.org/16.19/game/data/characters/jhin/jhin.bin.json",
+            "record": "Characters/Jhin/Spells/JhinEAbility/JhinETrap",
+            "movement_type": "FixedSpeedMovement",
+            "mSpeed": 1600.0
+          }
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Curtain_Call",
+          "cast_time_expression": "{{dv|{{tt|1|Active}}|{{tt|{{fd|0.25}}|Recast}}}}",
+          "speed_expression": "5000",
+          "projectile_expression": "True",
+          "range_expression": "{{tip|cr|icononly = true}} {{tt|3500|Missile range}}",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": 5000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    },
+    "Sivir": {
+      "aa": {
+        "pc_base_as": 0.625,
+        "windup_fraction": 0.11999999284744298,
+        "base_windup_seconds": 0.19199998855590877,
+        "projectile_speed": 1750.0,
+        "windup_modifier": 1.0,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Fleet_of_Foot",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Boomerang_Blade",
+          "cast_time_expression": "{{as|{{pp|type='''bonus''' attack speed|round=3|0.25;0.231;0.198;0.165;0.132;0.1|key1=%|0;15.2;41.6;68;94.4;120|formula=0.25*(1-(0.5 per 100% '''bonus''' attack speed)). ''This is capped at 60% reduction at 120% '''bonus''' attack speed.''}}|attack speed}}",
+          "speed_expression": "{{dv|{{tt|1450|Outgoing missile}}|{{tt|1200|Returning missile}}}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1450.0,
+              "label": "Outgoing missile"
+            },
+            {
+              "speed": 1200.0,
+              "label": "Returning missile"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Ricochet",
+          "cast_time_expression": "none",
+          "speed_expression": "{{dv|{{tt|{{ccd|Sivir|missile_speed}}|Attack missile speed, same as basic attack}}| {{tt|1000|Bounced missile speed}}}}",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [
+            {
+              "speed": 1000.0,
+              "label": "Bounced missile speed"
+            }
+          ],
+          "speed_status": "sourced_expression"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Spell_Shield",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/On_the_Hunt",
+          "cast_time_expression": "none",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        }
+      }
+    },
+    "Senna": {
+      "aa": {
+        "pc_base_as": 0.625,
+        "windup_fraction": 0.31249999534338874,
+        "base_windup_seconds": 0.49999999254942196,
+        "projectile_speed": 0.0,
+        "windup_modifier": 0.600000023841857,
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
+        "variants": {},
+        "status": "sourced_non_projectile"
+      },
+      "abilities": {
+        "P": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Absolution",
+          "cast_time_expression": "",
+          "speed_expression": "",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_in_source"
+        },
+        "Q": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Piercing_Darkness",
+          "cast_time_expression": "{{as|80% of '''Senna's''' windup time|as}} ({{fd|{{#expr:0.8*{{ccd|Senna|windup}}*(1/{{ccd|Senna|as_base}})round2}}}} at {{as|'''base''' attack speed}})",
+          "speed_expression": "",
+          "projectile_expression": "False",
+          "range_expression": "{{tip|er|icononly = true}} 1300",
+          "status": "retrieved",
+          "cast_time_seconds": null,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "non_projectile"
+        },
+        "W": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Last_Embrace",
+          "cast_time_expression": "{{fd|0.25}}",
+          "speed_expression": "1200",
+          "projectile_expression": "True",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 0.25,
+          "speed_scalar": 1200.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        },
+        "E": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Curse_of_the_Black_Mist",
+          "cast_time_expression": "1",
+          "speed_expression": "",
+          "projectile_expression": "",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 1.0,
+          "speed_scalar": null,
+          "speed_variants": [],
+          "speed_status": "not_applicable"
+        },
+        "R": {
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Senna/Dawning_Shadow",
+          "cast_time_expression": "1",
+          "speed_expression": "20000",
+          "projectile_expression": "true",
+          "range_expression": "",
+          "status": "retrieved",
+          "cast_time_seconds": 1.0,
+          "speed_scalar": 20000.0,
+          "speed_variants": [],
+          "speed_status": "sourced_scalar"
+        }
+      }
+    }
+  },
+  "retrieved_at": "2026-10-01"
+}
