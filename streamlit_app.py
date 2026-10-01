@@ -7,7 +7,7 @@ import streamlit.components.v1 as components
 from pathlib import Path
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
-from champion_abilities import SAMIRA_ABILITIES, SMOLDER_ABILITIES, samira_skill
+from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
 
@@ -2355,4 +2355,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.59 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.59.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")

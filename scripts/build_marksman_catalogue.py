@@ -3,7 +3,7 @@ import json,re,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from champion_abilities import SAMIRA_ABILITIES,SMOLDER_ABILITIES
+from champion_skill_data import SAMIRA_ABILITIES,SMOLDER_ABILITIES
 source=json.loads((ROOT/'data/marksman-ability-evidence.json').read_text())
 queue=json.loads((ROOT/'data/marksman-implementation-queue.json').read_text())
 known={'Samira':SAMIRA_ABILITIES,'Smolder':SMOLDER_ABILITIES}

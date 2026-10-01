@@ -6,7 +6,7 @@ mechanics are surfaced by the caller; this is not a complete Wild Rift engine.
 from dataclasses import dataclass, field
 import math
 import random
-from champion_abilities import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
+from champion_skill_data import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
 
 @dataclass(frozen=True)
 class FightEvent:

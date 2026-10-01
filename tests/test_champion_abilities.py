@@ -1,5 +1,5 @@
 import unittest
-from champion_abilities import samira_skill
+from champion_skill_data import samira_skill
 
 class SamiraTests(unittest.TestCase):
     def test_q_practice_coefficients(self):

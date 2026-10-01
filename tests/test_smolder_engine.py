@@ -1,5 +1,5 @@
 import unittest
-from champion_abilities import smolder_skill
+from champion_skill_data import smolder_skill
 from fight_engine import replay_samira,champion_ranks,FightEvent
 
 class SmolderTests(unittest.TestCase):

@@ -7,7 +7,7 @@ The target never attacks. Timing follows sourced casts/channels when available.
 import heapq
 import itertools
 import math
-from champion_abilities import resistance_multiplier,effective_resistance
+from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
 from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,RawDamage
 
