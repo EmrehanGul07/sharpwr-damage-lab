@@ -1,41 +1,49 @@
-"""Small level-15 AA+ability screen: singles and additions to top-three singles."""
+"""Progressive item-budget screen across six equally weighted game stages."""
 import sys,json,ast,hashlib
 from pathlib import Path
 sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'tests')]
 from test_combat_engine import engine_namespace
-from build_fight_optimizer import BuildFightEvaluator,legal
-from collections import defaultdict
+from build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortlist
+from item_consensus import progression_ranking
 root=Path(__file__).resolve().parents[1];ns=engine_namespace();targets={}
 for node in ast.parse((root/'streamlit_app.py').read_text()).body:
  if isinstance(node,ast.Assign):
   for x in node.targets:
-   if isinstance(x,ast.Name) and x.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):targets[x.id.split('_')[0].lower()]=ast.literal_eval(node.value)[15]
-results={};simulations=0
+   if isinstance(x,ast.Name) and x.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):targets[x.id.split('_')[0].lower()]=ast.literal_eval(node.value)
+def target_at(profile,level):
+ if level in profile:return profile[level]
+ lo=max(l for l in profile if l<level);hi=min(l for l in profile if l>level);u=(level-lo)/(hi-lo)
+ t={k:profile[lo][k]+u*(profile[hi][k]-profile[lo][k]) for k in ('hp','armor','mr')};t['aa_reduction']=profile[hi].get('aa_reduction',0) if level>=5 else 0
+ return t
+budgets={5:1,7:1,9:2,11:3,13:4,15:5};fingerprint=hashlib.sha256(repr(ns['F']).encode()).hexdigest();checkpoint=root/'data/item-progression-checkpoint.json'
+state=json.loads(checkpoint.read_text()) if checkpoint.exists() else {'fingerprint':fingerprint,'results':{},'simulations':0}
+if state['fingerprint']!=fingerprint:raise ValueError('Checkpoint uses different item stats')
 for champion in ns['C']:
- results[champion]={}
- for target,t in targets.items():
-  natural=t['hp'] if target=='squishy' else (660+148*ns['gu'](15) if target=='bruiser' else 690+132*ns['gu'](15))
-  ev=BuildFightEvaluator(ns,champion,15,t['hp'],t['armor'],t['mr'],bonus_hp=max(0,t['hp']-natural),aa_reduction=t.get('aa_reduction',0),yuntal_stacks=125)
-  baseline=ev.evaluate([])['DPS'];singles={i:ev.evaluate([i])['DPS'] for i in ns['F']};anchors=sorted(singles,key=singles.get,reverse=True)[:3];rows=[]
-  for item in ns['F']:
-   gains=[(singles[item]-baseline)/max(1,baseline)]
-   for anchor in anchors:
-    if item!=anchor and legal([item,anchor]):gains.append((ev.evaluate([item,anchor])['DPS']-singles[anchor])/max(1,singles[anchor]))
-   rows.append({'item':item,'score':sum(gains)/len(gains),'single_dps':singles[item]})
-  rows.sort(key=lambda x:(-x['score'],x['item']))
-  results[champion][target]=rows;simulations+=ev.simulations
- print(champion,simulations,flush=True)
-ranking=[]
-for item in ns['F']:
- champions=[];appearances=0;scores=[]
- for champion,profiles in results.items():
-  hit=False
-  for rows in profiles.values():
-   index=next(i for i,r in enumerate(rows) if r['item']==item);scores.append(rows[index]['score'])
-   if index<5:appearances+=1;hit=True
-  if hit:champions.append(champion)
- ranking.append({'Item':item,'Champions':len(champions),'Champion names':', '.join(champions),'Top-5 target appearances':appearances,'Mean DPS gain %':round(100*sum(scores)/len(scores),2)})
-ranking.sort(key=lambda x:(-x['Champions'],-x['Top-5 target appearances'],-x['Mean DPS gain %'],x['Item']))
-payload={'version':'5.68.0','level':15,'champions':len(results),'targets':3,'simulations':simulations,'method':'Single items plus legal additions to each champion/target top-three single-item anchors; mean relative DPS gain. Adoption = top five on at least one target. No boots, no runes, expected crit, Yun Tal starts at 125 stacks. Not full-build optimization. Yunara mana/MS/range fallback remains unverified.','fingerprint':hashlib.sha256(repr(ns['F']).encode()).hexdigest(),'ranking':ranking,'results':results}
-(root/'data/item-adoption-screen.json').write_text(json.dumps(payload,indent=2))
-print('DONE',simulations)
+ cells=state['results'].setdefault(champion,{})
+ for target,profile in targets.items():
+  beam=[()]
+  for level,count in budgets.items():
+   key=f'{level}:{target}'
+   if key in cells:
+    beam=[tuple(r['Items']) for r in cells[key]['beam']];continue
+   t=target_at(profile,level);natural=t['hp'] if target=='squishy' else (660+148*ns['gu'](level) if target=='bruiser' else 690+132*ns['gu'](level))
+   stacks=0 if level<=5 else (125 if level>=9 else round(125*(level-5)/4))
+   ev=BuildFightEvaluator(ns,champion,level,t['hp'],t['armor'],t['mr'],bonus_hp=max(0,t['hp']-natural),aa_reduction=t.get('aa_reduction',0),yuntal_stacks=stacks)
+   pool=[i for i in ns['F'] if i!='Muramana' or level>=11]
+   if count==1:candidates=[(i,) for i in pool]
+   else:candidates=sorted({tuple(sorted((*seed,i))) for seed in beam for i in pool if i not in seed and legal((*seed,i))})
+   rows=[ev.evaluate(items) for items in candidates];rows.sort(key=score)
+   selected=diverse_shortlist(ev,rows,12)
+   refined=[ev.evaluate(r['Items'],refine='rotations') for r in selected];refined.sort(key=score)
+   # Re-rank the twelve candidates at this stage; retain variety for the next budget.
+   beam=[r['Items'] for r in diverse_shortlist(ev,refined,12)]
+   cells[key]={'level':level,'target':target,'item_count':count,'yuntal_start_stacks':stacks,'builds':refined[:10],'beam':refined,'candidates':len(candidates),'simulations':ev.simulations}
+   state['simulations']+=ev.simulations;checkpoint.write_text(json.dumps(state,separators=(',',':')))
+   print(champion,key,ev.simulations,'total',state['simulations'],flush=True)
+payload={'version':'5.69.0','levels':list(budgets),'item_budgets':budgets,'champions':len(state['results']),'targets':3,'simulations':state['simulations'],'method':'Equal level/target weighting. Exact single-item enumeration; later budgets grow a diverse 12-build beam, followed by rotation checks. Top-10 build reciprocal-rank item share is normalized by item count. Adoption = present in at least one retained build, once per champion. Muramana excluded below level 11. No boots/runes; expected crit; Yun Tal uses level-dependent starting progression (0 at 5, 62 at 7, 125 at 9+). Not exhaustive full-build optimization. Yunara unknown core stats remain provisional.','fingerprint':fingerprint,'ranking':progression_ranking(state['results'],ns['F']),'results':state['results']}
+for cells in payload['results'].values():
+ for cell in cells.values():
+  cell.pop('beam',None)
+  cell['builds']=[{k:r[k] for k in ('Items','DPS','TTK','Damage','Crit %','Rotation')} for r in cell['builds']]
+(root/'data/item-adoption-screen.json').write_text(json.dumps(payload,separators=(',',':')))
+print('DONE',state['simulations'],flush=True)

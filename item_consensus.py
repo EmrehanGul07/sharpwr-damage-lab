@@ -29,3 +29,15 @@ def champion_items(search):
         for rank,row in enumerate(rows,1):
             for item in row['Items']:scores[item]+=1/(rank*int(stage))
     return [{'Item':i,'Score':round(v,3),'Note':NOTES.get(i,'Kit-dependent value · compare the tested builds')} for i,v in sorted(scores.items(),key=lambda x:(-x[1],x[0]))[:10]]
+
+def progression_ranking(results,pool):
+    scores=defaultdict(float);champions=defaultdict(set);appearances=defaultdict(int)
+    for champion,cells in results.items():
+        for cell in cells.values():
+            rows=cell['builds'];normal=sum(1/r for r in range(1,len(rows)+1));seen=set()
+            for rank,row in enumerate(rows,1):
+                for item in row['Items']:
+                    scores[item]+=1/rank/max(1,normal)/cell['item_count']/len(cells)/len(results)
+                    champions[item].add(champion);seen.add(item)
+            for item in seen:appearances[item]+=1
+    return [{'Item':i,'Stage-balanced score':round(100*scores[i],4),'Champions':len(champions[i]),'Champion names':', '.join(sorted(champions[i])),'Level-target appearances':appearances[i]} for i in sorted(pool,key=lambda i:(-scores[i],-len(champions[i]),i))]

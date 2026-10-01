@@ -6,13 +6,13 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.68.0")
+ensure_engine_revision("5.69.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
-if not hasattr(_item_consensus, "champion_items"):
+if not hasattr(_item_consensus, "progression_ranking"):
     import importlib
     importlib.reload(_item_consensus)
-from item_consensus import consensus, adopters, champion_items
+from item_consensus import consensus, adopters, champion_items, progression_ranking
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -1031,7 +1031,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.68.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.69.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1783,18 +1783,27 @@ with tabs[2]:
     _screen_path=Path(__file__).resolve().parent/'data/item-adoption-screen.json'
     if _screen_path.exists():
         _screen=_adoption_json.loads(_screen_path.read_text())
-        st.caption(f"Level {_screen['level']} · {_screen['champions']} champions × {_screen['targets']} targets · {_screen['simulations']:,} AA + ability simulations. Ranked by distinct champions where the item places in the Top 5, then target appearances. A small single/pair DPS screen, not full-build optimization or real-match pick rate. Yun Tal starts fully stacked; Yunara has unverified stat fallbacks.")
+        st.caption(f"{_screen['champions']} ADCs × 6 levels × 3 targets · {_screen['simulations']:,} AA + ability simulations. Budgets: 5→1, 7→1, 9→2, 11→3, 13→4, 15→5 items. Muramana excluded before level 11. Each level/target has equal weight; build item shares are normalized by item count. No boots, runes or incoming damage. Yunara has provisional core stats.")
+        _screen_mode=st.selectbox("Ranking stage",['All stages']+[f"Level {l}" for l in _screen['levels']],key="adoption_stage")
+        if _screen_mode=='All stages':_ranking=_screen['ranking']
+        else:
+            _stage_level=int(_screen_mode.split()[-1])
+            _filtered={c:{k:v for k,v in cells.items() if v['level']==_stage_level} for c,cells in _screen['results'].items()}
+            _ranking=progression_ranking(_filtered,F)
         _adoption_cards=['<div class="value-grid">']
-        for _rank,_row in enumerate(_screen['ranking'][:10],1):
+        for _rank,_row in enumerate(_ranking[:10],1):
             _name=_row['Item']
-            _adoption_cards.append(f'<div class="value-card"><span class="value-rank">#{_rank}</span><img src="{html.escape(item_icon(_name))}" alt="{html.escape(_name)}"><div class="value-name">{html.escape(_name)}</div><div class="value-score">{_row["Champions"]}/23</div><div class="value-unit">ADC TOP-5 COVERAGE</div></div>')
+            _adoption_cards.append(f'<div class="value-card"><span class="value-rank">#{_rank}</span><img src="{html.escape(item_icon(_name))}" alt="{html.escape(_name)}"><div class="value-name">{html.escape(_name)}</div><div class="value-score">{_row["Stage-balanced score"]:.2f}</div><div class="value-unit">WEIGHTED BUILD SHARE % · {_row["Champions"]}/23 ADCs</div></div>')
         _adoption_cards.append('</div>');st.markdown(''.join(_adoption_cards),unsafe_allow_html=True)
-        st.dataframe(pd.DataFrame(_screen['ranking']),hide_index=True,width="stretch")
+        st.dataframe(pd.DataFrame(_ranking),hide_index=True,width="stretch")
         with st.expander("Screen method and champion results"):
             st.write(_screen['method'])
             _screen_champ=st.selectbox("Screen champion",list(_screen['results']),key="adoption_champ")
+            _screen_level=st.selectbox("Screen level",_screen['levels'],key="adoption_level")
             _screen_target=st.selectbox("Screen target",['squishy','bruiser','tank'],key="adoption_target")
-            st.dataframe(pd.DataFrame(_screen['results'][_screen_champ][_screen_target]),hide_index=True,width="stretch")
+            _cell=_screen['results'][_screen_champ][f'{_screen_level}:{_screen_target}']
+            st.caption(f"{_cell['item_count']} items · Yun Tal starting stacks: {_cell['yuntal_start_stacks']} · {_cell['candidates']} candidates")
+            st.dataframe(pd.DataFrame([{'Build':' + '.join(r['Items']),'DPS':r['DPS'],'TTK':r['TTK']} for r in _cell['builds']]),hide_index=True,width="stretch")
     else:st.info("The ADC adoption screen has not been generated yet.")
     _iv_champion,_iv_target=st.columns(2,gap="medium")
     with _iv_champion,st.container(border=True):
@@ -2083,4 +2092,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.68.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.69.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
