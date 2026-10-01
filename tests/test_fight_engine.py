@@ -30,9 +30,9 @@ class ReplayTests(unittest.TestCase):
     def test_r_requires_style_and_measured_duration(self):
         r=self.run_fight([(0,'R')]);self.assertEqual(len(r.log),0)
         actions=[(0,'AA'),(1,'Q'),(2,'AA'),(3,'Q'),(4,'AA'),(5,'Q'),(6,'R')]
-        r=self.run_fight(actions)
+        r=self.run_fight(actions,instant_skills=False)
         self.assertIn('timing unknown',r.rejected[-1]['reason'])
-        r=self.run_fight(actions,r_duration=2.23,keystone='Conqueror')
+        r=self.run_fight(actions,r_duration=2.23,instant_skills=False,keystone='Conqueror')
         self.assertEqual(len([x for x in r.log if x['action']=='R tick']),10)
         self.assertEqual(r.skill_count,4)
         self.assertEqual(r.log[-1]['after']['style'],0)
@@ -48,6 +48,39 @@ class ReplayTests(unittest.TestCase):
     def test_dead_target_stops_replay(self):
         r=self.run_fight([(0,'AA'),(1,'Q')],hp=10)
         self.assertEqual(len(r.log),1);self.assertEqual(r.hp_remaining,0)
+    def test_haste_and_navori_change_cooldowns(self):
+        r=self.run_fight([(0,'Q'),(1,'Q')],ability_haste=100)
+        self.assertEqual(len(r.log),2)
+        r=self.run_fight([(0,'Q'),(.1,'AA'),(1.8,'Q')],navori=True)
+        self.assertEqual(len(r.rejected),0)
+        self.assertAlmostEqual(r.log[1]['cooldowns']['Q'],1.9*.85)
+    def test_w_e_bonus_ad_and_magic_resistance(self):
+        r=self.run_fight([(0,'W'),(.1,'E')],ad=100,base_ad=60,w_rank=1,e_rank=1,mr=100)
+        self.assertEqual(r.log[0]['damage'],80)
+        self.assertEqual(r.log[1]['damage'],26.5)
+        self.assertTrue(r.log[1]['E_buff'])
+    def test_magic_penetration(self):
+        r=self.run_fight([(0,'E')],e_rank=1,mr=100,pct_mpen=.3,flat_mpen=10)
+        self.assertAlmostEqual(r.total_damage,45*100/160)
+    def test_instant_r_and_stack_grant_once(self):
+        actions=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(4.2,'R')]
+        r=self.run_fight(actions,keystone='Conqueror')
+        shots=[x for x in r.log if x['action']=='R tick']
+        self.assertEqual(len(shots),10)
+        self.assertEqual({x['time'] for x in shots},{4.2})
+        self.assertEqual(r.skill_count,4)
+    def test_collector_executes_skill_and_stops(self):
+        r=self.run_fight([(0,'Q'),(1,'AA')],hp=180,collector_threshold=.05,q_rank=1)
+        self.assertTrue(r.log[0]['executed']);self.assertEqual(r.total_damage,180)
+        self.assertEqual(len(r.log),1)
+    def test_automatic_rotation_uses_w_e_and_r(self):
+        r=self.run_fight([],w_rank=1,e_rank=1,automatic_until=12,hp=100000)
+        self.assertFalse(r.rejected)
+        self.assertTrue({'AA','Q','W','E','R tick'}.issubset({x['action'] for x in r.log}))
+        self.assertTrue(all(x['time']<=12 for x in r.log))
+    def test_melee_user_accepted_passive(self):
+        r=self.run_fight([(0,'AA')],ad=109,crit_chance=0,melee=True,mr=100)
+        self.assertAlmostEqual(r.total_damage,109+(20+.17*109)/2)
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 

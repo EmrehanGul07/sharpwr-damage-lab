@@ -42,6 +42,6 @@ class SamiraTests(unittest.TestCase):
         for kwargs in [{'rank':5},{'crit_chance':1.1},{'crit_chance':0,'outcome':'Critical'},{'hits':2},{'ad':float('nan')}]:
             args=dict(slot='Q',rank=1,ad=100,crit_chance=.5,crit_damage=2,armor=100);args.update(kwargs)
             with self.assertRaises(ValueError):samira_skill(**args)
-        with self.assertRaises(ValueError):samira_skill('W',1,100,.5,2,100)
+        with self.assertRaises(ValueError):samira_skill('Z',1,100,.5,2,100)
 
 if __name__=='__main__':unittest.main()

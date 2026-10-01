@@ -28,8 +28,10 @@ class InterfaceTests(unittest.TestCase):
         a=self.app
         a.selectbox(key='build_champ').set_value('Samira').run()
         self.assertFalse(a.exception)
-        self.assertTrue(a.selectbox(key='ability_samira_w').disabled)
-        self.assertTrue(a.selectbox(key='ability_samira_e').disabled)
+        self.assertFalse(a.selectbox(key='ability_samira_w').disabled)
+        a.selectbox(key='ability_samira_w').set_value(0).run()
+        self.assertFalse(a.selectbox(key='ability_samira_e').disabled)
+        a.selectbox(key='ability_samira_e').set_value(0).run()
         tables=[x.value for x in a.dataframe if 'Outcome' in x.value.columns]
         self.assertEqual(len(tables),1)
         self.assertEqual(len(tables[0]),6)
@@ -66,6 +68,11 @@ class InterfaceTests(unittest.TestCase):
         a.button(key='fight_calculate').click().run()
         rejected=next(x.value for x in a.dataframe if 'reason' in x.value.columns)
         self.assertIn('S style',rejected['reason'].iloc[0])
+        a.checkbox(key='fight_auto').set_value(True).run()
+        a.button(key='fight_calculate').click().run()
+        self.assertFalse(a.exception)
+        table=next(x.value for x in a.dataframe if 'Stacks after' in x.value.columns)
+        self.assertGreater(len(table),3)
 
     def test_keystone_calculations(self):
         a=self.app
