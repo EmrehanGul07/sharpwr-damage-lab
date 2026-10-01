@@ -32,3 +32,10 @@ class ChampionDatabaseTests(unittest.TestCase):
             self.assertEqual(set(record['unavailable_fields']),{field for field,value in record['stats'].items() if value is None})
 
 if __name__=='__main__':unittest.main()
+
+class LevelStatTests(unittest.TestCase):
+    def test_samira_level_and_item_independent_stats(self):
+        from champion_database import level_stats
+        self.assertEqual(level_stats('Samira',1)['mana'],345)
+        self.assertAlmostEqual(level_stats('Samira',15)['mana'],345+49*13.265)
+        self.assertIsNone(level_stats('Yunara',15)['mana'])

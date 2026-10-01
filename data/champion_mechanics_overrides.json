@@ -1,0 +1,17 @@
+{
+  "Zeri": {
+    "attack_speed_cap": 1.5,
+    "excess_attack_speed_to_ad_ratio": 0.5,
+    "status": "user_locked_reference",
+    "source": {
+      "type": "user_supplied_patch_excerpt",
+      "date": "2026-10-01",
+      "quote": "Excess attack speed to AD conversion reduced from 60% excess AS to 50%.",
+      "url": null,
+      "cap_basis": "User explicitly confirms 1.5 attacks per second cap."
+    },
+    "conversion_units": "1 excess bonus attack speed percentage point grants 0.5 AD",
+    "engine_status": "not_implemented",
+    "notes": "Cap and conversion coefficient are locked separately from wiki stat imports. The supplied excerpt specifies the coefficient; it does not itself state the 1.5 cap."
+  }
+}

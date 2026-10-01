@@ -30,12 +30,12 @@ def samira_ranks(level):
     if not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
     return {slot:SAMIRA_SKILL_ORDER[:level].count(slot) for slot in ('Q','W','E','R')}
 
-def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False):
+def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.):
     """Replay AA/Q impacts and an explicitly timed R channel against one champion.
 
     Conqueror: one grant per separate attack/cast (not each R tick).
     Lethal Tempo: attacks only. Style: different consecutive attack/skill types.
-    Cast lockout/projectile travel and mana are not inferred from these timestamps.
+    Cast lockout/projectile travel are not inferred. Optional mana regenerates between events.
     """
     values=(ad,attack_speed,crit_chance,crit_damage,hp,armor,ability_haste,pct_pen,flat_pen,mr,pct_mpen,flat_mpen,skill_amp,collector_threshold)
     if not all(math.isfinite(x) for x in values) or hp<=0 or ad<0 or attack_speed<=0 or ability_haste<0 or not 0<=pct_pen<=1 or flat_pen<0 or not 0<=pct_mpen<=1 or flat_mpen<0 or skill_amp<=0 or not 0<=collector_threshold<=1:raise ValueError('Invalid combat stats.')
@@ -47,6 +47,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     if r_duration is not None and (not math.isfinite(r_duration) or r_duration<=0):raise ValueError('Invalid R duration.')
     if any(not math.isfinite(e.time) or e.time<0 or e.action not in ('AA','Q','W','E','R') for e in events):raise ValueError('Invalid impact timeline.')
     if automatic_until is not None and (not math.isfinite(automatic_until) or not 0<automatic_until<=120):raise ValueError('Automatic duration must be in (0,120].')
+    if max_mana is not None and (not math.isfinite(max_mana) or max_mana<0 or not math.isfinite(mana_regen_per_5s) or mana_regen_per_5s<0):raise ValueError('Invalid mana stats.')
+    mana=max_mana;mana_time=0.;style_expiry=-1.
     rng=random.Random(seed); queue=[(e.time,i,e.action,None) for i,e in enumerate(events)];queue.sort(key=lambda x:(x[0],x[1]))
     base_ad=ad if base_ad is None else base_ad
     dark=0; ultimate_cast_time=None;item_stacks={}
@@ -57,7 +59,17 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     auto_time=0.;auto_order=0
     while (queue or automatic_until is not None or until_death) and health>0:
         if not queue:
-            choices=[(max(auto_time,ready[k]),i,k) for i,k in enumerate(('E','W','Q')) if ranks[k]]
+            choices=[]
+            for i,k in enumerate(('E','W','Q')):
+                if not ranks[k]:continue
+                nt=max(auto_time,ready[k]);cost=SAMIRA_ABILITIES[k]['mana']
+                if mana is not None:
+                    if cost>max_mana:continue
+                    available=min(max_mana,mana+max(0.,nt-mana_time)*mana_regen_per_5s/5)
+                    if available<cost:
+                        if mana_regen_per_5s==0:continue
+                        nt+=(cost-available)/(mana_regen_per_5s/5)
+                choices.append((nt,i,k))
             choices.append((max(auto_time,next_aa),4,'AA'))
             if r_rank and style>=6:choices.append((max(auto_time,next_r),-1,'R'))
             nt,_,na=min(choices)
@@ -65,11 +77,17 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             auto_order+=1;queue.append((nt,auto_order,na,None))
         t,order,action,cast_id=queue.pop(0)
         auto_time=t
+        if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
+        if t>=style_expiry:style=0;last_style=None
         if t>=conq_expiry:conq=0
         if t>=lt_expiry:lt=0
         if action!='R tick' and t<channel_until:reject(t,action,'R channel active');continue
         if action=='AA' and t+1e-9<next_aa:reject(t,action,'Attack interval has not elapsed');continue
         if action in ('Q','W','E') and (ranks[action]==0 or t+1e-9<ready[action]):reject(t,action,action+' unlearned or on cooldown');continue
+        if action in ('Q','W','E') and mana is not None:
+            cost=SAMIRA_ABILITIES[action]['mana']
+            if mana+1e-9<cost:reject(t,action,'Insufficient mana');continue
+            mana=max(0.,mana-cost)
         if action=='R':
             if r_rank==0 or t+1e-9<next_r:reject(t,action,'R unlearned or on cooldown');continue
             if style<6:reject(t,action,'S style required');continue
@@ -138,7 +156,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if keystone=='Conqueror' and separate:conq=min(6,conq+1);conq_expiry=t+6
         if keystone=='Lethal Tempo' and action=='AA':lt=min(6,lt+1);lt_expiry=t+6
         if action in ('AA','Q','W','E') and action!=last_style:style=min(6,style+1);last_style=action
+        if action in ('AA','Q','W','E'):style_expiry=t+6.
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-        log.append({'time':t,'action':action,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after})
+        log.append({'time':t,'action':action,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after})
         if health<=0:killed=t
     return FightResult(log,rejected,health,aa,casts,total,killed)

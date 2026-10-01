@@ -106,6 +106,21 @@ class ReplayTests(unittest.TestCase):
             shots=[x for x in r.log if x['action']=='R tick']
             self.assertEqual(len(shots),10)
             self.assertTrue(all(x['damage']==(20+.5*100)*1.5 for x in shots))
+    def test_mana_costs_and_regeneration(self):
+        r=self.run_fight([(0,'Q'),(.1,'W'),(5,'Q')],w_rank=1,max_mana=30,mana_regen_per_5s=30)
+        self.assertEqual([x['mana'] for x in r.log],[0,0])
+        self.assertEqual(r.rejected[0]['reason'],'Insufficient mana')
+    def test_automatic_zero_mana_continues_attacking(self):
+        r=self.run_fight([],max_mana=0,until_death=True,hp=300,crit_chance=0)
+        self.assertEqual(r.skill_count,0)
+        self.assertEqual(r.hp_remaining,0)
+    def test_r_free_and_style_expires(self):
+        a=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(4.2,'R')]
+        r=self.run_fight(a,max_mana=90)
+        self.assertEqual(len([x for x in r.log if x['action']=='R tick']),10)
+        self.assertEqual(r.log[-1]['mana'],0)
+        r=self.run_fight(a[:-1]+[(11,'R')],max_mana=90)
+        self.assertEqual(r.rejected[-1]['reason'],'S style required')
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 
