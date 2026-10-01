@@ -19,7 +19,7 @@ class SearchRefinement(unittest.TestCase):
         e=BuildFightEvaluator(self.ns,'Ezreal',15,2000,100,100)
         baseline=e.evaluate(['Muramana']);refined=e.evaluate(['Muramana'],refine=True)
         self.assertLessEqual(refined['TTK'],baseline['TTK'])
-        self.assertEqual(e.simulations,2+64)
+        self.assertEqual(e.simulations,2+144)
         self.assertIn(refined['Movement'],('skill_envelope','aa_envelope','close_envelope'))
     def test_jhin_conversion_units_and_no_recursive_conversion(self):
         self.assertAlmostEqual(jhin_attack_damage(100,15,.5,.5),180)

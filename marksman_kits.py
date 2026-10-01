@@ -12,6 +12,10 @@ PRIORITIES={
 # These actions offer no offensive value against the configured lone target,
 # which never attacks; vision/ally-control/shield are not damage skills.
 SOLO_DISABLED={'Kalista':{'W','R'},'Ashe':{'E'},'Sivir':{'E'},'Senna':{'E'},"Kai'Sa":{'R'}}
+# Self buffs carry no independent missile; passive on-hit damage is handled by AA.
+SELF_BUFFS={'Twitch':{'Q','R'},'Tristana':{'Q'},'Vayne':{'Q','W','R'},'Ashe':{'Q'},'Draven':{'Q','W'},
+            "Kog'Maw":{'W'},'Miss Fortune':{'W'},'Xayah':{'W'},'Sivir':{'W','R'},'Varus':{'W'},
+            "Kai'Sa":{'E'},'Yunara':{'Q','R'}}
 CHANNELS={'Miss Fortune':('R',3.,False),'Lucian':('R',3.,True)}
 
 @lru_cache(maxsize=1)
@@ -82,12 +86,21 @@ class Kit:
         if slot in ('R',) and self.name in ('Senna','Ezreal','Jinx','Draven'):return math.inf
         values=self.data[slot].get('target_range_by_rank')
         if values is not None:return values[self.rank(slot)-1]
+        # WR range means damaging reach for these directional/ground spells.
+        # Targeted casts (Senna Q) and movement distances must stay separate.
+        direction={("Kog'Maw",'Q'),("Kog'Maw",'E'),('Xayah','Q'),('Xayah','R'),('Lucian','W'),('Caitlyn','Q'),('Caitlyn','E'),('Jinx','W'),('Zeri','Q')}
+        if (self.name,slot) in direction and self.data[slot].get('range') is not None:return self.data[slot]['range']
+        params=self.data[slot].get('wr_wiki_metadata',{}).get('parameters',{})
+        if any(params.get(key,'').lower()=='global' for key in ('range','target range','effect radius')):return math.inf
+        if 'attack range' in params.get('target range','').lower():return self.attack_range(t)
+        if slot in SELF_BUFFS.get(self.name,()):return self.attack_range(t)
         if self.name=='Ashe' and slot=='W':return 1200.
         if self.name=='Miss Fortune' and slot=='R':return 1450.
         if self.name=='Zeri' and slot=='R':return 640.
         self.unresolved.add(f'{self.name} {slot} range unresolved: conservative AA-range targeting')
         return self.attack_range(t)
     def travel(self,slot,gap):
+        if slot in SELF_BUFFS.get(self.name,()):return 0.
         from combat_timing import skill_travel
         sourced=skill_travel(self.name,slot,gap)
         if sourced is not None:return sourced

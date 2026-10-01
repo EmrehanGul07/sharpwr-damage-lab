@@ -33,6 +33,11 @@ def check(result,maxhp,name):
  verify(not result.rejected,'automatic rejected command')
  for x in result.log:
   verify(math.isfinite(x['damage']) and x['damage']>=0,'invalid damage')
+  from damage_classification import TAGS
+  for part in x.get('damage_components',[]):
+   verify(set(part.get('tags',[]))<=TAGS,'unknown component tag')
+   verify(math.isfinite(part['raw_amount']) and part['raw_amount']>=0,'invalid component amount')
+   if part.get('component')=='Muramana skill Shock':verify(part['tags']==['Item'],'Shock misclassified as basic damage')
   verify(0<=x['hp_after']<=x['hp_before']+1e-8,'nonmonotonic health')
   if x.get('mana') is not None:verify(0<=x['mana']<=x.get('max_mana',x['mana'])+1e-8,'mana bounds')
  commands=[x for x in result.timeline if x['kind']=='attack'];ids=[x['id'] for x in commands]
@@ -92,9 +97,9 @@ def run():
     simulations+=e.simulations
   print(name,count,'cases',flush=True)
  failures=[r for r in rows if r['status']=='FAIL']
- out={'version':'5.64.0','purpose':'Integrity audit only; PC timing proxies and provisional WR mechanics do not establish gameplay parity or globally optimal builds. Not a build cache.','champions':len(PRIORITIES),'levels':[1,15],'targets':list(ns['TARGET_PROFILES']),'case_count':len(rows),'fight_simulations':simulations,'elapsed_seconds':time.perf_counter()-started,'failures':failures,'warnings':{k:sorted(v) for k,v in warnings.items()},'rows':rows}
- (ROOT/'data/combat-audit-v564.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
- (ROOT/'data/combat-audit-traces-v564.json').write_text(json.dumps(examples,ensure_ascii=False,indent=2)+'\n')
+ out={'version':'5.65.0','purpose':'Integrity audit only; PC timing proxies and provisional WR mechanics do not establish gameplay parity or globally optimal builds. Not a build cache.','champions':len(PRIORITIES),'levels':[1,15],'targets':list(ns['TARGET_PROFILES']),'case_count':len(rows),'fight_simulations':simulations,'elapsed_seconds':time.perf_counter()-started,'failures':failures,'warnings':{k:sorted(v) for k,v in warnings.items()},'rows':rows}
+ (ROOT/'data/combat-audit-v565.json').write_text(json.dumps(out,ensure_ascii=False,separators=(',',':'))+'\n')
+ (ROOT/'data/combat-audit-traces-v565.json').write_text(json.dumps(examples,ensure_ascii=False,separators=(',',':'))+'\n')
  print('RESULT',len(rows),'cases',simulations,'fights',len(failures),'failures',out['elapsed_seconds'],'seconds',flush=True)
  if failures:print(json.dumps(failures[:10],ensure_ascii=False))
  return out

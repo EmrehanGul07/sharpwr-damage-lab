@@ -112,7 +112,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -153,7 +154,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -195,7 +197,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -234,7 +237,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -314,7 +318,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -356,7 +361,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -398,7 +404,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -437,7 +444,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -518,7 +526,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -557,7 +566,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -599,7 +609,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -640,7 +651,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -722,7 +734,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -761,7 +774,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -803,7 +817,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -845,7 +860,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -930,7 +946,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -971,7 +988,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -1013,7 +1031,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -1055,7 +1074,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -1137,7 +1157,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -1178,7 +1199,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -1219,7 +1241,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -1258,7 +1281,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -1354,7 +1378,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -1396,7 +1421,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -1435,7 +1461,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -1477,7 +1504,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -1562,7 +1590,8 @@
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
           "cooldown_source": "timing",
-          "verified_supplement": "metadata"
+          "verified_supplement": "metadata",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -1604,7 +1633,8 @@
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
-          "cooldown_source": "timing"
+          "cooldown_source": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -1647,7 +1677,8 @@
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
-          "cooldown_source": "timing"
+          "cooldown_source": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -1690,7 +1721,8 @@
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
-          "cooldown_source": "timing"
+          "cooldown_source": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -1774,7 +1806,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -1816,7 +1849,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -1859,7 +1893,8 @@
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
-          "verified_supplement": "metadata"
+          "verified_supplement": "metadata",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -1901,7 +1936,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -2034,7 +2070,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -2076,7 +2113,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -2118,7 +2156,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -2161,7 +2200,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -2256,7 +2296,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -2295,7 +2336,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -2338,7 +2380,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -2381,7 +2424,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -2663,7 +2707,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -2704,7 +2749,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -2743,7 +2789,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -2782,7 +2829,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -2867,7 +2915,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -2910,7 +2959,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -2953,7 +3003,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -2995,7 +3046,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -3080,7 +3132,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -3122,7 +3175,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -3161,7 +3215,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -3204,7 +3259,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -3315,7 +3371,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -3357,7 +3414,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -3398,7 +3456,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -3440,7 +3499,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -3525,7 +3585,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -3564,7 +3625,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -3605,7 +3667,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -3646,7 +3709,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -3726,7 +3790,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -3767,7 +3832,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -3809,7 +3875,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -3851,7 +3918,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -3944,7 +4012,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -3995,7 +4064,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -4036,7 +4106,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -4078,7 +4149,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -4161,7 +4233,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -4220,7 +4293,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -4259,7 +4333,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -4319,7 +4394,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -4406,7 +4482,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -4445,7 +4522,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -4487,7 +4565,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -4526,7 +4605,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -4609,7 +4689,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -4648,7 +4729,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         },
         "classification": "default_damage"
       },
@@ -4688,7 +4770,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -4727,7 +4810,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     },
@@ -4810,7 +4894,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "W": {
@@ -4851,7 +4936,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "E": {
@@ -4890,7 +4976,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       },
       "R": {
@@ -4932,7 +5019,8 @@
           "wr_wiki_metadata": "evidence",
           "target_range_by_rank": "geometry",
           "effect_radius_by_rank": "geometry",
-          "duration_by_rank": "timing"
+          "duration_by_rank": "timing",
+          "offline_source_evidence": "evidence"
         }
       }
     }

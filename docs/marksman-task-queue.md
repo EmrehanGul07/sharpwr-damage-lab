@@ -1,5 +1,7 @@
 # Marksman implementation queue — 2026-10-01
 
+**Current active follow-up:** [ingame-test-todo.md](ingame-test-todo.md). This queue records adapter integration and earlier research notes; V5.65 offline coverage is in [offline-engine-review-v565.md](offline-engine-review-v565.md).
+
 All 23 champions are connected to Skill Lab. All adapters are provisional: integration completion does not imply verified Wild Rift parity.
 
 Each champion has an executable event timeline, automatic ranks, item callbacks, resource handling and movement. Unknown timings and source conflicts remain explicit in runtime assumptions and the in-game TODO.

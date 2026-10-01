@@ -116,8 +116,10 @@ def replay_marksman(events,**p):
         if any((value.physical,value.magic,value.true)) and classification['status']=='unknown_WR':kit.unresolved.add(f'{name} {action}: WR damage tags unresolved')
         class_amp=ability_magnification(name,action,gap,p.get('hexoptics',False)) if not action.startswith('AA') else 1.
         damage=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(action)*class_amp if raw_override is None else raw_override
-        if p.get('muramana') and eligible and not action.startswith('AA') and cid not in shock_casts:
+        if p.get('muramana') and eligible and not action.startswith('AA') and (cid not in shock_casts or p.get('muramana_repeat_policy')=='every_hit'):
             damage+=.03*(maxmana or 0.)*resistance_multiplier(ea)*multiplier(action);shock_casts.add(cid)
+            components=list(components) if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else []
+            components.append({'damage_type':'physical','raw_amount':.03*(maxmana or 0.),'tags':['Item'],'status':'unknown_WR','component':'Muramana skill Shock'})
         if not math.isfinite(damage) or damage<0:raise ValueError('Invalid event damage')
         health=max(0.,health-damage);executed=False
         threshold=p.get('collector_threshold',0.)
@@ -482,7 +484,7 @@ def replay_marksman(events,**p):
     def start_attack():
         nonlocal aa_clock,aa_lock,attack_sequence,mana
         bonus=total_as()[1].get('bonus_as_total',0.)
-        windup=attack_windup(name,bonus) if p.get('aa_windup') is None else p['aa_windup']
+        windup=(attack_windup(name,bonus) if p.get('aa_windup') is None else p['aa_windup'])*p.get('windup_scale',1.)
         if name=='Senna':
             windup=.5/(1+.6*bonus)
             kit.unresolved.add('Senna WR base windup 0.5s with 60% AS scaling; level-dependent modifier unresolved')

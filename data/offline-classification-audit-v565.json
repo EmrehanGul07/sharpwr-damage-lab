@@ -1,0 +1,2043 @@
+{
+  "version": "5.65.0",
+  "policy": "Inventory audit; unknown tags/properties remain unknown. No PC damage source tags promoted to verified WR.",
+  "ability_statuses": {
+    "no_direct_damage": 25,
+    "WR_wiki_classification": 77,
+    "unknown_WR": 12,
+    "mixed_WR_components": 1
+  },
+  "unknown_abilities": [
+    {
+      "champion": "Tristana",
+      "slot": "R",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot"
+    },
+    {
+      "champion": "Ashe",
+      "slot": "P",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Frost_Shot"
+    },
+    {
+      "champion": "Xayah",
+      "slot": "P",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts"
+    },
+    {
+      "champion": "Yunara",
+      "slot": "P",
+      "source": null
+    },
+    {
+      "champion": "Yunara",
+      "slot": "Q",
+      "source": null
+    },
+    {
+      "champion": "Yunara",
+      "slot": "W",
+      "source": null
+    },
+    {
+      "champion": "Yunara",
+      "slot": "E",
+      "source": null
+    },
+    {
+      "champion": "Yunara",
+      "slot": "R",
+      "source": null
+    },
+    {
+      "champion": "Jinx",
+      "slot": "Q",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "W",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish"
+    },
+    {
+      "champion": "Jhin",
+      "slot": "R",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call"
+    },
+    {
+      "champion": "Senna",
+      "slot": "P",
+      "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Absolution"
+    }
+  ],
+  "items": {
+    "Fiendhunter Bolts": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "ultimate-trigger",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Rapid Firecannon": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "energized",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Runaan's Hurricane": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "multi-target",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Phantom Dancer": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "stacking",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Navori Quickblades": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "ability-cooldown",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Wit's End": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Hexoptics C44": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "distance",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Kraken Slayer": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "every-N-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Nashor's Tooth": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Manamune": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "mana-scaling",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Muramana": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "mana/on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Statikk Shiv": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "energized",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Guinsoo's Rageblade": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "stacking/on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Mortal Reminder": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "penetration",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Maw of Malmortius": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Essence Reaver": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "spell-trigger",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Immortal Shieldbow": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "The Collector": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "execute",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Terminus": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "stacking/on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Stormrazor": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "energized",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Yun Tal Wildarrows": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "permanent stacking",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Galeforce": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "ActiveSpell"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "active",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Mercurial Scimitar": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "active/defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Blade of the Ruined King": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "current-HP/on-hit",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Guardian Angel": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Bloodthirster": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "sustain",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Lord Dominik's Regards": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "bonus-HP scaling",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Trinity Force": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "spell-trigger",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Infinity Edge": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "crit modifier",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Serylda's Grudge": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "penetration/utility",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Serpent's Fang": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "shield-counter",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Youmuu's Ghostblade": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "movement/combat-state",
+      "user_locked": true,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Duskblade of Draktharr": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "first-hit/cooldown",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Edge of Night": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Iceborn Gauntlet": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": "spell-trigger",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Death's Dance": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": "defensive",
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Gluttonous Greaves": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Immortal Treads": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Ionian Boots of Lucidity": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Crimson Lucidity": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Berserker's Greaves": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Gunmetal Greaves": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Mercury's Treads": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Chainlaced Crushers": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Plated Steelcaps": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Armored Advance": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Boots of Mana": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Spellslinger's Shoes": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Boots of Dynamism": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Armorcrusher Boots": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Pickaxe": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Sheen": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Kircheis Shard": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Executioner's Calling": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Recurve Bow": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [
+        "Item",
+        "OnHit"
+      ],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Quicksilver Sash": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Hearthbound Axe": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Vampiric Scepter": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Last Whisper": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Caulfield's Warhammer": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Noonquiver": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Zeal": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "B.F. Sword": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "unavailable",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Tear of the Goddess": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Dagger": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Long Sword": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Brawler's Gloves": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Cloth Armor": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Null-Magic Mantle": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Ruby Crystal": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Amplifying Tome": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Ring of Revelation": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    },
+    "Boots of Speed": {
+      "origin_tags": [
+        "Item"
+      ],
+      "damage_tags": [],
+      "status": "unknown_WR",
+      "trigger_category": null,
+      "user_locked": false,
+      "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "source_status": "retrieved",
+      "field_roles": {
+        "stats": "stat",
+        "trigger_category": "trigger",
+        "finding": "evidence"
+      }
+    }
+  },
+  "runes": {
+    "First Strike": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "bonus_true_damage_pct": "damage_formula",
+        "duration": "timing",
+        "cooldown_range": "timing"
+      }
+    },
+    "Ice Overlord": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "magic_damage_range": "damage_formula",
+        "bonus_hp_ratio": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Phase Rush": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "hits": "parameter",
+        "window": "parameter",
+        "basic_ah": "parameter",
+        "remaining_cd_reduction_pct": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Arcane Comet": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter"
+      }
+    },
+    "Aery": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "shield_range": "parameter",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter"
+      }
+    },
+    "Guardian": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "shield_range": "parameter",
+        "bonus_hp_ratio": "parameter",
+        "ap_ratio": "parameter"
+      }
+    },
+    "Grasp of the Undying": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "charge_time": "parameter",
+        "max_hp_damage_pct": "damage_formula",
+        "max_hp_heal_pct": "parameter",
+        "permanent_hp": "parameter",
+        "ranged_multiplier": "parameter"
+      }
+    },
+    "Conqueror": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "max_stacks": "parameter",
+        "ad_per_stack_range": "parameter",
+        "ap_per_stack_range": "parameter",
+        "ranged_omnivamp_pct": "parameter"
+      }
+    },
+    "Fleet Footwork": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "energy": "parameter",
+        "attack_speed_pct": "parameter",
+        "heal_range": "parameter",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter"
+      }
+    },
+    "Lethal Tempo": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "max_stacks": "parameter",
+        "ranged_as_per_stack_pct": "parameter",
+        "ranged_damage_range": "damage_formula",
+        "ranged_bonus_as_damage_ratio": "damage_formula"
+      }
+    },
+    "Empowerment": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "hits": "parameter",
+        "damage_range": "damage_formula",
+        "damage_amp_pct": "damage_formula",
+        "cooldown": "timing"
+      }
+    },
+    "Dark Harvest": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "threshold_pct": "parameter",
+        "base_damage": "damage_formula",
+        "damage_per_soul": "damage_formula",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Brutal": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "base_damage": "damage_formula",
+        "bonus_ad_ratio": "parameter"
+      }
+    },
+    "Triumph": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "missing_hp_restore_pct": "parameter",
+        "resource_restore_pct": "parameter",
+        "movement_speed": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Battle Zeal": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "amp_per_stack_pct": "parameter",
+        "max_stacks": "parameter"
+      }
+    },
+    "Last Stand": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "start_hp_pct": "parameter",
+        "max_hp_pct": "parameter",
+        "amp_range_pct": "parameter"
+      }
+    },
+    "Cut Down": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "target_hp_above_pct": "parameter",
+        "amp_pct": "parameter"
+      }
+    },
+    "Coup de Grace": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "target_hp_below_pct": "parameter",
+        "amp_pct": "parameter"
+      }
+    },
+    "Legend: Alacrity": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_as_pct": "parameter",
+        "additional_as_max_pct": "parameter",
+        "total_as_max_pct": "parameter"
+      }
+    },
+    "Legend: Haste": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "max_ability_haste": "parameter"
+      }
+    },
+    "Legend: Bloodline": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_omnivamp_pct": "parameter",
+        "additional_max_pct": "parameter",
+        "total_max_pct": "parameter"
+      }
+    },
+    "Eyeball Collection": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "ad_per_stack": "parameter",
+        "max_stacks": "parameter"
+      }
+    },
+    "Hubris": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_force": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Tyrant": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "threshold_pct": "parameter",
+        "damage_range": "damage_formula",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Chain Assault": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "charges": "parameter",
+        "damage_range": "damage_formula",
+        "bonus_ad_ratio": "parameter",
+        "ap_ratio": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Sudden Impact": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "window": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Cheap Shot": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "cooldown": "timing"
+      }
+    },
+    "Zombie Ward": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "ad_per_stack": "parameter",
+        "ap_per_stack": "parameter",
+        "max_stacks": "parameter",
+        "default_stacks": "parameter"
+      }
+    },
+    "Empowered Attack": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "ranged_multiplier": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Relentless Hunter": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_ooc_ms": "parameter",
+        "ooc_ms_per_stack": "parameter",
+        "max_stacks": "parameter",
+        "default_stacks": "parameter"
+      }
+    },
+    "Overgrowth": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "units_per_proc": "parameter",
+        "hp_per_proc": "parameter",
+        "threshold_stacks": "parameter",
+        "health_amp_pct": "parameter",
+        "default_stacks": "parameter"
+      }
+    },
+    "Bone Plating": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "reduction_range": "parameter",
+        "hits": "parameter",
+        "window": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Second Wind": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "passive_heal": "parameter",
+        "passive_interval": "parameter",
+        "missing_hp_ratio": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Perseverance": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "tenacity_pct": "parameter",
+        "resist_range": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Revitalize": {
+      "role": "damage_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_amp_pct": "parameter",
+        "low_hp_threshold_pct": "parameter",
+        "additional_amp_pct": "parameter"
+      }
+    },
+    "Nullifying Orb": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "threshold_pct": "parameter",
+        "shield_range": "parameter",
+        "duration": "timing",
+        "cooldown": "timing"
+      }
+    },
+    "Unshakeable": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "base_resist_pct": "parameter",
+        "resist_per_enemy_pct": "parameter",
+        "max_enemies": "parameter",
+        "default_enemies": "parameter",
+        "max_slow_resist_pct": "parameter"
+      }
+    },
+    "Courage of the Colossus": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "shield_range": "parameter",
+        "max_hp_ratio": "parameter",
+        "duration": "timing",
+        "cooldown": "timing"
+      }
+    },
+    "Font of Life": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "self_max_hp_ratio": "parameter",
+        "ally_max_hp_ratio": "parameter",
+        "ap_ratio": "parameter",
+        "melee_multiplier": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Demolish": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "attack_number": "parameter",
+        "ranged_base": "parameter",
+        "ranged_max_hp_ratio": "parameter",
+        "melee_base": "parameter",
+        "melee_max_hp_ratio": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Gathering Storm": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "first_minute": "parameter",
+        "interval_minutes": "parameter",
+        "verified_ad_sequence": "parameter"
+      }
+    },
+    "Absolute Focus": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "threshold_pct": "parameter",
+        "ad_range": "parameter"
+      }
+    },
+    "Scorch": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "damage_range": "damage_formula",
+        "delay": "parameter",
+        "cooldown": "timing"
+      }
+    },
+    "Axiom Arcanist": {
+      "role": "additional_damage",
+      "tags": [],
+      "status": "unknown_WR",
+      "field_roles": {
+        "ultimate_amp_pct": "parameter",
+        "aoe_ultimate_damage_pct": "damage_formula",
+        "takedown_cd_reduction_pct": "parameter"
+      }
+    },
+    "Manaflow Band": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "mana_per_stack": "parameter",
+        "max_mana": "parameter",
+        "default_mana": "parameter"
+      }
+    },
+    "Transcendence": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "level1_ah": "parameter",
+        "level5_additional_ah": "parameter",
+        "level9_cd_reduction_pct": "parameter",
+        "proc_cooldown": "timing"
+      }
+    },
+    "Celerity": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "movement_speed_pct": "parameter",
+        "bonus_ms_amp_pct": "parameter"
+      }
+    },
+    "Nimbus Cloak": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "movement_speed_range_pct": "parameter",
+        "duration": "timing"
+      }
+    },
+    "Ixtali Seedjar": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "seed_duration": "timing",
+        "available_after_minutes": "parameter",
+        "plant_cooldown": "timing"
+      }
+    },
+    "Hexflash": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "max_channel": "parameter",
+        "cooldown": "timing",
+        "combat_cooldown": "timing"
+      }
+    },
+    "Botanist": {
+      "role": "stat_or_state_modifier",
+      "tags": [],
+      "status": "not_a_damage_instance",
+      "field_roles": {
+        "gold": "parameter",
+        "honeyfruit_heal_amp_pct": "parameter",
+        "scryer_vision_amp_pct": "parameter",
+        "blast_cone_ms_pct": "parameter",
+        "blast_cone_ms_duration": "timing"
+      }
+    }
+  },
+  "stat_fields": {
+    "base_ad": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "ad_growth": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "as_ratio": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_as": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_bonus_as": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "as_growth": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_hp": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "hp_growth": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_hp_regen_per_5s": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "hp_regen_growth_per_5s": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_mana": {
+      "role": "resource",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "mana_growth": {
+      "role": "resource",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_mana_regen_per_5s": {
+      "role": "resource",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "mana_regen_growth_per_5s": {
+      "role": "resource",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_armor": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "armor_growth": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "base_mr": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "mr_growth": {
+      "role": "defense",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "movement_speed": {
+      "role": "stat",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_range": {
+      "role": "geometry",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_cast_time": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_total_time": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_delay_offset": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_windup": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "windup_modifier": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "attack_projectile_speed": {
+      "role": "timing",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    },
+    "gameplay_radius": {
+      "role": "geometry",
+      "tags": [],
+      "status": "not_a_damage_instance"
+    }
+  },
+  "event_order": [
+    "successful command: check locks/range/mana, consume resource, arm cast triggers",
+    "AA: reserve identity/ammo/weapon, lock windup, queue flight",
+    "impact: damage using currently modeled stats and current HP, execute, grant stacks",
+    "equal-time heap insertion order; effects queued within an impact resolve after that impact",
+    "target death: discard remaining queued damage"
+  ],
+  "remaining_order_uncertainty": [
+    "launch versus impact stat snapshots",
+    "on-hit/phantom counter eligibility",
+    "same-time expiry versus hit WR parity",
+    "item/champion damage reduction classification"
+  ]
+}

@@ -45,6 +45,14 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     Lethal Tempo: attacks only. Style: different consecutive attack/skill types.
     Cast lockout/projectile travel are not inferred. Optional mana regenerates between events.
     """
+    repeat_policy=kit_options.get('muramana_repeat_policy','first_cast')
+    windup_scale=kit_options.get('windup_scale',1.)
+    spatial=(distance,attack_range,movement_speed,mana_regen_per_5s,mana_refund)
+    if not all(math.isfinite(v) for v in spatial) or min(spatial)<0 or mana_refund>1:raise ValueError('Invalid spatial/resource stats')
+    if aa_windup is not None and (not math.isfinite(aa_windup) or aa_windup<0):raise ValueError('Invalid AA windup')
+    if any(not isinstance(r,int) or isinstance(r,bool) for r in (q_rank,w_rank,e_rank,r_rank)):raise ValueError('Invalid skill rank')
+    if repeat_policy not in ('first_cast','every_hit'):raise ValueError('Invalid Muramana repeat policy')
+    if not math.isfinite(windup_scale) or windup_scale<=0:raise ValueError('Invalid windup scale')
     if champion not in ('Samira','Smolder'):
         from marksman_fight_engine import replay_marksman
         return replay_marksman(events,level=level,ad=ad,attack_speed=attack_speed,crit_chance=crit_chance,crit_damage=crit_damage,hp=hp,armor=armor,q_rank=q_rank,r_rank=r_rank,ability_haste=ability_haste,pct_pen=pct_pen,flat_pen=flat_pen,mode=mode,seed=seed,keystone=keystone,sub_runes=sub_runes,r_duration=r_duration,aa_hit=aa_hit,yuntal_initial=yuntal_initial,yuntal=yuntal,base_ad=base_ad,terminus=terminus,w_rank=w_rank,e_rank=e_rank,mr=mr,pct_mpen=pct_mpen,flat_mpen=flat_mpen,navori=navori,collector_threshold=collector_threshold,skill_amp=skill_amp,transcendence=transcendence,automatic_until=automatic_until,until_death=until_death,max_mana=max_mana,mana_regen_per_5s=mana_regen_per_5s,timed_combat=timed_combat,distance=distance,attack_range=attack_range,aa_windup=aa_windup,movement_speed=movement_speed,base_windup=base_windup,starting_bonus_as=starting_bonus_as,aa_stats=aa_stats,mana_refund=mana_refund,muramana=muramana,champion=champion,ap=ap,initial_stacks=initial_stacks,skill_priority=skill_priority,use_e=use_e,**kit_options)
@@ -269,7 +277,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     total_bonus_as=starting_bonus_as+bonus_as
                     if aa_stats:total_bonus_as=attack_stats(t)[1]['bonus_as_total']
                     from combat_timing import attack_windup,attack_travel
-                    windup=(base_windup/(1+.5*total_bonus_as)) if base_windup is not None else attack_windup(champion,total_bonus_as) if aa_windup is None else aa_windup
+                    windup=((base_windup/(1+.5*total_bonus_as)) if base_windup is not None else attack_windup(champion,total_bonus_as) if aa_windup is None else aa_windup)*windup_scale
                     attack_windup_until=t+windup
                     arrival=t+windup+attack_travel(champion,gap,melee=gap<=200)
                     aa_remaining=1.;aa_clock_time=t
@@ -377,9 +385,10 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             damage+=passive*resistance_multiplier(effective_resistance(mr,hit_magic_pen,flat_mpen))*(2 if action=='W' and not timed_combat else 1)*skill_amp
         if muramana and action not in ('AA','Burn tick'):
             key=(action if action!='R tick' else 'R',cast_id[0] if timed_combat or action=='R tick' else casts)
-            if key not in shock_casts:
+            if key not in shock_casts or repeat_policy=='every_hit':
                 damage+=.03*(max_mana or 0.)*resistance_multiplier(ea)*skill_amp
-                shock_casts.add(key);effects.append('Muramana Shock (first hit of cast; repeat eligibility TODO)')
+                components.append({'damage_type':'physical','raw_amount':.03*(max_mana or 0.),'tags':['Item'],'status':'unknown_WR','component':'Muramana skill Shock'})
+                shock_casts.add(key);effects.append('Muramana Shock (first hit of cast; repeat eligibility TODO)' if repeat_policy=='first_cast' else 'Muramana Shock (every-hit sensitivity assumption)')
         if action in ('Q','W','E','Burn tick') and 'Battle Zeal' in sub_runes and combat_start is not None:damage*=1+.014*min(3,int(t-combat_start))
         if 'Cut Down' in sub_runes and before_hp/hp>.60:damage*=1.065
         if 'Coup de Grace' in sub_runes and before_hp/hp<.40:damage*=1.08

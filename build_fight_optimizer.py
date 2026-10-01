@@ -50,8 +50,8 @@ def diverse_shortlist(evaluator,rows,width):
 def score(row):return (row['TTK'] is None,row['TTK'] if row['TTK'] is not None else -row['Damage'],row['Gold'],row['Items'],row['Boots'] or '')
 
 class BuildFightEvaluator:
-    def __init__(self,namespace,champion,level,hp,armor,mr,*,mist=0,bonus_hp=0,aa_reduction=0,base_mana=None,energized=False,yuntal_stacks=0,execs=0,dragon_stacks=0,retain_traces=False):
-        self.ns=namespace;self.champion=champion;self.level=level;self.hp=hp;self.armor=armor;self.mr=mr;self.mist=mist;self.bonus_hp=bonus_hp;self.aa_reduction=aa_reduction;self.base_mana=base_mana;self.energized=energized;self.yuntal_stacks=yuntal_stacks;self.execs=execs;self.dragon_stacks=dragon_stacks;self.cache={};self.simulations=0;self.retain_traces=retain_traces;self.traces={}
+    def __init__(self,namespace,champion,level,hp,armor,mr,*,mist=0,bonus_hp=0,aa_reduction=0,base_mana=None,energized=False,yuntal_stacks=0,execs=0,dragon_stacks=0,retain_traces=False,simulation_overrides=None):
+        self.ns=namespace;self.champion=champion;self.level=level;self.hp=hp;self.armor=armor;self.mr=mr;self.mist=mist;self.bonus_hp=bonus_hp;self.aa_reduction=aa_reduction;self.base_mana=base_mana;self.energized=energized;self.yuntal_stacks=yuntal_stacks;self.execs=execs;self.dragon_stacks=dragon_stacks;self.cache={};self.simulations=0;self.retain_traces=retain_traces;self.traces={};self.simulation_overrides=dict(simulation_overrides or {})
     def evaluate(self,items,boot=None,refine=False):
         items=tuple(sorted(items));key=(items,boot,refine)
         if key in self.cache:return self.cache[key]
@@ -67,8 +67,7 @@ class BuildFightEvaluator:
         results=[];fight_results=[]
         policies=('approach',) if n=='Samira' else (('skill_envelope','aa_envelope','close_envelope') if deep else ('skill_envelope',))
         ultimates=('immediate','after_basics') if deep else ('immediate',)
-        configurations={(priority,policies[0],u,a) for priority in priorities for u in ultimates for a in (('skill_first','aa_weave') if deep else ('skill_first',))}
-        configurations.update((default,m,u,a) for m in policies for u in ultimates for a in (('skill_first','aa_weave') if deep else ('skill_first',)))
+        configurations={(priority,m,u,a) for priority in priorities for m in policies for u in ultimates for a in (('skill_first','aa_weave') if deep else ('skill_first',))}
         recall_counts=(1,3,5) if n=='Xayah' and deep else (3,)
         for (priority,movement,ultimate_policy,action_policy),recall_count in product(sorted(configurations),recall_counts):
             for use_e in (False,True):
@@ -84,7 +83,9 @@ class BuildFightEvaluator:
                         return {'bonus_as_total':bonus,'as':min(3.,s['baseas']+s['ratio']*bonus),'buff_expiry':min(expiry) if expiry else -1}
                     def aa(state):
                         hit=kernel.send(state);last.update(hit);last['ult_seen']=state.get('ultimate_cast_time');return hit
-                    r=replay_samira([],champion=n,level=l,ad=s['ad']+total['ad']+awe,base_ad=s['ad'],ap=total['ap'],attack_speed=s['baseas'],as_ratio=s['ratio'],natural_attack_speed=s['baseas']+s['ratio']*(s['bba']+s['lvbas']),crit_chance=min(1,total['crit']+(self.mist//20*.1 if n=='Senna' else 0)),crit_damage=2.3 if 'Infinity Edge' in items else 2,hp=self.hp,armor=self.armor,mr=self.mr,**{k.lower()+'_rank':v for k,v in champion_ranks(n,l).items()},ability_haste=total['ah'],pct_pen=total['pctpen'],flat_pen=total['flatpen'],pct_mpen=total['pctmpen'],flat_mpen=total['flatmpen'],skill_priority=priority,movement_policy=movement,ultimate_policy=ultimate_policy,action_policy=action_policy,recall_min_feathers=recall_count,use_e=use_e,weapon=weapon,movement_speed=ms,attack_range=radius,distance=radius,timed_combat=True,instant_skills=False,base_windup=None,aa_hit=aa,aa_stats=aa_stats,max_mana=maxmana,mana_regen_per_5s=core['mana_regen_per_5s'] or 0,until_death=True,automatic_until=60,mist=self.mist,initial_stacks=self.dragon_stacks,completed_items=len(items),item_as=total['as'],item_ad=total['ad'],navori='Navori Quickblades' in items,muramana='Muramana' in items,mana_refund=.15 if any(x in items for x in ('Manamune','Muramana')) else 0,terminus='Terminus' in items,yuntal='Yun Tal Wildarrows' in items,yuntal_initial=min(.25,self.yuntal_stacks*.002),galeforce="Galeforce" in items,hexoptics="Hexoptics C44" in items,collector_threshold=min(1,.05+.001*self.execs) if 'The Collector' in items else 0,skill_amp=(1.05 if boot=='Immortal Treads' else 1)*(1+min(.12,self.bonus_hp/125*.01) if "Lord Dominik's Regards" in items else 1))
+                    fight_args=dict(champion=n,level=l,ad=s['ad']+total['ad']+awe,base_ad=s['ad'],ap=total['ap'],attack_speed=s['baseas'],as_ratio=s['ratio'],natural_attack_speed=s['baseas']+s['ratio']*(s['bba']+s['lvbas']),crit_chance=min(1,total['crit']+(self.mist//20*.1 if n=='Senna' else 0)),crit_damage=2.3 if 'Infinity Edge' in items else 2,hp=self.hp,armor=self.armor,mr=self.mr,**{k.lower()+'_rank':v for k,v in champion_ranks(n,l).items()},ability_haste=total['ah'],pct_pen=total['pctpen'],flat_pen=total['flatpen'],pct_mpen=total['pctmpen'],flat_mpen=total['flatmpen'],skill_priority=priority,movement_policy=movement,ultimate_policy=ultimate_policy,action_policy=action_policy,recall_min_feathers=recall_count,use_e=use_e,weapon=weapon,movement_speed=ms,attack_range=radius,distance=radius,timed_combat=True,instant_skills=False,base_windup=None,aa_hit=aa,aa_stats=aa_stats,max_mana=maxmana,mana_regen_per_5s=core['mana_regen_per_5s'] or 0,until_death=True,automatic_until=60,mist=self.mist,initial_stacks=self.dragon_stacks,completed_items=len(items),item_as=total['as'],item_ad=total['ad'],navori='Navori Quickblades' in items,muramana='Muramana' in items,mana_refund=.15 if any(x in items for x in ('Manamune','Muramana')) else 0,terminus='Terminus' in items,yuntal='Yun Tal Wildarrows' in items,yuntal_initial=min(.25,self.yuntal_stacks*.002),galeforce="Galeforce" in items,hexoptics="Hexoptics C44" in items,collector_threshold=min(1,.05+.001*self.execs) if 'The Collector' in items else 0,skill_amp=(1.05 if boot=='Immortal Treads' else 1)*(1+min(.12,self.bonus_hp/125*.01) if "Lord Dominik's Regards" in items else 1))
+                    fight_args.update(self.simulation_overrides)
+                    r=replay_samira([],**fight_args)
                     self.simulations+=1
                     if self.retain_traces:fight_results.append(r)
                     duration=max(.05,r.killed_at if r.killed_at is not None else 60)
@@ -95,7 +96,7 @@ class BuildFightEvaluator:
                     starting_ad=s['ad']+total['ad']+awe
                     if n=='Jhin':starting_ad=jhin_attack_damage(starting_ad,l,s['bba']+s['lvbas']+total['as'],min(1,total['crit']+(min(.25,self.yuntal_stacks*.002) if 'Yun Tal Wildarrows' in items else 0)))
                     if n=='Jhin':start_raw=s['baseas']+s['ratio']*(s['bba']+s['lvbas'])
-                    results.append({'Items':items,'Boots':boot,'TTK':r.killed_at,'DPS':r.total_damage/duration,'Damage':r.total_damage,'AA damage':aa_damage,'Other damage':max(0.,r.total_damage-aa_damage),'Gold':total['gold'],'AD':starting_ad+(.5*max(0.,(s['bba']+s['lvbas']+total['as']-max(0.,(1.5-s['baseas'])/s['ratio']))*100) if n=='Zeri' else 0.),'AP':total['ap'],'Crit %':min(100,total['crit']*100),'AH':total['ah'],'Starting AS':min(cap,start_raw),'AS over cap':max(0,start_raw-cap),'Rotation':' → '.join(priority),'Movement':movement,'Ultimate timing':ultimate_policy,'Attack weaving':action_policy,'Recall minimum':recall_count if n=='Xayah' else None,'E enabled':use_e,'Weapon':weapon,'Assumptions':r.assumptions})
+                    results.append({'Items':items,'Boots':boot,'TTK':r.killed_at,'DPS':r.total_damage/duration,'Damage':r.total_damage,'AA damage':aa_damage,'Other damage':max(0.,r.total_damage-aa_damage),'Gold':total['gold'],'AD':starting_ad+(.5*max(0.,(s['bba']+s['lvbas']+total['as']-max(0.,(1.5-s['baseas'])/s['ratio']))*100) if n=='Zeri' else 0.),'AP':total['ap'],'Crit %':min(100,total['crit']*100),'AH':total['ah'],'Starting AS':min(cap,start_raw),'AS over cap':max(0,start_raw-cap),'Rotation':' → '.join(priority),'Movement':movement,'Ultimate timing':ultimate_policy,'Attack weaving':action_policy,'Recall minimum':recall_count if n=='Xayah' else None,'E enabled':use_e,'Weapon':weapon,'Assumptions':r.assumptions,'Policies tested':len(configurations)*len(recall_counts)})
         row=min(results,key=score);self.cache[key]=row
         if self.retain_traces:self.traces[key]=fight_results[results.index(row)]
         return row
@@ -112,7 +113,7 @@ def explain_ties(rows):
 
 def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=None):
     """All singles/pairs; diverse beam, rotation screening, then deeper policy validation."""
-    pool=tuple(sorted(pool));stages={};beam=[()];tested={}
+    pool=tuple(sorted(set(pool)));stages={};beam=[()];tested={}
     for stage in range(1,6):
         candidates={tuple(sorted((*seed,item))) for seed in beam for item in pool if item not in seed and legal((*seed,item))}
         rows=[evaluator.evaluate(x) for x in sorted(candidates)]
@@ -138,4 +139,4 @@ def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=
             without=evaluator.evaluate(tuple(x for x in best['Items'] if x!=removed),None if removed==best['Boots'] else best['Boots'],refine=True)
             marginal.append({'Item':removed,'DPS contribution':best['DPS']-without['DPS'],'TTK increase without item':None if best['TTK'] is None or without['TTK'] is None else without['TTK']-best['TTK'],'Target survives without item':without['TTK'] is None})
     if progress:progress(1.,'Complete')
-    return {'marginal':marginal,'stages':{k:explain_ties(v) for k,v in stages.items() if k<5},'full':explain_ties(refined)[:3],'tested':tested,'full_candidates':len(full),'refined':len(refined),'simulations':evaluator.simulations,'beam_width':beam_width,'pool_size':len(pool),'boot_count':len(boots),'diversity_profiles':('AP','crit','on-hit','penetration','exact archetypes','pairwise hybrids')}
+    return {'marginal':marginal,'stages':{k:explain_ties(v) for k,v in stages.items() if k<5},'full':explain_ties(refined)[:3],'tested':tested,'full_candidates':len(full),'refined':len(refined),'simulations':evaluator.simulations,'beam_width':beam_width,'pool_size':len(pool),'boot_count':len(boots),'search_status':'bounded diverse beam; not globally exhaustive','deep_policy_cross_product':True,'candidate_boot_policy':'boots compared at full build; stages 1-4 exclude boots','diversity_profiles':('AP','crit','on-hit','penetration','exact archetypes','pairwise hybrids')}

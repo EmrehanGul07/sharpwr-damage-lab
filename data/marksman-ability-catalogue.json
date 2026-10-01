@@ -193,7 +193,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -208,7 +209,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Pierce"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kalista/Pierce",
+          "offline_source_evidence": {
+            "champion": "Kalista",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Pierce",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|55 to 70 4}}",
+              "costtype": "Mana",
+              "spelleffects": "Single target",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Sentinel",
@@ -297,7 +319,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -311,6 +334,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kalista",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Sentinel",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.5}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "magic",
+              "cost": "",
+              "costtype": "",
+              "spelleffects": "proc",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -410,7 +454,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -424,6 +469,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kalista",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Rend",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Physical",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -518,7 +584,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -532,6 +599,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kalista",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Fate%27s_Call",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -729,7 +817,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -743,6 +832,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Tristana",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rapid_Fire",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "none",
+              "costtype": "",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -842,7 +952,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -861,6 +972,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Tristana",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rocket_Jump",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "60",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -959,7 +1091,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -973,6 +1106,27 @@
             "speed_scalar": 2400.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Tristana",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Explosive_Charge",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|edge range|icononly = true}} {{pp|545 to 685 for 15}}",
+              "effect radius": "",
+              "cast time": "{{as|100% of '''Tristana's''' windup time|as}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|55 to 70 4}}",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -1067,7 +1221,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1091,7 +1246,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Buster_Shot"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Tristana/Buster_Shot",
+          "offline_source_evidence": {
+            "champion": "Tristana",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|edge range|icononly = true}} {{pp|545 to 685 for 15}}",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -1289,7 +1465,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1303,6 +1480,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Twitch",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Ambush",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "40",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -1399,7 +1597,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1415,7 +1614,28 @@
             "speed_status": "sourced_scalar"
           },
           "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom_Cask",
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom_Cask"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Venom_Cask",
+          "offline_source_evidence": {
+            "champion": "Twitch",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Venom_Cask",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{as|0.25 to 0.1 (based on '''bonus''' attack speed) (estimated)}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
+          }
         },
         "E": {
           "name": "Contaminate",
@@ -1513,7 +1733,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1527,6 +1748,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "non_projectile"
+          },
+          "offline_source_evidence": {
+            "champion": "Twitch",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Contaminate",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "global",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "false",
+              "damagetype": "Physical",
+              "cost": "{{ap|35 to 65 4}}",
+              "costtype": "Mana",
+              "spelleffects": "Aoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -1623,7 +1865,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1638,7 +1881,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Spray_and_Pray"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Twitch/Spray_and_Pray",
+          "offline_source_evidence": {
+            "champion": "Twitch",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Spray_and_Pray",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|edge range|icononly = true}} Twitch's {{sti|range|attack range}}",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "basic",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -1837,7 +2101,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1851,6 +2116,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_in_source"
+          },
+          "offline_source_evidence": {
+            "champion": "Draven",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Spinning_Axe",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "Special",
+              "damagetype": "Physical",
+              "cost": "45",
+              "costtype": "mana",
+              "spelleffects": "basic",
+              "onhiteffects": "Special"
+            }
           }
         },
         "W": {
@@ -1946,7 +2232,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -1960,6 +2247,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Draven",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Blood_Rush",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "{{ap|40 to 25 4}}",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -2064,7 +2372,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2078,6 +2387,27 @@
             "speed_scalar": 1400.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Draven",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Stand_Aside",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|centered range|icononly = true}} 1100",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1400",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -2175,7 +2505,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2189,6 +2520,27 @@
             "speed_scalar": 2000.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Draven",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Whirling_Death",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "Global",
+              "effect radius": "",
+              "cast time": "{{fd|0.5}}",
+              "speed": "2000",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -2400,7 +2752,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2414,6 +2767,27 @@
             "speed_scalar": 1650.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Kog'Maw",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Caustic_Spittle",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|cr|icononly = true}} 1200",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "Basic attack timer",
+              "speed": "1650",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "40",
+              "costtype": "Mana",
+              "spelleffects": "Single target",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -2514,7 +2888,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2528,6 +2903,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kog'Maw",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Bio-Arcane_Barrage",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "40",
+              "costtype": "Mana",
+              "spelleffects": "Proc",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -2628,7 +3024,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2642,6 +3039,27 @@
             "speed_scalar": 1400.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Kog'Maw",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Void_Ooze",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|cr|icononly = true}} 1360",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1400",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "{{ap|40 to 100}}",
+              "costtype": "Mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -2737,7 +3155,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2751,6 +3170,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kog'Maw",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Living_Artillery",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{ap|1300 to 1800}}",
+              "effect radius": "{{WRtip|cr|icononly = true}} 240",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "{{pp|type=stacks|40 to 400 for 10|0 to 9}}",
+              "costtype": "Mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -2950,7 +3390,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -2964,6 +3405,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "sourced_expression"
+          },
+          "offline_source_evidence": {
+            "champion": "Vayne",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Tumble",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "physical",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -3062,7 +3524,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3076,6 +3539,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Vayne",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Silver_Bolts",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "true",
+              "cost": "45",
+              "costtype": "Mana",
+              "spelleffects": "Proc",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -3174,7 +3658,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3198,7 +3683,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Condemn"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Vayne/Condemn",
+          "offline_source_evidence": {
+            "champion": "Vayne",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Condemn",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "physical",
+              "cost": "90",
+              "costtype": "Mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
+          }
         },
         "R": {
           "name": "Final Hour",
@@ -3292,7 +3798,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3306,6 +3813,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Vayne",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Final_Hour",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -3514,7 +4042,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3528,6 +4057,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_in_source"
+          },
+          "offline_source_evidence": {
+            "champion": "Ashe",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Ranger%27s_Focus",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "50",
+              "costtype": "Mana + 4 Focus",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -3631,7 +4181,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3646,7 +4197,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Volley"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Volley",
+          "offline_source_evidence": {
+            "champion": "Ashe",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Volley",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{WRtip|centered range|icononly = true}} {{tt|1200|Not including the offset, see notes}}",
+              "cast time": "",
+              "speed": "2000",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "50",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
+          }
         },
         "E": {
           "name": "Hawkshot",
@@ -3738,7 +4310,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3753,7 +4326,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Hawkshot"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Hawkshot",
+          "offline_source_evidence": {
+            "champion": "Ashe",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Hawkshot",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "Global",
+              "effect radius": "{{tt|1000|Vision bubble radiuses}}",
+              "cast time": "",
+              "speed": "1400",
+              "duration": "",
+              "projectile": "special",
+              "damagetype": "",
+              "cost": "",
+              "costtype": "",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
+          }
         },
         "R": {
           "name": "Enchanted Crystal Arrow M",
@@ -3850,7 +4444,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -3865,7 +4460,28 @@
             "speed_variants": [],
             "speed_status": "sourced_expression"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Enchanted_Crystal_Arrow"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ashe/Enchanted_Crystal_Arrow",
+          "offline_source_evidence": {
+            "champion": "Ashe",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Enchanted_Crystal_Arrow",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "Global",
+              "target range": "",
+              "effect radius": "{{WRtip|centered range|icononly = true}} {{tt|400|Radius of explosion}} / {{tt|350|Sight radius of missile}}",
+              "cast time": "",
+              "speed": "{{tt|1500 - 2100|accelerates with 200 speed per second}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -4078,7 +4694,8 @@
               "effect_radius_by_rank": "geometry",
               "duration_by_rank": "timing",
               "cooldown_source": "timing",
-              "verified_supplement": "metadata"
+              "verified_supplement": "metadata",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4098,7 +4715,28 @@
             ],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Piercing_Arrow"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Piercing_Arrow",
+          "offline_source_evidence": {
+            "champion": "Varus",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|75 to 90 4}}",
+              "costtype": "mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Blighted Quiver on-hit büyü",
@@ -4181,7 +4819,8 @@
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
               "duration_by_rank": "timing",
-              "cooldown_source": "timing"
+              "cooldown_source": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4195,6 +4834,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Varus",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Blighted_Quiver",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "",
+              "costtype": "",
+              "spelleffects": "Proc",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -4286,7 +4946,8 @@
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
               "duration_by_rank": "timing",
-              "cooldown_source": "timing"
+              "cooldown_source": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4307,6 +4968,27 @@
               "mTravelTime": 0.5
             },
             "fixed_travel_seconds": 0.5
+          },
+          "offline_source_evidence": {
+            "champion": "Varus",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Hail_of_Arrows",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.35}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Magic",
+              "cost": "80",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -4396,7 +5078,8 @@
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
               "duration_by_rank": "timing",
-              "cooldown_source": "timing"
+              "cooldown_source": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4416,7 +5099,28 @@
             ],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Chain_of_Corruption"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Varus/Chain_of_Corruption",
+          "offline_source_evidence": {
+            "champion": "Varus",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -4637,7 +5341,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4651,6 +5356,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_in_source"
+          },
+          "offline_source_evidence": {
+            "champion": "Xayah",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "1000",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{tt|{{fd|0.25}}|Actually 0.125, then remains in cast time for another 0.125.}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "special",
+              "damagetype": "Physical",
+              "cost": "50",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -4751,7 +5477,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4771,7 +5498,28 @@
             ],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Deadly_Plumage"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Deadly_Plumage",
+          "offline_source_evidence": {
+            "champion": "Xayah",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Deadly_Plumage",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical",
+              "cost": "50",
+              "costtype": "Mana",
+              "spelleffects": "periodic",
+              "onhiteffects": ""
+            }
+          }
         },
         "E": {
           "name": "Bladecaller",
@@ -4881,7 +5629,8 @@
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
               "duration_by_rank": "timing",
-              "verified_supplement": "metadata"
+              "verified_supplement": "metadata",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -4896,7 +5645,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Bladecaller"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Xayah/Bladecaller",
+          "offline_source_evidence": {
+            "champion": "Xayah",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "Global",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "40",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         },
         "R": {
           "name": "Featherstorm F",
@@ -4994,7 +5764,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5015,7 +5786,28 @@
               "mSpeed": 4000.0
             }
           },
-          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json"
+          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/xayah/xayah.bin.json",
+          "offline_source_evidence": {
+            "champion": "Xayah",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Featherstorm",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "1000",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "special",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -5269,7 +6061,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5288,6 +6081,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Samira",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|centered range|icononly = true}} {{tt|950|Gun shot missile range}} / {{WRtip|centered range|icononly = true}} {{tt|400|Cone range strictly forward, cone origin is X units behind Samira}}",
+              "target range": "{{WRtip|edge range|icononly = true}} {{tt|340|Blade targeting check length}}",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "{{tt|2600|Shot}}",
+              "duration": "",
+              "projectile": "special",
+              "damagetype": "Physical",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -5391,7 +6205,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5405,6 +6220,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Samira",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{WRtip|edge range|icononly = true}} 325",
+              "cast time": "{{fd|0.1}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Physical",
+              "cost": "60",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -5508,7 +6344,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5522,6 +6359,27 @@
             "speed_scalar": 1600.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Samira",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{tt|650|Dash distance}} / {{WRtip|edge range|icononly = true}} {{tt|800|Dash hitbox length}} / {{WRtip|edge range|icononly = true}} {{tt|-150|Dash hitbox behind Samira}}",
+              "target range": "{{WRtip|centered range|icononly = true}} {{tt|600|Cast range}}",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "1600",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "40",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -5623,7 +6481,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5644,7 +6503,28 @@
               "mSpeed": 2800.0
             }
           },
-          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/samira/samira.bin.json"
+          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/samira/samira.bin.json",
+          "offline_source_evidence": {
+            "champion": "Samira",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{WRtip|centered range|icononly = true}} 600",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical",
+              "cost": "6 Style + {{ap|60 to 0 3}}",
+              "costtype": "mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -5861,7 +6741,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5875,6 +6756,27 @@
             "speed_scalar": 1400.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Miss Fortune",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Double_Up",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|er|icononly = true}} Miss Fortune's {{sti|attack range}}",
+              "effect radius": "500",
+              "cast time": "Basic Attack Timer",
+              "speed": "1400",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "35",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": "True"
+            }
           }
         },
         "W": {
@@ -5971,7 +6873,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -5985,6 +6888,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Miss Fortune",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Strut",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -6094,7 +7018,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -6108,6 +7033,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Miss Fortune",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Make_It_Rain",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "1000",
+              "effect radius": "200",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "{{ap|65 to 80 4}}",
+              "costtype": "Mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -6210,7 +7156,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -6224,6 +7171,27 @@
             "speed_scalar": 2000.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Miss Fortune",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Bullet_Time",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{tt|1450|range of each bullet stream}}",
+              "cast time": "none",
+              "speed": "2000",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -6865,7 +7833,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -6886,6 +7855,27 @@
               "mTravelTime": 0.4000000059604645
             },
             "fixed_travel_seconds": 0.4000000059604645
+          },
+          "offline_source_evidence": {
+            "champion": "Kai'Sa",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Icathian_Rain",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "600",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "55",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -6988,7 +7978,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7003,7 +7994,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Void_Seeker"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Kai'Sa/Void_Seeker",
+          "offline_source_evidence": {
+            "champion": "Kai'Sa",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Void_Seeker",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "3000",
+              "effect radius": "",
+              "cast time": "{{pp|0.34 to 0.227|0 to 100 for 11|round= 3|key1= %|type= '''bonus''' attack speed|label= seconds|label1= Bonus AS|color= as}}",
+              "speed": "1750",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "{{ap|60 to 75 4}}",
+              "costtype": "Mana",
+              "spelleffects": "Single",
+              "onhiteffects": ""
+            }
+          }
         },
         "E": {
           "name": "Supercharge",
@@ -7099,7 +8111,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7113,6 +8126,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Kai'Sa",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Supercharge",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{pp|1 to 0.5|0 to 100 for 11|key1= %|type= '''bonus''' attack speed|label= seconds|label1= Bonus AS|formula= -0.005 per 1% '''bonus''' attack speed.|color= as}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -7211,7 +8245,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7231,6 +8266,27 @@
             ],
             "speed_status": "sourced_scalar",
             "speed_kind": "dash_estimate"
+          },
+          "offline_source_evidence": {
+            "champion": "Kai'Sa",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Killer_Instinct",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "400",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -7442,7 +8498,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7456,6 +8513,27 @@
             "speed_scalar": 1100.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Corki",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Phosphorus_Bomb",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "750",
+              "effect radius": "225",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1100",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "{{ap|60 to 75 4}}",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -7565,7 +8643,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7579,6 +8658,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "sourced_expression"
+          },
+          "offline_source_evidence": {
+            "champion": "Corki",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Valkyrie",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "550",
+              "effect radius": "125",
+              "cast time": "none",
+              "speed": "{{tt|650 + {{as|100% movement speed}}|Dash speed}}",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Magic",
+              "cost": "{{ap|80 to 95 4}}",
+              "costtype": "mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -7683,7 +8783,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7697,6 +8798,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "non_projectile"
+          },
+          "offline_source_evidence": {
+            "champion": "Corki",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Gatling_Gun",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "600",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "False",
+              "damagetype": "physical",
+              "cost": "{{ap|50 to 80 4}}",
+              "costtype": "mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -7794,7 +8916,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -7813,6 +8936,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Corki",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Missile_Barrage",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "1100 \\ [[File:Corki Big One WR.png|20px|border|link=]] 1175",
+              "effect radius": "150 \\ [[File:Corki Big One WR.png|20px|border|link=]] 300",
+              "cast time": "{{fd|0.175}}",
+              "speed": "2000",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "20",
+              "costtype": "mana + 1 Ammo",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -8019,7 +9163,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8033,6 +9178,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "non_projectile"
+          },
+          "offline_source_evidence": {
+            "champion": "Lucian",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Piercing_Light",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|edge range|icononly = true}} 1000",
+              "target range": "{{WRtip|edge range|icononly = true}} 500",
+              "effect radius": "",
+              "cast time": "{{as|{{pp|type='''bonus''' attack speed|round=3|0.4 to 0.25 for 6|0 to 140|key1=%|formula=0.4-((0.025 per 23.3% '''bonus''' attack speed)). ''This is capped at a 0.15 second reduction at 140% '''bonus''' attack speed.''}}|attack speed}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "False",
+              "damagetype": "Physical",
+              "cost": "{{ap|50 to 80 4}}",
+              "costtype": "Mana",
+              "spelleffects": "AoE",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -8132,7 +9298,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8146,6 +9313,27 @@
             "speed_scalar": 1600.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Lucian",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Ardent_Blaze",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "800",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1600",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -8246,7 +9434,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8260,6 +9449,27 @@
             "speed_scalar": 1350.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Lucian",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Relentless_Pursuit",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "425",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "1350",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "{{ap|45 to 0 4}}",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -8358,7 +9568,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8373,7 +9584,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/The_Culling"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Lucian/The_Culling",
+          "offline_source_evidence": {
+            "champion": "Lucian",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/The_Culling",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|centered range|icononly = true}} {{tt|1200|Individual missile range}} / {{WRtip|edge range|icononly = true}} 1140 (plus offset)",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "aoedot",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -8583,7 +9815,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8607,7 +9840,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Super_Scorcher_Breath"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Super_Scorcher_Breath",
+          "offline_source_evidence": {
+            "champion": "Smolder",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Super_Scorcher_Breath",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{tt|500|Tier 2 missiles}}",
+              "target range": "{{as|{{sti|range|icononly=true}} 100% attack range}}",
+              "effect radius": "{{tt|285|Tier 1 explosion}} / {{tt|150|Tier 2 missile explosions at max range}}",
+              "cast time": "",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "Physical True",
+              "cost": "30",
+              "costtype": "mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Achooo!",
@@ -8696,7 +9950,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8720,7 +9975,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Achooo!"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/Achooo!",
+          "offline_source_evidence": {
+            "champion": "Smolder",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Achooo%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "1250",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.35}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "physical",
+              "cost": "{{ap|50 to 65 4}}",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         },
         "E": {
           "name": "Flap Flap Flap",
@@ -8808,7 +10084,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8827,6 +10104,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Smolder",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Flap%2C_Flap%2C_Flap",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "700",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "{{tt|1800|Bolt speed}}",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "physical",
+              "cost": "65",
+              "costtype": "mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -8918,7 +10216,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -8933,7 +10232,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/MMOOOMMMM!"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Smolder/MMOOOMMMM!",
+          "offline_source_evidence": {
+            "champion": "Smolder",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/MMOOOMMMM%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "3300 / {{tt|-500|Backwards range}}",
+              "target range": "",
+              "effect radius": "{{tt|1000|Vision radius}}",
+              "cast time": "{{fd|0.75}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "physical",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -9134,7 +10454,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9148,6 +10469,27 @@
             "speed_scalar": 2200.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Caitlyn",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Piltover_Peacemaker",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "1150",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.625}}",
+              "speed": "2200",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|50 to 80 4}}",
+              "costtype": "mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -9249,7 +10591,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9263,6 +10606,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Caitlyn",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Yordle_Snap_Trap",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "675",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "20",
+              "costtype": "Mana + 1 Charge",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -9366,7 +10730,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9389,6 +10754,27 @@
               }
             ],
             "speed_status": "sourced_expression"
+          },
+          "offline_source_evidence": {
+            "champion": "Caitlyn",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/90_Caliber_Net",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "725",
+              "target range": "",
+              "effect radius": "{{WRtip|edge range|icononly = true}} 140",
+              "cast time": "{{fd|0.15}}",
+              "speed": "{{tt|1600|Missile speed}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "75",
+              "costtype": "mana",
+              "spelleffects": "Single target",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -9489,7 +10875,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9503,6 +10890,27 @@
             "speed_scalar": 3200.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Caitlyn",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Ace_in_the_Hole",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|edge range|icononly = true}} {{ap|1750 to 2750 3}}",
+              "effect radius": "",
+              "cast time": "{{fd|0.375}}",
+              "speed": "3200",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -9705,7 +11113,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9719,6 +11128,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Jinx",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{WRtip|centered range|icononly=true}} {{tt|250|Rocket splash radius}}",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "Physical",
+              "cost": "20",
+              "costtype": "Mana per attack with [[File:Jinx Switcheroo! WR.png|20px|border|link=]] ''Fishbones''",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         },
         "W": {
@@ -9816,7 +11246,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9830,6 +11261,27 @@
             "speed_scalar": 3300.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Jinx",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Zap%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|centered range|icononly = true}} {{tt|1500|standard missile end collision behaviour}}",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.6}}",
+              "speed": "3300",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|50 to 80 4}}",
+              "costtype": "Mana",
+              "spelleffects": "Single target",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -9939,7 +11391,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -9953,6 +11406,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_in_source"
+          },
+          "offline_source_evidence": {
+            "champion": "Jinx",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Flame_Chompers%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "925",
+              "effect radius": "{{WRtip|centered range|icononly = true}} {{tt|225|Damage radius}}",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "Special",
+              "damagetype": "Magic",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -10054,7 +11528,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10078,7 +11553,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Super_Mega_Death_Rocket!"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jinx/Super_Mega_Death_Rocket!",
+          "offline_source_evidence": {
+            "champion": "Jinx",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Super_Mega_Death_Rocket%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "Global",
+              "effect radius": "{{WRtip|centered range|icononly = true}} {{tt|400|radius of explosion}} / {{WRtip|sight|icononly = true}} {{tt|1000|sight radius of missile}} / {{tt|1000|radius of reveal from explosion}}",
+              "cast time": "{{fd|0.6}}",
+              "speed": "{{ap|{{tt|1700|Initial rocket speed}}|{{tt|2200|After traveling 1350 units}}}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "Area of effect",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -10292,7 +11788,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10306,6 +11803,27 @@
             "speed_scalar": 2000.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Ezreal",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Mystic_Shot",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "1200",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "2000",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|30 to 45 4}}",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": "True"
+            }
           }
         },
         "W": {
@@ -10419,7 +11937,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10433,6 +11952,27 @@
             "speed_scalar": 1700.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Ezreal",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Essence_Flux",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "1200",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1700",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "50",
+              "costtype": "Mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -10541,7 +12081,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10560,6 +12101,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Ezreal",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Arcane_Shift",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "475",
+              "effect radius": "{{WRtip|centered range|icononly = true}} {{tt|750|Homing missile range}}",
+              "cast time": "{{fd|0.25}}",
+              "speed": "{{tt|2000|Homing missile speed}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -10657,7 +12219,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10672,7 +12235,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Trueshot_Barrage"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Ezreal/Trueshot_Barrage",
+          "offline_source_evidence": {
+            "champion": "Ezreal",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Trueshot_Barrage",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "Global",
+              "effect radius": "",
+              "cast time": "1",
+              "speed": "2000,",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Magic",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -10872,7 +12456,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -10896,7 +12481,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Burst_Fire"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Zeri/Burst_Fire",
+          "offline_source_evidence": {
+            "champion": "Zeri",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Electrocute%21",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "700",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "",
+              "speed": "",
+              "duration": "",
+              "projectile": "false",
+              "damagetype": "Magic",
+              "cost": "30",
+              "costtype": "Mana",
+              "spelleffects": "Area",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Ultrashock Laser F",
@@ -11012,7 +12618,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11031,6 +12638,27 @@
               }
             ],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Zeri",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Ultrashock_Laser",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|centered range|icononly = true}} {{tt|1200|Initial missile}} \\ {{WRtip|edge range|icononly = true}} {{tt|1500|Laser beam length}}",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{as|{{pp|type='''bonus''' attack speed|round=3|0.55;0.528;0.495;0.462;0.429;0.396;0.363;0.33;0.3|key1=%|0;24.4444;61.1111;97.7778;134.444;171.111;207.778;244.444;277.778|formula=0.55-0.09 per 100% '''bonus''' attack speed)). ''This is capped at 45.5% reduction at 277.8% '''bonus''' attack speed.''}}}}",
+              "speed": "{{tt|2500|Initial missile}}",
+              "duration": "",
+              "projectile": "special",
+              "damagetype": "Magic",
+              "cost": "50",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -11127,7 +12755,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11141,6 +12770,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "sourced_expression"
+          },
+          "offline_source_evidence": {
+            "champion": "Zeri",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Spark_Surge",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{tt|300|Standard dash distance}}",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "None",
+              "speed": "600 + {{as|100% movement speed|ms}}",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "80",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -11260,7 +12910,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11274,6 +12925,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "non_projectile"
+          },
+          "offline_source_evidence": {
+            "champion": "Zeri",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Lightning_Crash",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "640",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "false",
+              "damagetype": "{{WRtip|Physical damage|Physical}} / {{WRtip|Magic damage|Magic}}",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "special",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -11491,7 +13163,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11515,7 +13188,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Dancing_Grenade"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Dancing_Grenade",
+          "offline_source_evidence": {
+            "champion": "Jhin",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Dancing_Grenade",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|45 to 60 4}}",
+              "costtype": "Mana",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Deadly Flourish F",
@@ -11610,7 +13304,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11624,6 +13319,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_in_source"
+          },
+          "offline_source_evidence": {
+            "champion": "Jhin",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.75}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|60 to 75 4}}",
+              "costtype": "Mana",
+              "spelleffects": "Special",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -11722,7 +13438,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11743,7 +13460,28 @@
               "mSpeed": 1600.0
             }
           },
-          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/jhin/jhin.bin.json"
+          "projectile_speed_source": "https://raw.communitydragon.org/16.19/game/data/characters/jhin/jhin.bin.json",
+          "offline_source_evidence": {
+            "champion": "Jhin",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Captive_Audience",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{fd|0.25}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "Special",
+              "damagetype": "Magic",
+              "cost": "{{ap|35 to 50 4}}",
+              "costtype": "Mana + 1 Charge",
+              "spelleffects": "spellaoe",
+              "onhiteffects": ""
+            }
+          }
         },
         "R": {
           "name": "Curtain Call F/shot",
@@ -11837,7 +13575,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -11852,7 +13591,28 @@
             "speed_variants": [],
             "speed_status": "sourced_scalar"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Curtain_Call"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Jhin/Curtain_Call",
+          "offline_source_evidence": {
+            "champion": "Jhin",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "{{tt|1|Active}} / {{tt|{{fd|0.25}}|Recast}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "Special",
+              "onhiteffects": ""
+            }
+          }
         }
       },
       "fight_engine_supported": true,
@@ -12056,7 +13816,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12080,7 +13841,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Boomerang_Blade"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Boomerang_Blade",
+          "offline_source_evidence": {
+            "champion": "Sivir",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Boomerang_Blade",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|centered range|icononly = true}} 1250",
+              "effect radius": "",
+              "cast time": "{{as|{{pp|type='''Bonus''' AS|round=3|0.25 to 0.1 for 7|key1=%|0 to 120 for 7|formula=0.25*(1-(0.5 per 100% '''bonus''' attack speed)). ''This is capped at 60% reduction at 120% '''bonus''' attack speed.''}}|attack speed}}",
+              "speed": "{{tt|1450|Outbound}} / {{tt|1200|Rebound}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|55 to 70 4}}",
+              "costtype": "Mana",
+              "spelleffects": "AoE",
+              "onhiteffects": ""
+            }
+          }
         },
         "W": {
           "name": "Ricochet F/bounce",
@@ -12181,7 +13963,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             },
             "classification": "default_damage"
           },
@@ -12202,7 +13985,28 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Ricochet"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Sivir/Ricochet",
+          "offline_source_evidence": {
+            "champion": "Sivir",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Ricochet",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "{{tt|500|Bounce range}}",
+              "cast time": "none",
+              "speed": "{{tt|1750|Attack missile speed, same as basic attack}} / {{tt|1000|Bounced missile speed}}",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "60",
+              "costtype": "Mana",
+              "spelleffects": "default",
+              "onhiteffects": "Special"
+            }
+          }
         },
         "E": {
           "name": "Spell Shield",
@@ -12289,7 +14093,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12303,6 +14108,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Sivir",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Spell_Shield",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "",
+              "costtype": "",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -12401,7 +14227,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12415,6 +14242,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Sivir",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/On_the_Hunt",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "1000",
+              "cast time": "none",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "100",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         }
       },
@@ -12614,7 +14462,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12628,6 +14477,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "non_projectile"
+          },
+          "offline_source_evidence": {
+            "champion": "Senna",
+            "slot": "Q",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Piercing_Darkness",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "{{WRtip|er|icononly = true}} 1300",
+              "target range": "{{WRtip|er|icononly = true}} {{tt|600 - 1100|Based on attack range}}",
+              "effect radius": "",
+              "cast time": "{{tt|{{as|{{fd|0.4}}-{{fd|0.25}}|attack speed}}|Based on level, further reduced by attack speed}}",
+              "speed": "",
+              "duration": "",
+              "projectile": "False",
+              "damagetype": "Physical",
+              "cost": "{{ap|70 to 100 4}}",
+              "costtype": "Mana",
+              "spelleffects": "AoE",
+              "onhiteffects": "true"
+            }
           }
         },
         "W": {
@@ -12735,7 +14605,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12749,6 +14620,27 @@
             "speed_scalar": 1200.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Senna",
+            "slot": "W",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Last_Embrace",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "{{WRtip|centered range|icononly = true}} 1300",
+              "effect radius": "{{WRtip|centered range|icononly = true}} 280",
+              "cast time": "{{fd|0.25}}",
+              "speed": "1200",
+              "duration": "",
+              "projectile": "True",
+              "damagetype": "Physical",
+              "cost": "{{ap|55 to 70 4}}",
+              "costtype": "Mana",
+              "spelleffects": "spell",
+              "onhiteffects": ""
+            }
           }
         },
         "E": {
@@ -12850,7 +14742,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12864,6 +14757,27 @@
             "speed_scalar": null,
             "speed_variants": [],
             "speed_status": "not_applicable"
+          },
+          "offline_source_evidence": {
+            "champion": "Senna",
+            "slot": "E",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Curse_of_the_Black_Mist",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "",
+              "effect radius": "400",
+              "cast time": "1",
+              "speed": "",
+              "duration": "",
+              "projectile": "",
+              "damagetype": "",
+              "cost": "70",
+              "costtype": "Mana",
+              "spelleffects": "",
+              "onhiteffects": ""
+            }
           }
         },
         "R": {
@@ -12961,7 +14875,8 @@
               "wr_wiki_metadata": "evidence",
               "target_range_by_rank": "geometry",
               "effect_radius_by_rank": "geometry",
-              "duration_by_rank": "timing"
+              "duration_by_rank": "timing",
+              "offline_source_evidence": "evidence"
             }
           },
           "pc_timing_reference": {
@@ -12975,6 +14890,27 @@
             "speed_scalar": 20000.0,
             "speed_variants": [],
             "speed_status": "sourced_scalar"
+          },
+          "offline_source_evidence": {
+            "champion": "Senna",
+            "slot": "R",
+            "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Dawning_Shadow",
+            "retrieved_at": "2026-10-01",
+            "status": "retrieved",
+            "parameters": {
+              "range": "",
+              "target range": "Global",
+              "effect radius": "",
+              "cast time": "1",
+              "speed": "17000",
+              "duration": "",
+              "projectile": "true",
+              "damagetype": "physical",
+              "cost": "{{ap|100}}",
+              "costtype": "Mana",
+              "spelleffects": "aoe",
+              "onhiteffects": ""
+            }
           }
         }
       },
