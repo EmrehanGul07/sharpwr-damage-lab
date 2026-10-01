@@ -180,6 +180,28 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(r.aa_count,1)
         self.assertEqual(r.log[0]['distance'],100)
         self.assertEqual(r.rejected[0]['reason'],'AA windup active')
+    def test_mid_cycle_attack_speed_change_updates_clock(self):
+        r=self.run_fight([(0,'AA'),(.2,'E'),(.85,'AA')],e_rank=1,timed_combat=True,distance=525)
+        self.assertEqual(r.aa_count,2)
+        self.assertFalse(r.rejected)
+    def test_attack_speed_expiry_updates_clock(self):
+        r=self.run_fight([],q_rank=0,timed_combat=True,distance=0,automatic_until=2,aa_stats=lambda state:{'bonus_as_total':1 if state['time']<.25 else 0,'as':2 if state['time']<.25 else 1,'buff_expiry':.25})
+        self.assertAlmostEqual(r.log[1]['time'],.75)
+    def test_mana_refund_and_muramana_skill_proc(self):
+        r=self.run_fight([(0,'Q')],max_mana=1000,mana_refund=.15,muramana=True,crit_chance=0,q_rank=1)
+        self.assertAlmostEqual(r.log[0]['mana'],974.5)
+        self.assertAlmostEqual(r.log[0]['damage'],170)
+        r=self.run_fight([(0,'W')],w_rank=1,max_mana=1000,muramana=True,timed_combat=True,distance=100,crit_chance=0)
+        self.assertEqual(sum('Muramana' in note for hit in r.log for note in hit['effects']),1)
+    def test_damage_ledger_caps_overkill(self):
+        r=self.run_fight([(0,'AA')],hp=10)
+        self.assertEqual(r.total_damage,10)
+        self.assertEqual(r.log[0]['damage'],10)
+        self.assertEqual(r.log[0]['raw_damage'],150)
+    def test_style_expiry_checked_before_r_cast(self):
+        a=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(12,'R')]
+        r=self.run_fight(a,timed_combat=True,distance=0)
+        self.assertEqual(r.rejected[-1]['reason'],'S style required')
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 

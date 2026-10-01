@@ -766,7 +766,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if fh and t<=fiend_until:
             asp=min(3,asp+s["ratio"]*.50); phy=current_ad*cd*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
         if "Hexoptics C44" in items:
-            hit_dist=0. if state.get("melee",False) else dist
+            hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
             amp=0.0 if hit_dist<100 else min(.10,(int((hit_dist-100)//50)+1)*.01)
             phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
         if "Galeforce" in items and active_ready and k==1:
@@ -852,7 +852,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
         if fh and t<=fiend_until: fh-=1
-        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
+        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -1770,15 +1770,20 @@ with tabs[1]:
                     def _fight_aa_stats(state):
                         _dyn=(.08*state["items"].get("rage",0) if "Guinsoo's Rageblade" in build else 0.)+(.06*state["items"].get("phantom_dancer",0) if "Phantom Dancer" in build else 0.)
                         if "Yun Tal Wildarrows" in build and state["time"]<_fight_last_hit.get("yuntal_until",-1):_dyn+=.35
-                        return {"bonus_as_total":stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+_alacrity+_dyn+state["bonus_as"]}
+                        _ult=state.get("ultimate_cast_time")
+                        _fiend=.5 if "Fiendhunter Bolts" in build and _ult is not None and state["time"]<=_ult+8 and (_fight_last_hit.get("fiend_remaining",3)>0 or _fight_last_hit.get("ult_seen")!=_ult) else 0.
+                        _bonus=stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+_alacrity+_dyn+state["bonus_as"]+_fiend
+                        _exp=[v for v in (_fight_last_hit.get("yuntal_until",-1),(_ult+8 if _fiend else -1)) if v>state["time"]]
+                        return {"bonus_as_total":_bonus,"as":min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*_bonus),"buff_expiry":min(_exp) if _exp else -1}
                     def _fight_aa(state):
                         state=dict(state);state["bonus_as"]+=_alacrity
                         _hit=_kernel.send(state)
                         _fight_last_hit.update(_hit)
+                        _fight_last_hit["ult_seen"]=state.get("ultimate_cast_time")
                         if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
                         return _hit
                     _fight_base_crit=_replay_crit
-                    _fight_result=replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658,aa_stats=_fight_aa_stats,movement_speed=_own_stats["movement_speed"]*(1+_skill_total["ms"]),distance=dist,attack_range=_own_stats["attack_range"],w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,mana_regen_per_5s=_own_stats["mana_regen_per_5s"])
+                    _fight_result=replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658,aa_stats=_fight_aa_stats,movement_speed=_own_stats["movement_speed"]*(1+_skill_total["ms"]),distance=dist,attack_range=_own_stats["attack_range"],w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"])
                     if _fight_result.killed_at is not None: st.success(f"Target defeated · TTK {_fight_result.killed_at:.3f} seconds")
                     else: st.warning("Simulation safety limit reached; target survived. No kill time is reported.")
                     st.caption(f"Landed: {_fight_result.aa_count} AAs / {_fight_result.skill_count} skill casts • Damage {_fight_result.total_damage:.1f} • HP remaining {_fight_result.hp_remaining:.1f}")
@@ -2339,4 +2344,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.56 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.57 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
