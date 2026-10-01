@@ -170,8 +170,9 @@
       "scope": "completed",
       "trigger_category": "permanent stacking",
       "coverage": "modeled",
-      "finding": "Başlangıç kalıcı stack’i hero leveldan otomatik 0–125 atanıyor, gerçek maç geçmişi yok. Flurry ilk uygun AA ve cooldown ile hazırlanır; tetik şartı referansla yeniden incelenmeli.",
-      "review_needed": true
+      "finding": "User confirms existing level-based starting crit/stack approximation and current behavior. Preserve unchanged; not a pending measurement.",
+      "review_needed": false,
+      "status": "user_locked_in_game_measurement"
     },
     {
       "item": "Galeforce",

@@ -120,3 +120,7 @@ Doğrulama: 131/131 otomatik test geçti (86.490 saniye). Yeni testler initial p
 - Duskblade first AA and next AA after 10s proc. Visibility is not required; earlier audit wording was incorrect. Skill-on-hit callbacks do not consume the AA trigger.
 - Galeforce is a separate fight event with its own 50s cooldown. It waits until current AA windup, cast or channel finishes; does not alter the AA clock or grant ability/AA stacks. Dash path/range and cast restrictions remain unverified. The AA-only legacy simulator has no active action timeline and retains its explicit scenario active flag.
 - Yun Tal unchanged: level-derived initial permanent stacks, first eligible AA Flurry, 6s AS buff, 25s cooldown and AA/expected-crit cooldown reductions remain the two review subjects (initial progression and Flurry trigger rules).
+
+## User confirmation — Yun Tal
+
+Yun Tal existing starting crit/stack approximation is based on user in-game AA measurements and approved. Preserve current behavior; remove Yun Tal from the review queue. RFC, Stormrazor and Statikk remain approved as well.
