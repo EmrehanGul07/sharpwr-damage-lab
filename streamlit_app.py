@@ -1737,7 +1737,6 @@ with tabs[1]:
         if champ!="Samira":
             st.info(f"{champ}: ability calculations are not available yet. Samira Q / W / E / R are currently supported.")
         else:
-            st.caption("Samira Q / W / E / R • item stats and both penetration types. Fight replay below includes supported rune and item effects.")
             _skill_qs=[dct(F[x]) for x in build]+[dct(B[boot])]
             _skill_total={k:sum(q[k] for q in _skill_qs) for k in K}
             _skill_awe=.02*(mana+_skill_total["mana"]) if any(x in build for x in ("Manamune","Muramana")) else 0.
@@ -1747,11 +1746,7 @@ with tabs[1]:
             _fight_amp=(1.05 if boot=="Immortal Treads" and immortal_above_half else 1.)*(1+min(.12,max(0,bonus_hp)/125*.01) if "Lord Dominik's Regards" in build else 1.)
             _ranks=samira_ranks(level)
             _qrank,_wrank,_erank,_rrank=(_ranks[k] for k in ('Q','W','E','R'))
-            st.caption(f"Automatic skill build at level {level}: Q {_qrank} · W {_wrank} · E {_erank} · R {_rrank}. Priority Q → E → W; R at 5 / 9 / 13.")
             st.markdown("**Fight timeline · AA / Q / W / E / R**")
-            st.caption("Stacks start at zero and are earned after landed events. Skills apply damage immediately when pressed. Rejected actions do not grant stacks. Every hit uses expected damage weighted by your build’s current crit chance.")
-            st.caption("Full fight runs automatically until the target dies. E lands instantly and switches subsequent attacks and skills to melee range. No cast/projectile delays or arbitrary fight-duration cutoff.")
-            st.caption("Build-driven stats: AD/AP, attack speed, crit chance/damage, ability haste and physical/magic penetration. Navori reduces remaining basic cooldowns on AA; E grants temporary AS; Collector checks after damage. All skills resolve instantly. Mana costs remain unavailable; no mana gating is applied.")
             st.warning("Remaining gaps: mana costs, Style/buff expiry, skill-specific on-hit interactions and movement-driven Energized recharge. Melee passive uses your accepted linear missing-health model. Healing and own survival are excluded. Expected HP-dependent paths approximate averages.")
             _supported_fight_runes={"Brutal","Cut Down","Coup de Grace","Battle Zeal","Legend: Alacrity","Legend: Haste","Transcendence"}
             _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in {"Legend: Bloodline","Bone Plating","Second Wind","Perseverance","Overgrowth","Unshakeable"}]
@@ -1790,7 +1785,6 @@ with tabs[1]:
                     _base_cd=SAMIRA_ABILITIES[_slot]["cooldown"][_rank-1]
                     _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_fight_haste/100),2),"Unknown — TODO"])
             if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with item haste","Mana cost"]))
-            st.caption("Mana and unverified skill/item interactions remain TODO. Fight totals use the selected build and expected damage. W/E cannot crit.")
 
     if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
@@ -2319,4 +2313,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.50 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.51 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
