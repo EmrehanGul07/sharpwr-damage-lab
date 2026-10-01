@@ -1,0 +1,161 @@
+{
+  "champion": "Samira",
+  "recorded_at": "2026-10-01",
+  "source": "User-pasted PC LoL Wiki excerpt, https://wiki.leagueoflegends.com/en-us/Samira",
+  "status": "PC_reference_only_not_verified_for_Wild_Rift",
+  "application": "Recorded only; current instant-hit engine is unchanged. Wild Rift supplied damage/stat/cooldown/buff-duration formulas take precedence.",
+  "confirmed_wr_mana": {
+    "Q": 30,
+    "W": 60,
+    "E": 40,
+    "R": null,
+    "rank_policy": "User values are constant across ranks"
+  },
+  "P": {
+    "target_immunity": {
+      "value": 10,
+      "unit": "not specified in excerpt"
+    },
+    "assist_target_edge_range": [
+      650,
+      750,
+      850,
+      950
+    ],
+    "assist_dash_speed": 2050,
+    "ranged_attack_projectile_speed": 2800,
+    "style_duration_seconds": 6,
+    "style_refresh": "Any subsequent damaging champion hit, unique or repeated; different action adds a stack; max 6. PC-only expiry candidate.",
+    "blade_attack_edge_range": 200,
+    "blade_attacks_are_projectiles": false,
+    "passive_application_list": [
+      "blade AA",
+      "W",
+      "E",
+      "Q slash",
+      "E-Q explosives"
+    ],
+    "R_passive_application": "R is absent from the PC excerpt list; WR needs independent confirmation. Do not auto-remove WR passive on this evidence.",
+    "immobilized_attack": {
+      "uncancellable_windup": true,
+      "bolts": 6,
+      "duration_seconds": 0.5,
+      "attack_timer_reset": true,
+      "on_hit_applications": 1,
+      "crit_modifiers": true,
+      "lifesteal": true,
+      "airborne_extension_seconds": 0.5,
+      "monster_or_airborne_knockup": true,
+      "per_target_retrigger": "few seconds; exact duration not specified",
+      "out_of_attack_range": "Dash toward immobilized target to attack range, then fire bolts"
+    }
+  },
+  "Q": {
+    "cast_time_seconds": 0.25,
+    "target_edge_range": 340,
+    "center_ranges": [
+      950,
+      400
+    ],
+    "edge_widths": [
+      120,
+      130
+    ],
+    "angle_degrees": 100,
+    "projectile_speed": 2600,
+    "queue_threshold_seconds": 0.5,
+    "ranged": "First enemy hit",
+    "melee": "Targetable enemy in front at cast causes cone slash",
+    "during_E": "Deploy explosives; detonate at dash end",
+    "lifesteal_effectiveness": 1.0
+  },
+  "W": {
+    "cast_time_seconds": 0.1,
+    "edge_effect_radius": 325,
+    "queue_threshold_seconds": 0.5,
+    "active_duration_seconds": 0.75,
+    "hit_times_relative_seconds": [
+      0,
+      0.75
+    ],
+    "blocks": [
+      "AA",
+      "Q"
+    ],
+    "R_cast": "Ends W early; pending second hit cancellation must be modeled if this rule is confirmed for WR.",
+    "projectile_defense": "Destroy hostile non-turret projectiles throughout duration"
+  },
+  "E": {
+    "cast_time_seconds": 0,
+    "cast_time_label": "none",
+    "center_target_range": 600,
+    "range_values_unmapped": [
+      650,
+      775,
+      -125
+    ],
+    "edge_width": 250,
+    "dash_speed": 1600,
+    "queue_threshold_seconds": 0.5,
+    "fixed_distance_dash": true,
+    "targets": [
+      "enemy",
+      "enemy structure"
+    ],
+    "can_cast_during_dash": [
+      "Q",
+      "R"
+    ],
+    "W_during_dash": "Buffered to dash end",
+    "takedown_reset_window_seconds": 3,
+    "WR_AS_buff_duration_preserved_seconds": 3,
+    "PC_AS_buff_duration_rejected_seconds": 5
+  },
+  "R": {
+    "cast_time_seconds": 0,
+    "cast_time_label": "none",
+    "center_effect_radius": 600,
+    "queue_threshold_seconds": 0.5,
+    "channel_duration_seconds": 2.277,
+    "shot_window_seconds": 2.013,
+    "approximate_shot_interval_seconds": 0.2,
+    "max_shots_per_target": 10,
+    "shot_timing": "Sporadic; exact shot offsets not provided",
+    "blocks": [
+      "AA",
+      "Q",
+      "W"
+    ],
+    "movement_allowed": true,
+    "visible_enemy_required_for_cast": true,
+    "shot_targets_need_visibility": false,
+    "style_consumed": "At end of effect, PC reference; current WR engine consumes at start",
+    "interrupted_by": [
+      "cast-inhibiting crowd control",
+      "disarm"
+    ],
+    "cannot_cast_while": [
+      "disarmed"
+    ],
+    "lifesteal_effectiveness": 1.0,
+    "PC_static_cooldown_seconds": 5,
+    "cooldown_application": "Do not replace supplied WR 6 seconds; whether WR cooldown is static needs verification",
+    "mana": "Excerpt lists 6 Style only; this does not confirm zero WR mana"
+  },
+  "excluded_PC_numeric_formulas": [
+    "AD/AP ratios",
+    "base damage tables",
+    "AS ratios",
+    "ordinary cooldown tables",
+    "passive level ratios",
+    "E five-second AS duration",
+    "PC R damage ratio and crit rules"
+  ],
+  "next_verification": [
+    "WR Style expiry/refresh",
+    "WR W/R action locks",
+    "WR passive eligibility per skill especially R",
+    "WR Q/E projectile and dash speeds",
+    "WR R duration/shot schedule and cooldown haste applicability"
+  ]
+}

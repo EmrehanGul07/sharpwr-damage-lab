@@ -1782,7 +1782,7 @@ with tabs[1]:
             for _slot,_rank in [("Q",_qrank),("W",_wrank),("E",_erank),("R",_rrank)]:
                 if _rank:
                     _base_cd=SAMIRA_ABILITIES[_slot]["cooldown"][_rank-1]
-                    _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_fight_haste/100),2),"Unknown — TODO"])
+                    _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_fight_haste/100),2),SAMIRA_ABILITIES[_slot]["mana"] if SAMIRA_ABILITIES[_slot]["mana"] is not None else "Unknown — TODO"])
             if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with item haste","Mana cost"]))
 
     if len(build)<5 or len(set(build))<5:

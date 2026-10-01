@@ -20,9 +20,9 @@ class SkillDamage:
     def total(self): return self.dealt_physical+self.dealt_magic+self.dealt_true
 
 SAMIRA_ABILITIES={
-    'Q': {'name':'Flair','base':(15.,20.,25.,30.),'total_ad':1.25,'cooldown':(6.5,5.,3.5,2.),'hits':1,'crit_effectiveness':.5,'mana':None,'source':'D001–D002; user practice Q 76/114 and 123/203'},
-    'W': {'name':'Blade Whirl','base':(20.,40.,60.,80.),'bonus_ad':.5,'cooldown':(22.,20.,18.,16.),'hits':2,'crit_effectiveness':0.,'mana':None,'source':'D003–D004'},
-    'E': {'name':'Wild Rush','base':(45.,60.,75.,90.),'bonus_ad':.2,'cooldown':(20.,17.,14.,11.),'hits':1,'crit_effectiveness':0.,'mana':None,'source':'D005–D006'},
+    'Q': {'name':'Flair','base':(15.,20.,25.,30.),'total_ad':1.25,'cooldown':(6.5,5.,3.5,2.),'hits':1,'crit_effectiveness':.5,'mana':30,'mana_source':'User Wild Rift confirmation, 2026-10-01; constant across ranks','source':'D001–D002; user practice Q 76/114 and 123/203'},
+    'W': {'name':'Blade Whirl','base':(20.,40.,60.,80.),'bonus_ad':.5,'cooldown':(22.,20.,18.,16.),'hits':2,'crit_effectiveness':0.,'mana':60,'mana_source':'User Wild Rift confirmation, 2026-10-01; constant across ranks','source':'D003–D004'},
+    'E': {'name':'Wild Rush','base':(45.,60.,75.,90.),'bonus_ad':.2,'cooldown':(20.,17.,14.,11.),'hits':1,'crit_effectiveness':0.,'mana':40,'mana_source':'User Wild Rift confirmation, 2026-10-01; constant across ranks','source':'D005–D006'},
     'R': {'name':'Inferno Trigger','base':(20.,40.,60.),'total_ad':.5,'cooldown':(6.,6.,6.),'hits':10,'crit_effectiveness':1.,'mana':None,'source':'D007–D008; user tooltip and R 69/158 crit ratio'},
 }
 
