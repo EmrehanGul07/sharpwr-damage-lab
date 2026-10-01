@@ -28,10 +28,12 @@ The simulation uses expected damage; thresholds and ability decisions follow exp
 
 ## UI and persistence
 
-Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce uses an independent fight action when unlocked and repeats 50s after actual use. It does not inject active damage into AA. Dash geometry/range is not yet modeled. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
+Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce uses an independent fight action when unlocked and repeats 50s after actual use. It does not inject active damage into AA. Galeforce now dashes toward the target by up to 325 units and damages only within 600 units after the dash. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
 
 ## Validation
 
 Coverage includes all 23 champion evaluators, AP ability scaling, Zeri cap diagnostics, mutually exclusive penetration/mana items, deduplication, cache reuse, stage cardinalities and a real bounded item/boot/rotation search in Streamlit. An Ezreal vs level-15 Ornn full-pool benchmark tested 5,254 fights in approximately 50 seconds using a smaller 20-candidate beam; a Nashor's Tooth build entered its final three. This is test evidence for AP participation, not a universal build recommendation.
 
 Final validation: 127/127 automated tests passed in 88.226 seconds, including all 23 champions, the item optimizer, ability-aware UI and offensive-active cooldown regression.
+
+V5.60.3: highest-percent Spellblade wins; Fiendhunter pre-cast defaults removed; recorded champion mana/growth/regen feeds the kernel. WR7.3 Muramana max-mana Shock remains unchanged in principle; actual skill consumption/refund/regen is tracked and skill-on-hit callbacks do not duplicate AA Shock.

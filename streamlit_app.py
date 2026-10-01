@@ -587,7 +587,7 @@ F={
 
 # Tier List combat-mechanic audit: CURRENT simulator coverage.
 ITEM_SCENARIO_AUDIT={
-"Fiendhunter Bolts":("ultimate-trigger","modeled","Opening Barrage uses Ultimate pre-cast."),
+"Fiendhunter Bolts":("ultimate-trigger","modeled","Opening Barrage requires an actual ultimate cast; pre-cast defaults removed."),
 "Rapid Firecannon":("energized","modeled","Sharpshooter: 80 bonus magic per Energized proc; kiting benchmark recharges every 7 AAs. Proc also grants +35% bonus attack range, capped at +150 (utility)."),
 "Runaan's Hurricane":("multi-target","not modeled","Extra bolts excluded in single-target ranking."),
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
@@ -731,6 +731,9 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
     bootq=dct(B[boot]) if boot in B else dct(())
     total=lambda key: sum(float(q[key]) for q in qs)+float(bootq.get(key,0))
+    if base_mana<=0:
+        from champion_database import level_stats
+        base_mana=level_stats(n,int(l))["mana"] or 0.
     mana=base_mana+total("mana")
     awe=.02*mana if any(x in items for x in ("Manamune","Muramana")) else 0.0
     ad=s["ad"]+total("ad")+awe
@@ -739,7 +742,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     kraken_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
-    fh=3 if "Fiendhunter Bolts" in items and ult and item_proc else 0
+    fh=0  # Only an actual ultimate_cast_time event arms Opening Barrage.
     fiend_until=8.; last_ult_cast=None; spell_pending=False; galeforce_ready=0.; duskblade_ready=0.
     if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
     state=yield None
@@ -783,7 +786,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if "Nashor's Tooth" in items:
             onm+=15+.20*total("ap")
         if "Recurve Bow" in items: onp+=15
-        if "Muramana" in items: onp+=.015*mana
+        if "Muramana" in items and not skill_on_hit:onp+=.015*float(mana if state.get("max_mana") is None else state["max_mana"])
 
         rage_extra=False
         if ("Guinsoo's Rageblade" in items and item_proc):
@@ -807,7 +810,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             if "Nashor's Tooth" in items:
                 onm+=15+.20*total("ap")
             if "Recurve Bow" in items: onp+=15
-            if "Muramana" in items: onp+=.015*mana
+            if "Muramana" in items and not skill_on_hit:onp+=.015*float(mana if state.get("max_mana") is None else state["max_mana"])
             note.append("Phantom Hit")
 
         # Recurring Energized cadence mirrors the audited single-item engine.
@@ -822,16 +825,14 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         # Legacy pre-cast means ONE initial cast; cooldown alone never rearms.
         if not event_driven and spell and k==1:spell_pending=True
         if spell_pending and t>=spellblade_ready:
-            triggered=False
-            if ("Essence Reaver" in items and item_proc):
-                onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER"); triggered=True
-            if ("Trinity Force" in items and item_proc):
-                onp+=2*s["basead"]; note.append("Trinity"); triggered=True
-            if ("Iceborn Gauntlet" in items and item_proc):
-                onp+=s["basead"]+.25*total("armor"); note.append("Iceborn"); triggered=True
-            if "Sheen" in items:
-                onp+=s["basead"]; note.append("Sheen"); triggered=True
-            if triggered: spellblade_ready=t+1.5; spell_pending=False
+            choices=[]
+            if "Essence Reaver" in items and item_proc:choices.append((1.35,1.35*s["basead"]+min(80,.8*crit*100),"ER"))
+            if "Trinity Force" in items and item_proc:choices.append((2.,2*s["basead"],"Trinity"))
+            if "Iceborn Gauntlet" in items and item_proc:choices.append((1.,s["basead"]+.25*total("armor"),"Iceborn"))
+            if "Sheen" in items:choices.append((1.,s["basead"],"Sheen"))
+            if choices:
+                _,amount,label=max(choices,key=lambda x:(x[0],x[1]))
+                onp+=amount;note.append(label);spellblade_ready=t+1.5;spell_pending=False
 
         if ("Duskblade of Draktharr" in items and item_proc) and not skill_on_hit and t>=duskblade_ready:
             onp+=60+(l-1)/14*100; note.append("Nightstalker"); duskblade_ready=t+10
@@ -872,7 +873,7 @@ dist=float(st.session_state.get("build_dist",550.0))
 mana=float(st.session_state.get("build_mana",0.0))
 spell=bool(st.session_state.get("build_spell",True))
 energized=bool(st.session_state.get("build_energized",True))
-ult=bool(st.session_state.get("build_ult",True))
+ult=False
 execs=int(st.session_state.get("build_execs",0))
 
 
@@ -1080,7 +1081,7 @@ with tabs[1]:
         _proc_cols=st.columns(3)
         spell=_proc_cols[0].checkbox("Spellblade ready",spell,key="build_spell",help="Ability cast before the first basic attack.")
         energized=_proc_cols[1].checkbox("Energized ready",energized,key="build_energized",help="Start with Energized / Jolt proc ready.")
-        ult=_proc_cols[2].checkbox("Ultimate pre-cast",ult,key="build_ult",help="Ultimate cast before combat for Fiendhunter.")
+        ult=False
         with st.expander("Advanced combat settings"):
             _adv_left,_adv_right=st.columns(2)
             dist=_adv_left.number_input("Attack distance",0.0,1000.0,float(dist),25.0,key="build_dist")
@@ -1716,7 +1717,7 @@ with tabs[2]:
         _iv_proc_cols=st.columns(3)
         iv_spell=_iv_proc_cols[0].checkbox("Spellblade ready",value=True,key="iv_spell")
         iv_energized=_iv_proc_cols[1].checkbox("Energized ready",value=True,key="iv_energized")
-        iv_ult=_iv_proc_cols[2].checkbox("Ultimate pre-cast",value=True,key="iv_ult")
+        iv_ult=False
         with st.expander("Advanced combat settings"):
             _iv_a,_iv_b=st.columns(2)
             iv_dist=_iv_a.number_input("Attack distance",0.0,1000.0,550.0,25.0,key="iv_dist")
@@ -1983,4 +1984,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.60.2 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.60.3 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

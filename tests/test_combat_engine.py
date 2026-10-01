@@ -37,10 +37,13 @@ class CombatTests(unittest.TestCase):
         self.assertGreater(b[0][6],a[0][6])
     def test_fiendhunter_trigger_and_expiry(self):
         _,plain=self.run_build(['Fiendhunter Bolts'])
-        _,ult=self.run_build(['Fiendhunter Bolts'],ult=True)
-        self.assertGreater(ult[0][6],plain[0][6])
-        self.assertTrue(all('Opening Barrage' in x[8] for x in ult[:3]))
-        self.assertNotIn('Opening Barrage',ult[3][8])
+        _,legacy=self.run_build(['Fiendhunter Bolts'],ult=True)
+        self.assertEqual(plain,legacy)
+        kernel=self.n['_combat_hits']('Yunara',15,10000,100,100,['Fiendhunter Bolts'],self.n['F'])
+        next(kernel)
+        hits=[kernel.send({'time':t,'hp':10000,'event_driven':True,'ultimate_cast_time':0}) for t in (0,1,2,3)]
+        self.assertTrue(all('Opening Barrage' in x['notes'] for x in hits[:3]))
+        self.assertNotIn('Opening Barrage',hits[3]['notes'])
     def test_validation(self):
         for items in [list(self.n['F'])[:6],['Infinity Edge']*2,['missing'],['Boots of Speed']]:
             with self.subTest(items=items),self.assertRaises(ValueError):self.run_build(items)

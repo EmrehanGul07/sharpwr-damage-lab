@@ -21,6 +21,10 @@ class SpellbladeCasts(unittest.TestCase):
         k=self.kernel('Essence Reaver')
         self.assertIn('ER',k.send({'hp':10000,'time':0,'event_driven':True,'spell_cast_times':[0]})['notes'])
         self.assertNotIn('ER',k.send({'hp':10000,'time':2,'event_driven':True,'spell_cast_times':[1]})['notes'])
+    def test_only_highest_percentage_spellblade_applies(self):
+        k=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Trinity Force','Essence Reaver','Iceborn Gauntlet'],self.ns['F']);next(k)
+        hit=k.send({'time':0,'hp':10000,'event_driven':True,'spell_cast_times':[0]})
+        self.assertIn('Trinity',hit['notes']);self.assertNotIn('ER',hit['notes']);self.assertNotIn('Iceborn',hit['notes'])
     def test_successful_replay_casts_reach_item_kernel(self):
         k=self.kernel('Trinity Force');seen=[]
         def hit(state):

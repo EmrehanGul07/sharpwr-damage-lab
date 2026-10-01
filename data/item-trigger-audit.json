@@ -1,5 +1,5 @@
 {
-  "version": "5.60.2",
+  "version": "5.60.3",
   "basis": "Current code audit; does not assert unverified game trigger rules",
   "records": [
     {
@@ -7,8 +7,8 @@
       "scope": "completed",
       "trigger_category": "ultimate-trigger",
       "coverage": "modeled",
-      "finding": "Fight engine gerçek R cast’ine bağlı. Eski AA/Item Value hesabında Ultimate pre-cast seçeneği R atmadan buff verebilir.",
-      "review_needed": true
+      "finding": "Only actual ultimate_cast_time event arms buff. Legacy ult flag and pre-cast checkboxes removed.",
+      "review_needed": false
     },
     {
       "item": "Rapid Firecannon",
@@ -32,8 +32,9 @@
       "scope": "completed",
       "trigger_category": "stacking",
       "coverage": "modeled",
-      "finding": "Doğal AA stack’i; stack expiry/refresh buff süresi kernelde yok, fight boyunca stack kalır.",
-      "review_needed": true
+      "finding": "User confirms 6s PD stack timeout; no >6s gap in continuous benchmark. Youmuu out-of-combat momentum is outside scope.",
+      "review_needed": false,
+      "status": "user_confirmed_scope"
     },
     {
       "item": "Navori Quickblades",
@@ -57,7 +58,9 @@
       "trigger_category": "distance",
       "coverage": "modeled",
       "finding": "Fight içinde gerçek mesafe kullanılır; eski AA hesaplayıcısında sabit distance varsayımı vardır. Kernel AA physical/true arttırır; ability ve diğer damage kapsamı doğrulanmalı.",
-      "review_needed": true
+      "review_needed": true,
+      "status": "ingame_test_todo",
+      "todo": "I02"
     },
     {
       "item": "Kraken Slayer",
@@ -65,7 +68,9 @@
       "trigger_category": "every-N-hit",
       "coverage": "modeled",
       "finding": "Sayaç eligible kernel hitleriyle artıyor; skill-on-hit/Phantom Hit eligibility doğrulanmalı.",
-      "review_needed": true
+      "review_needed": true,
+      "status": "ingame_test_todo",
+      "todo": "I01"
     },
     {
       "item": "Nashor's Tooth",
@@ -88,8 +93,8 @@
       "scope": "completed",
       "trigger_category": "mana/on-hit",
       "coverage": "modeled",
-      "finding": "Mana statik max mana hesabından geliyor; on-hit/mana-consumption/skill eligibility sırası ve anlık mana scaling referansı ayrıca doğrulanmalı.",
-      "review_needed": true
+      "finding": "WR7.3 max-mana Shock retained with no extra Shock mana drain. Actual skill cost/refund/regen tracked from recorded champion stats; skill callbacks avoid duplicate AA Shock.",
+      "review_needed": false
     },
     {
       "item": "Statikk Shiv",
@@ -106,7 +111,9 @@
       "trigger_category": "stacking/on-hit",
       "coverage": "modeled",
       "finding": "Stack doğal eligible hitlerle artıyor; skill-on-hit callback’lerinin stack ve Phantom Hit sayımına uygunluğu tüm şampiyonlar için doğrulanmamış.",
-      "review_needed": true
+      "review_needed": true,
+      "status": "ingame_test_todo",
+      "todo": "I01"
     },
     {
       "item": "Mortal Reminder",
@@ -129,8 +136,8 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır, sonraki eligible on-hit tüketir, 1.5s iç cooldown. Spellblade itemları aynı buildde hâlâ birlikte hasar ekleyebilir; unique proc seçimi ve buff süresi doğrulanmalı.",
-      "review_needed": true
+      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "review_needed": false
     },
     {
       "item": "Immortal Shieldbow",
@@ -154,7 +161,9 @@
       "trigger_category": "stacking/on-hit",
       "coverage": "modeled",
       "finding": "Light/Dark alternasyonu kernel çağrı sayısına bağlı; eligible skill hitleri de sayacı etkiliyor. Skill eligibility/alternasyon sırası doğrulanmalı.",
-      "review_needed": true
+      "review_needed": true,
+      "status": "ingame_test_todo",
+      "todo": "I01"
     },
     {
       "item": "Stormrazor",
@@ -179,8 +188,8 @@
       "scope": "completed",
       "trigger_category": "active",
       "coverage": "modeled",
-      "finding": "Independent Galeforce active event in fight replay; 50s cooldown from actual use; waits until AA windup/cast/channel unlock. Does not add damage to AA or proc on-hit/Spellblade. Dash geometry/range remain unverified.",
-      "review_needed": true
+      "finding": "Independent 50s active; dash up to 325 then target radius 600; no AA clock reset or on-hit injection.",
+      "review_needed": false
     },
     {
       "item": "Mercurial Scimitar",
@@ -227,8 +236,8 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır; shared cooldown. Başka Spellblade ile birlikte stacklenme ve buff süresi açık.",
-      "review_needed": true
+      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "review_needed": false
     },
     {
       "item": "Infinity Edge",
@@ -259,8 +268,9 @@
       "scope": "completed",
       "trigger_category": "movement/combat-state",
       "coverage": "partial",
-      "finding": "Statik MS ve statlar var; hareket stack’i/aktif ve combat durumuyla buff değişimi yok.",
-      "review_needed": true
+      "finding": "User confirms 6s PD stack timeout; no >6s gap in continuous benchmark. Youmuu out-of-combat momentum is outside scope.",
+      "review_needed": false,
+      "status": "user_confirmed_scope"
     },
     {
       "item": "Duskblade of Draktharr",
@@ -283,8 +293,8 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır; başka Spellblade ile birlikte stacklenme ve buff süresi açık. Slow yok.",
-      "review_needed": true
+      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "review_needed": false
     },
     {
       "item": "Death's Dance",
@@ -387,8 +397,8 @@
     {
       "item": "Sheen",
       "scope": "component",
-      "finding": "Tek initial pre-cast ya da gerçek cast; cooldown otomatik rearm kaldırıldı.",
-      "review_needed": true
+      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "review_needed": false
     },
     {
       "item": "Kircheis Shard",

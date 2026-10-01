@@ -49,3 +49,16 @@ All 23 champions have an ordered checklist in [marksman-task-queue.md](marksman-
 See [all-marksman-fight-engine.md](all-marksman-fight-engine.md) for per-champion runtime assumptions. All integration work is complete; the listed in-game measurements remain open.
 
 Priority: Jhin AS/crit-to-AD conversion; Xayah feather falloff and path; Yunara core stats and W linger; Senna mist generation and level scaling; Twitch patch conflict; Corki recharge and package; Varus W mana and Q bonus-vs-total AD scope; Kog’Maw R mana ramp. General AA windup/projectile timings and exact dash endpoints remain unresolved except explicitly sourced values. Do not repeat previously confirmed mana costs.
+
+
+## User-requested item tests — V5.60.3
+
+- [ ] I01 — Rageblade + Kraken + Terminus: isolated AA counters, Phantom Hit repeats, damage types, stack/penetration order and eligible skill-on-hit behavior. Keep current values until in-game measurements.
+- [ ] I02 — Hexoptics C44: distance breakpoints/cap; applicability to AA, skill, passive, physical, magic and true damage; movement/range interactions.
+
+User locks: Phantom Dancer stack duration is 6 seconds; continuous attacking benchmark does not pause that long. No change requested. Youmuu momentum is out-of-combat and excluded from this always-in-combat benchmark. RFC, Stormrazor, Statikk and Yun Tal measured defaults stay unchanged.
+
+Implemented rules: highest percentage Spellblade only; Galeforce dash up to 325 and hit radius 600; Fiendhunter only after actual R cast. Champion mana/growth/regen comes from recorded WR stats. Yunara missing core mana is still manual, never invented.
+
+Muramana 7.3: Shock has no additional mana consumption and uses maximum mana (AA 1.5%, ranged ability 3%); Awe refunds 15% of skill mana spending. Ability damage can carry ordinary on-hits without also injecting AA Shock a second time. Repeat Shock eligibility for multihit channels remains a separate unresolved WR detail.
+Source: https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-notes-7-3/

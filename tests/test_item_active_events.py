@@ -28,3 +28,20 @@ class ItemEvents(unittest.TestCase):
                 self.assertEqual([x['time'] for x in r.log],sorted(x['time'] for x in r.log))
 
 if __name__=='__main__':unittest.main()
+
+class NewUserRules(unittest.TestCase):
+    def test_galeforce_cannot_hit_beyond_dash_plus_six_hundred(self):
+        r=replay_samira([FightEvent(0,'AA')],champion='Ezreal',level=15,ad=200,base_ad=100,attack_speed=.7,crit_chance=0,crit_damage=2,hp=100000,armor=100,mr=100,q_rank=0,w_rank=0,e_rank=0,r_rank=0,automatic_until=1,distance=1000,attack_range=550,movement_speed=0,galeforce=True)
+        self.assertFalse(any(x['action']=='Galeforce active' for x in r.log))
+    def test_galeforce_dash_is_bounded_and_hits_inside_six_hundred(self):
+        r=replay_samira([FightEvent(0,'AA')],champion='Ezreal',level=15,ad=200,base_ad=100,attack_speed=.7,crit_chance=0,crit_damage=2,hp=100000,armor=100,mr=100,q_rank=0,w_rank=0,e_rank=0,r_rank=0,automatic_until=1,distance=900,attack_range=550,movement_speed=0,galeforce=True)
+        hit=next(x for x in r.log if x['action']=='Galeforce active')
+        self.assertEqual(hit['distance'],575)
+    def test_skill_cost_awe_refund_and_current_mana_reach_kernel(self):
+        ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,100000,100,100,['Muramana'],ns['F']);next(k);seen=[]
+        def hit(state):seen.append((state['mana'],state['max_mana']));return k.send(state)
+        r=replay_samira([FightEvent(0,'Q'),FightEvent(1,'AA')],champion='Ezreal',level=15,ad=200,base_ad=100,attack_speed=.7,crit_chance=0,crit_damage=2,hp=100000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,automatic_until=2,max_mana=1000,mana_regen_per_5s=0,mana_refund=.15,muramana=True,aa_hit=hit)
+        self.assertTrue(seen);self.assertTrue(all(maxmana==1000 for mana,maxmana in seen))
+        self.assertLess(seen[0][0],1000)
+        self.assertEqual(seen[0][0],r.log[0]['mana'])
+        self.assertTrue(all(mana==seen[0][0] for mana,maxmana in seen))

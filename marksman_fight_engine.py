@@ -206,7 +206,7 @@ def replay_marksman(events,**p):
         item_damage=0.
         if aa_hit and (name=='Ezreal' and slot=='Q' or name=='Senna' and slot=='Q' or name=='Miss Fortune' and slot=='Q'):
             ea,em=effective()
-            item=aa_hit({'hp':health,'time':t,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
+            item=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
             item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
             items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')})
             effects.extend(item.get('notes',[]));kit.unresolved.add('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional')
@@ -330,7 +330,7 @@ def replay_marksman(events,**p):
                 kit.reloading_until=t+2.5;queue(t+2.5,'reload');effects.append('Reload started (2.5s WR source)')
         bonus=cad-ad
         if aa_hit:
-            hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
+            hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
             actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')}
             actual+=magic*resistance_multiplier(em)*amp+true*amp;effects+=hit.get('notes',[])
         else:actual=(physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
@@ -516,7 +516,11 @@ def replay_marksman(events,**p):
                 blocked=max(lock,channel,aa_lock,dash_until)
                 if t<blocked:queue(blocked+1e-6,'galeforce')
                 else:
-                    kit.unresolved.add('Galeforce active damage has independent 50s timer; dash geometry/range unverified')
+                    if gap>925:
+                        queue(t+.05,'galeforce');continue
+                    gap=max(0.,gap-min(325.,max(0.,gap-(min(600.,kit.attack_range(t)) if name!='Samira' else 0.))))
+                    if gap>600:
+                        queue(t+.05,'galeforce');continue
                     record('Galeforce active',RawDamage(physical=40+(level-1)/14*80+.45*max(0.,current_ad()-base_ad)),effects=('Cloudburst active; 50s cooldown',))
                     queue(t+50,'galeforce')
             elif kind=='aa_hit':basic_attack(payload['cid'],payload.get('secondary',False))

@@ -124,3 +124,7 @@ Doğrulama: 131/131 otomatik test geçti (86.490 saniye). Yeni testler initial p
 ## User confirmation — Yun Tal
 
 Yun Tal existing starting crit/stack approximation is based on user in-game AA measurements and approved. Preserve current behavior; remove Yun Tal from the review queue. RFC, Stormrazor and Statikk remain approved as well.
+
+## V5.60.3 user rules
+
+PD/Youmuu closed as approved scope. Spellblade highest percentage coefficient only. Fiendhunter actual R only. Galeforce 325 max dash and 600 target radius implemented. I01 Rageblade/Kraken/Terminus and I02 Hexoptics are in-game TODO. Muramana uses recorded champion mana/growth/regen and skill spending/refund; 7.3 removed Shock drain, so max-mana damage remains correct.

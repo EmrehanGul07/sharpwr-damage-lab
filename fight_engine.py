@@ -180,6 +180,14 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             blocked=max(attack_windup_until,cast_until,channel_until) if timed_combat else channel_until
             if t<blocked:
                 queue.append((blocked+1e-6,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
+            gap=abs(target_position-position)
+            if gap>925:
+                queue.append((t+.05,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
+            desired=0. if champion=='Samira' else min(600.,attack_range,gap)
+            step=min(325.,max(0.,gap-desired))
+            position+=math.copysign(step,target_position-position) if step else 0.
+            if abs(target_position-position)>600:
+                queue.append((t+.05,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
             item_ad=ad+(conq*(3+(level-1)*2/14) if keystone=='Conqueror' else 0.)
             raw=40+(level-1)/14*80+.45*max(0.,item_ad-base_ad)
             pen=min(.40,pct_pen+.1*dark) if terminus else pct_pen
@@ -189,7 +197,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             if executed:health=0.
             dealt=before_hp-health;total+=dealt
             state={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-            log.append({'time':t,'action':action,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; 50s cooldown; dash geometry/range unverified'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
+            log.append({'time':t,'action':action,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; dash up to 325; target range 600; 50s cooldown'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
             if health<=0:killed=t
             if t+50<=(automatic_until or 120):queue.append((t+50,order,action,None));queue.sort(key=lambda x:(x[0],x[1]))
             continue
@@ -295,7 +303,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action=='AA':
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
-                hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
+                hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
                 damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))
