@@ -24,6 +24,32 @@ class InterfaceTests(unittest.TestCase):
         next(b for b in a.button if b.label=='Calculate build').click().run()
         self.assertFalse(a.exception)
         a.button(key='tiercalc').click().run();self.assertFalse(a.exception)
+    def test_samira_skill_panel(self):
+        a=self.app
+        a.selectbox(key='build_champ').set_value('Samira').run()
+        self.assertFalse(a.exception)
+        self.assertTrue(a.selectbox(key='ability_samira_w').disabled)
+        self.assertTrue(a.selectbox(key='ability_samira_e').disabled)
+        tables=[x.value for x in a.dataframe if 'Outcome' in x.value.columns]
+        self.assertEqual(len(tables),1)
+        self.assertEqual(len(tables[0]),6)
+        a.slider(key='ability_samira_style').set_value(3).run()
+        table=next(x.value for x in a.dataframe if 'Outcome' in x.value.columns)
+        self.assertTrue(all(row.startswith('Q') for row in table['Ability']))
+        self.assertTrue(any('S style' in w.value for w in a.warning))
+        a.selectbox(key='ability_samira_q').set_value(0).run()
+        self.assertFalse(any('Outcome' in x.value.columns for x in a.dataframe))
+        a.slider(key='ability_samira_style').set_value(6).run()
+        a.slider(key='ability_samira_shots').set_value(3).run()
+        table=next(x.value for x in a.dataframe if 'Outcome' in x.value.columns)
+        self.assertTrue(all(x==3 for x in table['Hits']))
+        a.button(key='remove_item_0').click().run()
+        self.assertEqual(a.selectbox(key='ability_samira_q').value,0)
+        self.assertEqual(a.slider(key='ability_samira_shots').value,3)
+        a.selectbox(key='build_champ').set_value('Smolder').run()
+        self.assertFalse(any('Outcome' in x.value.columns for x in a.dataframe))
+        self.assertTrue(any('not available' in i.value for i in a.info))
+
     def test_keystone_calculations(self):
         a=self.app
         for i,name in enumerate(['First Strike','Ice Overlord','Phase Rush','Arcane Comet','Aery','Guardian','Grasp of the Undying','Conqueror','Fleet Footwork','Lethal Tempo','Empowerment','Dark Harvest']):

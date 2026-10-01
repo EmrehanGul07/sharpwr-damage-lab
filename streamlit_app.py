@@ -5,11 +5,12 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
+from champion_abilities import SAMIRA_ABILITIES, samira_skill
 
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
     for key in list(st.session_state):
-        if key.startswith(("iv_","tier_")) or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
+        if key.startswith(("iv_","tier_","ability_")) and not key.startswith("ability_calculate") or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
             st.session_state[key]=st.session_state[key]
 
 _preserve_widgets()
@@ -1709,7 +1710,7 @@ with tabs[1]:
             key="build_immortal_above_half"
         )
 
-    st.caption("Shared AA engine: Energized recharge follows the benchmark attack cadence; Spellblade-ready allows recurring casts every 1.5s. Skills themselves remain outside this model.")
+    st.caption("Shared AA engine: Energized recharge follows the benchmark attack cadence; Spellblade-ready allows recurring casts every 1.5s. AA DPS excludes skill casts; standalone supported skill estimates appear in Skill Lab.")
     # Yun Tal assumptions are only relevant when the item is in the build.
     yt_bonus_crit=0.0
     yt_flurry=False
@@ -1719,6 +1720,48 @@ with tabs[1]:
             yc1,yc2=st.columns(2)
             yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),index=25,format_func=lambda x:f"{x}%",key="build_yt_crit")/100
             yt_flurry=yc2.checkbox("Flurry Active (+35% AS)",value=False,key="build_yt_flurry")
+
+    with st.container(border=True):
+        _setup_heading("06","CHAMPION ABILITIES","Skill Lab")
+        if champ!="Samira":
+            st.info(f"{champ}: ability calculations are not available yet. Samira Q and R are the first supported skills.")
+        else:
+            st.caption("Samira Q / R • item stats and penetration • separate from AA DPS. Rune damage, item procs and melee passive are excluded.")
+            _skill_qs=[dct(F[x]) for x in build]+[dct(B[boot])]
+            _skill_total={k:sum(q[k] for q in _skill_qs) for k in K}
+            _skill_awe=.02*(mana+_skill_total["mana"]) if any(x in build for x in ("Manamune","Muramana")) else 0.
+            _skill_ad=stats(champ,level)["ad"]+_skill_total["ad"]+_skill_awe
+            _skill_crit=min(1.,_skill_total["crit"]+yt_bonus_crit)
+            _skill_cd=2.3 if "Infinity Edge" in build else 2.
+            st.markdown(f"**Combat stats:** {_skill_ad:.1f} AD · {_skill_total['ap']:.0f} AP · {_skill_crit*100:.0f}% crit chance · {_skill_cd*100:.0f}% crit damage")
+            _rank_cols=st.columns(4)
+            _qrank=_rank_cols[0].selectbox("Q rank",[0,1,2,3,4],index=1,key="ability_samira_q",format_func=lambda x:"Not learned" if x==0 else str(x))
+            _rank_cols[1].selectbox("W rank",[0,1,2,3,4],index=0,key="ability_samira_w",disabled=True,help="Formula integration pending; no W damage is added.")
+            _rank_cols[2].selectbox("E rank",[0,1,2,3,4],index=0,key="ability_samira_e",disabled=True,help="Formula integration pending; no E damage is added.")
+            _rrank=_rank_cols[3].selectbox("R rank",[0,1,2,3],index=1,key="ability_samira_r",format_func=lambda x:"Not learned" if x==0 else str(x))
+            _skill_state=st.columns(2)
+            _style=_skill_state[0].slider("Style stacks",0,6,6,key="ability_samira_style",help="S grade at 6 enables Inferno Trigger.")
+            _shots=_skill_state[1].slider("R shots landed per target",1,10,10,key="ability_samira_shots")
+            st.caption("Style: "+["—","E","D","C","B","A","S"][_style]+" • R damage is per target; total channel duration remains TODO.")
+            _skill_rows=[]
+            _outcomes=["Normal","Expected"]+(["Critical"] if _skill_crit>0 else [])
+            for _slot,_rank in [("Q",_qrank),("R",_rrank)]:
+                if not _rank or (_slot=="R" and _style<6): continue
+                for _outcome in _outcomes:
+                    _result=samira_skill(_slot,_rank,_skill_ad,_skill_crit,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome=_outcome,hits=_shots if _slot=="R" else 1)
+                    _skill_rows.append([f"{_slot} · {SAMIRA_ABILITIES[_slot]['name']}",_outcome,_result.hits,round(_result.physical_per_hit,2),round(_result.physical,2),_result.magic,_result.true,round(_result.dealt_physical,2),_result.dealt_magic,_result.dealt_true,round(_result.total,2)])
+            if _skill_rows:
+                st.dataframe(pd.DataFrame(_skill_rows,columns=["Ability","Outcome","Hits","Physical / hit","Raw physical","Raw magic","Raw true","Dealt physical","Dealt magic","Dealt true","Total dealt"]),hide_index=True,use_container_width=True)
+            else:
+                st.info("Learn Q or learn R and reach S style to see skill damage.")
+            if _rrank and _style<6: st.warning("Inferno Trigger unavailable: S style is required.")
+            _cd_rows=[]
+            for _slot,_rank in [("Q",_qrank),("R",_rrank)]:
+                if _rank:
+                    _base_cd=SAMIRA_ABILITIES[_slot]["cooldown"][_rank-1]
+                    _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_skill_total["ah"]/100),2),"Unknown — TODO"])
+            if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with item haste","Mana cost"]))
+            st.caption("W / E, passive, mana, rune / proc interactions and channel timing: not calculated. Critical rows assume crit-capable hits; Expected uses your crit chance. No combo total is implied.")
 
     if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
@@ -2247,4 +2290,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.45 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.46 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
