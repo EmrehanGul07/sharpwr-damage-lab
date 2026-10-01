@@ -39,7 +39,7 @@ def replay_marksman(events,**p):
     if name=='Yunara':kit.state['unleash']=0
     ready={s:0. for s in 'QWER'};kit.state['born']=0.
     aa_clock=0.;t=0.;last_t=0.;last_speed=base_as;lock=0.;channel=0.;root_until=0.;aa_lock=0.;dash_until=0.
-    cast_id=0;attack_sequence=0;timeline=[];aa_count=skill_count=0;log=[];rejected=[];total=0.;killed=None
+    cast_id=0;attack_sequence=0;timeline=[];motion=[];aa_count=skill_count=0;log=[];rejected=[];total=0.;killed=None
     conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False;spell_cast_times=[]
     items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
     runes=set(p.get('sub_runes',()));keystone=p.get('keystone');aa_hit=p.get('aa_hit');aa_stats=p.get('aa_stats')
@@ -130,7 +130,7 @@ def replay_marksman(events,**p):
             if keystone=='Conqueror':conq=min(6,conq+1);conq_until=t+6
         if action=='AA' and keystone=='Lethal Tempo':lt=min(6,lt+1);lt_until=t+6
         if combat_start is None and damage:combat_start=t
-        log.append({'time':t,'action':action,'attack_id':cid[1] if action.startswith('AA') and isinstance(cid,tuple) else None,'damage_classification':classification,'damage_components':components if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',value.physical),('magic',value.magic),('true',value.true)) if v],'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
+        log.append({'order':len(log)+len(timeline),'time':t,'action':action,'attack_id':cid[1] if action.startswith('AA') and isinstance(cid,tuple) else None,'damage_classification':classification,'damage_components':components if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',value.physical),('magic',value.magic),('true',value.true)) if v],'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
         if health<=0:killed=t
     def tick(action,value,**kw):record(action,value,**kw)
     def damage_impact(slot,cid,index=0):
@@ -381,7 +381,7 @@ def replay_marksman(events,**p):
         cost=kit.cost(slot,t)
         if mana is not None and mana+1e-9<cost:return False
         mana_before=mana
-        timeline.append({'time':t,'kind':'cast','action':slot,'distance':gap,'cost':cost,'mana_before':mana_before,'mana_after':None if mana is None else max(0.,mana-cost+cost*p.get('mana_refund',0.)),'lock_before':lock,'windup_before':aa_lock,'channel_before':channel,'during_channel_allowed':name=='Lucian' and slot=='E'})
+        timeline.append({'order':len(log)+len(timeline),'time':t,'kind':'cast','action':slot,'distance':gap,'cost':cost,'mana_before':mana_before,'mana_after':None if mana is None else max(0.,mana-cost+cost*p.get('mana_refund',0.)),'lock_before':lock,'windup_before':aa_lock,'channel_before':channel,'during_channel_allowed':name=='Lucian' and slot=='E'})
         if mana is not None:mana=max(0.,mana-cost+cost*p.get('mana_refund',0.))
         cd=kit.cd(slot);cooldown_value=cd/(1+haste/100)
         if name=='Sivir' and slot in 'QWE' and kit.active('morale',t):cooldown_value*=1-(.2,.25,.3)[ranks['R']-1]
@@ -390,12 +390,14 @@ def replay_marksman(events,**p):
             ready[slot]=t+(25,20,15,10)[ranks['W']-1]/(1+haste/100)
             kit.unresolved.add('Caitlyn trap ammo/recharge pool provisional: one charge per recharge')
         if name=='Jhin' and slot=='E':ready[slot]=t+(20,18,16,14)[ranks['E']-1]/(1+haste/100)
+        timeline[-1]['cooldowns']={s:max(0.,v-t) for s,v in ready.items()}
         skill_count+=1;cast_id+=1;cid=cast_id;spell_pending=True;spell_cast_times.append(t)
         if slot=='R':ultimate=t
         duration=kit.cast_time(slot,t,total_as()[1].get('bonus_as_total',0.));lock=t+duration
         arrival=lock+kit.travel(slot,gap)
         if name=='Varus' and slot=='Q':
             lock=t+1.5;channel=lock;arrival=lock+kit.travel(slot,gap);ready['Q']=lock+kit.cd('Q')/(1+haste/100);kit.state['mobile_cast_until']=lock;buff('charge_ms',1.5,.8)
+        timeline[-1]['cast_end']=lock
         s=kit.state;r=ranks[slot];c=name
         if p.get('transcendence') and level>=9 and t>=transcend_ready:
             for basic in 'QWE':reduce(basic,fraction=.08)
@@ -499,7 +501,7 @@ def replay_marksman(events,**p):
             if kit.ammo==0:
                 kit.reloading_until=t+windup+2.5;queue(kit.reloading_until,'reload')
         arrival=t+windup+attack_travel(name,gap,weapon=shot_weapon,ultimate=kit.active('ultimate_ad',t))
-        timeline.append({'time':t,'kind':'attack','action':'AA','id':attack_sequence,'distance':gap,'attack_range':kit.attack_range(t),'windup_end':t+windup,'impact_time':arrival,'lock_before':max(lock,channel,aa_lock,dash_until),'mana_before':mana_before,'mana_after':mana,'weapon':shot_weapon,'fourth':fourth})
+        timeline.append({'order':len(log)+len(timeline),'time':t,'kind':'attack','action':'AA','id':attack_sequence,'distance':gap,'attack_range':kit.attack_range(t),'windup_end':t+windup,'impact_time':arrival,'lock_before':max(lock,channel,aa_lock,dash_until),'mana_before':mana_before,'mana_after':mana,'weapon':shot_weapon,'fourth':fourth})
         kit.state['aa_windup']=windup;aa_clock=1.;aa_lock=t+windup
         queue(arrival,'aa_hit',cid=('AA',attack_sequence),fourth=fourth,weapon=shot_weapon)
     priority=p.get('skill_priority',('Q','W','E'));use_e=p.get('use_e',True)
@@ -597,6 +599,8 @@ def replay_marksman(events,**p):
                 if t>=max(lock,channel,aa_lock,dash_until,kit.reloading_until) and aa_clock<=1e-9 and gap<=kit.attack_range(t)+1e-7:
                     start_attack()
         last_t=t
+        speed,info=total_as()
+        if p.get('capture_motion'):motion.append({'time':t,'distance':gap,'kite_arc':kite_arc,'attack_range':kit.attack_range(t),'windup_until':aa_lock,'cast_until':lock,'channel_until':channel,'dash_until':dash_until,'attack_speed':speed})
         speed,info=total_as();last_speed=speed
         future=[end+1e-8]
         if heap:future.append(heap[0][0])
@@ -612,4 +616,4 @@ def replay_marksman(events,**p):
             if heap and heap[0][0]<=t+1e-9:continue
             next_t=t+.00001
         t=next_t
-    return FightResult(log,rejected,health,aa_count,skill_count,total,killed,assumptions=sorted(kit.unresolved),timeline=timeline)
+    return FightResult(log,rejected,health,aa_count,skill_count,total,killed,assumptions=sorted(kit.unresolved),timeline=timeline,motion=motion)

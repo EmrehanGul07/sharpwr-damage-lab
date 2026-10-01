@@ -101,6 +101,19 @@ class BuildFightEvaluator:
         if self.retain_traces:self.traces[key]=fight_results[results.index(row)]
         return row
 
+    def replay_row(self,row):
+        """Re-run ONLY the selected policy; search never retains all motion traces."""
+        import math
+        override=dict(self.simulation_overrides)
+        override.update(skill_priority=tuple(row['Rotation'].split(' → ')),movement_policy=row['Movement'],ultimate_policy=row['Ultimate timing'],action_policy=row['Attack weaving'],use_e=row['E enabled'],weapon=row['Weapon'],capture_motion=True)
+        if row.get('Recall minimum') is not None:override['recall_min_feathers']=row['Recall minimum']
+        ev=BuildFightEvaluator(self.ns,self.champion,self.level,self.hp,self.armor,self.mr,mist=self.mist,bonus_hp=self.bonus_hp,aa_reduction=self.aa_reduction,base_mana=self.base_mana,energized=self.energized,yuntal_stacks=self.yuntal_stacks,execs=self.execs,dragon_stacks=self.dragon_stacks,retain_traces=True,simulation_overrides=override)
+        result=ev.evaluate(row['Items'],row['Boots'])
+        trace=ev.traces[(tuple(sorted(row['Items'])),row['Boots'],False)]
+        if (trace.killed_at is None)!=(row['TTK'] is None) or trace.killed_at is not None and not math.isclose(trace.killed_at,row['TTK'],abs_tol=1e-7):raise ValueError('Replay does not match ranked fight TTK')
+        if not math.isclose(trace.total_damage,row['Damage'],abs_tol=1e-6):raise ValueError('Replay does not match ranked damage')
+        return trace
+
 def explain_ties(rows):
     """Explain equal defeat-time rankings without claiming equal raw damage."""
     import math

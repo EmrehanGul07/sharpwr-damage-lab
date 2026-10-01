@@ -5,6 +5,7 @@ import html
 import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
+from combat_replay import replay_payload, replay_html
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -1023,7 +1024,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.65.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.66.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1031,7 +1032,17 @@ with tabs[0]:
         try:
             _evaluator=BuildFightEvaluator(globals(),tier_champ,int(tier_level),tier_hp,tier_armor,tier_mr,mist=tier_mist,bonus_hp=max(0.,tier_hp-_natural),aa_reduction=float(_target.get("aa_reduction",0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
             _search=search_builds(_evaluator,F,[x for x in TIER3 if x in B],progress=lambda value,text:_progress.progress(value,text=text))
-            st.session_state["tier_fight_results"]={"signature":_tier_signature,"results":_search}
+            _replay_data=None
+            _replay_error=None
+            if _search['full']:
+                _winner=_search['full'][0]
+                _progress.progress(1.,text="Recording winner replay…")
+                try:
+                    _winner_trace=_evaluator.replay_row(_winner)
+                    _replay_data=replay_payload(_winner_trace,champion=tier_champ,level=int(tier_level),target=tier_target,hp=tier_hp,build=_winner)
+                except (ValueError,LookupError,StopIteration) as _err:
+                    _replay_error=str(_err)
+            st.session_state["tier_fight_results"]={"signature":_tier_signature,"results":_search,"replay":_replay_data,"replay_error":_replay_error}
         except (ValueError,LookupError,StopIteration) as _err:
             st.error(f"Build search could not run: {_err}")
         finally:_progress.empty()
@@ -1048,6 +1059,13 @@ with tabs[0]:
             _tie=f'<p class="rank-tie">{html.escape(_r.get("Rank explanation", ""))}</p>' if _r.get("Rank explanation") else ""
             _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div>{_tie}<p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
         _cards.append('</div>');st.markdown(''.join(_cards),unsafe_allow_html=True)
+        if _saved.get('replay_error'):
+            st.warning(f"Build results are available; replay could not be recorded: {_saved['replay_error']}")
+        if _saved.get('replay'):
+            st.markdown('### Combat Replay · #1 Build')
+            components.html(replay_html(_saved['replay']),height=790,scrolling=True)
+            import json as _replay_json
+            st.download_button("Download replay trace",_replay_json.dumps(_saved['replay'],ensure_ascii=False,indent=2),file_name=f"{tier_champ.lower().replace(' ', '-')}-combat-replay.json",mime="application/json",key="tier_replay_download")
         st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP, crit, on-hit, penetration and hybrid paths are retained. Finalists are rechecked with six skill priorities, movement alternatives, AA weaving and two ultimate timings. No incoming damage or defensive value is ranked.')
         def _tier_result_frame(rows):
             return pd.DataFrame([{"Rank":i,"Build":" + ".join(r["Items"])+(" + "+r["Boots"] if r["Boots"] else ""),"TTK (s)":r["TTK"],"DPS":round(r["DPS"],1),"AA damage":round(r["AA damage"],1),"Abilities / passives":round(r["Other damage"],1),"Gold":r["Gold"],"AD":round(r["AD"],1),"AP":r["AP"],"Crit %":r["Crit %"],"AH":r["AH"],"Skill order":r["Rotation"],"Movement":{"skill_envelope":"Ready skill range","aa_envelope":"Maximum AA range","close_envelope":"Close range","approach":"Melee approach"}.get(r.get("Movement"),"Kit default"),"Ultimate timing":"After basic skills" if r.get("Ultimate timing")=="after_basics" else "Before basic skills","AA weaving":"AA between skills" if r.get("Attack weaving")=="aa_weave" else "Skills first","Starting AS":round(r["Starting AS"],3),"AS above starting cap":round(r["AS over cap"],3)} for i,r in enumerate(rows,1)])
@@ -2011,4 +2029,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.65.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.66.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
