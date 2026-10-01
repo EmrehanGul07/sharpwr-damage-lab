@@ -11,7 +11,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | I01 | Rageblade + Kraken + Terminus | Tekli/ikili/üçlü sayaç; Phantom Hit tekrarı; penetration sırası; skill on-hit eligibility |
 | I02 | Hexoptics | Basic damage kapsamı; mesafe breakpoint/cap; Ezreal/MF Q ile Senna Q farkı; magic on-hit |
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
-| I04 | Muramana | Q/W/E/R çoklu-hit Shock tekrar kuralı; Samira melee animasyonunun ranged item sınıfını değiştirip değiştirmemesi |
+| I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Diğer şampiyonların çoklu-hit/on-hit etkileşimleri ve melee animasyonunun ranged item sınıfına etkisi açık. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
 | I06 | Spellblade | Armed-window expiry; eligible skill on-hit proc; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi |
 | I07 | Damage classification | Item BasicAttack/Proc kapsamı; AA damage reduction'ın item/pasif eklerine uygulanması; aşağıdaki bilinmeyen WR ability tag'leri |
@@ -74,3 +74,12 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 - [x] Muramana hedef/rün çarpanı ve ayrı Item damage component kaydı.
 - [x] Finalist policy taraması tam Cartesian product: rotation × movement × ultimate timing × AA weaving; E/weapon/feather varyantları.
 - [x] Kaynak araştırması, etiket/integrity denetimi, sınır testleri, bounded optimizer ve sıralama duyarlılığı analizi. Sonuç raporu birebir WR kanıtı değildir.
+
+## Oyun içi teyitler — 2026-10-01
+
+- Kullanıcının oyun içi item açıklaması: AA Shock %1,5 maksimum mana; ability Shock melee/ranged %3,5/%3 maksimum mana. Aynı şampiyona saldırı veya ability cast başına yalnızca bir kez.
+- Samira R: kullanıcı ilk tick'te Shock, sonraki tick'lerde Shock olmadığını test etti.
+- Samira W: kullanıcı iki vuruşta toplam yalnızca bir Shock tetiklendiğini test etti.
+- Ezreal: level 15, Q rank 4, full Conqueror dahil 239 AD, 0 AP, 2276 maksimum mana, yalnızca Muramana. Kukla 10.000 HP, 100 armor, 100 MR. Q ölçümü 259 fiziksel hasar. Kullanıcının bağımsız teyidi: Brutal her vuruşta 6 net hasar.
+- Ezreal hesap: (115 + 1,35 × 239 + 0,03 × 2276) / 2 + 6 = 258,965. Skill Shock tek başına ölçümle uyumlu; ayrıca AA Shock eklenmesi ölçümle uyuşmuyor.
+- Sınır: bu ölçüm Brutal'ın genel AD scaling formülünü teyit etmez. Cut Down'ın bu denemedeki aktifliği/hedefin vuruş öncesi canı kaydedilmedi; bu yüzden genel rün etkileşimi doğrulanmış sayılmıyor. Başka champion/cast etkileşimleri bu üç testten otomatik teyit almıyor.
