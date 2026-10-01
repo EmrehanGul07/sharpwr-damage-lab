@@ -3,7 +3,7 @@
   "recorded_at": "2026-10-01",
   "source": "User-pasted PC LoL Wiki excerpt, https://wiki.leagueoflegends.com/en-us/Samira",
   "status": "PC_reference_only_not_verified_for_Wild_Rift",
-  "application": "Recorded only; current instant-hit engine is unchanged. Wild Rift supplied damage/stat/cooldown/buff-duration formulas take precedence.",
+  "application": "User authorized PC timing/range rules as provisional inputs on 2026-10-01. V5.54 applies Q/W/E/R and ranged AA travel in timed_combat. WR damage, mana, cooldowns and E buff duration preserved. AA windup unavailable; R offsets evenly distributed across 2.013 seconds, pending exact schedule. Immobilized assist attacks not implemented.",
   "confirmed_wr_mana": {
     "Q": 30,
     "W": 60,

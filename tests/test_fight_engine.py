@@ -121,6 +121,34 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(r.log[-1]['mana'],0)
         r=self.run_fight(a[:-1]+[(11,'R')],max_mana=90)
         self.assertEqual(r.rejected[-1]['reason'],'S style required')
+    def test_timed_w_blocks_aa_q_and_has_two_hits(self):
+        r=self.run_fight([(0,'W'),(.2,'AA'),(.3,'Q'),(.9,'AA')],w_rank=1,timed_combat=True,distance=100)
+        self.assertEqual([round(x['time'],2) for x in r.log if x['action']=='W'],[.1,.85])
+        self.assertEqual([x['reason'] for x in r.rejected],['W active','W active'])
+        self.assertEqual(r.skill_count,1)
+    def test_timed_r_cancels_pending_w_hit(self):
+        a=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'W'),(4.3,'R'),(4.4,'AA'),(4.5,'Q'),(4.6,'W')]
+        r=self.run_fight(a,w_rank=1,timed_combat=True,distance=100)
+        self.assertEqual(len([x for x in r.log if x['action']=='W']),1)
+        shots=[x for x in r.log if x['action']=='R tick']
+        self.assertEqual(len(shots),10)
+        self.assertAlmostEqual(shots[-1]['time']-shots[0]['time'],2.013)
+        self.assertTrue(all(x['reason']=='R channel active' for x in r.rejected))
+    def test_timed_q_projectile_and_e_q_buffered_w(self):
+        r=self.run_fight([(0,'Q')],timed_combat=True,distance=500)
+        self.assertAlmostEqual(r.log[0]['time'],.25+500/2600)
+        r=self.run_fight([(0,'E'),(.1,'Q'),(.2,'W')],e_rank=1,w_rank=1,timed_combat=True,distance=525)
+        self.assertEqual([x['action'] for x in r.log],['E','Q','W','W'])
+        self.assertAlmostEqual(r.log[1]['time'],650/1600)
+        self.assertAlmostEqual(r.log[2]['time'],650/1600+.1)
+    def test_timed_range_and_automatic_interleaving(self):
+        r=self.run_fight([(0,'AA'),(0,'W')],w_rank=1,timed_combat=True,distance=700)
+        self.assertEqual(len(r.log),0)
+        self.assertEqual(len(r.rejected),2)
+        r=self.run_fight([],w_rank=1,e_rank=1,r_rank=3,timed_combat=True,distance=525,automatic_until=10)
+        self.assertFalse(r.rejected)
+        self.assertTrue(any(x['action']=='R tick' for x in r.log))
+        self.assertTrue(all(x['time']<=10 for x in r.log))
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 
