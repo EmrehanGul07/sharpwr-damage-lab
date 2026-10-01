@@ -10,6 +10,7 @@ from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
+from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3
 
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
@@ -739,7 +740,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
     fh=3 if "Fiendhunter Bolts" in items and ult and item_proc else 0
-    fiend_until=8.; last_ult_cast=None; spell_pending=False
+    fiend_until=8.; last_ult_cast=None; spell_pending=False; galeforce_ready=0.
     if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
     state=yield None
     while k<500 or (state.get("event_driven",False) and k<10000):
@@ -771,9 +772,9 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
             amp=0.0 if hit_dist<100 else min(.10,(int((hit_dist-100)//50)+1)*.01)
             phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
-        if "Galeforce" in items and active_ready and k==1:
+        if "Galeforce" in items and active_ready and not skill_on_hit and t>=galeforce_ready:
             bonus_ad=max(0,current_ad-s["basead"])
-            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst")
+            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst"); galeforce_ready=t+50
         if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
         if ("Terminus" in items and item_proc): onm+=30
         if "Wit's End" in items: onm+=40
@@ -983,7 +984,7 @@ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button:disabled{curso
 tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database"])
 
 with tabs[0]:
-    _tab_hero("SHARPWR • ITEM BENCHMARKS","Item Tier List","Compare legal builds against fixed target profiles. Top 10 cards highlight the leaders; detailed tables retain every tested result.")
+    _tab_hero("SHARPWR • ITEM BENCHMARKS","Item Tier List","Compare AA + ability fights. Full build Top 3 first, then 1–4 item Top 10 rankings.")
 
     _tier_left,_tier_right=st.columns(2,gap="medium")
     with _tier_left,st.container(border=True):
@@ -999,432 +1000,55 @@ with tabs[0]:
         _target_readout(_target["hp"],_target["armor"],_target["mr"],_target.get("aa_reduction",0))
         st.caption("Darius / Ornn apply 10% basic-attack reduction from level 5. Starting HP is configured below.")
 
-    _scenario_defs={
-        "Standard Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Fresh all-in from full HP. Item stacks start at 0 and build naturally."},
-        "First Contact":{"hp_pct":100,"spell":True,"energized":True,"ult":False,"desc":"Fresh target with first-contact triggers prepared: Spellblade + Energized ready."},
-        "Extended Fight":{"hp_pct":100,"spell":False,"energized":False,"ult":False,"desc":"Sustained all-in from 0 stacks. Current engine still measures target TTK; fixed-duration damage is not enabled yet."},
-        "Low HP Target":{"hp_pct":35,"spell":False,"energized":False,"ult":False,"desc":"Finisher test: target starts at 35% HP; defenses and boot mitigation stay unchanged."},
-    }
     with st.container(border=True):
-        _setup_heading("03","COMBAT CONDITIONS","Scenario Setup")
-        tier_scenario=st.radio("Combat Scenario",list(_scenario_defs),horizontal=True,key="tier_scenario")
-        _sc=_scenario_defs[tier_scenario]
-        st.caption(_sc["desc"])
-
-        with st.expander("Advanced Scenario Settings"):
-            ta1,ta2=st.columns(2)
-            tier_start_hp_pct=ta1.slider("Target Starting HP %",1,100,int(_sc["hp_pct"]),1,key=f"tier_hp_pct_{tier_scenario}")
-            tier_dist=ta2.number_input("Attack Range / Distance",0.0,1000.0,550.0,25.0,key="tier_dist")
-            ta3,ta4=st.columns(2)
-            tier_mana=ta3.number_input("Champion Max Mana before item",0.0,5000.0,0.0,50.0,key="tier_mana")
-            tier_execs=ta4.number_input("Collector previous executes",0,500,0,1,key="tier_execs")
-            # Tier-list benchmark progression: Yun Tal is assumed newly bought at Lv5
-            # (0 permanent stacks) and naturally reaches its 125-stack / +25% crit cap
-            # by Lv9. Intermediate levels grow linearly; combat AAs continue stacking it.
-            _tier_yuntal_default = 0 if tier_level <= 5 else (125 if tier_level >= 9 else round(125*(tier_level-5)/4))
-            tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks before combat",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}",help="Benchmark default: Lv5 = 0, Lv6 = 31, Lv7 = 62/63, Lv8 = 94, Lv9+ = 125. Ranged attacks continue granting +0.2% permanent crit during combat.")
-            tb1,tb2,tb3=st.columns(3)
-            tier_spell=tb1.checkbox("Ability cast before first AA",value=_sc["spell"],key=f"tier_spell_{tier_scenario}")
-            tier_energized=tb2.checkbox("Energized ready",value=_sc["energized"],key=f"tier_energized_{tier_scenario}")
-            tier_ult=tb3.checkbox("Ultimate pre-cast",value=_sc["ult"],key=f"tier_ult_{tier_scenario}")
-
-    if tier_champ=="Jhin":
-        st.warning("Jhin is excluded until the 4-shot + reload model is added.")
-    elif st.button(f"⚔️ CALCULATE VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
-        tier_full_hp=float(_target["hp"]); tier_hp=tier_full_hp*(tier_start_hp_pct/100.0); tier_armor=float(_target["armor"]); tier_mr=float(_target["mr"])
-        # LDR Giant Slayer uses target BONUS health, not total health.
-        # Jinx benchmark has no bonus-HP items. Darius/Ornn bonus HP is derived
-        # from the user-tested total HP profile minus their natural HP at this level.
-        _target_natural_hp = {
-            "Squishy • Jinx": tier_full_hp,
-            "Bruiser • Darius": 660 + 148*gu(tier_level),
-            "Tank • Ornn": 690 + 132*gu(tier_level),
-        }[tier_target]
-        tier_bonus_hp=max(0.0,tier_full_hp-float(_target_natural_hp))
-        tier_aa_reduction=float(_target.get("aa_reduction",0))
-        base_db={"No Item":(0,0,0,0,0,0,0,0,0,0,0,0,0,0)}
-        base_row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,"No Item",base_db,tier_mist,tier_bonus_hp,tier_dist,tier_mana,False,False,False,0,target_aa_reduction=tier_aa_reduction)
-        baseline=base_row[4]
-        rows=[]
-        for it in F:
-            row,_=sim(tier_champ,tier_level,tier_hp,tier_armor,tier_mr,it,F,tier_mist,tier_bonus_hp,tier_dist,tier_mana,tier_spell,tier_energized,tier_ult,tier_execs,target_aa_reduction=tier_aa_reduction,active_ready=(tier_scenario=="First Contact"),yuntal_start_stacks=tier_yuntal_stacks)
-            gold=float(row[1]); dps=float(row[4]); gain=(dps/baseline-1)*100 if baseline else 0
-            bonus_dps=dps-baseline; value=(bonus_dps/gold*1000) if gold else 0
-            rows.append([it,gold,dps,gain,bonus_dps,value,row[2],row[3]])
-        df=pd.DataFrame(rows,columns=["Item","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        df.insert(0,"Rank",range(1,len(df)+1))
-        best_dps=df.iloc[0]; best_value=df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]; best_gain=df.sort_values(["DPS Gain %","DPS"],ascending=[False,False]).iloc[0]
-        m1,m2,m3,m4=st.columns(4)
-        m1.metric(f"Best Item • {tier_scenario}",best_dps["Item"])
-        m2.metric("Best DPS",f"{best_dps['DPS']:.1f}")
-        m3.metric("Best DPS Gain",f"{best_gain['DPS Gain %']:.1f}%",best_gain["Item"])
-        m4.metric("Best Value / 1000g",f"{best_value['Bonus DPS / 1000g']:.1f}",best_value["Item"])
-        st.markdown(f"**{tier_champ} Lv{tier_level} • VS {tier_target.split(' • ')[0]} • {tier_scenario}**")
-        # Premium icon-first ranking: keep the numeric table compact, but make each ranked item visually identifiable.
-        _rank_html=['<div class="tier-rank-grid">']
-        for _,_r in df.head(10).iterrows():
-            _name=str(_r["Item"]); _icon=item_icon(_name)
-            _rank_html.append(
-                f'<div class="tier-rank-card">'
-                f'<div class="tier-rank-num">#{int(_r["Rank"])}</div>'
-                f'<img src="{html.escape(_icon)}" alt="{html.escape(_name)}">'
-                f'<div class="tier-rank-name">{html.escape(_name)}</div>'
-                f'<div class="tier-rank-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
-                f'<div class="tier-rank-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k</div>'
-                f'</div>'
-            )
-        _rank_html.append('</div>')
-        st.markdown("""<style>
-        .tier-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px;margin:8px 0 16px}
-        .tier-rank-card{position:relative;text-align:center;padding:10px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-        .tier-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-        .tier-rank-card img{width:54px;height:54px;border-radius:9px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-        .tier-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-        .tier-rank-name{font-size:11px;font-weight:750;line-height:1.15;min-height:26px;margin-top:5px}
-        .tier-rank-dps{font-size:15px;font-weight:850}.tier-rank-dps span{font-size:9px;font-weight:650;opacity:.62}
-        .tier-rank-sub{font-size:9px;opacity:.62;white-space:nowrap}
-        @media(max-width:640px){.tier-rank-grid{grid-template-columns:repeat(3,1fr);gap:7px}.tier-rank-card{padding:9px 4px 7px}.tier-rank-card img{width:48px;height:48px}}
-        </style>""",unsafe_allow_html=True)
-        st.markdown("".join(_rank_html),unsafe_allow_html=True)
-        with st.expander("Detailed ranking table"):
-            st.dataframe(df,use_container_width=True,hide_index=True)
-        st.caption("Value = (item DPS − naked champion DPS) / item gold × 1000. The champion's base DPS is not counted as item value.")
-        with st.expander("Scenario Engine • Item Passive Audit"):
-            st.caption("Modeled = explicit combat logic. Partial = only part is represented. Not modeled = DPS rank is not full in-game value.")
-            _audit_rows=[]
-            for _it in F:
-                _cat,_status,_note=ITEM_SCENARIO_AUDIT.get(_it,("static stats","modeled","Static offensive stats only."))
-                _audit_rows.append([_it,_cat,_status,_note])
-            _audit_badges(_audit_rows,status_index=2)
-            st.dataframe(pd.DataFrame(_audit_rows,columns=["Item","Mechanic","Engine Status","Tier List behavior"]),use_container_width=True,hide_index=True)
-
-
-        st.divider()
-        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 02</span><strong>2-Item Tier List</strong><em>DUO CORE</em></div>""",unsafe_allow_html=True)
-        st.caption("Tests every unique two-item combination with the same champion, target profile and scenario above. Duplicate items are excluded.")
-        _build_items=[_it for _it in F if float(dct(F[_it])["gold"])>0]
-        _pair_rows=[]
-        # Wild Rift purchase restriction: only one of these penetration items
-        # can exist in the same build.
-        _exclusive_pen_items={"Lord Dominik's Regards","Mortal Reminder","Serylda's Grudge","Terminus"}
-        for _i in range(len(_build_items)):
-            for _j in range(_i+1,len(_build_items)):
-                _pair=(_build_items[_i],_build_items[_j])
-                if sum(1 for _x in _pair if _x in _exclusive_pen_items)>1:
-                    continue
-                _prow,_=sim_build(
-                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_pair,F,
-                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                    target_aa_reduction=tier_aa_reduction,
-                    yuntal_start_stacks=tier_yuntal_stacks,
-                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                    ult=tier_ult,execs=tier_execs,
-                    active_ready=(tier_scenario=="First Contact")
-                )
-                _gold=float(_prow[1]); _dps=float(_prow[4])
-                _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                _bonus=_dps-baseline
-                _value=(_bonus/_gold*1000) if _gold else 0.0
-                _pair_rows.append([" + ".join(_pair),_pair[0],_pair[1],_gold,_dps,_gain,_bonus,_value,float(_prow[2]),int(_prow[3])])
-        _pair_df=pd.DataFrame(_pair_rows,columns=["Build","Item 1","Item 2","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        _pair_df.insert(0,"Rank",range(1,len(_pair_df)+1))
-        if len(_pair_df):
-            _pb=_pair_df.iloc[0]
-            _pv=_pair_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
-            _p1,_p2,_p3=st.columns(3)
-            _p1.metric("Best 2-Item Build",_pb["Build"])
-            _p2.metric("2-Item DPS",f"{float(_pb['DPS']):.1f}")
-            _p3.metric("Best Value / 1000g",f"{float(_pv['Bonus DPS / 1000g']):.1f}",_pv["Build"])
-
-            _pair_html=['<div class="pair-rank-grid">']
-            for _,_r in _pair_df.head(10).iterrows():
-                _n1=str(_r["Item 1"]); _n2=str(_r["Item 2"])
-                _pair_html.append(
-                    f'<div class="pair-rank-card">'
-                    f'<div class="pair-rank-num">#{int(_r["Rank"])}</div>'
-                    f'<div class="pair-icons"><img src="{html.escape(item_icon(_n1))}" alt="{html.escape(_n1)}"><img src="{html.escape(item_icon(_n2))}" alt="{html.escape(_n2)}"></div>'
-                    f'<div class="pair-name">{html.escape(_n1)}<br><span>+</span> {html.escape(_n2)}</div>'
-                    f'<div class="pair-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
-                    f'<div class="pair-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div>'
-                    f'</div>'
-                )
-            _pair_html.append('</div>')
-            st.markdown("""<style>
-            .pair-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:8px 0 16px}
-            .pair-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-            .pair-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-            .pair-icons{display:flex;justify-content:center;gap:5px}.pair-icons img{width:46px;height:46px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-            .pair-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-            .pair-name{font-size:10px;font-weight:750;line-height:1.18;min-height:34px;margin-top:5px}.pair-name span{color:#c9a84c}
-            .pair-dps{font-size:15px;font-weight:850}.pair-dps span{font-size:9px;font-weight:650;opacity:.62}
-            .pair-sub{font-size:9px;opacity:.62;white-space:nowrap}
-            @media(max-width:640px){.pair-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.pair-icons img{width:42px;height:42px}}
-            </style>""",unsafe_allow_html=True)
-            st.markdown("".join(_pair_html),unsafe_allow_html=True)
-            with st.expander("Detailed 2-item ranking table"):
-                st.dataframe(_pair_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_pair_df)} legal unique two-item combinations tested. LDR, Mortal Reminder, Serylda's Grudge and Terminus are mutually exclusive. Ranking is DPS-first; value remains a separate metric and is not folded into an overall score.")
-
-
-        st.divider()
-        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 03</span><strong>3-Item Tier List</strong><em>CORE BUILD</em></div>""",unsafe_allow_html=True)
-        st.caption("Tests every legal unique three-item combination with the same benchmark settings. Duplicate items are excluded and the penetration-item purchase restriction is preserved.")
-        _triple_rows=[]
-        for _i in range(len(_build_items)):
-            for _j in range(_i+1,len(_build_items)):
-                for _k in range(_j+1,len(_build_items)):
-                    _triple=(_build_items[_i],_build_items[_j],_build_items[_k])
-                    if sum(1 for _x in _triple if _x in _exclusive_pen_items)>1:
-                        continue
-                    _trow,_=sim_build(
-                        tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_triple,F,
-                        mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                        target_aa_reduction=tier_aa_reduction,
-                        yuntal_start_stacks=tier_yuntal_stacks,
-                        base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                        ult=tier_ult,execs=tier_execs,
-                        active_ready=(tier_scenario=="First Contact")
-                    )
-                    _gold=float(_trow[1]); _dps=float(_trow[4])
-                    _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                    _bonus=_dps-baseline
-                    _value=(_bonus/_gold*1000) if _gold else 0.0
-                    _triple_rows.append([" + ".join(_triple),_triple[0],_triple[1],_triple[2],_gold,_dps,_gain,_bonus,_value,float(_trow[2]),int(_trow[3])])
-        _triple_df=pd.DataFrame(_triple_rows,columns=["Build","Item 1","Item 2","Item 3","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        _triple_df.insert(0,"Rank",range(1,len(_triple_df)+1))
-        if len(_triple_df):
-            _tb=_triple_df.iloc[0]
-            _tv=_triple_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
-            _t1,_t2,_t3=st.columns(3)
-            _t1.metric("Best 3-Item Build",_tb["Build"])
-            _t2.metric("3-Item DPS",f"{float(_tb['DPS']):.1f}")
-            _t3.metric("Best Value / 1000g",f"{float(_tv['Bonus DPS / 1000g']):.1f}",_tv["Build"])
-
-            _triple_html=['<div class="triple-rank-grid">']
-            for _,_r in _triple_df.head(10).iterrows():
-                _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
-                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
-                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names)
-                _triple_html.append(
-                    f'<div class="triple-rank-card">'
-                    f'<div class="triple-rank-num">#{int(_r["Rank"])}</div>'
-                    f'<div class="triple-icons">{_imgs}</div>'
-                    f'<div class="triple-name">{_label}</div>'
-                    f'<div class="triple-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div>'
-                    f'<div class="triple-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div>'
-                    f'</div>'
-                )
-            _triple_html.append('</div>')
-            st.markdown("""<style>
-            .triple-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px;margin:8px 0 16px}
-            .triple-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-            .triple-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-            .triple-icons{display:flex;justify-content:center;gap:4px}.triple-icons img{width:43px;height:43px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-            .triple-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-            .triple-name{font-size:10px;font-weight:750;line-height:1.18;min-height:46px;margin-top:5px}.triple-name span{color:#c9a84c}
-            .triple-dps{font-size:15px;font-weight:850}.triple-dps span{font-size:9px;font-weight:650;opacity:.62}
-            .triple-sub{font-size:9px;opacity:.62;white-space:nowrap}
-            @media(max-width:640px){.triple-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.triple-icons img{width:38px;height:38px}}
-            </style>""",unsafe_allow_html=True)
-            st.markdown("".join(_triple_html),unsafe_allow_html=True)
-            with st.expander("Detailed 3-item ranking table"):
-                st.dataframe(_triple_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_triple_df)} legal unique three-item combinations tested. Ranking is DPS-first; value remains separate and no weighted overall score is used.")
-
-
-        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 04</span><strong>Boots + 3 Items</strong><em>POWER SPIKE</em></div>""",unsafe_allow_html=True)
-        st.caption("Adds one offensive boot slot to the strongest legal 3-item cores. Kept bounded so normal Streamlit reruns stay responsive.")
-        _offensive_boots=["Immortal Treads","Gunmetal Greaves","Armorcrusher Boots"]
-        _boot_core_candidates=_triple_df.head(min(250,len(_triple_df)))
-        _boot3_rows=[]
-        for _,_cr in _boot_core_candidates.iterrows():
-            _core=(str(_cr["Item 1"]),str(_cr["Item 2"]),str(_cr["Item 3"]))
-            for _boot in _offensive_boots:
-                _brow,_=sim_build(
-                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core,F,
-                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                    target_aa_reduction=tier_aa_reduction,
-                    yuntal_start_stacks=tier_yuntal_stacks,
-                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                    ult=tier_ult,execs=tier_execs,
-                    active_ready=(tier_scenario=="First Contact"),boot=_boot
-                )
-                _gold=float(_brow[1]); _dps=float(_brow[4])
-                _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
-                _boot3_rows.append([" + ".join(_core)+" + "+_boot,_core[0],_core[1],_core[2],_boot,_gold,_dps,_gain,_bonus,_value,float(_brow[2]),int(_brow[3])])
-        _boot3_df=pd.DataFrame(_boot3_rows,columns=["Build","Item 1","Item 2","Item 3","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        _boot3_df.insert(0,"Rank",range(1,len(_boot3_df)+1))
-        if len(_boot3_df):
-            _bb=_boot3_df.iloc[0]
-            _bv=_boot3_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
-            _b1,_b2,_b3=st.columns(3)
-            _b1.metric("Best Boots + 3 Core",_bb["Build"])
-            _b2.metric("Booted DPS",f"{float(_bb['DPS']):.1f}")
-            _b3.metric("Best Value / 1000g",f"{float(_bv['Bonus DPS / 1000g']):.1f}",_bv["Build"])
-            _boot_html=['<div class="boot3-rank-grid">']
-            for _,_r in _boot3_df.head(10).iterrows():
-                _names=[str(_r["Item 1"]),str(_r["Item 2"]),str(_r["Item 3"])]
-                _boot=str(_r["Boots"])
-                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
-                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
-                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
-                _boot_html.append(f'<div class="boot3-rank-card"><div class="boot3-rank-num">#{int(_r["Rank"])}</div><div class="boot3-icons">{_imgs}</div><div class="boot3-name">{_label}</div><div class="boot3-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="boot3-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
-            _boot_html.append('</div>')
-            st.markdown("""<style>
-            .boot3-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:10px;margin:8px 0 16px}
-            .boot3-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-            .boot3-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-            .boot3-icons{display:flex;justify-content:center;gap:4px}.boot3-icons img{width:40px;height:40px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-            .boot3-icons .boot-slot{border-color:#c9a84c}
-            .boot3-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-            .boot3-name{font-size:9.5px;font-weight:750;line-height:1.16;min-height:58px;margin-top:5px}.boot3-name span{color:#c9a84c}
-            .boot3-dps{font-size:15px;font-weight:850}.boot3-dps span{font-size:9px;font-weight:650;opacity:.62}
-            .boot3-sub{font-size:9px;opacity:.62;white-space:nowrap}
-            @media(max-width:640px){.boot3-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.boot3-icons img{width:34px;height:34px}}
-            </style>""",unsafe_allow_html=True)
-            st.markdown("".join(_boot_html),unsafe_allow_html=True)
-            with st.expander("Detailed Boots + 3-item ranking table"):
-                st.dataframe(_boot3_df,use_container_width=True,hide_index=True)
-            st.caption(f"{len(_boot3_df)} booted builds tested across the top {len(_boot_core_candidates)} legal 3-item cores. Tier 2 boots are excluded from ranking; the optimizer compares Tier 3 offensive boots only. Immortal Treads uses the existing benchmark assumption that its Above 50% HP +5% damage passive is active.")
-
-
-        st.markdown("""<div class="sharp-section-head"><span>BUILD STAGE 05</span><strong>Boots + 4 Items</strong><em>LATE GAME</em></div>""",unsafe_allow_html=True)
-        st.caption("Expands the strongest Boots + 3 builds by one different completed item. Duplicate builds are deduplicated and the penetration-item restriction is preserved.")
-        _boot4_seed=_boot3_df.head(min(300,len(_boot3_df)))
-        _boot4_seen=set()
-        _boot4_rows=[]
-        for _,_seed in _boot4_seed.iterrows():
-            _core3=(str(_seed["Item 1"]),str(_seed["Item 2"]),str(_seed["Item 3"]))
-            _boot=str(_seed["Boots"])
-            for _fourth in _build_items:
-                if _fourth in _core3:
-                    continue
-                _core4=tuple(sorted(_core3+(_fourth,)))
-                if sum(1 for _x in _core4 if _x in _exclusive_pen_items)>1:
-                    continue
-                _key=(_boot,)+_core4
-                if _key in _boot4_seen:
-                    continue
-                _boot4_seen.add(_key)
-                _row,_=sim_build(
-                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core4,F,
-                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                    target_aa_reduction=tier_aa_reduction,
-                    yuntal_start_stacks=tier_yuntal_stacks,
-                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                    ult=tier_ult,execs=tier_execs,
-                    active_ready=(tier_scenario=="First Contact"),boot=_boot
-                )
-                _gold=float(_row[1]); _dps=float(_row[4])
-                _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
-                _boot4_rows.append([" + ".join(_core4)+" + "+_boot,*_core4,_boot,_gold,_dps,_gain,_bonus,_value,float(_row[2]),int(_row[3])])
-        _boot4_df=pd.DataFrame(_boot4_rows,columns=["Build","Item 1","Item 2","Item 3","Item 4","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        _boot4_df.insert(0,"Rank",range(1,len(_boot4_df)+1))
-        if len(_boot4_df):
-            _b4best=_boot4_df.iloc[0]
-            _b4value=_boot4_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
-            _b41,_b42,_b43=st.columns(3)
-            _b41.metric("Best Boots + 4 Build",_b4best["Build"])
-            _b42.metric("Boots + 4 DPS",f"{float(_b4best['DPS']):.1f}")
-            _b43.metric("Best Value / 1000g",f"{float(_b4value['Bonus DPS / 1000g']):.1f}",_b4value["Build"])
-
-            _b4html=['<div class="boot4-rank-grid">']
-            for _,_r in _boot4_df.head(10).iterrows():
-                _names=[str(_r[f"Item {x}"]) for x in range(1,5)]
-                _boot=str(_r["Boots"])
-                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
-                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
-                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
-                _b4html.append(f'<div class="boot4-rank-card"><div class="boot4-rank-num">#{int(_r["Rank"])}</div><div class="boot4-icons">{_imgs}</div><div class="boot4-name">{_label}</div><div class="boot4-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="boot4-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
-            _b4html.append('</div>')
-            st.markdown("""<style>
-            .boot4-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:10px;margin:8px 0 16px}
-            .boot4-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-            .boot4-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-            .boot4-icons{display:flex;justify-content:center;gap:3px}.boot4-icons img{width:37px;height:37px;border-radius:7px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-            .boot4-icons .boot-slot{border-color:#c9a84c}
-            .boot4-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-            .boot4-name{font-size:9px;font-weight:750;line-height:1.14;min-height:69px;margin-top:5px}.boot4-name span{color:#c9a84c}
-            .boot4-dps{font-size:15px;font-weight:850}.boot4-dps span{font-size:9px;font-weight:650;opacity:.62}
-            .boot4-sub{font-size:9px;opacity:.62;white-space:nowrap}
-            @media(max-width:640px){.boot4-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.boot4-icons img{width:29px;height:29px}}
-            </style>""",unsafe_allow_html=True)
-            st.markdown("".join(_b4html),unsafe_allow_html=True)
-            with st.expander("Detailed Boots + 4-item ranking table"):
-                st.dataframe(_boot4_df,width="stretch",hide_index=True)
-            st.caption(f"{len(_boot4_df)} unique Boots + 4 builds tested by expanding the top {len(_boot4_seed)} Boots + 3 results. Tier 2 boots remain excluded.")
-
-
-        st.markdown("""<div class="sharp-section-head final"><span>BUILD STAGE 06</span><strong>Full Build Tier List</strong><em>5 ITEMS + BOOTS</em></div>""",unsafe_allow_html=True)
-        st.caption("Final 6-slot optimizer: one Tier 3 offensive boot plus five different completed items. It expands the strongest Boots + 4 results, deduplicates identical full builds, and preserves the penetration-item restriction.")
-        _full_seed=_boot4_df.head(min(400,len(_boot4_df)))
-        _full_seen=set()
-        _full_rows=[]
-        for _,_seed in _full_seed.iterrows():
-            _core4=tuple(str(_seed[f"Item {x}"]) for x in range(1,5))
-            _boot=str(_seed["Boots"])
-            for _fifth in _build_items:
-                if _fifth in _core4:
-                    continue
-                _core5=tuple(sorted(_core4+(_fifth,)))
-                if sum(1 for _x in _core5 if _x in _exclusive_pen_items)>1:
-                    continue
-                _key=(_boot,)+_core5
-                if _key in _full_seen:
-                    continue
-                _full_seen.add(_key)
-                _row,_=sim_build(
-                    tier_champ,tier_level,tier_hp,tier_armor,tier_mr,_core5,F,
-                    mist=tier_mist,bonus_hp=tier_bonus_hp,dist=tier_dist,
-                    target_aa_reduction=tier_aa_reduction,
-                    yuntal_start_stacks=tier_yuntal_stacks,
-                    base_mana=tier_mana,spell=tier_spell,energized=tier_energized,
-                    ult=tier_ult,execs=tier_execs,
-                    active_ready=(tier_scenario=="First Contact"),boot=_boot
-                )
-                _gold=float(_row[1]); _dps=float(_row[4])
-                _gain=(_dps/baseline-1)*100 if baseline else 0.0
-                _bonus=_dps-baseline; _value=(_bonus/_gold*1000) if _gold else 0.0
-                _full_rows.append([" + ".join(_core5)+" + "+_boot,*_core5,_boot,_gold,_dps,_gain,_bonus,_value,float(_row[2]),int(_row[3])])
-        _full_df=pd.DataFrame(_full_rows,columns=["Build","Item 1","Item 2","Item 3","Item 4","Item 5","Boots","Gold","DPS","DPS Gain %","Bonus DPS","Bonus DPS / 1000g","TTK","Attacks"]).sort_values(["DPS","TTK"],ascending=[False,True]).reset_index(drop=True)
-        _full_df.insert(0,"Rank",range(1,len(_full_df)+1))
-        if len(_full_df):
-            _fb=_full_df.iloc[0]
-            _fv=_full_df.sort_values(["Bonus DPS / 1000g","DPS"],ascending=[False,False]).iloc[0]
-            _f1,_f2,_f3=st.columns(3)
-            _f1.metric("Best Full Build",_fb["Build"])
-            _f2.metric("Full Build DPS",f"{float(_fb['DPS']):.1f}")
-            _f3.metric("Best Value / 1000g",f"{float(_fv['Bonus DPS / 1000g']):.1f}",_fv["Build"])
-
-            _full_html=['<div class="full-rank-grid">']
-            for _,_r in _full_df.head(10).iterrows():
-                _names=[str(_r[f"Item {x}"]) for x in range(1,6)]
-                _boot=str(_r["Boots"])
-                _imgs="".join(f'<img src="{html.escape(item_icon(_n))}" alt="{html.escape(_n)}">' for _n in _names)
-                _imgs+=f'<img class="boot-slot" src="{html.escape(boot_icon(_boot))}" alt="{html.escape(_boot)}">'
-                _label="<br><span>+</span> ".join(html.escape(_n) for _n in _names+[_boot])
-                _full_html.append(f'<div class="full-rank-card"><div class="full-rank-num">#{int(_r["Rank"])}</div><div class="full-icons">{_imgs}</div><div class="full-name">{_label}</div><div class="full-dps">{float(_r["DPS"]):.1f} <span>DPS</span></div><div class="full-sub">+{float(_r["DPS Gain %"]):.1f}% · {float(_r["Bonus DPS / 1000g"]):.1f}/1k · {int(_r["Gold"]):,}g</div></div>')
-            _full_html.append('</div>')
-            st.markdown("""<style>
-            .full-rank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:10px;margin:8px 0 16px}
-            .full-rank-card{position:relative;text-align:center;padding:11px 7px 9px;border:1px solid rgba(128,128,128,.22);border-radius:12px;background:rgba(128,128,128,.045)}
-            .full-rank-card:hover{border-color:#c9a84c;transform:translateY(-1px)}
-            .full-icons{display:flex;justify-content:center;gap:3px}.full-icons img{width:34px;height:34px;border-radius:7px;object-fit:cover;border:1px solid rgba(255,255,255,.16)}
-            .full-icons .boot-slot{border-color:#c9a84c}
-            .full-rank-num{position:absolute;top:7px;left:8px;font-size:11px;font-weight:800;color:#c9a84c}
-            .full-name{font-size:8.8px;font-weight:750;line-height:1.13;min-height:80px;margin-top:5px}.full-name span{color:#c9a84c}
-            .full-dps{font-size:15px;font-weight:850}.full-dps span{font-size:9px;font-weight:650;opacity:.62}
-            .full-sub{font-size:9px;opacity:.62;white-space:nowrap}
-            @media(max-width:640px){.full-rank-grid{grid-template-columns:repeat(2,1fr);gap:7px}.full-icons img{width:25px;height:25px}}
-            </style>""",unsafe_allow_html=True)
-            st.markdown("".join(_full_html),unsafe_allow_html=True)
-            with st.expander("Detailed full-build ranking table"):
-                st.dataframe(_full_df,width="stretch",hide_index=True)
-            st.caption(f"{len(_full_df)} unique full builds tested by expanding the top {len(_full_seed)} Boots + 4 results. Full build = 5 completed items + 1 Tier 3 boot; Tier 2 boots are excluded.")
+        tier_scenario=st.radio("Combat Scenario",["Standard Fight","First Contact"],horizontal=True,key="tier_scenario_v560")
+        tier_energized=tier_scenario=="First Contact"
+        with st.expander("Starting progression"):
+            tier_execs=st.number_input("Collector previous executes",0,500,0,1,key="tier_execs")
+            _tier_yuntal_default=0 if tier_level<=5 else (125 if tier_level>=9 else round(125*(tier_level-5)/4))
+            tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
+            tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
+            tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
+    _tier_signature=(tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
+        tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
+        _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
+        _progress=st.progress(0.,text="Simulating AA + abilities…")
+        try:
+            _evaluator=BuildFightEvaluator(globals(),tier_champ,int(tier_level),tier_hp,tier_armor,tier_mr,mist=tier_mist,bonus_hp=max(0.,tier_hp-_natural),aa_reduction=float(_target.get("aa_reduction",0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
+            _search=search_builds(_evaluator,F,[x for x in TIER3 if x in B],progress=lambda value,text:_progress.progress(value,text=text))
+            st.session_state["tier_fight_results"]={"signature":_tier_signature,"results":_search}
+        except (ValueError,LookupError,StopIteration) as _err:
+            st.error(f"Build search could not run: {_err}")
+        finally:_progress.empty()
+    _saved=st.session_state.get("tier_fight_results")
+    if _saved and _saved["signature"]==_tier_signature:
+        _search=_saved["results"]
+        st.markdown('<div class="sharp-section-head"><span>FINAL IDEAL BUILD</span><strong>Full Build · Top 3</strong><em>5 ITEMS + BOOTS</em></div>',unsafe_allow_html=True)
+        st.markdown("""<style>.fight-build-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 20px}.fight-build-card{padding:18px;border:1px solid #32445a;border-radius:16px;background:#101c2c}.fight-build-card:first-child{border-color:#c9a84c}.fight-build-icons{display:flex;gap:4px;flex-wrap:wrap;margin:12px 0}.fight-build-icons img{width:38px;height:38px;border-radius:6px}.fight-build-card strong{font-size:22px;color:#f4d383}.fight-build-card p{font-size:12px;color:#b6c5d8;line-height:1.6}.fight-build-kpi{font-size:25px;font-weight:800}@media(max-width:760px){.fight-build-grid{grid-template-columns:1fr}}</style>""",unsafe_allow_html=True)
+        _cards=['<div class="fight-build-grid">']
+        for _rank,_r in enumerate(_search["full"],1):
+            _names=list(_r["Items"])+[_r["Boots"]]
+            _images=''.join(f'<img src="{html.escape(boot_icon(x) if x in B else item_icon(x))}" alt="{html.escape(x)}" title="{html.escape(x)}">' for x in _names)
+            _ttk=f'{_r["TTK"]:.3f}s TTK' if _r["TTK"] is not None else 'Target survived'
+            _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div><p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
+        _cards.append('</div>');st.markdown(''.join(_cards),unsafe_allow_html=True)
+        st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP items in the current database are included. No incoming damage or defensive value is ranked.')
+        def _tier_result_frame(rows):
+            return pd.DataFrame([{"Rank":i,"Build":" + ".join(r["Items"])+(" + "+r["Boots"] if r["Boots"] else ""),"TTK (s)":r["TTK"],"DPS":round(r["DPS"],1),"AA damage":round(r["AA damage"],1),"Abilities / passives":round(r["Other damage"],1),"Gold":r["Gold"],"AD":round(r["AD"],1),"AP":r["AP"],"Crit %":r["Crit %"],"AH":r["AH"],"Starting AS":round(r["Starting AS"],3),"AS above starting cap":round(r["AS over cap"],3)} for i,r in enumerate(rows,1)])
+        st.dataframe(_tier_result_frame(_search["full"]),hide_index=True,width="stretch")
+        with st.expander("Best build · measured item contributions"):
+            st.dataframe(pd.DataFrame(_search["marginal"]),hide_index=True,width="stretch")
+            st.caption("Each item is removed and the fight is recalculated. The effects overlap and are not additive. AS above cap can still provide value through item procs or champion conversions.")
+        for _stage in range(1,5):
+            st.markdown(f'### {_stage}-Item · Top 10')
+            st.dataframe(_tier_result_frame(_search["stages"][_stage]),hide_index=True,width="stretch")
+        _notes=sorted({note for r in _search["full"] for note in r["Assumptions"]})
+        if _notes:
+            with st.expander("Unverified mechanics that may affect ranking"):
+                for _note in _notes:st.write(_note)
     else:
-        st.markdown('<div class="empty-state"><strong>Your benchmark is ready</strong><p>Choose a champion, target and scenario, then calculate to reveal the Top 10 rankings.</p></div>',unsafe_allow_html=True)
+        st.markdown('<div class="empty-state"><strong>Find your best tested build</strong><p>Full-build Top 3 appears first, followed by 1–4 item Top 10 rankings.</p></div>',unsafe_allow_html=True)
 
 
 with tabs[1]:
@@ -2355,4 +1979,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.59.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.60 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

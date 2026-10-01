@@ -36,7 +36,7 @@ def replay_marksman(events,**p):
     aa_clock=0.;t=0.;last_t=0.;last_speed=base_as;lock=0.;channel=0.;root_until=0.;aa_lock=0.;dash_until=0.
     cast_id=0;aa_count=skill_count=0;log=[];rejected=[];total=0.;killed=None
     conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False
-    items={};kite_arc=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
+    items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
     runes=set(p.get('sub_runes',()));keystone=p.get('keystone');aa_hit=p.get('aa_hit');aa_stats=p.get('aa_stats')
     if keystone not in (None,'Conqueror','Lethal Tempo'):raise ValueError('Unsupported offensive keystone')
     if not 0<=p.get('mana_refund',0.)<=1 or not 0<=p.get('collector_threshold',0.)<=1 or amp<=0:raise ValueError('Invalid modifiers')
