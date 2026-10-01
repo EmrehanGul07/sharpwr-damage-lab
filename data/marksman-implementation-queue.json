@@ -14,10 +14,10 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
+        "damage_components": "implemented_known_values",
         "kit_timeline_adapter": "provisional",
         "movement_optimizer": "provisional",
-        "end_to_end_validation": "provisional"
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
@@ -33,38 +33,38 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
+        "damage_components": "implemented_known_values",
         "kit_timeline_adapter": "provisional",
         "movement_optimizer": "provisional",
-        "end_to_end_validation": "provisional"
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Twitch",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 3,
       "remaining": "Poison refresh/AP tick order, first spread tick, E spread radius and R item-proc falloff.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Yunara",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 4,
       "remaining": "Önceki screenshot eksiklerinin güncel durumu 1 Ekim practice notunda belirtilmiştir; aday formüller tam doğrulanmış sayılmadı.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [
         "Q",
@@ -76,38 +76,38 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Lucian",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 5,
       "remaining": "Lightslinger second-shot level progression; R bullet rounding/cap; W mark and passive proc order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Varus",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 6,
       "remaining": "Q rank 2–4 bonus AD ratios and charge curve; W active missing-health scaling; blight application/detonation order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [
         "W"
       ],
@@ -116,76 +116,76 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Ezreal",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 7,
       "remaining": "W detonation relative to Q on-hit/item effects; launch snapshot and projectile hit order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Vayne",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 8,
       "remaining": "Q crit/on-hit eligibility; Silver Bolts proc classification and stack expiry; dash endpoint and wall detection.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Tristana",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 9,
       "remaining": "Level-one range offset; Explosive Charge crit/stack/proc order; jump endpoint and timed expiry explosion.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Ashe",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 10,
       "remaining": "Frost first-hit/crit calculation; Q flurry on-hit count; target distance stun scaling.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [
         "E"
       ],
@@ -196,19 +196,19 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Kalista",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 11,
       "remaining": "Boot-dependent hop distance/speed; Rend proc order; allied Oathsworn damage excluded from solo simulation.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [
         "W"
       ],
@@ -217,95 +217,95 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Draven",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 12,
       "remaining": "Q bonus critical eligibility; axe landing/catch timing and movement; R return/falloff/execute order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Caitlyn",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 13,
       "remaining": "Headshot level/crit progression; trap arming and headshot/net/trap item-proc order; R crit calculation.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Jinx",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 14,
       "remaining": "Rocket flight damage curve; trap arming and overlap; minigun AS stack distribution; rocket mana consumption.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Kai'Sa",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 15,
       "remaining": "Plasma level progression and AP detonation coefficient; evolve conditions; E charge duration versus AS; W multi-stack ordering.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Kog'Maw",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 16,
       "remaining": "R mana ramp and source conflict; missing-health interpolation and exact 40% boundary; W attack-proc order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [
         "R"
       ],
@@ -314,57 +314,57 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Miss Fortune",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 17,
       "remaining": "Love Tap crit modifier, level amp and expiry; Q bounce geometry; R shot/item eligibility.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Xayah",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 18,
       "remaining": "Feather lifetime, recall hit detection and falloff; Q/R feather placement; passive attack storage versus ground feathers.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Sivir",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 19,
       "remaining": "Morale cap/expiry and R cooldown reduction order; Q cast scaling/return overlap; W bounce-only versus primary-target effects.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [
         "E"
       ],
@@ -373,86 +373,86 @@
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Corki",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 20,
       "remaining": "Passive true-damage base and proc order; W/E tick cadence/shred order; R charge reload ranks and critical-AA refund units.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Senna",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 21,
       "remaining": "Mist state and level passive damage; Q cast scaling; passive two-hit/target lockout/crit item-proc order.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Zeri",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 22,
       "remaining": "Burst Fire level base; wall crit item interaction; R AS-cap exception/extension; E cooldown-refund crit handling.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     },
     {
       "champion": "Jhin",
-      "state": "catalogued_engine_pending",
+      "state": "integrated_provisional",
       "order": 23,
       "remaining": "Fixed-AS AD conversion, reload duration, fourth-AA missing-health progression; R fourth-shot crit/item interaction and channel cadence.",
       "catalogue_complete": true,
-      "engine_connected": false,
+      "engine_connected": true,
       "missing_mana": [],
       "missing_cooldown": [],
       "damage_components_prepared": true,
       "subtasks": {
         "catalogue": "completed",
         "metadata_research": "completed_available_sources",
-        "damage_components": "partial",
-        "kit_timeline_adapter": "pending",
-        "movement_optimizer": "pending",
-        "end_to_end_validation": "pending"
+        "damage_components": "implemented_known_values",
+        "kit_timeline_adapter": "provisional",
+        "movement_optimizer": "provisional",
+        "end_to_end_validation": "automated_level_1_and_15_build_matrix"
       }
     }
   ]

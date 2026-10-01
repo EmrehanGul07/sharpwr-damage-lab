@@ -3,7 +3,7 @@
 Times are supplied impact times, not invented cast/projectile timings. Unsupported
 mechanics are surfaced by the caller; this is not a complete Wild Rift engine.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import math
 import random
 from champion_abilities import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
@@ -22,6 +22,7 @@ class FightResult:
     skill_count: int
     total_damage: float
     killed_at: float | None
+    assumptions: list = field(default_factory=list)
 
 
 SAMIRA_SKILL_ORDER=('Q','E','W','Q','R','Q','Q','E','R','E','E','W','R','W','W')
@@ -33,18 +34,19 @@ def samira_ranks(level):
 SMOLDER_SKILL_ORDER=('Q','W','E','Q','R','Q','Q','W','R','W','W','E','R','E','E')
 
 def champion_ranks(champion,level):
-    if not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
-    order=SAMIRA_SKILL_ORDER if champion=='Samira' else SMOLDER_SKILL_ORDER
-    return {slot:order[:level].count(slot) for slot in ('Q','W','E','R')}
+    from marksman_kits import default_ranks
+    return default_ranks(champion,level)
 
-def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.,timed_combat=False,distance=525.,attack_range=525.,aa_windup=None,movement_speed=0.,base_windup=None,starting_bonus_as=0.,aa_stats=None,mana_refund=0.,muramana=False,champion='Samira',ap=0.,initial_stacks=0,skill_priority=('E','W','Q'),use_e=True):
+def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.,timed_combat=False,distance=525.,attack_range=525.,aa_windup=None,movement_speed=0.,base_windup=None,starting_bonus_as=0.,aa_stats=None,mana_refund=0.,muramana=False,champion='Samira',ap=0.,initial_stacks=0,skill_priority=('E','W','Q'),use_e=True,**kit_options):
     """Replay AA/Q impacts and an explicitly timed R channel against one champion.
 
     Conqueror: one grant per separate attack/cast (not each R tick).
     Lethal Tempo: attacks only. Style: different consecutive attack/skill types.
     Cast lockout/projectile travel are not inferred. Optional mana regenerates between events.
     """
-    if champion not in ('Samira','Smolder'):raise ValueError('Unsupported champion.')
+    if champion not in ('Samira','Smolder'):
+        from marksman_fight_engine import replay_marksman
+        return replay_marksman(events,level=level,ad=ad,attack_speed=attack_speed,crit_chance=crit_chance,crit_damage=crit_damage,hp=hp,armor=armor,q_rank=q_rank,r_rank=r_rank,ability_haste=ability_haste,pct_pen=pct_pen,flat_pen=flat_pen,mode=mode,seed=seed,keystone=keystone,sub_runes=sub_runes,r_duration=r_duration,aa_hit=aa_hit,yuntal_initial=yuntal_initial,yuntal=yuntal,base_ad=base_ad,terminus=terminus,w_rank=w_rank,e_rank=e_rank,mr=mr,pct_mpen=pct_mpen,flat_mpen=flat_mpen,navori=navori,collector_threshold=collector_threshold,skill_amp=skill_amp,transcendence=transcendence,automatic_until=automatic_until,until_death=until_death,max_mana=max_mana,mana_regen_per_5s=mana_regen_per_5s,timed_combat=timed_combat,distance=distance,attack_range=attack_range,aa_windup=aa_windup,movement_speed=movement_speed,base_windup=base_windup,starting_bonus_as=starting_bonus_as,aa_stats=aa_stats,mana_refund=mana_refund,muramana=muramana,champion=champion,ap=ap,initial_stacks=initial_stacks,skill_priority=skill_priority,use_e=use_e,**kit_options)
     abilities=SAMIRA_ABILITIES if champion=='Samira' else SMOLDER_ABILITIES
     if not isinstance(initial_stacks,int) or initial_stacks<0 or not math.isfinite(ap) or ap<0:raise ValueError('Invalid stack/AP stats.')
     dragon=initial_stacks;dragon_casts=set();burn_id=0;burn_until=-1.;flying_until=-1.;kite_arc=0.

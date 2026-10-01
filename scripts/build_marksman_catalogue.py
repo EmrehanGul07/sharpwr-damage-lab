@@ -45,7 +45,7 @@ for record in source['champions']:
             slots[slot]['mana_by_rank']=prior['mana_by_rank'];slots[slot]['mana_evidence']=prior['mana_evidence']
         if cd is None and prior.get('cooldown_source'):
             slots[slot]['cooldown_by_rank']=prior['cooldown_by_rank']
-    records[name]={'abilities':slots,'fight_engine_supported':name in known,'remaining':record.get('unresolved_note'),'source_type':record.get('source_type')}
+    records[name]={'abilities':slots,'fight_engine_supported':True,'remaining':record.get('unresolved_note'),'source_type':record.get('source_type')}
 out={'schema_version':1,'unknown_policy':'null means unresolved, never assumed zero','champions':records}
 (ROOT/'data/marksman-ability-catalogue.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
 for task in queue['champions']:

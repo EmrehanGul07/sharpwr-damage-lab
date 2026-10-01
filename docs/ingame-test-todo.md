@@ -42,3 +42,10 @@ Rakibin bize hasar vermesi, kendi ölümümüz, kendi regen/lifesteal ile hayatt
 ## All-champion follow-up queue
 
 All 23 champions have an ordered checklist in [marksman-task-queue.md](marksman-task-queue.md). The current list distinguishes collected ability data from pending timeline adapters. Per-champion unresolved mechanics and the five remaining mana slots are recorded there. User-confirmed values must not be re-requested. No unsupported adapter is marked complete.
+
+
+## All 23 adapters connected — remaining parity checks
+
+See [all-marksman-fight-engine.md](all-marksman-fight-engine.md) for per-champion runtime assumptions. All integration work is complete; the listed in-game measurements remain open.
+
+Priority: Jhin AS/crit-to-AD conversion; Xayah feather falloff and path; Yunara core stats and W linger; Senna mist generation and level scaling; Twitch patch conflict; Corki recharge and package; Varus W mana and Q bonus-vs-total AD scope; Kog’Maw R mana ramp. General AA windup/projectile timings and exact dash endpoints remain unresolved except explicitly sourced values. Do not repeat previously confirmed mana costs.

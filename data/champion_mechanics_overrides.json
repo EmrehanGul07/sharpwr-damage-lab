@@ -11,7 +11,7 @@
       "cap_basis": "User explicitly confirms 1.5 attacks per second cap."
     },
     "conversion_units": "1 excess bonus attack speed percentage point grants 0.5 AD",
-    "engine_status": "not_implemented",
+    "engine_status": "implemented_provisional",
     "notes": "Cap and conversion coefficient are locked separately from wiki stat imports. The supplied excerpt specifies the coefficient; it does not itself state the 1.5 cap."
   }
 }

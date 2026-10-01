@@ -274,7 +274,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  boot dash sayıları; W/E/R mana, stack/proc işlem sırası.",
       "source_type": "current_drive_screenshots"
     },
@@ -559,7 +559,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level 1 menzil offset'i; E crit/stack/proc sırası; Q/W/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -844,7 +844,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "P refresh/APtick bağımsızkontrol;Eyayılmaradius/ilkstacktick kesin işlem sırası;Rprocfalloff kapsamı. ManaE35/45/55/65 screenshotta teyit,Q/W/R görünmüyor.",
       "source_type": "current_drive_screenshots"
     },
@@ -1134,7 +1134,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  R execute hasar öncesi/sonrası kontrolü ve falloff işlem kuralı; Q crit/on-hit kapsamı; Q/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -1430,7 +1430,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P tam level dizisi; R ilk mana ve HP tam %40 sınırı/interpolasyon eğrisi; Q/W mana. Empowered tabanın eski 200/280/360 kaydı düzeltildi.",
       "source_type": "current_drive_screenshots"
     },
@@ -1716,7 +1716,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level dizisi; Q crit/on-hit ve W proc sınıflandırması; Q/W/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -1997,7 +1997,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P slow level ve crit formülü uygulama tabanı/ilk AA/Q; Q/E/R mana; Q flurry on-hit sayısı; R stun mesafe eğrisi.",
       "source_type": "current_drive_screenshots"
     },
@@ -2231,7 +2231,7 @@
           "cooldown_source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption"
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:** PbonusAS birimi/hesaplama sırası/non-champion level dizisi;Qrank2/3/4 ADoranları ve charge eğrisi;Waktif level basamakları;proc/stack işlem sırası;W/E/Rmana. Bu açıklar için şimdi ek veri istenmiyor.",
       "source_type": "previous_user_submission"
     },
@@ -2522,7 +2522,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P ikincil hedef hasarı, feather ömrü/sayı anlamı; E çoklu tüy falloff; W crit/on-hit kapsamı; Q/W/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -3127,7 +3127,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P crit katsayısı/level amp/stack ömrü/yenileme; E slow AP birimi; Q/R proc ve ampişlem sırası; Q/W/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -3280,7 +3280,7 @@
           "timing_source": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "Önceki screenshot eksiklerinin güncel durumu 1 Ekim practice notunda belirtilmiştir; aday formüller tam doğrulanmış sayılmadı.",
       "source_type": "previous_and_supplemental_user_submissions"
     },
@@ -3584,7 +3584,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level dizisi/detonation AP birimi ve W multi-stack işlem sırası; E evolve/AS charge eğrisi; Q/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -3892,7 +3892,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P bonus T tabanı; W/E tick ve shred birikimi; R charge CD diğer ranklar/crit birimi/Package işlem sırası; R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -4186,7 +4186,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P ikinci AA level basamakları; R mermi yuvarlaması/gerçek tavan/crit damage etkileşimi; W/R mana; Vigilance proc.",
       "source_type": "drive_screenshots_and_supplemental_user_images"
     },
@@ -4727,7 +4727,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level dizisi/crit parantezi; R crit kapsamı; W/E/R mana; headshot/net/trap/proc sırası.",
       "source_type": "current_drive_screenshots"
     },
@@ -5031,7 +5031,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  R flight curve/HP terimi/splash/cap işlem sırası; E arming ve aynı hedef çoklu trap; Q crit/AS stack dağılımı; Q/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -5336,7 +5336,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  W detonation/Q on-hit/proc işlem sırası ve projectile/cast times; W/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -5626,7 +5626,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level/6 round dağılımı/AS→AD birimi; W/R crit damage ve E crit/pierce kapsamı; R duration extension miktarı/chain hedef/on-hit kuralları; Q/W/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -5909,7 +5909,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level/AD dönüşümü/reload; Q kill artış sırası; E trap ömrü/max charge/arming ve tekrar hit penceresi; R mana; proc sırası.",
       "source_type": "current_drive_screenshots"
     },
@@ -6199,7 +6199,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P level MS; Q AS cast-time; W crit/on-hit kapsamı; Morale stack/cap/süre ve CDR uygulama sırası; W/E/R mana.",
       "source_type": "current_drive_screenshots"
     },
@@ -6498,7 +6498,7 @@
           "duration_by_rank": null
         }
       },
-      "fight_engine_supported": false,
+      "fight_engine_supported": true,
       "remaining": "**Kalan:**  P current-HP level dizisi ve AA ek 10 F formülü; Q AS cast-time; Q/P/on-hit/proc sırası; E/R mana.",
       "source_type": "current_drive_screenshots"
     }
