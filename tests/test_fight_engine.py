@@ -149,6 +149,24 @@ class ReplayTests(unittest.TestCase):
         self.assertFalse(r.rejected)
         self.assertTrue(any(x['action']=='R tick' for x in r.log))
         self.assertTrue(all(x['time']<=10 for x in r.log))
+    def test_walk_back_after_dash_keeps_auto_attacking(self):
+        r=self.run_fight([],e_rank=1,w_rank=1,r_rank=3,timed_combat=True,movement_speed=340,distance=525,automatic_until=20,hp=100000)
+        aas=[x for x in r.log if x['action']=='AA' and 9<=x['time']<=15]
+        self.assertGreaterEqual(len(aas),3)
+        self.assertFalse(r.rejected)
+        self.assertTrue(all(x['distance']<=525 for x in aas))
+    def test_walk_closes_initial_range_and_respects_cast_stop(self):
+        r=self.run_fight([],q_rank=0,timed_combat=True,movement_speed=340,distance=700,automatic_until=2)
+        self.assertGreater(r.aa_count,0)
+        self.assertLess(r.log[0]['distance'],525)
+        r=self.run_fight([(0,'Q')],timed_combat=True,movement_speed=340,distance=500)
+        self.assertAlmostEqual(r.log[0]['distance'],500-340*(500/2600))
+    def test_r_allows_walking_with_movement_penalty(self):
+        a=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(4.7,'R')]
+        r=self.run_fight(a,timed_combat=True,movement_speed=10,distance=525)
+        shots=[x for x in r.log if x['action']=='R tick']
+        self.assertEqual(len(shots),10)
+        self.assertLess(shots[-1]['distance'],shots[3]['distance'])
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 

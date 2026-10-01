@@ -30,7 +30,7 @@ def samira_ranks(level):
     if not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
     return {slot:SAMIRA_SKILL_ORDER[:level].count(slot) for slot in ('Q','W','E','R')}
 
-def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.,timed_combat=False,distance=525.,attack_range=525.,aa_windup=None):
+def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.,timed_combat=False,distance=525.,attack_range=525.,aa_windup=None,movement_speed=0.):
     """Replay AA/Q impacts and an explicitly timed R channel against one champion.
 
     Conqueror: one grant per separate attack/cast (not each R tick).
@@ -48,7 +48,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     if any(not math.isfinite(e.time) or e.time<0 or e.action not in ('AA','Q','W','E','R') for e in events):raise ValueError('Invalid impact timeline.')
     if automatic_until is not None and (not math.isfinite(automatic_until) or not 0<automatic_until<=120):raise ValueError('Automatic duration must be in (0,120].')
     if max_mana is not None and (not math.isfinite(max_mana) or max_mana<0 or not math.isfinite(mana_regen_per_5s) or mana_regen_per_5s<0):raise ValueError('Invalid mana stats.')
-    if timed_combat and (not math.isfinite(distance) or distance<0 or attack_range<=0 or (aa_windup is not None and aa_windup<0)):raise ValueError('Invalid spatial/timing stats.')
+    if timed_combat and (not math.isfinite(movement_speed) or movement_speed<0 or not math.isfinite(distance) or distance<0 or attack_range<=0 or (aa_windup is not None and aa_windup<0)):raise ValueError('Invalid spatial/timing stats.')
+    movement_time=0.;attack_windup_until=-1.
     position=0.;target_position=distance;dash_start=dash_end=-1.;dash_origin=dash_destination=0.
     cast_until=w_until=-1.;w_id=0;cast_seq=0;timed_casts=set();next_auto_time=0.
     mana=max_mana;mana_time=0.;style_expiry=-1.
@@ -59,6 +60,19 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     conq=lt=style=aa=casts=0; last_style=None; conq_expiry=lt_expiry=-1.; next_aa=next_q=next_r=0.; channel_until=-1.; combat_start=None; spell_pending=False
     health=float(hp); log=[]; rejected=[]; total=0.; killed=None; r_cast_id=0
     def reject(t,action,reason):rejected.append({'time':t,'action':action,'reason':reason})
+    def advance_position(t):
+        nonlocal position,movement_time
+        if not timed_combat:return
+        boundaries=sorted({movement_time,t,*[x for x in (dash_start,dash_end,cast_until,attack_windup_until,channel_until,style_expiry) if movement_time<x<t]})
+        for start,end in zip(boundaries,boundaries[1:]):
+            if dash_start<=start<dash_end:
+                position=dash_origin+(dash_destination-dash_origin)*min(1.,(end-dash_start)/(dash_end-dash_start))
+            elif start>=cast_until and start>=attack_windup_until and movement_speed:
+                stacks=style if start<style_expiry or start<channel_until else 0
+                speed=movement_speed*(1+.03*stacks)*(.7 if start<channel_until else 1.)
+                gap=target_position-position
+                position+=math.copysign(min(abs(gap),speed*(end-start)),gap) if gap else 0.
+        movement_time=t
     auto_time=0.;auto_order=0
     while (queue or automatic_until is not None or until_death) and health>0:
         if not queue or timed_combat and (automatic_until is not None or until_death):
@@ -85,22 +99,24 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             if not timed_combat or abs(target_position-position)<=attack_range:
                 choices.append((max(auto_time,next_aa,cast_until,w_until,channel_until,dash_end) if timed_combat else max(auto_time,next_aa),4,'AA'))
             if r_rank and style>=6 and (not timed_combat or abs(target_position-position)<=600):choices.append((max(auto_time,next_r,cast_until) if timed_combat else max(auto_time,next_r),-1,'R'))
+            if timed_combat and movement_speed and abs(target_position-position)>1e-8:
+                choices.append((auto_time+.05,9,'Move'))
             if not choices:
                 if queue:pass
                 else:break
             else:
                 nt,_,na=min(choices)
-                if not ((automatic_until is not None and nt>automatic_until) or auto_order>=1000):
+                if not ((automatic_until is not None and nt>automatic_until) or auto_order>=(20000 if timed_combat else 1000)):
                     if not queue or nt<queue[0][0]-1e-9:
                         auto_order+=1;queue.append((nt,100000+auto_order,na,None));queue.sort(key=lambda x:(x[0],x[1]))
                 elif not queue:break
         t,order,action,cast_id=queue.pop(0)
         if timed_combat and automatic_until is not None and t>automatic_until:break
+        advance_position(t)
         auto_time=t
+        if action=='Move':continue
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
         if timed_combat:
-            if dash_start<=t<dash_end:position=dash_origin+(dash_destination-dash_origin)*(t-dash_start)/(dash_end-dash_start)
-            elif t>=dash_end and dash_end>=0:position=dash_destination
             if action=='R end':
                 style=0;last_style=None;channel_until=t;continue
             impact=action.endswith(' hit') or action=='R tick'
@@ -117,7 +133,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     queue.append((dash_end,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
                 limit={'AA':attack_range,'Q':950,'W':325,'E':600,'R':600}[action]
                 if gap>limit:reject(t,action,'Target out of range');continue
-                if not timed_combat and action=='AA' and t+1e-9<next_aa:reject(t,action,'Attack interval has not elapsed');continue
+                if action=='AA' and t+1e-9<next_aa:reject(t,action,'Attack interval has not elapsed');continue
                 if action in ('Q','W','E') and (not ranks[action] or t+1e-9<ready[action]):reject(t,action,action+' unlearned or on cooldown');continue
                 if action in ('Q','W','E'):
                     cost=SAMIRA_ABILITIES[action]['mana']
@@ -143,13 +159,14 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     queue.sort(key=lambda x:(x[0],x[1]));continue
                 if action=='AA':
                     # AA windup is unresolved: zero until a measured value is supplied.
+                    attack_windup_until=t+(aa_windup or 0)
                     arrival=t+(aa_windup or 0)+(gap/2800 if gap>200 else 0)
                     next_aa=max(next_aa,arrival)
-                    queue.append((arrival,order,'AA hit',(cast_seq,0,t)));queue.sort(key=lambda x:(x[0],x[1]));continue
+                    queue.append((arrival,order,'AA hit',(cast_seq,0,t,gap<=200)));queue.sort(key=lambda x:(x[0],x[1]));continue
             else:
                 limit={'AA':float('inf'),'Q':float('inf'),'W':325,'E':250,'R tick':600}[action]
                 if gap>limit:continue
-            melee=gap<=200
+            melee=cast_id[3] if impact and action=='AA' else gap<=200
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
         if t>=style_expiry and (not timed_combat or t>=channel_until):style=0;last_style=None
         if t>=conq_expiry:conq=0
