@@ -619,7 +619,7 @@ ITEM_SCENARIO_AUDIT={
 "Serylda's Grudge":("penetration/utility","partial","Penetration modeled; slow excluded."),
 "Serpent's Fang":("shield-counter","not modeled","Needs target shield state."),
 "Youmuu's Ghostblade":("movement/combat-state","partial","Static stats modeled; passive not fully scored."),
-"Duskblade of Draktharr":("first-hit/cooldown","partial","First-hit damage is automatic; eligibility, recurring 10s cooldown and reset remain under review."),
+"Duskblade of Draktharr":("AA/cooldown","modeled","Nightstalker: first AA, then next AA after 10s. No visibility requirement; single target kill ends fight."),
 "Edge of Night":("defensive","not modeled","Spell shield excluded."),
 "Iceborn Gauntlet":("spell-trigger","modeled","Real-cast Spellblade; 1.5s ICD. Slow utility excluded."),
 "Death's Dance":("defensive","not modeled","Damage delay/survival excluded."),
@@ -740,7 +740,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
     fh=3 if "Fiendhunter Bolts" in items and ult and item_proc else 0
-    fiend_until=8.; last_ult_cast=None; spell_pending=False; galeforce_ready=0.
+    fiend_until=8.; last_ult_cast=None; spell_pending=False; galeforce_ready=0.; duskblade_ready=0.
     if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
     state=yield None
     while k<500 or (state.get("event_driven",False) and k<10000):
@@ -774,7 +774,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
             amp=0.0 if hit_dist<100 else min(.10,(int((hit_dist-100)//50)+1)*.01)
             phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
-        if "Galeforce" in items and active_ready and not skill_on_hit and t>=galeforce_ready:
+        if "Galeforce" in items and active_ready and not event_driven and not skill_on_hit and t>=galeforce_ready:
             bonus_ad=max(0,current_ad-s["basead"])
             onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst"); galeforce_ready=t+50
         if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
@@ -833,8 +833,8 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                 onp+=s["basead"]; note.append("Sheen"); triggered=True
             if triggered: spellblade_ready=t+1.5; spell_pending=False
 
-        if ("Duskblade of Draktharr" in items and item_proc) and k==1:
-            onp+=60+(l-1)/14*100; note.append("Nightstalker")
+        if ("Duskblade of Draktharr" in items and item_proc) and not skill_on_hit and t>=duskblade_ready:
+            onp+=60+(l-1)/14*100; note.append("Nightstalker"); duskblade_ready=t+10
 
         phy+=onp
         if "Lord Dominik's Regards" in items:
@@ -1416,7 +1416,7 @@ with tabs[1]:
                         if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
                         return _hit
                     _fight_base_crit=_replay_crit
-                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658 if champ=="Samira" else None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon)
+                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658 if champ=="Samira" else None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon,galeforce="Galeforce" in build)
                 _candidates=[(_run_candidate(_p,_e,_weapon),_p,_e,_weapon) for _p in permutations(('Q','W','E')) for _e in (False,True) for _weapon in (("minigun","rockets") if champ=="Jinx" else ("minigun",))]
                 _fight_result,_best_priority,_best_e,_best_weapon=min(_candidates,key=lambda x:(x[0].killed_at is None,x[0].killed_at if x[0].killed_at is not None else x[0].hp_remaining))
                 _move_label='approach for melee passive' if champ=='Samira' else 'max-range kite'+(' · '+_best_weapon if champ=='Jinx' else '')
@@ -1983,4 +1983,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.60.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.60.2 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

@@ -28,7 +28,7 @@ The simulation uses expected damage; thresholds and ability decisions follow exp
 
 ## UI and persistence
 
-Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce offensive active is ready initially and recasts on the next eligible AA after its 50s cooldown; it is not independently optimized as a movement action. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
+Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce uses an independent fight action when unlocked and repeats 50s after actual use. It does not inject active damage into AA. Dash geometry/range is not yet modeled. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
 
 ## Validation
 

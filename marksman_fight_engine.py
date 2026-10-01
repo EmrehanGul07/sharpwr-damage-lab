@@ -477,6 +477,7 @@ def replay_marksman(events,**p):
         kit.state['aa_windup']=windup;aa_clock=1.;aa_lock=t+windup
         queue(t+windup,'aa_hit',cid=('AA',aa_count+1))
     priority=p.get('skill_priority',('Q','W','E'));use_e=p.get('use_e',True)
+    if p.get('galeforce'):queue(.001,'galeforce')
     # Evolution is based on purchased bonus stats, never on temporary fight buffs.
     if name=="Kai'Sa":
         evolved=set(p.get('evolved_slots',('Q','W','E') if p.get('completed_items',0)>=3 else tuple(s for s in priority[:p.get('completed_items',0)])))
@@ -511,6 +512,13 @@ def replay_marksman(events,**p):
                     if t>=max(lock,channel,aa_lock,kit.reloading_until) and aa_clock<=1e-9 and gap<=kit.attack_range(t)+1e-7:start_attack()
                     else:rejected.append({'time':t,'action':a,'reason':'Attack locked, reloading, on interval, or out of range'})
                 elif not cast(a,True):rejected.append({'time':t,'action':a,'reason':'Cast locked, out of range, on cooldown, or insufficient mana'})
+            elif kind=='galeforce':
+                blocked=max(lock,channel,aa_lock,dash_until)
+                if t<blocked:queue(blocked+1e-6,'galeforce')
+                else:
+                    kit.unresolved.add('Galeforce active damage has independent 50s timer; dash geometry/range unverified')
+                    record('Galeforce active',RawDamage(physical=40+(level-1)/14*80+.45*max(0.,current_ad()-base_ad)),effects=('Cloudburst active; 50s cooldown',))
+                    queue(t+50,'galeforce')
             elif kind=='aa_hit':basic_attack(payload['cid'],payload.get('secondary',False))
             elif kind=='skill_hit':damage_impact(payload['slot'],payload['cid'],payload.get('index',0))
             elif kind=='buff':buff(payload['key'],payload['duration'],payload['value'])

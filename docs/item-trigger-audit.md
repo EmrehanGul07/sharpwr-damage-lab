@@ -113,3 +113,10 @@ Essence Reaver, Trinity Force, Iceborn Gauntlet ve Sheen artık cooldown bitince
 Öncelik önerisi: Energized hareket/AA recharge → Duskblade eligibility → Galeforce gerçek action → Yun Tal başlangıç/tetik koşulları → çoklu Spellblade unique davranışı → skill-on-hit item stack eligibility. Bunlar bu güncellemede değiştirilmedi; sadece Spellblade otomatik rearm hatası düzeltildi.
 
 Doğrulama: 131/131 otomatik test geçti (86.490 saniye). Yeni testler initial pre-cast tek proc, gerçek cast ile rearm, cooldown içindeki cast’in sıraya alınmaması ve geciken AA için gerçek cast timestamp kontrolünü kapsıyor.
+
+## V5.60.2 corrections and user locks
+
+- RFC, Stormrazor and Statikk current measured values are user-locked and removed from the proposed replacement queue.
+- Duskblade first AA and next AA after 10s proc. Visibility is not required; earlier audit wording was incorrect. Skill-on-hit callbacks do not consume the AA trigger.
+- Galeforce is a separate fight event with its own 50s cooldown. It waits until current AA windup, cast or channel finishes; does not alter the AA clock or grant ability/AA stacks. Dash path/range and cast restrictions remain unverified. The AA-only legacy simulator has no active action timeline and retains its explicit scenario active flag.
+- Yun Tal unchanged: level-derived initial permanent stacks, first eligible AA Flurry, 6s AS buff, 25s cooldown and AA/expected-crit cooldown reductions remain the two review subjects (initial progression and Flurry trigger rules).

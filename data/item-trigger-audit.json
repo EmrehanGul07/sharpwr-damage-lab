@@ -1,5 +1,5 @@
 {
-  "version": "5.60.1",
+  "version": "5.60.2",
   "basis": "Current code audit; does not assert unverified game trigger rules",
   "records": [
     {
@@ -15,8 +15,9 @@
       "scope": "completed",
       "trigger_category": "energized",
       "coverage": "modeled",
-      "finding": "AA hesabında 7-hit cadence varsayımı; fight engine gerçek hareketten Energized doldurmuyor, başlangıç proc’u dışında recharge yok. Ek menzil hareket planına dahil değil.",
-      "review_needed": true
+      "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
+      "review_needed": false,
+      "status": "user_locked_in_game_measurement"
     },
     {
       "item": "Runaan's Hurricane",
@@ -95,8 +96,9 @@
       "scope": "completed",
       "trigger_category": "energized",
       "coverage": "modeled",
-      "finding": "AA hesabında 5-hit cadence varsayımı; fight içinde Energized recharge yok; tek hedefte bounce değeri hariç.",
-      "review_needed": true
+      "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
+      "review_needed": false,
+      "status": "user_locked_in_game_measurement"
     },
     {
       "item": "Guinsoo's Rageblade",
@@ -159,8 +161,9 @@
       "scope": "completed",
       "trigger_category": "energized",
       "coverage": "modeled",
-      "finding": "AA hesabında 7-hit cadence varsayımı; fight içinde Energized recharge ve proc sonrası hareket hızı modellenmiyor.",
-      "review_needed": true
+      "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
+      "review_needed": false,
+      "status": "user_locked_in_game_measurement"
     },
     {
       "item": "Yun Tal Wildarrows",
@@ -175,7 +178,7 @@
       "scope": "completed",
       "trigger_category": "active",
       "coverage": "modeled",
-      "finding": "Aktif skill komutu yok: tier aramasında baştan hazır, sonraki uygun AA ile otomatik çalışır; 50s sonra yine AA ile kullanılır. Dash ve ayrı cast zamanı yok.",
+      "finding": "Independent Galeforce active event in fight replay; 50s cooldown from actual use; waits until AA windup/cast/channel unlock. Does not add damage to AA or proc on-hit/Spellblade. Dash geometry/range remain unverified.",
       "review_needed": true
     },
     {
@@ -262,9 +265,9 @@
       "item": "Duskblade of Draktharr",
       "scope": "completed",
       "trigger_category": "first-hit/cooldown",
-      "coverage": "partial",
-      "finding": "Koşul kontrolü yerine ilk kernel hitinde otomatik hasar. Görünürlük/combat eligibility doğrulanmıyor; kayıttaki 10s cooldown ve reset tekrar uygulanmıyor.",
-      "review_needed": true
+      "coverage": "modeled",
+      "finding": "First AA procs, then next AA after 10s procs again. Skill-on-hit callbacks do not consume this AA trigger. Visibility requirement removed. Single-target kill ends fight, so multi-target takedown reset is out of scope.",
+      "review_needed": false
     },
     {
       "item": "Edge of Night",

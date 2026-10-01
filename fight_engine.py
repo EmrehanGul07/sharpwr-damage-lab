@@ -72,6 +72,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     cast_until=w_until=-1.;w_id=0;cast_seq=0;timed_casts=set();next_auto_time=0.
     mana=max_mana;mana_time=0.;style_expiry=-1.
     rng=random.Random(seed); queue=[(e.time,i,e.action,None) for i,e in enumerate(events)];queue.sort(key=lambda x:(x[0],x[1]))
+    if kit_options.get("galeforce"):queue.append((.001,-1,"Galeforce active",None));queue.sort(key=lambda x:(x[0],x[1]))
     base_ad=ad if base_ad is None else base_ad
     dark=0; ultimate_cast_time=None;item_stacks={}
     ranks={'Q':q_rank,'W':w_rank,'E':e_rank,'R':r_rank}; ready={k:0. for k in ranks}; e_until=-1.; transcend_ready=0.
@@ -175,6 +176,23 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         auto_time=t
         if action in ('Move','Clock'):continue
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
+        if action=='Galeforce active':
+            blocked=max(attack_windup_until,cast_until,channel_until) if timed_combat else channel_until
+            if t<blocked:
+                queue.append((blocked+1e-6,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
+            item_ad=ad+(conq*(3+(level-1)*2/14) if keystone=='Conqueror' else 0.)
+            raw=40+(level-1)/14*80+.45*max(0.,item_ad-base_ad)
+            pen=min(.40,pct_pen+.1*dark) if terminus else pct_pen
+            dmg=raw*resistance_multiplier(effective_resistance(armor,pen,flat_pen))*skill_amp
+            before_hp=health;health=max(0.,health-dmg)
+            executed=bool(collector_threshold and 0<health<=hp*collector_threshold)
+            if executed:health=0.
+            dealt=before_hp-health;total+=dealt
+            state={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
+            log.append({'time':t,'action':action,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; 50s cooldown; dash geometry/range unverified'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
+            if health<=0:killed=t
+            if t+50<=(automatic_until or 120):queue.append((t+50,order,action,None));queue.sort(key=lambda x:(x[0],x[1]))
+            continue
         if timed_combat:
             if action=='R end':
                 style=0;last_style=None;channel_until=t;continue
