@@ -1,0 +1,3060 @@
+{
+  "schema_version": 1,
+  "retrieval_date": "2026-10-01",
+  "policy": "Fill only missing fields. Preserve existing AD/AS values. No PC stat fallback. Wiki values are source references, not independently verified patch-7.3a measurements.",
+  "units": {
+    "regen": "per 5 seconds",
+    "movement_speed": "game units per second",
+    "attack_range": "game units",
+    "timing": "as specified by source parameter; blank remains null"
+  },
+  "growth_model": "coefficients stored as supplied; no inferred level-growth formula introduced",
+  "champions": [
+    {
+      "name": "Kalista",
+      "stats": {
+        "base_ad": 57,
+        "ad_growth": 5.2,
+        "as_ratio": 0.694,
+        "base_as": 0.694,
+        "base_bonus_as": 0.16,
+        "as_growth": 0.046,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.6,
+        "base_mana": 340,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 10,
+        "mana_regen_growth_per_5s": 0.8,
+        "base_armor": 34,
+        "armor_growth": 1.4,
+        "base_mr": 32,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 550,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:45.250643+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
+      "wiki_last_change_patch": "V6.3e",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "4.5",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:45.250643+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Tristana",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 5,
+        "as_ratio": 0.694,
+        "base_as": 0.694,
+        "base_bonus_as": 0.17,
+        "as_growth": 0.02,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.68,
+        "base_mana": 300,
+        "mana_growth": 41,
+        "base_mana_regen_per_5s": 12,
+        "mana_regen_growth_per_5s": 0.7,
+        "base_armor": 35,
+        "armor_growth": 4,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 545,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:45.251213+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
+      "wiki_last_change_patch": "V7.0f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "6",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:45.251213+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Twitch",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 4,
+        "as_ratio": 0.679,
+        "base_as": 0.679,
+        "base_bonus_as": 0.18,
+        "as_growth": 0.03,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 8,
+        "hp_regen_growth_per_5s": 0.6,
+        "base_mana": 340,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 14,
+        "mana_regen_growth_per_5s": 1,
+        "base_armor": 40,
+        "armor_growth": 4,
+        "base_mr": 32,
+        "mr_growth": 1,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:45.251556+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
+      "wiki_last_change_patch": "V6.2c",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "4.5",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:45.251556+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Draven",
+      "stats": {
+        "base_ad": 66,
+        "ad_growth": 3.8,
+        "as_ratio": 0.679,
+        "base_as": 0.679,
+        "base_bonus_as": 0.11,
+        "as_growth": 0.03,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.68,
+        "base_mana": 480,
+        "mana_growth": 65,
+        "base_mana_regen_per_5s": 15,
+        "mana_regen_growth_per_5s": 1.1,
+        "base_armor": 35,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:45.254446+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
+      "wiki_last_change_patch": "V6.1d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "66",
+        "dam_lvl": "4.5",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:45.254446+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Kog'Maw",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 3.5,
+        "as_ratio": 0.665,
+        "base_as": 0.665,
+        "base_bonus_as": 0.2,
+        "as_growth": 0.03,
+        "base_hp": 630,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 8,
+        "hp_regen_growth_per_5s": 0.58,
+        "base_mana": 380,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 14,
+        "mana_regen_growth_per_5s": 1,
+        "base_armor": 34,
+        "armor_growth": 4.5,
+        "base_mr": 32,
+        "mr_growth": 1.5,
+        "movement_speed": 335,
+        "attack_range": 500,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:54.004859+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
+      "wiki_last_change_patch": "V6.3f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "3.5",
+        "as_base": "0.75",
+        "as_ratio": "",
+        "as_lvl": "0.02",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:54.004859+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Vayne",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 3,
+        "as_ratio": 0.658,
+        "base_as": 0.658,
+        "base_bonus_as": 0.23,
+        "as_growth": 0.03,
+        "base_hp": 570,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 300,
+        "mana_growth": 41,
+        "base_mana_regen_per_5s": 9,
+        "mana_regen_growth_per_5s": 0.5,
+        "base_armor": 31,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:54.039660+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
+      "wiki_last_change_patch": "7.0a",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "3",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "2.7",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:54.039660+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Ashe",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 4,
+        "as_ratio": 0.658,
+        "base_as": 0.658,
+        "base_bonus_as": 0.23,
+        "as_growth": 0.03,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 345,
+        "mana_growth": 33,
+        "base_mana_regen_per_5s": 9,
+        "mana_regen_growth_per_5s": 0.7,
+        "base_armor": 35,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 625,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:54.075447+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
+      "wiki_last_change_patch": "V7.0c",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "2.65",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:54.075447+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Varus",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 4,
+        "as_ratio": 0.658,
+        "base_as": 0.658,
+        "base_bonus_as": 0.22,
+        "as_growth": 0.03,
+        "base_hp": 570,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 390,
+        "mana_growth": 33,
+        "base_mana_regen_per_5s": 12,
+        "mana_regen_growth_per_5s": 0.5,
+        "base_armor": 35,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:42:54.117495+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
+      "wiki_last_change_patch": "V6.2e",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "3.6",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:42:54.117495+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Xayah",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 4.2,
+        "as_ratio": 0.658,
+        "base_as": 0.658,
+        "base_bonus_as": 0.22,
+        "as_growth": 0.034,
+        "base_hp": 630,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.81,
+        "base_mana": 435,
+        "mana_growth": 41,
+        "base_mana_regen_per_5s": 15,
+        "mana_regen_growth_per_5s": 0.9,
+        "base_armor": 40,
+        "armor_growth": 4,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:01.894308+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
+      "wiki_last_change_patch": "V7.0d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "5",
+        "as_base": "0.83",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:01.894308+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Samira",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 3.5,
+        "as_ratio": 0.658,
+        "base_as": 0.658,
+        "base_bonus_as": 0.14,
+        "as_growth": 0.03,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.68,
+        "base_mana": 345,
+        "mana_growth": 49,
+        "base_mana_regen_per_5s": 15,
+        "mana_regen_growth_per_5s": 0.5,
+        "base_armor": 35,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 525,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:01.919230+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
+      "wiki_last_change_patch": "V6.1d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "62",
+        "dam_lvl": "4",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:01.919230+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Miss Fortune",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 4,
+        "as_ratio": 0.656,
+        "base_as": 0.656,
+        "base_bonus_as": 0.22,
+        "as_growth": 0.032,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 420,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 12,
+        "mana_regen_growth_per_5s": 0.9,
+        "base_armor": 34,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:02.038556+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
+      "wiki_last_change_patch": "V6.3f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:02.038556+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Yunara",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 3,
+        "as_ratio": 0.65,
+        "base_as": 0.65,
+        "base_bonus_as": 0.23,
+        "as_growth": 0.032,
+        "base_hp": null,
+        "hp_growth": null,
+        "base_hp_regen_per_5s": null,
+        "hp_regen_growth_per_5s": null,
+        "base_mana": null,
+        "mana_growth": null,
+        "base_mana_regen_per_5s": null,
+        "mana_regen_growth_per_5s": null,
+        "base_armor": null,
+        "armor_growth": null,
+        "base_mr": null,
+        "mr_growth": null,
+        "movement_speed": null,
+        "attack_range": null,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved"
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Yunara",
+      "wiki_last_change_patch": null,
+      "source_status": "manual_pending_user_instruction",
+      "wiki_combat_values_not_applied": {},
+      "unavailable_fields": [
+        "base_hp",
+        "hp_growth",
+        "base_hp_regen_per_5s",
+        "hp_regen_growth_per_5s",
+        "base_mana",
+        "mana_growth",
+        "base_mana_regen_per_5s",
+        "mana_regen_growth_per_5s",
+        "base_armor",
+        "armor_growth",
+        "base_mr",
+        "mr_growth",
+        "movement_speed",
+        "attack_range",
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:02.044662+00:00"
+    },
+    {
+      "name": "Kai'Sa",
+      "stats": {
+        "base_ad": 59,
+        "ad_growth": 3.5,
+        "as_ratio": 0.644,
+        "base_as": 0.644,
+        "base_bonus_as": 0.17,
+        "as_growth": 0.022,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 435,
+        "mana_growth": 41,
+        "base_mana_regen_per_5s": 15,
+        "mana_regen_growth_per_5s": 0.7,
+        "base_armor": 35,
+        "armor_growth": 4,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:02.044696+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
+      "wiki_last_change_patch": "V5.1d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "62",
+        "dam_lvl": "3.5",
+        "as_base": "0.75",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:02.044696+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Corki",
+      "stats": {
+        "base_ad": 54,
+        "ad_growth": 2.5,
+        "as_ratio": 0.644,
+        "base_as": 0.644,
+        "base_bonus_as": 0.17,
+        "as_growth": 0.032,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 435,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 9,
+        "mana_regen_growth_per_5s": 0.7,
+        "base_armor": 35,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:09.727851+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
+      "wiki_last_change_patch": "V7.1",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "3",
+        "as_base": "0.75",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:09.727851+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Lucian",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 3.5,
+        "as_ratio": 0.638,
+        "base_as": 0.638,
+        "base_bonus_as": 0.25,
+        "as_growth": 0.028,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 9,
+        "hp_regen_growth_per_5s": 0.81,
+        "base_mana": 390,
+        "mana_growth": 49,
+        "base_mana_regen_per_5s": 15,
+        "mana_regen_growth_per_5s": 0.9,
+        "base_armor": 35,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.5,
+        "movement_speed": 345,
+        "attack_range": 525,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:09.808651+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
+      "wiki_last_change_patch": "V6.3d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:09.808651+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Smolder",
+      "stats": {
+        "base_ad": 54,
+        "ad_growth": 3.5,
+        "as_ratio": 0.638,
+        "base_as": 0.638,
+        "base_bonus_as": 0.25,
+        "as_growth": 0.031,
+        "base_hp": 600,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 8,
+        "hp_regen_growth_per_5s": 0.6,
+        "base_mana": 390,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 14,
+        "mana_regen_growth_per_5s": 0.9,
+        "base_armor": 34,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:09.836209+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
+      "wiki_last_change_patch": "7.0f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "3.5",
+        "as_base": "0.813",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:09.836209+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Caitlyn",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 4.2,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.28,
+        "as_growth": 0.025,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 345,
+        "mana_growth": 41,
+        "base_mana_regen_per_5s": 12,
+        "mana_regen_growth_per_5s": 0.7,
+        "base_armor": 35,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 675,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:09.848478+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
+      "wiki_last_change_patch": "V6.3f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "4.5",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:09.848478+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Jinx",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 4,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.3,
+        "as_growth": 0.02,
+        "base_hp": 630,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 7.5,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 345,
+        "mana_growth": 49,
+        "base_mana_regen_per_5s": 12,
+        "mana_regen_growth_per_5s": 1.3,
+        "base_armor": 35,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 335,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:17.505368+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
+      "wiki_last_change_patch": "V6.3f",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "54",
+        "dam_lvl": "4.5",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "2.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:17.505368+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Ezreal",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 4.5,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.28,
+        "as_growth": 0.022,
+        "base_hp": 600,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.68,
+        "base_mana": 390,
+        "mana_growth": 49,
+        "base_mana_regen_per_5s": 9,
+        "mana_regen_growth_per_5s": 0.9,
+        "base_armor": 34,
+        "armor_growth": 5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:17.529513+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
+      "wiki_last_change_patch": "V7.0",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4.5",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "2.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:17.529513+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Zeri",
+      "stats": {
+        "base_ad": 58,
+        "ad_growth": 4,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.28,
+        "as_growth": 0.024,
+        "base_hp": 630,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 8,
+        "hp_regen_growth_per_5s": 0.6,
+        "base_mana": 380,
+        "mana_growth": 50,
+        "base_mana_regen_per_5s": 10,
+        "mana_regen_growth_per_5s": 0.8,
+        "base_armor": 31,
+        "armor_growth": 5,
+        "base_mr": 32,
+        "mr_growth": 2,
+        "movement_speed": 335,
+        "attack_range": 700,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:17.543045+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
+      "wiki_last_change_patch": "V6.3d",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "2.7",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:17.543045+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Jhin",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 5,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.06,
+        "as_growth": 0.032,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 390,
+        "mana_growth": 57,
+        "base_mana_regen_per_5s": 9,
+        "mana_regen_growth_per_5s": 1.1,
+        "base_armor": 35,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 575,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:17.586649+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
+      "wiki_last_change_patch": "V6.0",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4.55",
+        "as_base": "0.66",
+        "as_ratio": "0",
+        "as_lvl": "3.2",
+        "crit_base": "150",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:17.586649+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Sivir",
+      "stats": {
+        "base_ad": 60,
+        "ad_growth": 4,
+        "as_ratio": 0.625,
+        "base_as": 0.625,
+        "base_bonus_as": 0.3,
+        "as_growth": 0.01,
+        "base_hp": 600,
+        "hp_growth": 128,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.8,
+        "base_mana": 340,
+        "mana_growth": 60,
+        "base_mana_regen_per_5s": 10,
+        "mana_regen_growth_per_5s": 1.2,
+        "base_armor": 34,
+        "armor_growth": 4.5,
+        "base_mr": 28,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 525,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": null,
+        "attack_projectile_speed": null,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:24.153759+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
+      "wiki_last_change_patch": "V6.1a",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "58",
+        "dam_lvl": "4",
+        "as_base": "0.8125",
+        "as_ratio": "0.625",
+        "as_lvl": "3.2",
+        "crit_base": "175",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "windup_modifier",
+        "attack_projectile_speed",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:24.153759+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    },
+    {
+      "name": "Senna",
+      "stats": {
+        "base_ad": 50,
+        "ad_growth": 0,
+        "as_ratio": 0.3,
+        "base_as": 0.3,
+        "base_bonus_as": 1.1,
+        "as_growth": 0.025,
+        "base_hp": 570,
+        "hp_growth": 120,
+        "base_hp_regen_per_5s": 6,
+        "hp_regen_growth_per_5s": 0.55,
+        "base_mana": 345,
+        "mana_growth": 65,
+        "base_mana_regen_per_5s": 21,
+        "mana_regen_growth_per_5s": 0.5,
+        "base_armor": 35,
+        "armor_growth": 4.5,
+        "base_mr": 30,
+        "mr_growth": 1.4,
+        "movement_speed": 340,
+        "attack_range": 625,
+        "attack_cast_time": null,
+        "attack_total_time": null,
+        "attack_delay_offset": null,
+        "attack_windup": null,
+        "windup_modifier": 0.60000002384186,
+        "attack_projectile_speed": 0,
+        "gameplay_radius": null
+      },
+      "field_sources": {
+        "base_ad": "existing_user_preserved",
+        "ad_growth": "existing_user_preserved",
+        "as_ratio": "existing_user_preserved",
+        "base_as": "existing_user_preserved",
+        "base_bonus_as": "existing_user_preserved",
+        "as_growth": "existing_user_preserved",
+        "base_hp": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "hp_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "hp_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "hp_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "base_hp_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "hp5_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "hp_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "hp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "base_mana": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mp_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "mana_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mp_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "base_mana_regen_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mp5_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "mana_regen_growth_per_5s": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mp5_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "base_armor": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "arm_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "armor_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "arm_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "base_mr": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mr_base",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "mr_growth": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "mr_lvl",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "movement_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "ms",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "attack_range": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "range",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "windup_modifier": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "windup_modifier",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        },
+        "attack_projectile_speed": {
+          "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+          "parameter": "missile_speed",
+          "retrieved_at": "2026-10-01T07:43:24.160070+00:00"
+        }
+      },
+      "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
+      "wiki_last_change_patch": "V6.2c",
+      "source_status": "wr_wiki_parameter_table",
+      "wiki_combat_values_not_applied": {
+        "dam_base": "50",
+        "dam_lvl": "0",
+        "as_base": "0.625",
+        "as_ratio": "0.125",
+        "as_lvl": "1.2",
+        "crit_base": "150",
+        "crit_mod": ""
+      },
+      "unavailable_fields": [
+        "attack_cast_time",
+        "attack_total_time",
+        "attack_delay_offset",
+        "attack_windup",
+        "gameplay_radius"
+      ],
+      "retrieved_at": "2026-10-01T07:43:24.160070+00:00",
+      "http_status": 200,
+      "resource_type": "Mana",
+      "attack_type": "Ranged"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import html
 import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
+from champion_database import CHAMPION_DATABASE
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_abilities import SAMIRA_ABILITIES, samira_skill
 from fight_engine import FightEvent, replay_samira, samira_ranks
@@ -2115,8 +2116,24 @@ with tabs[3]:
     _tab_hero("SHARPWR • RESEARCH LIBRARY","Database","Explore item stats, verified rune effects and engine coverage. Search records or inspect the combat audits.")
     with st.container(border=True):
         _setup_heading("01","BROWSE RECORDS","Database Explorer")
-        dbpick=st.radio("Show",["Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True,key="db_category")
-    if dbpick=="Runes":
+        dbpick=st.radio("Show",["Champions","Completed items","Components","Boots","Runes","Item Engine Audit","Build Engine Audit"],horizontal=True,key="db_category")
+    if dbpick=="Champions":
+        _champ_query=st.text_input("Find a champion",key="db_champion_search")
+        _champ_records=[r for n,r in CHAMPION_DATABASE.items() if _champ_query.strip().casefold() in n.casefold()]
+        _champ_rows=[{"Champion":r["name"],**r["stats"],"Source status":r["source_status"]} for r in _champ_records]
+        if _champ_rows:
+            st.dataframe(pd.DataFrame(_champ_rows),width="stretch",hide_index=True)
+            _inspect_champ=st.selectbox("Champion record",[r["name"] for r in _champ_records],key="db_champion_inspect")
+            _champ_record=CHAMPION_DATABASE[_inspect_champ]
+            if _champ_record["source_status"]=="manual_pending_user_instruction":st.info("Yunara: additional stats pending manual data.")
+            else:st.markdown(f"[Wild Rift wiki source]({_champ_record['wiki_source_url']})")
+            _field_rows=[]
+            for _field,_value in _champ_record["stats"].items():
+                _origin=_champ_record["field_sources"].get(_field)
+                _field_rows.append([_field,_value,"Existing record" if _origin=="existing_user_preserved" else "WR wiki" if _origin else "Missing source"])
+            st.table(pd.DataFrame(_field_rows,columns=["Stat","Value","Origin"]))
+        else:st.info("No matching champions.")
+    elif dbpick=="Runes":
         st.caption("51/51 verified rune records. Utility/defensive runes are retained for future champion, ability, heal, shield, CC and movement systems. Level-scaled ranges are stored without inventing intermediate values.")
         _rune_filter_left,_rune_filter_right=st.columns([1,2])
         tree_filter=_rune_filter_left.selectbox("Rune tree",["All","Key Rune","Precision","Domination","Resolve","Sorcery"],key="rune_db_tree")
@@ -2312,4 +2329,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.51 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.52 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")

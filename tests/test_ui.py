@@ -52,6 +52,19 @@ class InterfaceTests(unittest.TestCase):
         self.assertTrue(any('Target defeated' in x.value for x in a.success))
         self.assertTrue(all(x=='Melee' for x in table['Range']))
 
+    def test_champion_database_fields(self):
+        a=self.app
+        a.radio(key='db_category').set_value('Champions').run()
+        a.text_input(key='db_champion_search').set_value('Samira').run()
+        self.assertFalse(a.exception)
+        table=next(x.value for x in a.dataframe if 'base_mana' in x.value.columns)
+        self.assertEqual(len(table),1)
+        self.assertEqual(table['base_ad'].iloc[0],60)
+        self.assertEqual(table['base_mana'].iloc[0],345)
+        a.text_input(key='db_champion_search').set_value('Yunara').run()
+        self.assertFalse(a.exception)
+        self.assertTrue(any('manual data' in x.value for x in a.info))
+
     def test_keystone_calculations(self):
         a=self.app
         for i,name in enumerate(['First Strike','Ice Overlord','Phase Rush','Arcane Comet','Aery','Guardian','Grasp of the Undying','Conqueror','Fleet Footwork','Lethal Tempo','Empowerment','Dark Harvest']):
