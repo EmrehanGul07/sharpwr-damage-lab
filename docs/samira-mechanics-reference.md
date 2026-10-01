@@ -4,7 +4,7 @@ User supplied on 2026-10-01. PC excerpt contents were provided directly; no infe
 
 ## Confirmed Wild Rift mana
 
-Q 30, W 60, E 40 at every rank. R mana remains unknown; the PC listing of 6 Style does not prove zero mana in Wild Rift. The library and displayed cost table are updated. Mana consumption is not enabled until the resource model is completed.
+Q 30, W 60, E 40 at every rank. R costs 0 mana and requires S Style (6 stacks), confirmed directly by the user. The library and displayed cost table are updated. Mana consumption is not enabled until the resource model is completed.
 
 ## Recorded timing and action rules (PC reference only)
 

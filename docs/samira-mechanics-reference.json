@@ -8,7 +8,7 @@
     "Q": 30,
     "W": 60,
     "E": 40,
-    "R": null,
+    "R": 0,
     "rank_policy": "User values are constant across ranks"
   },
   "P": {
@@ -140,7 +140,7 @@
     "lifesteal_effectiveness": 1.0,
     "PC_static_cooldown_seconds": 5,
     "cooldown_application": "Do not replace supplied WR 6 seconds; whether WR cooldown is static needs verification",
-    "mana": "Excerpt lists 6 Style only; this does not confirm zero WR mana"
+    "mana": "Confirmed 0 mana in Wild Rift; S Style is required, user confirmation 2026-10-01."
   },
   "excluded_PC_numeric_formulas": [
     "AD/AP ratios",
@@ -157,5 +157,11 @@
     "WR passive eligibility per skill (R exclusion confirmed)",
     "WR Q/E projectile and dash speeds",
     "WR R duration/shot schedule and cooldown haste applicability"
-  ]
+  ],
+  "confirmed_wr_R_resource": {
+    "type": "Style",
+    "grade": "S",
+    "stacks": 6,
+    "source": "User confirmation 2026-10-01"
+  }
 }
