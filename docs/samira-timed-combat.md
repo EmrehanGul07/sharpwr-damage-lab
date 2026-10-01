@@ -11,3 +11,9 @@ Remaining before claiming parity: verified WR timing/ranges and R haste rule, AA
 ## V5.55 movement correction
 
 The champion now walks continuously toward the stationary target between events, except during Q/W cast locks, a supplied AA windup, and dash travel. W active time and R channel allow walking. Movement uses the champion database MS plus selected build MS, Style's 3% per stack and R's 30% penalty from the user-authorized PC reference. A 0.05-second movement wake-up allows the auto scheduler to notice entry into attack/skill range; position is integrated across exact dash/cast/channel boundaries, not teleported at each wake-up. Dash overshoot is followed by walking back toward the target. Unknown AA windup remains zero by default. Distance is now shown per impact in the UI. Exact WR MS soft caps, collision radius and unit-overlap stopping distance remain unverified.
+
+## V5.56 provisional AA windup
+
+User authorized only PC Samira's base windup as a fallback. PC Template:Data_Samira reports windup0.149999994 and baseAS0.658; their quotient is 0.2279635167 seconds. PC base AS is used only to derive this constant and does not replace WR/app AD or AS. The base is shared provisionally for melee/ranged attacks; separate WR measurements remain unavailable.
+
+Runtime calculation uses the WR Patch2.2 formula: baseWindup/(1+bonusAS*0.5). Bonus AS includes the selected level, items/boots, Alacrity, live E/Lethal Tempo and tracked Rageblade/Phantom Dancer/Yun Tal buffs at attack start. Movement and new skills wait until windup finishes; issuing commands does not cancel the AA, per user WR confirmation. Projectile travel remains separate. Exact WR base and unchanged applicability of this historic WR formula remain unverified. This supersedes the earlier zero-windup default for the UI.

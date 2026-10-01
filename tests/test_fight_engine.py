@@ -167,6 +167,19 @@ class ReplayTests(unittest.TestCase):
         shots=[x for x in r.log if x['action']=='R tick']
         self.assertEqual(len(shots),10)
         self.assertLess(shots[-1]['distance'],shots[3]['distance'])
+    def test_pc_base_windup_with_wr_scaling(self):
+        base=.149999994/.658
+        r=self.run_fight([(0,'AA')],timed_combat=True,distance=100,base_windup=base,starting_bonus_as=1)
+        self.assertAlmostEqual(r.log[0]['time'],base/1.5)
+        self.assertAlmostEqual(r.log[0]['windup'],base/1.5)
+        r=self.run_fight([(0,'AA')],timed_combat=True,distance=500,base_windup=base,aa_stats=lambda state:{'bonus_as_total':2})
+        self.assertAlmostEqual(r.log[0]['time'],base/2+500/2800)
+    def test_windup_prevents_movement_and_does_not_cancel_aa(self):
+        base=.149999994/.658
+        r=self.run_fight([(0,'AA'),(.1,'Q')],timed_combat=True,distance=100,movement_speed=340,base_windup=base)
+        self.assertEqual(r.aa_count,1)
+        self.assertEqual(r.log[0]['distance'],100)
+        self.assertEqual(r.rejected[0]['reason'],'AA windup active')
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 

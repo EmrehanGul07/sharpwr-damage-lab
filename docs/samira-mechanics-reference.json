@@ -163,5 +163,17 @@
     "grade": "S",
     "stacks": 6,
     "source": "User confirmation 2026-10-01"
+  },
+  "AA_windup": {
+    "source_url": "https://wiki.leagueoflegends.com/en-us/Template:Data_Samira",
+    "source_game": "PC LoL",
+    "windup_percent": 0.149999994,
+    "pc_base_as_for_derivation_only": 0.658,
+    "base_windup_seconds": 0.2279635167173252,
+    "formula": "base_windup_seconds / (1 + bonus_attack_speed * 0.5)",
+    "formula_source": "https://wildrift.leagueoflegends.com/en-sg/news/game-updates/wild-rift-patch-notes-2-2/",
+    "status": "user_authorized_PC_base_only_WR_scaling",
+    "attack_cancellation": "Disabled per user Wild Rift confirmation",
+    "melee_ranged_policy": "Same provisional base; separate WR values unavailable"
   }
 }
