@@ -35,7 +35,7 @@ def replay_marksman(events,**p):
     ready={s:0. for s in 'QWER'};kit.state['born']=0.
     aa_clock=0.;t=0.;last_t=0.;last_speed=base_as;lock=0.;channel=0.;root_until=0.;aa_lock=0.;dash_until=0.
     cast_id=0;aa_count=skill_count=0;log=[];rejected=[];total=0.;killed=None
-    conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False
+    conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False;spell_cast_times=[]
     items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
     runes=set(p.get('sub_runes',()));keystone=p.get('keystone');aa_hit=p.get('aa_hit');aa_stats=p.get('aa_stats')
     if keystone not in (None,'Conqueror','Lethal Tempo'):raise ValueError('Unsupported offensive keystone')
@@ -206,8 +206,8 @@ def replay_marksman(events,**p):
         item_damage=0.
         if aa_hit and (name=='Ezreal' and slot=='Q' or name=='Senna' and slot=='Q' or name=='Miss Fortune' and slot=='Q'):
             ea,em=effective()
-            item=aa_hit({'hp':health,'time':t,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
-            item_damage=item['damage'];spell_pending=False;dark=item.get('dark',dark)
+            item=aa_hit({'hp':health,'time':t,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
+            item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
             items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')})
             effects.extend(item.get('notes',[]));kit.unresolved.add('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional')
         if item_damage:
@@ -330,7 +330,7 @@ def replay_marksman(events,**p):
                 kit.reloading_until=t+2.5;queue(t+2.5,'reload');effects.append('Reload started (2.5s WR source)')
         bonus=cad-ad
         if aa_hit:
-            hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
+            hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
             actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')}
             actual+=magic*resistance_multiplier(em)*amp+true*amp;effects+=hit.get('notes',[])
         else:actual=(physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
@@ -341,7 +341,7 @@ def replay_marksman(events,**p):
         if 'Coup de Grace' in runes and health/maxhp<.4:actual*=1.08
         record('AA second' if secondary else 'AA',RawDamage(physical,magic,true),raw_override=actual,cid=cid,eligible=True,effects=effects,before=before,used_ad=cad,used_crit=prob)
         if not secondary:aa_count+=1
-        spell_pending=False
+        spell_pending=False;spell_cast_times.clear()
         if p.get('navori'):
             for basic in 'QWE':reduce(basic,fraction=.15)
         if phantom:
@@ -378,7 +378,7 @@ def replay_marksman(events,**p):
             ready[slot]=t+(25,20,15,10)[ranks['W']-1]/(1+haste/100)
             kit.unresolved.add('Caitlyn trap ammo/recharge pool provisional: one charge per recharge')
         if name=='Jhin' and slot=='E':ready[slot]=t+(20,18,16,14)[ranks['E']-1]/(1+haste/100)
-        skill_count+=1;cast_id+=1;cid=cast_id;spell_pending=True
+        skill_count+=1;cast_id+=1;cid=cast_id;spell_pending=True;spell_cast_times.append(t)
         if slot=='R':ultimate=t
         duration=kit.cast_time(slot,t,total_as()[1].get('bonus_as_total',0.));lock=t+duration
         arrival=lock+kit.travel(slot,gap)

@@ -75,7 +75,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     base_ad=ad if base_ad is None else base_ad
     dark=0; ultimate_cast_time=None;item_stacks={}
     ranks={'Q':q_rank,'W':w_rank,'E':e_rank,'R':r_rank}; ready={k:0. for k in ranks}; e_until=-1.; transcend_ready=0.
-    conq=lt=style=aa=casts=0; last_style=None; conq_expiry=lt_expiry=-1.; next_aa=next_q=next_r=0.; channel_until=-1.; combat_start=None; spell_pending=False
+    conq=lt=style=aa=casts=0; last_style=None; conq_expiry=lt_expiry=-1.; next_aa=next_q=next_r=0.; channel_until=-1.; combat_start=None; spell_pending=False;spell_cast_times=[]
     health=float(hp); log=[]; rejected=[]; total=0.; killed=None; r_cast_id=0
     def reject(t,action,reason):rejected.append({'time':t,'action':action,'reason':reason})
     def attack_stats(t):
@@ -205,7 +205,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     if mana is not None:mana=max(0.,mana-cost+cost*mana_refund)
                     ready[action]=t+abilities[action]['cooldown'][ranks[action]-1]/(1+ability_haste/100)
                     if action=='R':next_r=ready['R']
-                    casts+=1;spell_pending=True;cast_seq+=1
+                    casts+=1;spell_pending=True;spell_cast_times.append(t);cast_seq+=1
                     if transcendence and level>=9 and t>=transcend_ready:
                         for basic in ('Q','W','E'):ready[basic]=t+max(0.,ready[basic]-t)*.92
                         transcend_ready=t+8.
@@ -257,7 +257,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             if r_rank==0 or t+1e-9<next_r:reject(t,action,'R unlearned or on cooldown');continue
             if champion=='Samira' and style<6:reject(t,action,'S style required');continue
             if not timed_combat and not instant_skills and r_duration is None:reject(t,action,'R channel timing unknown: supply measured duration');continue
-            r_cast_id+=1;style=style if timed_combat else 0;last_style=last_style if timed_combat else None;channel_until=t+(2.277 if timed_combat else (0. if instant_skills else r_duration));next_r=t+6/(1+ability_haste/100);casts+=1;ready['R']=next_r;spell_pending=True;ultimate_cast_time=t
+            r_cast_id+=1;style=style if timed_combat else 0;last_style=last_style if timed_combat else None;channel_until=t+(2.277 if timed_combat else (0. if instant_skills else r_duration));next_r=t+6/(1+ability_haste/100);casts+=1;ready['R']=next_r;spell_pending=True;spell_cast_times.append(t);ultimate_cast_time=t
             if timed_combat:
                 w_id+=1;w_until=t
                 queue.append((channel_until,order+1,'R end',None))
@@ -277,7 +277,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action=='AA':
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
-                hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
+                hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
                 damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))
@@ -289,7 +289,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             if keystone=='Lethal Tempo' and lt>=6:
                 damage+=(6+(level-1))* (1+.0033*lt_bonus_as*100)*resistance_multiplier(ea)*skill_amp
             if 'Brutal' in sub_runes:damage+=(6+.08*max(0,current_ad-base_ad))*resistance_multiplier(ea)*skill_amp
-            next_aa=next_aa if timed_combat else t+1/speed;aa+=1;spell_pending=False
+            next_aa=next_aa if timed_combat else t+1/speed;aa+=1;spell_pending=False;spell_cast_times.clear()
             if navori:
                 effects.append('Navori: remaining basic cooldown ×0.85')
                 for slot in ('Q','W','E'):ready[slot]=t+max(0.,ready[slot]-t)*.85
@@ -311,7 +311,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                 hit=samira_skill(slot,rank,current_ad,probability,crit_damage,armor,pct_pen=live_pen,flat_pen=flat_pen,outcome='Expected',hits=1 if timed_combat or slot!='W' else 2,base_ad=base_ad,mr=mr,pct_mpen=magic_pen,flat_mpen=flat_mpen)
                 damage=hit.total*skill_amp
             if not timed_combat and action in ('Q','W','E'):
-                ready[action]=t+abilities[action]['cooldown'][rank-1]/(1+ability_haste/100);casts+=1;spell_pending=True
+                ready[action]=t+abilities[action]['cooldown'][rank-1]/(1+ability_haste/100);casts+=1;spell_pending=True;spell_cast_times.append(t)
                 if action=='E':
                     e_until=t+3.;melee=True;effects.extend(['E attack speed buff (3s)','Dash reached target: melee range'])
                 if transcendence and level>=9 and t>=transcend_ready:

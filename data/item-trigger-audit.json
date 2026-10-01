@@ -1,0 +1,516 @@
+{
+  "version": "5.60.1",
+  "basis": "Current code audit; does not assert unverified game trigger rules",
+  "records": [
+    {
+      "item": "Fiendhunter Bolts",
+      "scope": "completed",
+      "trigger_category": "ultimate-trigger",
+      "coverage": "modeled",
+      "finding": "Fight engine gerçek R cast’ine bağlı. Eski AA/Item Value hesabında Ultimate pre-cast seçeneği R atmadan buff verebilir.",
+      "review_needed": true
+    },
+    {
+      "item": "Rapid Firecannon",
+      "scope": "completed",
+      "trigger_category": "energized",
+      "coverage": "modeled",
+      "finding": "AA hesabında 7-hit cadence varsayımı; fight engine gerçek hareketten Energized doldurmuyor, başlangıç proc’u dışında recharge yok. Ek menzil hareket planına dahil değil.",
+      "review_needed": true
+    },
+    {
+      "item": "Runaan's Hurricane",
+      "scope": "completed",
+      "trigger_category": "multi-target",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Extra bolts excluded in single-target ranking.",
+      "review_needed": false
+    },
+    {
+      "item": "Phantom Dancer",
+      "scope": "completed",
+      "trigger_category": "stacking",
+      "coverage": "modeled",
+      "finding": "Doğal AA stack’i; stack expiry/refresh buff süresi kernelde yok, fight boyunca stack kalır.",
+      "review_needed": true
+    },
+    {
+      "item": "Navori Quickblades",
+      "scope": "completed",
+      "trigger_category": "ability-cooldown",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added.",
+      "review_needed": false
+    },
+    {
+      "item": "Wit's End",
+      "scope": "completed",
+      "trigger_category": "on-hit",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit each attack.",
+      "review_needed": false
+    },
+    {
+      "item": "Hexoptics C44",
+      "scope": "completed",
+      "trigger_category": "distance",
+      "coverage": "modeled",
+      "finding": "Fight içinde gerçek mesafe kullanılır; eski AA hesaplayıcısında sabit distance varsayımı vardır. Kernel AA physical/true arttırır; ability ve diğer damage kapsamı doğrulanmalı.",
+      "review_needed": true
+    },
+    {
+      "item": "Kraken Slayer",
+      "scope": "completed",
+      "trigger_category": "every-N-hit",
+      "coverage": "modeled",
+      "finding": "Sayaç eligible kernel hitleriyle artıyor; skill-on-hit/Phantom Hit eligibility doğrulanmalı.",
+      "review_needed": true
+    },
+    {
+      "item": "Nashor's Tooth",
+      "scope": "completed",
+      "trigger_category": "on-hit",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Manamune",
+      "scope": "completed",
+      "trigger_category": "mana-scaling",
+      "coverage": "modeled",
+      "finding": "Seçilmiş itemin flat mana ve Awe’su doğrudan uygulanır; Tear yüklenme geçmişi ayrı hesaplanmıyor.",
+      "review_needed": true
+    },
+    {
+      "item": "Muramana",
+      "scope": "completed",
+      "trigger_category": "mana/on-hit",
+      "coverage": "modeled",
+      "finding": "Mana statik max mana hesabından geliyor; on-hit/mana-consumption/skill eligibility sırası ve anlık mana scaling referansı ayrıca doğrulanmalı.",
+      "review_needed": true
+    },
+    {
+      "item": "Statikk Shiv",
+      "scope": "completed",
+      "trigger_category": "energized",
+      "coverage": "modeled",
+      "finding": "AA hesabında 5-hit cadence varsayımı; fight içinde Energized recharge yok; tek hedefte bounce değeri hariç.",
+      "review_needed": true
+    },
+    {
+      "item": "Guinsoo's Rageblade",
+      "scope": "completed",
+      "trigger_category": "stacking/on-hit",
+      "coverage": "modeled",
+      "finding": "Stack doğal eligible hitlerle artıyor; skill-on-hit callback’lerinin stack ve Phantom Hit sayımına uygunluğu tüm şampiyonlar için doğrulanmamış.",
+      "review_needed": true
+    },
+    {
+      "item": "Mortal Reminder",
+      "scope": "completed",
+      "trigger_category": "penetration",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Percent armor penetration.",
+      "review_needed": false
+    },
+    {
+      "item": "Maw of Malmortius",
+      "scope": "completed",
+      "trigger_category": "defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Essence Reaver",
+      "scope": "completed",
+      "trigger_category": "spell-trigger",
+      "coverage": "modeled",
+      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır, sonraki eligible on-hit tüketir, 1.5s iç cooldown. Spellblade itemları aynı buildde hâlâ birlikte hasar ekleyebilir; unique proc seçimi ve buff süresi doğrulanmalı.",
+      "review_needed": true
+    },
+    {
+      "item": "Immortal Shieldbow",
+      "scope": "completed",
+      "trigger_category": "defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "The Collector",
+      "scope": "completed",
+      "trigger_category": "execute",
+      "coverage": "modeled",
+      "finding": "Önceki execute sayısı kullanıcı/progression state’i; hedef ölümü sırasında eşik kontrolü gerçek HP’ye bağlı. Maç geçmişi otomatik simüle edilmez.",
+      "review_needed": true
+    },
+    {
+      "item": "Terminus",
+      "scope": "completed",
+      "trigger_category": "stacking/on-hit",
+      "coverage": "modeled",
+      "finding": "Light/Dark alternasyonu kernel çağrı sayısına bağlı; eligible skill hitleri de sayacı etkiliyor. Skill eligibility/alternasyon sırası doğrulanmalı.",
+      "review_needed": true
+    },
+    {
+      "item": "Stormrazor",
+      "scope": "completed",
+      "trigger_category": "energized",
+      "coverage": "modeled",
+      "finding": "AA hesabında 7-hit cadence varsayımı; fight içinde Energized recharge ve proc sonrası hareket hızı modellenmiyor.",
+      "review_needed": true
+    },
+    {
+      "item": "Yun Tal Wildarrows",
+      "scope": "completed",
+      "trigger_category": "permanent stacking",
+      "coverage": "modeled",
+      "finding": "Başlangıç kalıcı stack’i hero leveldan otomatik 0–125 atanıyor, gerçek maç geçmişi yok. Flurry ilk uygun AA ve cooldown ile hazırlanır; tetik şartı referansla yeniden incelenmeli.",
+      "review_needed": true
+    },
+    {
+      "item": "Galeforce",
+      "scope": "completed",
+      "trigger_category": "active",
+      "coverage": "modeled",
+      "finding": "Aktif skill komutu yok: tier aramasında baştan hazır, sonraki uygun AA ile otomatik çalışır; 50s sonra yine AA ile kullanılır. Dash ve ayrı cast zamanı yok.",
+      "review_needed": true
+    },
+    {
+      "item": "Mercurial Scimitar",
+      "scope": "completed",
+      "trigger_category": "active/defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Cleanse/active excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Blade of the Ruined King",
+      "scope": "completed",
+      "trigger_category": "current-HP/on-hit",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Current-HP on-hit recalculated each attack.",
+      "review_needed": false
+    },
+    {
+      "item": "Guardian Angel",
+      "scope": "completed",
+      "trigger_category": "defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Revive excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Bloodthirster",
+      "scope": "completed",
+      "trigger_category": "sustain",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Sustain is not scored as DPS.",
+      "review_needed": false
+    },
+    {
+      "item": "Lord Dominik's Regards",
+      "scope": "completed",
+      "trigger_category": "bonus-HP scaling",
+      "coverage": "partial",
+      "finding": "Hedef bonus HP manuel/profil farkından hesaplanır; anlık buff yok. Tek hedef profili dışındaki health growth belirsizlikleri sonucu etkiler.",
+      "review_needed": true
+    },
+    {
+      "item": "Trinity Force",
+      "scope": "completed",
+      "trigger_category": "spell-trigger",
+      "coverage": "modeled",
+      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır; shared cooldown. Başka Spellblade ile birlikte stacklenme ve buff süresi açık.",
+      "review_needed": true
+    },
+    {
+      "item": "Infinity Edge",
+      "scope": "completed",
+      "trigger_category": "crit modifier",
+      "coverage": "modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Critical damage modifier.",
+      "review_needed": false
+    },
+    {
+      "item": "Serylda's Grudge",
+      "scope": "completed",
+      "trigger_category": "penetration/utility",
+      "coverage": "partial",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Penetration modeled; slow excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Serpent's Fang",
+      "scope": "completed",
+      "trigger_category": "shield-counter",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Needs target shield state.",
+      "review_needed": false
+    },
+    {
+      "item": "Youmuu's Ghostblade",
+      "scope": "completed",
+      "trigger_category": "movement/combat-state",
+      "coverage": "partial",
+      "finding": "Statik MS ve statlar var; hareket stack’i/aktif ve combat durumuyla buff değişimi yok.",
+      "review_needed": true
+    },
+    {
+      "item": "Duskblade of Draktharr",
+      "scope": "completed",
+      "trigger_category": "first-hit/cooldown",
+      "coverage": "partial",
+      "finding": "Koşul kontrolü yerine ilk kernel hitinde otomatik hasar. Görünürlük/combat eligibility doğrulanmıyor; kayıttaki 10s cooldown ve reset tekrar uygulanmıyor.",
+      "review_needed": true
+    },
+    {
+      "item": "Edge of Night",
+      "scope": "completed",
+      "trigger_category": "defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Spell shield excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Iceborn Gauntlet",
+      "scope": "completed",
+      "trigger_category": "spell-trigger",
+      "coverage": "modeled",
+      "finding": "Düzeltildi: skill cast geçmişiyle hazırlanır; başka Spellblade ile birlikte stacklenme ve buff süresi açık. Slow yok.",
+      "review_needed": true
+    },
+    {
+      "item": "Death's Dance",
+      "scope": "completed",
+      "trigger_category": "defensive",
+      "coverage": "not modeled",
+      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Damage delay/survival excluded.",
+      "review_needed": false
+    },
+    {
+      "item": "Gluttonous Greaves",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Immortal Treads",
+      "scope": "boot",
+      "finding": "Kerneldaki +5% damage her zaman uygulanır. Build Lab kendi HP seçeneğiyle düzeltir; tier benchmark kendi HP >50% varsayar.",
+      "review_needed": true
+    },
+    {
+      "item": "Ionian Boots of Lucidity",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Crimson Lucidity",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Berserker's Greaves",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Gunmetal Greaves",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Mercury's Treads",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Chainlaced Crushers",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Plated Steelcaps",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Armored Advance",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Boots of Mana",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Spellslinger's Shoes",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Boots of Dynamism",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Armorcrusher Boots",
+      "scope": "boot",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "review_needed": false
+    },
+    {
+      "item": "Pickaxe",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Sheen",
+      "scope": "component",
+      "finding": "Tek initial pre-cast ya da gerçek cast; cooldown otomatik rearm kaldırıldı.",
+      "review_needed": true
+    },
+    {
+      "item": "Kircheis Shard",
+      "scope": "component",
+      "finding": "Başlangıç Energized checkbox’ı; gerçek hareket recharge yok.",
+      "review_needed": true
+    },
+    {
+      "item": "Executioner's Calling",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Recurve Bow",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Quicksilver Sash",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Hearthbound Axe",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Vampiric Scepter",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Last Whisper",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Caulfield's Warhammer",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Noonquiver",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Zeal",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "B.F. Sword",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Tear of the Goddess",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Dagger",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Long Sword",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Brawler's Gloves",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Cloth Armor",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Null-Magic Mantle",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Ruby Crystal",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Amplifying Tome",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Ring of Revelation",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    },
+    {
+      "item": "Boots of Speed",
+      "scope": "component",
+      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "review_needed": false
+    }
+  ]
+}

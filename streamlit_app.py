@@ -602,7 +602,7 @@ ITEM_SCENARIO_AUDIT={
 "Guinsoo's Rageblade":("stacking/on-hit","modeled","Stacks and phantom on-hit."),
 "Mortal Reminder":("penetration","modeled","Percent armor penetration."),
 "Maw of Malmortius":("defensive","not modeled","Shield/survival excluded."),
-"Essence Reaver":("spell-trigger","modeled","Proc when ability-before-AA is enabled."),
+"Essence Reaver":("spell-trigger","modeled","Real cast arms next eligible on-hit; 1.5s ICD. Legacy pre-cast arms once only."),
 "Immortal Shieldbow":("defensive","not modeled","Shield/survival excluded."),
 "The Collector":("execute","modeled","Execute and previous executes."),
 "Terminus":("stacking/on-hit","modeled","Current in-game test: Shadow deals 30 bonus magic on-hit. Juxtaposition grants 10% armor + magic penetration per Dark stack, up to 3 stacks / 30%; no level scaling. Item percent penetration cap 40%. Defensive Light stacks are not scored in DPS."),
@@ -614,14 +614,14 @@ ITEM_SCENARIO_AUDIT={
 "Guardian Angel":("defensive","not modeled","Revive excluded."),
 "Bloodthirster":("sustain","not modeled","Sustain is not scored as DPS."),
 "Lord Dominik's Regards":("bonus-HP scaling","partial","Penetration modeled; amp needs target Bonus HP."),
-"Trinity Force":("spell-trigger","modeled","Spellblade when ability-before-AA is enabled."),
+"Trinity Force":("spell-trigger","modeled","Real cast arms next eligible on-hit; cooldown never auto-rearms. Legacy pre-cast arms once only."),
 "Infinity Edge":("crit modifier","modeled","Critical damage modifier."),
 "Serylda's Grudge":("penetration/utility","partial","Penetration modeled; slow excluded."),
 "Serpent's Fang":("shield-counter","not modeled","Needs target shield state."),
 "Youmuu's Ghostblade":("movement/combat-state","partial","Static stats modeled; passive not fully scored."),
-"Duskblade of Draktharr":("first-hit/cooldown","modeled","Nightstalker: 60-160 linear level bonus physical on next champion AA; 10s cooldown, takedown reset metadata."),
+"Duskblade of Draktharr":("first-hit/cooldown","partial","First-hit damage is automatic; eligibility, recurring 10s cooldown and reset remain under review."),
 "Edge of Night":("defensive","not modeled","Spell shield excluded."),
-"Iceborn Gauntlet":("spell-trigger","modeled","Spellblade damage; slow utility excluded."),
+"Iceborn Gauntlet":("spell-trigger","modeled","Real-cast Spellblade; 1.5s ICD. Slow utility excluded."),
 "Death's Dance":("defensive","not modeled","Damage delay/survival excluded."),
 }
 
@@ -748,7 +748,9 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         current_ad=ad+float(state.get("bonus_ad",0))
         event_driven=bool(state.get("event_driven",False));skill_on_hit=bool(state.get("skill_on_hit",False))
         if event_driven:
-            if state.get("spell_cast"): spell_pending=True
+            _cast_times=state.get("spell_cast_times",[t] if state.get("spell_cast") else [])
+            for _cast_time in _cast_times:
+                if _cast_time>=spellblade_ready:spell_pending=True
             _ult_time=state.get("ultimate_cast_time")
             if _ult_time is not None and _ult_time!=last_ult_cast:
                 last_ult_cast=_ult_time; fiend_until=_ult_time+8
@@ -817,7 +819,9 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if "Kircheis Shard" in items and energized and k==1:
             onm+=40; note.append("Jolt")
 
-        if ((spell and not event_driven) or (event_driven and spell_pending)) and t>=spellblade_ready:
+        # Legacy pre-cast means ONE initial cast; cooldown alone never rearms.
+        if not event_driven and spell and k==1:spell_pending=True
+        if spell_pending and t>=spellblade_ready:
             triggered=False
             if ("Essence Reaver" in items and item_proc):
                 onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER"); triggered=True
@@ -1979,4 +1983,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.60 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.60.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
