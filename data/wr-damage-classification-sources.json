@@ -1,0 +1,1687 @@
+{
+  "retrieved_at": "2026-10-01",
+  "policy": "WR template classification only; numerical ratios are not imported",
+  "records": [
+    {
+      "champion": "Kalista",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Martial_Poise",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "targeting": "Direction",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kalista",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Pierce",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Single target",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kalista",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Sentinel",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "magic",
+        "spelleffects": "proc",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "unknown",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kalista",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Rend",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "parry": "special",
+        "targeting": "Proximity",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kalista",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Fate%27s_Call",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spellshield": "True",
+        "projectile": "",
+        "targeting": "Proximity",
+        "affects": "''{{WRa|Martial Poise|Kalista|Oathsword|image=Black Spear item HD.png}}'' Ally / Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Tristana",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Draw_a_Bead",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Tristana",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rapid_Fire",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Tristana",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rocket_Jump",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "",
+        "targeting": "Location",
+        "affects": "Enemies / Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Tristana",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Explosive_Charge",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "parry": "special",
+        "callforhelp": "True",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Tristana",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "special",
+        "spellshield": "True",
+        "projectile": "True",
+        "callforhelp": "True",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Twitch",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Deadly_Venom",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "True",
+        "spelleffects": "default",
+        "spellshield": "False",
+        "parry": "special",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Twitch",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Ambush",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Twitch",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Venom_Cask",
+      "status": "retrieved",
+      "parameters": {
+        "spelleffects": "",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Twitch",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Contaminate",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Aoe",
+        "spellshield": "True",
+        "projectile": "false",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Twitch",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Spray_and_Pray",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "basic",
+        "spellshield": "",
+        "projectile": "true",
+        "parry": "True",
+        "callforhelp": "True",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Draven",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/League_of_Draven",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Draven",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Spinning_Axe",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "basic",
+        "onhiteffects": "Special",
+        "spellshield": "",
+        "projectile": "Special",
+        "parry": "true",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": [
+        "* ''Spinning Axe'' deals the total increased damage in a single instance of {{WRtip|basic damage}}."
+      ]
+    },
+    {
+      "champion": "Draven",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Blood_Rush",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "onhiteffects": "",
+        "spellshield": "",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Draven",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Stand_Aside",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoe",
+        "onhiteffects": "",
+        "spellshield": "True",
+        "projectile": "true",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Draven",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Whirling_Death",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "onhiteffects": "",
+        "spellshield": "Special",
+        "projectile": "true",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Icathian_Surprise",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "True",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "targeting": "Passive",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Caustic_Spittle",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Single target",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Bio-Arcane_Barrage",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Proc",
+        "spellshield": "false",
+        "parry": "True",
+        "targeting": "Auto",
+        "affects": ""
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Void_Ooze",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kog'Maw",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Living_Artillery",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "projectile": "",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Vayne",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Night_Hunter",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Vayne",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Tumble",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "spell",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "True",
+        "targeting": "Direction",
+        "affects": "[[Self-targeted|Self]]"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Vayne",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Silver_Bolts",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "true",
+        "spelleffects": "Proc",
+        "spellshield": "False",
+        "parry": "true",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Vayne",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Condemn",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "spell",
+        "onhiteffects": "",
+        "spellshield": "True",
+        "projectile": "true",
+        "callforhelp": "True",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Vayne",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Final_Hour",
+      "status": "retrieved",
+      "parameters": {
+        "spelleffects": "",
+        "onhiteffects": "",
+        "spellshield": "",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ashe",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Frost_Shot",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spellshield": "True",
+        "parry": "True",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ashe",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Ranger%27s_Focus",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "spellshield": "false",
+        "projectile": "True",
+        "parry": "True",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": [
+        "* ''Ranger's Focus'' first bolt deals {{WRtip|default damage|basic damage}} with the subsequent 4 bolts dealing a non-reactive damage type (e.g. {{WRtip|default damage}} or {{WRtip|proc"
+      ]
+    },
+    {
+      "champion": "Ashe",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Volley",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ashe",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Hawkshot",
+      "status": "retrieved",
+      "parameters": {
+        "spellshield": "false",
+        "projectile": "special",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ashe",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Enchanted_Crystal_Arrow",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "aoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Varus",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Living_Vengeance",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Varus",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "[[Auto-targeted|Auto]] / [[Direction-targeted|Direction]]",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Varus",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Blighted_Quiver",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Proc",
+        "spellshield": "Special",
+        "projectile": "",
+        "parry": "unknown",
+        "targeting": "Auto",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Varus",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Hail_of_Arrows",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "true",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Varus",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Xayah",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "special",
+        "spellshield": "False",
+        "parry": "",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Xayah",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "Special",
+        "projectile": "special",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Xayah",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Deadly_Plumage",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "periodic",
+        "projectile": "true",
+        "parry": "unknown",
+        "targeting": "Auto",
+        "affects": "Self, Rakan"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Xayah",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "special",
+        "projectile": "True",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Xayah",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Featherstorm",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "special",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Samira",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Daredevil_Impulse",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "special",
+        "spellshield": "special",
+        "projectile": "special",
+        "parry": "true",
+        "callforhelp": "",
+        "targeting": "Passive",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": [
+        "* The {{as|'''bonus''' magic damage}} dealt with the blade is {{WRtip|default damage}}. The flurry is first 1 instance of {{WRtip|basic damage}} and then 5"
+      ]
+    },
+    {
+      "champion": "Samira",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "spellshield": "true",
+        "projectile": "special",
+        "callforhelp": "special",
+        "targeting": "Direction",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": [
+        "* Applies {{WRtip|spell damage}} on the shot and {{WRtip|area damage}} on the slash and explosives."
+      ]
+    },
+    {
+      "champion": "Samira",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoe",
+        "spellshield": "true",
+        "projectile": "",
+        "callforhelp": "",
+        "targeting": "Auto",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Samira",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "aoe",
+        "spellshield": "true",
+        "callforhelp": "true",
+        "targeting": "Unit",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Samira",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoedot",
+        "spellshield": "special",
+        "projectile": "true",
+        "callforhelp": "true",
+        "targeting": "Auto",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Love_Tap",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "Proc",
+        "spellshield": "",
+        "parry": "True",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Double_Up",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "onhiteffects": "True",
+        "spellshield": "Special",
+        "projectile": "True",
+        "parry": "True",
+        "callforhelp": "true",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* ''Double Up'' deals {{WRtip|basic damage}} to both targets, but also triggers spell effects by dealing an additional 0 {{WRtip|spell damage}}."
+      ]
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Strut",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Make_It_Rain",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "aoedot",
+        "spellshield": "False",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Miss Fortune",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Bullet_Time",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoedot",
+        "spellshield": "False",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Second_Skin",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Proc",
+        "spellshield": "special",
+        "projectile": "",
+        "parry": "True",
+        "targeting": "Passive",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Icathian_Rain",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "spellshield": "Special",
+        "projectile": "True",
+        "targeting": "Auto",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* The first missile on a target applies {{WRtip|area damage}}, while the rest on the same target apply {{WRtip|persistent area damage}}."
+      ]
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Void_Seeker",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Single",
+        "spellshield": "True",
+        "projectile": "True",
+        "parry": "",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Supercharge",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Kai'Sa",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Killer_Instinct",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "",
+        "targeting": "Location",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Corki",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Hextech_Munitions",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "{{WRtip|Physical damage|Physical}} / {{WRtip|True damage|True}}",
+        "spelleffects": "basic",
+        "parry": "true",
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Corki",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Phosphorus_Bomb",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Corki",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Valkyrie",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "aoedot",
+        "spellshield": "False",
+        "projectile": "",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Corki",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Gatling_Gun",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "aoedot",
+        "spellshield": "False",
+        "projectile": "False",
+        "targeting": "Auto",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Corki",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Missile_Barrage",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Lucian",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Lightslinger",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "attack",
+        "spellshield": "",
+        "parry": "True",
+        "callforhelp": "true",
+        "targeting": "Passive",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Lucian",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Piercing_Light",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "AoE",
+        "spellshield": "True",
+        "projectile": "False",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Lucian",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Ardent_Blaze",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "special",
+        "projectile": "True",
+        "parry": "special",
+        "targeting": "Direction",
+        "affects": "Enemies / Self, Allies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Lucian",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Relentless_Pursuit",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Direction",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Lucian",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/The_Culling",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "aoedot",
+        "spellshield": "true",
+        "projectile": "True",
+        "targeting": "[[Direction-targeted|Direction]] / [[Auto-targeted|Auto]]",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Smolder",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Dragon_Practice",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "proc",
+        "spellshield": "true",
+        "parry": "true",
+        "targeting": "Passive",
+        "affects": "Self/Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Smolder",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Super_Scorcher_Breath",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical True",
+        "spelleffects": "special",
+        "spellshield": "true",
+        "projectile": "true",
+        "parry": "special",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* Applies {{WRtip|default damage}} for the burn, {{WRtip|spell damage}} and procs {{WRtip|basic damage}} required effects for the fireball, and {{WRtip|area damage}} for the explosions."
+      ]
+    },
+    {
+      "champion": "Smolder",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Achooo%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "special",
+        "projectile": "true",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Smolder",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Flap%2C_Flap%2C_Flap",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "spell",
+        "spellshield": "special",
+        "parry": "false",
+        "targeting": "Auto",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Smolder",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/MMOOOMMMM%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "true",
+        "projectile": "true",
+        "targeting": "Direction",
+        "affects": "Enemies, Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Headshot",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Basic",
+        "spellshield": "False",
+        "projectile": "True",
+        "parry": "True",
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Piltover_Peacemaker",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Area of effect",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Yordle_Snap_Trap",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "True",
+        "projectile": "",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/90_Caliber_Net",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Single target",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Caitlyn",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Ace_in_the_Hole",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spell",
+        "spellshield": "True",
+        "projectile": "True",
+        "callforhelp": "true",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jinx",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Get_Excited%21",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jinx",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "onhiteffects": "",
+        "spellshield": "False",
+        "projectile": "",
+        "parry": "true",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": [
+        "* Both weapons deal {{WRtip|basic damage}} to their primary target (this includes the increased damage of [[File:Jinx Switcheroo! WR.png|20px|border|link=]] ''Fishbones'')."
+      ]
+    },
+    {
+      "champion": "Jinx",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Zap%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Single target",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jinx",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Flame_Chompers%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "special",
+        "projectile": "Special",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jinx",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Super_Mega_Death_Rocket%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Area of effect",
+        "spellshield": "special",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Rising_Spell_Force",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spellshield": "false",
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Mystic_Shot",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "special",
+        "onhiteffects": "True",
+        "spellshield": "special",
+        "projectile": "True",
+        "parry": "True",
+        "callforhelp": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* ''Mystic Shot'' deals {{WRtip|basic damage}}, but also triggers spell effects by dealing an additional 0 {{WRtip|spell damage}}."
+      ]
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Essence_Flux",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spell",
+        "spellshield": "Special",
+        "projectile": "True",
+        "parry": "Special",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* The orb impact deals 0 {{WRtip|proc damage}}."
+      ]
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Arcane_Shift",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spell",
+        "spellshield": "True",
+        "projectile": "True",
+        "callforhelp": "True",
+        "targeting": "Location",
+        "affects": "Enemies, Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Ezreal",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Trueshot_Barrage",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Zeri",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Living_Battery",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "",
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Zeri",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Electrocute%21",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "Area",
+        "onhiteffects": "",
+        "spellshield": "true",
+        "projectile": "false",
+        "parry": "",
+        "callforhelp": "",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Zeri",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Ultrashock_Laser",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "special",
+        "onhiteffects": "",
+        "spellshield": "true",
+        "projectile": "special",
+        "parry": "",
+        "callforhelp": "",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": [
+        "* Applies {{WRtip|spell damage}} for the pulse and {{WRtip|area damage}} for the laser."
+      ]
+    },
+    {
+      "champion": "Zeri",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Spark_Surge",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "onhiteffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "",
+        "callforhelp": "",
+        "targeting": "Direction",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Zeri",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Lightning_Crash",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "{{WRtip|Physical damage|Physical}} / {{WRtip|Magic damage|Magic}}",
+        "spelleffects": "special",
+        "onhiteffects": "",
+        "spellshield": "special",
+        "projectile": "false",
+        "parry": "",
+        "callforhelp": "",
+        "targeting": "Auto",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": [
+        "* Applies {{WRtip|area damage}} for the nova and {{WRtip|proc damage}} for the bounce."
+      ]
+    },
+    {
+      "champion": "Jhin",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Whisper",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Proc",
+        "parry": "true",
+        "targeting": "Passive",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jhin",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Dancing_Grenade",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spellaoe",
+        "spellshield": "Special",
+        "projectile": "True",
+        "callforhelp": "true",
+        "targeting": "Unit",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jhin",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Special",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jhin",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Captive_Audience",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Magic",
+        "spelleffects": "spellaoe",
+        "spellshield": "True",
+        "projectile": "Special",
+        "targeting": "Location",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Jhin",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "Special",
+        "spellshield": "True",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Sivir",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Fleet_of_Foot",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Passive",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Sivir",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Boomerang_Blade",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "AoE",
+        "spellshield": "Special",
+        "projectile": "True",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Sivir",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Ricochet",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "default",
+        "onhiteffects": "Special",
+        "spellshield": "False",
+        "projectile": "True",
+        "parry": "unknown",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Sivir",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Spell_Shield",
+      "status": "retrieved",
+      "parameters": {
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Sivir",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/On_the_Hunt",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "targeting": "Auto",
+        "affects": "Allies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Senna",
+      "slot": "P",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Absolution",
+      "status": "retrieved",
+      "parameters": {
+        "spellshield": "False",
+        "parry": "Special",
+        "targeting": "Passive",
+        "affects": "Self, Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Senna",
+      "slot": "Q",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Piercing_Darkness",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "AoE",
+        "onhiteffects": "true",
+        "spellshield": "special",
+        "projectile": "False",
+        "parry": "Unknown",
+        "targeting": "Unit",
+        "affects": "Allies, Enemies, Turrets, Wards"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Senna",
+      "slot": "W",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Last_Embrace",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "Physical",
+        "spelleffects": "spell",
+        "onhiteffects": "",
+        "spellshield": "True",
+        "projectile": "True",
+        "parry": "",
+        "callforhelp": "",
+        "targeting": "Direction",
+        "affects": "Enemies"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Senna",
+      "slot": "E",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Curse_of_the_Black_Mist",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "",
+        "spelleffects": "",
+        "spellshield": "",
+        "projectile": "",
+        "parry": "",
+        "targeting": "Auto",
+        "affects": "Self"
+      },
+      "classification_evidence": []
+    },
+    {
+      "champion": "Senna",
+      "slot": "R",
+      "url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Dawning_Shadow",
+      "status": "retrieved",
+      "parameters": {
+        "damagetype": "physical",
+        "spelleffects": "aoe",
+        "spellshield": "true",
+        "projectile": "true",
+        "targeting": "Direction",
+        "affects": "Allies / Enemies"
+      },
+      "classification_evidence": []
+    }
+  ]
+}

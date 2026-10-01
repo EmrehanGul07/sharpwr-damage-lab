@@ -13,6 +13,10 @@ class RawDamage:
     magic:float=0.
     true:float=0.
 
+    def instances(self,champion,slot):
+        from damage_classification import annotate_raw
+        return annotate_raw(champion,slot,self)
+
 # (damage type, base ranks, total AD ratio, bonus AD ratio, AP ratio)
 LINEAR={
  'Kalista':{'Q':('physical',(70,135,200,265),1.1,0,0)},

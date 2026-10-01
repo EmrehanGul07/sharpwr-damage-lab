@@ -1,0 +1,589 @@
+{
+  "retrieved_at": "2026-10-01",
+  "records": [
+    {
+      "item": "Fiendhunter Bolts",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Rapid Firecannon",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Runaan's Hurricane",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Phantom Dancer",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Navori Quickblades",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Wit's End",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Hexoptics C44",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Kraken Slayer",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Nashor's Tooth",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Manamune",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Muramana",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Statikk Shiv",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Guinsoo's Rageblade",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Mortal Reminder",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Maw of Malmortius",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Essence Reaver",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": false
+    },
+    {
+      "item": "Immortal Shieldbow",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "The Collector",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Terminus",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Stormrazor",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Yun Tal Wildarrows",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Galeforce",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Mercurial Scimitar",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Blade of the Ruined King",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Guardian Angel",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Bloodthirster",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Lord Dominik's Regards",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Trinity Force",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Infinity Edge",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Serylda's Grudge",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Serpent's Fang",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Youmuu's Ghostblade",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Duskblade of Draktharr",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Edge of Night",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Iceborn Gauntlet",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Death's Dance",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Gluttonous Greaves",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Immortal Treads",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Ionian Boots of Lucidity",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Crimson Lucidity",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Berserker's Greaves",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": false
+    },
+    {
+      "item": "Gunmetal Greaves",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Mercury's Treads",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Chainlaced Crushers",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Plated Steelcaps",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Armored Advance",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Boots of Mana",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Spellslinger's Shoes",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Boots of Dynamism",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Armorcrusher Boots",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Pickaxe",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Sheen",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Kircheis Shard",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Executioner's Calling",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Recurve Bow",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": true,
+      "damage_present": true
+    },
+    {
+      "item": "Quicksilver Sash",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Hearthbound Axe",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Vampiric Scepter",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Last Whisper",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": true
+    },
+    {
+      "item": "Caulfield's Warhammer",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Noonquiver",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Zeal",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "B.F. Sword",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "unavailable",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Tear of the Goddess",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Dagger",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Long Sword",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Brawler's Gloves",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Cloth Armor",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Null-Magic Mantle",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Ruby Crystal",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Amplifying Tome",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Ring of Revelation",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    },
+    {
+      "item": "Boots of Speed",
+      "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+      "status": "retrieved",
+      "policy": "Descriptions retained for provenance; never overwrite measured coefficients.",
+      "on_hit_explicit": false,
+      "damage_present": false
+    }
+  ]
+}

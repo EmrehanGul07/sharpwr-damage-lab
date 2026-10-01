@@ -143,7 +143,144 @@
       "retrieved_at": "2026-10-01T07:42:45.250643+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Tristana",
@@ -278,7 +415,144 @@
       "retrieved_at": "2026-10-01T07:42:45.251213+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Twitch",
@@ -413,7 +687,144 @@
       "retrieved_at": "2026-10-01T07:42:45.251556+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Draven",
@@ -548,7 +959,144 @@
       "retrieved_at": "2026-10-01T07:42:45.254446+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Kog'Maw",
@@ -683,7 +1231,144 @@
       "retrieved_at": "2026-10-01T07:42:54.004859+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Vayne",
@@ -818,7 +1503,144 @@
       "retrieved_at": "2026-10-01T07:42:54.039660+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Ashe",
@@ -953,7 +1775,144 @@
       "retrieved_at": "2026-10-01T07:42:54.075447+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Varus",
@@ -1088,7 +2047,144 @@
       "retrieved_at": "2026-10-01T07:42:54.117495+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Xayah",
@@ -1223,7 +2319,144 @@
       "retrieved_at": "2026-10-01T07:43:01.894308+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Samira",
@@ -1358,7 +2591,144 @@
       "retrieved_at": "2026-10-01T07:43:01.919230+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Miss Fortune",
@@ -1493,7 +2863,144 @@
       "retrieved_at": "2026-10-01T07:43:02.038556+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Yunara",
@@ -1561,7 +3068,144 @@
         "attack_projectile_speed",
         "gameplay_radius"
       ],
-      "retrieved_at": "2026-10-01T07:43:02.044662+00:00"
+      "retrieved_at": "2026-10-01T07:43:02.044662+00:00",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Kai'Sa",
@@ -1696,7 +3340,144 @@
       "retrieved_at": "2026-10-01T07:43:02.044696+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Corki",
@@ -1831,7 +3612,144 @@
       "retrieved_at": "2026-10-01T07:43:09.727851+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Lucian",
@@ -1966,7 +3884,144 @@
       "retrieved_at": "2026-10-01T07:43:09.808651+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Smolder",
@@ -2101,7 +4156,144 @@
       "retrieved_at": "2026-10-01T07:43:09.836209+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Caitlyn",
@@ -2236,7 +4428,144 @@
       "retrieved_at": "2026-10-01T07:43:09.848478+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Jinx",
@@ -2371,7 +4700,144 @@
       "retrieved_at": "2026-10-01T07:43:17.505368+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Ezreal",
@@ -2506,7 +4972,144 @@
       "retrieved_at": "2026-10-01T07:43:17.529513+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Zeri",
@@ -2641,7 +5244,144 @@
       "retrieved_at": "2026-10-01T07:43:17.543045+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Jhin",
@@ -2776,7 +5516,144 @@
       "retrieved_at": "2026-10-01T07:43:17.586649+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Sivir",
@@ -2911,7 +5788,144 @@
       "retrieved_at": "2026-10-01T07:43:24.153759+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     },
     {
       "name": "Senna",
@@ -3054,7 +6068,144 @@
       "retrieved_at": "2026-10-01T07:43:24.160070+00:00",
       "http_status": 200,
       "resource_type": "Mana",
-      "attack_type": "Ranged"
+      "attack_type": "Ranged",
+      "stat_classification": {
+        "base_ad": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "ad_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_ratio": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_bonus_as": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "as_growth": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_hp_regen_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "hp_regen_growth_per_5s": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_growth": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mana_regen_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mana_regen_growth_per_5s": {
+          "role": "resource",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_armor": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "armor_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "base_mr": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "mr_growth": {
+          "role": "defense",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "movement_speed": {
+          "role": "stat",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_range": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_cast_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_total_time": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_delay_offset": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_windup": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "windup_modifier": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "attack_projectile_speed": {
+          "role": "timing",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        },
+        "gameplay_radius": {
+          "role": "geometry",
+          "tags": [],
+          "status": "not_a_damage_instance"
+        }
+      }
     }
   ]
 }

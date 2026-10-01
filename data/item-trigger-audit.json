@@ -8,7 +8,24 @@
       "trigger_category": "ultimate-trigger",
       "coverage": "modeled",
       "finding": "Only actual ultimate_cast_time event arms buff. Legacy ult flag and pre-cast checkboxes removed.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "ultimate-trigger",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Rapid Firecannon",
@@ -17,7 +34,24 @@
       "coverage": "modeled",
       "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
       "review_needed": false,
-      "status": "user_locked_in_game_measurement"
+      "status": "user_locked_in_game_measurement",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "energized",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Runaan's Hurricane",
@@ -25,7 +59,27 @@
       "trigger_category": "multi-target",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Extra bolts excluded in single-target ranking.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "multi-target",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Phantom Dancer",
@@ -34,7 +88,24 @@
       "coverage": "modeled",
       "finding": "User confirms 6s PD stack timeout; no >6s gap in continuous benchmark. Youmuu out-of-combat momentum is outside scope.",
       "review_needed": false,
-      "status": "user_confirmed_scope"
+      "status": "user_confirmed_scope",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "stacking",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Navori Quickblades",
@@ -42,7 +113,24 @@
       "trigger_category": "ability-cooldown",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "ability-cooldown",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Wit's End",
@@ -50,7 +138,27 @@
       "trigger_category": "on-hit",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit each attack.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Hexoptics C44",
@@ -60,7 +168,24 @@
       "finding": "Fight içinde gerçek mesafe kullanılır; eski AA hesaplayıcısında sabit distance varsayımı vardır. Kernel AA physical/true arttırır; ability ve diğer damage kapsamı doğrulanmalı.",
       "review_needed": true,
       "status": "ingame_test_todo",
-      "todo": "I02"
+      "todo": "I02",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "distance",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Kraken Slayer",
@@ -70,7 +195,27 @@
       "finding": "Sayaç eligible kernel hitleriyle artıyor; skill-on-hit/Phantom Hit eligibility doğrulanmalı.",
       "review_needed": true,
       "status": "ingame_test_todo",
-      "todo": "I01"
+      "todo": "I01",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "every-N-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Nashor's Tooth",
@@ -78,7 +223,24 @@
       "trigger_category": "on-hit",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Manamune",
@@ -86,7 +248,27 @@
       "trigger_category": "mana-scaling",
       "coverage": "modeled",
       "finding": "Seçilmiş itemin flat mana ve Awe’su doğrudan uygulanır; Tear yüklenme geçmişi ayrı hesaplanmıyor.",
-      "review_needed": true
+      "review_needed": true,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "mana-scaling",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Muramana",
@@ -94,7 +276,24 @@
       "trigger_category": "mana/on-hit",
       "coverage": "modeled",
       "finding": "WR7.3 max-mana Shock retained with no extra Shock mana drain. Actual skill cost/refund/regen tracked from recorded champion stats; skill callbacks avoid duplicate AA Shock.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "mana/on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Statikk Shiv",
@@ -103,7 +302,24 @@
       "coverage": "modeled",
       "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
       "review_needed": false,
-      "status": "user_locked_in_game_measurement"
+      "status": "user_locked_in_game_measurement",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "energized",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Guinsoo's Rageblade",
@@ -113,7 +329,27 @@
       "finding": "Stack doğal eligible hitlerle artıyor; skill-on-hit callback’lerinin stack ve Phantom Hit sayımına uygunluğu tüm şampiyonlar için doğrulanmamış.",
       "review_needed": true,
       "status": "ingame_test_todo",
-      "todo": "I01"
+      "todo": "I01",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "stacking/on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Mortal Reminder",
@@ -121,7 +357,24 @@
       "trigger_category": "penetration",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Percent armor penetration.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "penetration",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Maw of Malmortius",
@@ -129,7 +382,24 @@
       "trigger_category": "defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Essence Reaver",
@@ -137,7 +407,27 @@
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
       "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "spell-trigger",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Immortal Shieldbow",
@@ -145,7 +435,24 @@
       "trigger_category": "defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "The Collector",
@@ -153,7 +460,24 @@
       "trigger_category": "execute",
       "coverage": "modeled",
       "finding": "Önceki execute sayısı kullanıcı/progression state’i; hedef ölümü sırasında eşik kontrolü gerçek HP’ye bağlı. Maç geçmişi otomatik simüle edilmez.",
-      "review_needed": true
+      "review_needed": true,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "execute",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Terminus",
@@ -163,7 +487,27 @@
       "finding": "Light/Dark alternasyonu kernel çağrı sayısına bağlı; eligible skill hitleri de sayacı etkiliyor. Skill eligibility/alternasyon sırası doğrulanmalı.",
       "review_needed": true,
       "status": "ingame_test_todo",
-      "todo": "I01"
+      "todo": "I01",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "stacking/on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Stormrazor",
@@ -172,7 +516,24 @@
       "coverage": "modeled",
       "finding": "User confirms existing measured cadence is sufficiently close to game. Preserve current values; do not replace with movement-charge model.",
       "review_needed": false,
-      "status": "user_locked_in_game_measurement"
+      "status": "user_locked_in_game_measurement",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "energized",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Yun Tal Wildarrows",
@@ -181,7 +542,24 @@
       "coverage": "modeled",
       "finding": "User confirms existing level-based starting crit/stack approximation and current behavior. Preserve unchanged; not a pending measurement.",
       "review_needed": false,
-      "status": "user_locked_in_game_measurement"
+      "status": "user_locked_in_game_measurement",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "permanent stacking",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Galeforce",
@@ -189,7 +567,27 @@
       "trigger_category": "active",
       "coverage": "modeled",
       "finding": "Independent 50s active; dash up to 325 then target radius 600; no AA clock reset or on-hit injection.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "ActiveSpell"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "active",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Mercurial Scimitar",
@@ -197,7 +595,24 @@
       "trigger_category": "active/defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Cleanse/active excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "active/defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Blade of the Ruined King",
@@ -205,7 +620,27 @@
       "trigger_category": "current-HP/on-hit",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Current-HP on-hit recalculated each attack.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "current-HP/on-hit",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Guardian Angel",
@@ -213,7 +648,24 @@
       "trigger_category": "defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Revive excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Bloodthirster",
@@ -221,7 +673,24 @@
       "trigger_category": "sustain",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Sustain is not scored as DPS.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "sustain",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Lord Dominik's Regards",
@@ -229,7 +698,24 @@
       "trigger_category": "bonus-HP scaling",
       "coverage": "partial",
       "finding": "Hedef bonus HP manuel/profil farkından hesaplanır; anlık buff yok. Tek hedef profili dışındaki health growth belirsizlikleri sonucu etkiler.",
-      "review_needed": true
+      "review_needed": true,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "bonus-HP scaling",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Trinity Force",
@@ -237,7 +723,27 @@
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
       "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "spell-trigger",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Infinity Edge",
@@ -245,7 +751,24 @@
       "trigger_category": "crit modifier",
       "coverage": "modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Critical damage modifier.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "crit modifier",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Serylda's Grudge",
@@ -253,7 +776,24 @@
       "trigger_category": "penetration/utility",
       "coverage": "partial",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Penetration modeled; slow excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "penetration/utility",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Serpent's Fang",
@@ -261,7 +801,24 @@
       "trigger_category": "shield-counter",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Needs target shield state.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "shield-counter",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Youmuu's Ghostblade",
@@ -270,7 +827,24 @@
       "coverage": "partial",
       "finding": "User confirms 6s PD stack timeout; no >6s gap in continuous benchmark. Youmuu out-of-combat momentum is outside scope.",
       "review_needed": false,
-      "status": "user_confirmed_scope"
+      "status": "user_confirmed_scope",
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "movement/combat-state",
+        "user_locked": true,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Duskblade of Draktharr",
@@ -278,7 +852,24 @@
       "trigger_category": "first-hit/cooldown",
       "coverage": "modeled",
       "finding": "First AA procs, then next AA after 10s procs again. Skill-on-hit callbacks do not consume this AA trigger. Visibility requirement removed. Single-target kill ends fight, so multi-target takedown reset is out of scope.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "first-hit/cooldown",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Edge of Night",
@@ -286,7 +877,24 @@
       "trigger_category": "defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Spell shield excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Iceborn Gauntlet",
@@ -294,7 +902,27 @@
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
       "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": "spell-trigger",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Death's Dance",
@@ -302,229 +930,884 @@
       "trigger_category": "defensive",
       "coverage": "not modeled",
       "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Damage delay/survival excluded.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": "defensive",
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Gluttonous Greaves",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Immortal Treads",
       "scope": "boot",
       "finding": "Kerneldaki +5% damage her zaman uygulanır. Build Lab kendi HP seçeneğiyle düzeltir; tier benchmark kendi HP >50% varsayar.",
-      "review_needed": true
+      "review_needed": true,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Ionian Boots of Lucidity",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Crimson Lucidity",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Berserker's Greaves",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Gunmetal Greaves",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Mercury's Treads",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Chainlaced Crushers",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Plated Steelcaps",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Armored Advance",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Boots of Mana",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Spellslinger's Shoes",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Boots of Dynamism",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Armorcrusher Boots",
       "scope": "boot",
       "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Pickaxe",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Sheen",
       "scope": "component",
       "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Kircheis Shard",
       "scope": "component",
       "finding": "Başlangıç Energized checkbox’ı; gerçek hareket recharge yok.",
-      "review_needed": true
+      "review_needed": true,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Executioner's Calling",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Recurve Bow",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [
+          "Item",
+          "OnHit"
+        ],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Quicksilver Sash",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Hearthbound Axe",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Vampiric Scepter",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Last Whisper",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Caulfield's Warhammer",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Noonquiver",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Zeal",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "B.F. Sword",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "unavailable",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Tear of the Goddess",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Dagger",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Long Sword",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Brawler's Gloves",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Cloth Armor",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Null-Magic Mantle",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Ruby Crystal",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Amplifying Tome",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Ring of Revelation",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     },
     {
       "item": "Boots of Speed",
       "scope": "component",
       "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
-      "review_needed": false
+      "review_needed": false,
+      "damage_classification": {
+        "origin_tags": [
+          "Item"
+        ],
+        "damage_tags": [],
+        "status": "unknown_WR",
+        "trigger_category": null,
+        "user_locked": false,
+        "reason": "Item origin is known; basic/proc source classification requires WR evidence, not inference from on-hit activation.",
+        "source": "https://wiki.leagueoflegends.com/en-us/Module:WRItemData/data",
+        "source_status": "retrieved",
+        "field_roles": {
+          "stats": "stat",
+          "trigger_category": "trigger",
+          "finding": "evidence"
+        }
+      }
     }
   ]
 }

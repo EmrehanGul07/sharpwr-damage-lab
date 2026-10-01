@@ -82,3 +82,13 @@ Oyun içi ölçümler bekleniyor. Üçünün offline model kontrolü ve ölçüm
 - [ ] X04 R fanı; 10+ tüy/floor kontrolü ve kesin collision geometry daha sonra.
 
 Sabit practice rünleri değiştirilmeyecek, MR ayarı değiştirilemediğinde mevcut100 MR kullanılacak. Video istenmiyor; red/blue ayrı hasar + stat/HP/buff kaydı yeterli. Rün kaynaklı farklar analiz edilmeden item katsayısı değiştirilmeyecek.
+
+
+## V5.62 · Damage classification checks
+
+- [ ] Hexoptics: Ezreal Q/Miss Fortune Q basic damage vs Senna Q area spell damage. Zero spell-effect events must not create duplicate damage/stack gains.
+- [ ] Smolder Q initial hybrid vs default burn; on-hit/Phantom Hit and Kraken stack eligibility.
+- [ ] Corki basic true conversion vs separate item/rune additional true damage.
+- [ ] Ashe Q first arrow vs remaining four arrows: confirm Magnification split without replacing existing total-damage coefficients.
+- [ ] WR Kraken/Spellblade/other item BasicAttack vs Proc membership; PC item examples are not sufficient evidence.
+- [ ] Resolve remaining unknown WR ability labels from docs/damage-classification-v562.md, especially Yunara, Jhin W/R and Tristana R.

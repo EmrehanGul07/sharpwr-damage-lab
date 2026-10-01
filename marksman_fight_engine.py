@@ -7,6 +7,7 @@ The target never attacks. Timing follows sourced casts/channels when available.
 import heapq
 import itertools
 import math
+from damage_classification import event_profile,ability_magnification,component_profile,magnification
 from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
 from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,jhin_attack_damage,RawDamage
@@ -105,12 +106,15 @@ def replay_marksman(events,**p):
         if 'Coup de Grace' in runes and health/maxhp<.4:v*=1.08
         if action!='AA' and action.startswith(('Q','W','E')) and 'Battle Zeal' in runes and combat_start is not None:v*=1+.014*min(3,int(t-combat_start))
         return v
-    def record(action,value,*,cid=None,eligible=False,effects=(),raw_override=None,before=None,used_ad=None,used_crit=None):
+    def record(action,value,*,cid=None,eligible=False,effects=(),raw_override=None,before=None,used_ad=None,used_crit=None,components=None):
         nonlocal health,total,killed,conq,conq_until,lt,lt_until,combat_start
         if health<=0:return
         applied_ad=current_ad() if used_ad is None else used_ad;applied_crit=probability() if used_crit is None else used_crit
         prior=health;ea,em=effective()
-        damage=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(action) if raw_override is None else raw_override
+        classification=event_profile(name,action)
+        if any((value.physical,value.magic,value.true)) and classification['status']=='unknown_WR':kit.unresolved.add(f'{name} {action}: WR damage tags unresolved')
+        class_amp=ability_magnification(name,action,gap,p.get('hexoptics',False)) if not action.startswith('AA') else 1.
+        damage=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(action)*class_amp if raw_override is None else raw_override
         if p.get('muramana') and eligible and not action.startswith('AA') and cid not in shock_casts:
             damage+=.03*(maxmana or 0.)*resistance_multiplier(ea)*amp;shock_casts.add(cid)
         if not math.isfinite(damage) or damage<0:raise ValueError('Invalid event damage')
@@ -123,7 +127,7 @@ def replay_marksman(events,**p):
             if keystone=='Conqueror':conq=min(6,conq+1);conq_until=t+6
         if action=='AA' and keystone=='Lethal Tempo':lt=min(6,lt+1);lt_until=t+6
         if combat_start is None and damage:combat_start=t
-        log.append({'time':t,'action':action,'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
+        log.append({'time':t,'action':action,'damage_classification':classification,'damage_components':components if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',value.physical),('magic',value.magic),('true',value.true)) if v],'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
         if health<=0:killed=t
     def tick(action,value,**kw):record(action,value,**kw)
     def damage_impact(slot,cid,index=0):
@@ -208,14 +212,14 @@ def replay_marksman(events,**p):
         except LookupError as exc:
             kit.unresolved.add(str(exc));return
         item_damage=0.
-        if aa_hit and (name=='Ezreal' and slot=='Q' or name=='Senna' and slot=='Q' or name=='Miss Fortune' and slot=='Q'):
+        if aa_hit and event_profile(name,slot).get('properties',{}).get('TriggerOnHitEvents') is True:
             ea,em=effective()
             item=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
             item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
             items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')})
             effects.extend(item.get('notes',[]));kit.unresolved.add('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional')
         if item_damage:
-            ea,em=effective();dealt=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)+item_damage*multiplier(slot)/amp
+            ea,em=effective();dealt=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)*ability_magnification(name,slot,gap,p.get('hexoptics',False))+item_damage*multiplier(slot)/amp
             record(slot if index==0 else slot+' hit',value,cid=cid,eligible=True,effects=effects,before=before,raw_override=dealt)
         else:
             record(slot if index==0 else slot+' hit',value,cid=cid,eligible=True,effects=effects,before=before)
@@ -242,12 +246,15 @@ def replay_marksman(events,**p):
         record('Plasma detonation',RawDamage(magic=(.15+.00025*ap)*(maxhp-health)),effects=('WR wiki: AP missing-health coefficient; user base preserved',));kit.state['plasma']=0
     def basic_attack(cid,secondary=False):
         nonlocal aa_count,dark,spell_pending,items,mana,aa_clock
-        s=kit.state;before=kit.snapshot(t);cad=current_ad();prob=probability();ea,em=effective();critical=cad*critd;physical=cad*(1+prob*(critd-1));magic=true=0.;effects=[];phantom=False
+        s=kit.state;before=kit.snapshot(t);cad=current_ad();prob=probability();ea,em=effective();critical=cad*critd;physical=cad*(1+prob*(critd-1));magic=true=0.;effects=[];phantom=False;nonbasic_physical=0.
         if name=='Ashe':
             if s.get('frost_until',-1)>t:physical=cad*(1+prob*(critd-1))
             else:physical=cad
             critical=physical
-            if kit.active('focus_as',t):physical*=(1.15,1.2,1.25,1.3)[ranks['Q']-1];critical*=(1.15,1.2,1.25,1.3)[ranks['Q']-1]
+            if kit.active('focus_as',t):
+                physical*=(1.15,1.2,1.25,1.3)[ranks['Q']-1];critical*=(1.15,1.2,1.25,1.3)[ranks['Q']-1]
+                nonbasic_physical=physical*.8
+                kit.unresolved.add('Ashe Q subsequent arrows: WR says default/proc; Hexoptics only first arrow, exact component split pending WR test')
             s['frost_until']=t+2;add('focus',cap=4,duration=4)
             kit.unresolved.add('Ashe first-hit/Frost base modifier and Q flurry item-on-hit count need WR validation')
         if name=='Draven' and s.get('axes',0):
@@ -255,7 +262,7 @@ def replay_marksman(events,**p):
             kit.unresolved.add('Draven axe crit scope/catch timing provisional; explicit catch event after 1s')
             queue(t+1,'axe_catch')
         if name=='Vayne':
-            if s.pop('tumble_attack',0):physical+=raw('Q').physical;critical+=raw('Q').physical
+            if s.pop('tumble_attack',0):physical+=raw('Q').physical;critical+=raw('Q').physical;nonbasic_physical+=raw('Q').physical
             if ranks['W']:add('silver_bolts',cap=3)
             if ranks['W'] and s['silver_bolts']==3:
                 true+=raw('W').true;s['silver_bolts']=0
@@ -271,13 +278,13 @@ def replay_marksman(events,**p):
             if not active:add('unleash',2,cap=6,duration=6)
         if name=="Kog'Maw" and kit.active('barrage',t):magic+=raw('W').magic
         if name=='Xayah':
-            if kit.active('plumage_as',t):physical*=1.25;critical*=1.25
+            if kit.active('plumage_as',t):nonbasic_physical+=physical*.25;physical*=1.25;critical*=1.25
             if s.get('feather_attacks',0):s['feather_attacks']-=1;kit.feathers.append(t+6)
         if name=='Miss Fortune':
             add('love_tap',cap=3,duration=5)
             if s['love_tap']==3:
                 kit.unresolved.add('Miss Fortune Love Tap crit/level modifier unresolved: confirmed 60% base component only')
-                physical+=(15+.4*max(0.,cad-base_ad))*.6;reduce('W',seconds=2)
+                extra=(15+.4*max(0.,cad-base_ad))*.6;physical+=extra;nonbasic_physical+=extra;reduce('W',seconds=2)
         if name=='Lucian' and secondary:
             factor=.4
             kit.unresolved.add('Lucian second-shot level progression unresolved: confirmed 40% baseline')
@@ -311,10 +318,10 @@ def replay_marksman(events,**p):
             physical=cad*(1+prob*(.9*critd-1))
             critical=cad*.9*critd;reduce('Q',seconds=1)
             kit.unresolved.add('Senna passive bonus AA and two-hit level progression unresolved: confirmed base extra 10 physical')
-            physical+=10;critical+=10
+            physical+=10;critical+=10;nonbasic_physical+=10
             if t>=s.get('senna_lock',-1):
                 if s.get('senna_mark_until',-1)>t:
-                    physical+=.01*health;s['senna_lock']=t+6;s['senna_mark_until']=-1
+                    physical+=.01*health;nonbasic_physical+=.01*health;s['senna_lock']=t+6;s['senna_mark_until']=-1
                     kit.unresolved.add('Senna mist generation from champion siphon unresolved: initial supplied mist retained')
                 else:s['senna_mark_until']=t+4
         if name=='Zeri':
@@ -326,22 +333,26 @@ def replay_marksman(events,**p):
         if name=='Jhin':
             physical=cad*(1+prob*(.8*critd-1));critical=cad*.8*critd
             if kit.ammo==1:
-                physical=critical+(.11+.01*(level-1))*(maxhp-health)
+                nonbasic_physical+=(.11+.01*(level-1))*(maxhp-health);physical=critical+nonbasic_physical
             kit.ammo-=1
             if kit.ammo==0:
                 kit.reloading_until=t+2.5;queue(t+2.5,'reload');effects.append('Reload started (2.5s WR source)')
         bonus=cad-ad
+        components=[{'damage_type':'physical','raw_amount':physical-nonbasic_physical,'tags':['BasicAttack'],'status':'fundamental_basic_attack'}]
+        if nonbasic_physical:components.append({'damage_type':'physical','raw_amount':nonbasic_physical,'tags':[],'status':'nonbasic_or_unresolved_WR','component':'champion additional physical damage'})
+        if magic:components.append({'damage_type':'magic','raw_amount':magic,'tags':[],'status':'nonbasic_or_unresolved_WR','component':'champion on-hit/passive addition'})
+        if true:components.append({'damage_type':'true','raw_amount':true,'tags':component_profile(name,'P')['tags'] if name=='Corki' else component_profile(name,'W')['tags'],'status':'WR_wiki_classification'})
         if aa_hit:
-            hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
-            actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')}
-            actual+=magic*resistance_multiplier(em)*amp+true*amp;effects+=hit.get('notes',[])
-        else:actual=(physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
+            hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'nonbasic_attack_physical':nonbasic_physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
+            components.extend(hit.get('damage_components',[]));actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')}
+            actual+=magic*resistance_multiplier(em)*amp+true*amp*(magnification(gap,component_profile(name,'P')['tags']) if p.get('hexoptics') and name=='Corki' else 1.);effects+=hit.get('notes',[])
+        else:actual=((physical-nonbasic_physical)*magnification(gap,['BasicAttack'])*resistance_multiplier(ea)+nonbasic_physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true*(magnification(gap,component_profile(name,'P')['tags']) if name=='Corki' else 1.))*amp if p.get('hexoptics') else (physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
         if 'Brutal' in runes:actual+=(6+.08*max(0.,cad-base_ad))*resistance_multiplier(ea)*amp
         if keystone=='Lethal Tempo' and lt>=6:actual+=(6+level-1)*(1+.33*total_as()[1].get('bonus_as_total',0.))*resistance_multiplier(ea)*amp
         if name=='Miss Fortune' and kit.state.get('love_tap',0)>=3:actual*=1.06
         if 'Cut Down' in runes and health/maxhp>.6:actual*=1.065
         if 'Coup de Grace' in runes and health/maxhp<.4:actual*=1.08
-        record('AA second' if secondary else 'AA',RawDamage(physical,magic,true),raw_override=actual,cid=cid,eligible=True,effects=effects,before=before,used_ad=cad,used_crit=prob)
+        record('AA second' if secondary else 'AA',RawDamage(physical,magic,true),raw_override=actual,cid=cid,eligible=True,effects=effects,before=before,used_ad=cad,used_crit=prob,components=components)
         if not secondary:aa_count+=1
         spell_pending=False;spell_cast_times.clear()
         if p.get('navori'):

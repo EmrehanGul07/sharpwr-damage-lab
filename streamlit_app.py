@@ -593,7 +593,7 @@ ITEM_SCENARIO_AUDIT={
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
 "Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
 "Wit's End":("on-hit","modeled","Magic on-hit each attack."),
-"Hexoptics C44":("distance","modeled","Magnification: 0% below 100 range, then +1% per 50 range; 10% cap at 550."),
+"Hexoptics C44":("distance","modeled","Magnification: basic damage only; 0% below 100 range, +1% per 50 range, 10% cap at 550. Proc additions excluded; unknown WR classifications remain TODO."),
 "Kraken Slayer":("every-N-hit","modeled","Ranged Bring It Down: every 3rd AA deals 120-168 linear level bonus physical; +0.75% damage per 1% target missing HP, capped at +75%."),
 "Nashor's Tooth":("on-hit","modeled","Magic on-hit."),
 "Manamune":("mana-scaling","modeled","Awe AD from mana."),
@@ -771,14 +771,18 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if ("Terminus" in items and item_proc): pct=min(.40,pct)
         ea=float(state.get("armor_override",_effective_resistance(arm,pct,total("flatpen"))))
         # Patch 7.3 Rageblade no longer disables critical strikes; crit remains normal AA expected damage.
-        phy=float(state.get("attack_physical",current_ad*(1+crit*(cd-1)))); onp=0.; onm=0.; true=0.; note=[]
+        phy=float(state.get("attack_physical",current_ad*(1+crit*(cd-1)))); onp=0.; onm=0.; true=0.; note=[]; item_components=[]
 
         if fh and t<=fiend_until and not skill_on_hit:
             asp=min(3,asp+s["ratio"]*.50); phy=float(state.get("critical_attack_physical",current_ad*cd))*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
         if "Hexoptics C44" in items:
+            from damage_classification import magnification
             hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
-            amp=0.0 if hit_dist<100 else min(.10,(int((hit_dist-100)//50)+1)*.01)
-            phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
+            factor=magnification(hit_dist,['BasicAttack'])
+            secondary=float(state.get('nonbasic_attack_physical',0.))
+            phy=(phy-secondary)*factor+secondary
+            # Opening Barrage is a separate item effect, not the attack base.
+            note.append(f"C44 {(factor-1)*100:.0f}% basic only")
         if "Galeforce" in items and active_ready and not event_driven and not skill_on_hit and t>=galeforce_ready:
             bonus_ad=max(0,current_ad-s["basead"])
             onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst"); galeforce_ready=t+50
@@ -839,6 +843,9 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if ("Duskblade of Draktharr" in items and item_proc) and not skill_on_hit and t>=duskblade_ready:
             onp+=60+(l-1)/14*100; note.append("Nightstalker"); duskblade_ready=t+10
 
+        if onp:item_components.append({"damage_type":"physical","raw_amount":onp,"tags":["Item"],"status":"unknown_WR","component":"item additional damage","effects":list(note)})
+        if onm:item_components.append({"damage_type":"magic","raw_amount":onm,"tags":["Item"],"status":"unknown_WR","component":"item additional damage","effects":list(note)})
+        if true:item_components.append({"damage_type":"true","raw_amount":true,"tags":["Item"],"status":"unknown_WR","component":"Opening Barrage"})
         phy+=onp
         if "Lord Dominik's Regards" in items:
             gs=min(.12,max(0,bonus_hp)/125*.01)
@@ -863,7 +870,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
         if fh and t<=fiend_until and not skill_on_hit: fh-=1
-        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
+        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -1016,7 +1023,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.61.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.62.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1038,7 +1045,8 @@ with tabs[0]:
             _names=list(_r["Items"])+[_r["Boots"]]
             _images=''.join(f'<img src="{html.escape(boot_icon(x) if x in B else item_icon(x))}" alt="{html.escape(x)}" title="{html.escape(x)}">' for x in _names)
             _ttk=f'{_r["TTK"]:.3f}s TTK' if _r["TTK"] is not None else 'Target survived'
-            _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div><p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
+            _tie=f'<p class="rank-tie">{html.escape(_r.get("Rank explanation", ""))}</p>' if _r.get("Rank explanation") else ""
+            _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div>{_tie}<p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
         _cards.append('</div>');st.markdown(''.join(_cards),unsafe_allow_html=True)
         st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP, crit, on-hit, penetration and hybrid paths are retained. Finalists are rechecked with six skill priorities, movement alternatives, AA weaving and two ultimate timings. No incoming damage or defensive value is ranked.')
         def _tier_result_frame(rows):
@@ -1047,9 +1055,18 @@ with tabs[0]:
         with st.expander("Best build · measured item contributions"):
             st.dataframe(pd.DataFrame(_search["marginal"]),hide_index=True,width="stretch")
             st.caption("Each item is removed and the fight is recalculated. The effects overlap and are not additive. AS above cap can still provide value through item procs or champion conversions.")
+        st.markdown("""<style>.partial-build-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 24px}.partial-build-card{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid #32445a;border-radius:14px;background:#101c2c;min-width:0}.partial-build-rank{font-size:21px;font-weight:800;color:#f4d383;min-width:34px}.partial-build-body{flex:1;min-width:0}.partial-build-items{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}.partial-build-item{display:flex;gap:7px;align-items:center;max-width:100%;font-size:11px;color:#dce6f3}.partial-build-item img{width:40px;height:40px;border-radius:7px;flex-shrink:0}.partial-build-item span{max-width:145px;overflow-wrap:anywhere}.partial-build-metrics{font-size:13px;color:#f0d58a}.partial-build-stats{font-size:10px;line-height:1.6;color:#a4b3c6;margin-top:5px}.rank-tie{color:#f0d58a!important;font-size:11px!important}@media(max-width:760px){.partial-build-grid{grid-template-columns:1fr}}</style>""",unsafe_allow_html=True)
         for _stage in range(1,5):
             st.markdown(f'### {_stage}-Item · Top 10')
-            st.dataframe(_tier_result_frame(_search["stages"][_stage]),hide_index=True,width="stretch")
+            _partial_cards=['<div class="partial-build-grid">']
+            for _rank,_r in enumerate(_search["stages"][_stage],1):
+                _partial_items=''.join(f'<div class="partial-build-item"><img src="{html.escape(item_icon(x))}" alt="{html.escape(x)}" title="{html.escape(x)}"><span>{html.escape(x)}</span></div>' for x in _r["Items"])
+                _partial_ttk=f'{_r["TTK"]:.3f}s TTK' if _r["TTK"] is not None else 'Target survived'
+                _partial_tie=f'<div class="rank-tie">{html.escape(_r.get("Rank explanation", ""))}</div>' if _r.get("Rank explanation") else ''
+                _partial_cards.append(f'<div class="partial-build-card"><div class="partial-build-rank">#{_rank}</div><div class="partial-build-body"><div class="partial-build-items">{_partial_items}</div><div class="partial-build-metrics">{_partial_ttk} · {_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g</div>{_partial_tie}<div class="partial-build-stats">{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH</div></div></div>')
+            _partial_cards.append('</div>');st.markdown(''.join(_partial_cards),unsafe_allow_html=True)
+            with st.expander(f'{_stage}-item combat details'):
+                st.dataframe(_tier_result_frame(_search["stages"][_stage]),hide_index=True,width="stretch")
         _notes=sorted({note for r in _search["full"] for note in r["Assumptions"]})
         if _notes:
             with st.expander("Unverified mechanics that may affect ranking"):
@@ -1427,7 +1444,7 @@ with tabs[1]:
                         if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
                         return _hit
                     _fight_base_crit=_replay_crit
-                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658 if champ=="Samira" else None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon,galeforce="Galeforce" in build)
+                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=.149999994/.658 if champ=="Samira" else None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon,galeforce="Galeforce" in build,hexoptics="Hexoptics C44" in build)
                 _candidates=[(_run_candidate(_p,_e,_weapon),_p,_e,_weapon) for _p in permutations(('Q','W','E')) for _e in (False,True) for _weapon in (("minigun","rockets") if champ=="Jinx" else ("minigun",))]
                 _fight_result,_best_priority,_best_e,_best_weapon=min(_candidates,key=lambda x:(x[0].killed_at is None,x[0].killed_at if x[0].killed_at is not None else x[0].hp_remaining))
                 _move_label='approach for melee passive' if champ=='Samira' else 'max-range kite'+(' · '+_best_weapon if champ=='Jinx' else '')
@@ -1994,4 +2011,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.61.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.62.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

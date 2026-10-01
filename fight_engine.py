@@ -177,6 +177,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action in ('Move','Clock'):continue
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
         if action=='Galeforce active':
+            from damage_classification import event_profile
+            classification=event_profile(champion,action)
             blocked=max(attack_windup_until,cast_until,channel_until) if timed_combat else channel_until
             if t<blocked:
                 queue.append((blocked+1e-6,order,action,None));queue.sort(key=lambda x:(x[0],x[1]));continue
@@ -197,7 +199,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             if executed:health=0.
             dealt=before_hp-health;total+=dealt
             state={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-            log.append({'time':t,'action':action,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; dash up to 325; target range 600; 50s cooldown'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
+            log.append({'time':t,'action':action,'damage_classification':classification,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; dash up to 325; target range 600; 50s cooldown'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
             if health<=0:killed=t
             if t+50<=(automatic_until or 120):queue.append((t+50,order,action,None));queue.sort(key=lambda x:(x[0],x[1]))
             continue
@@ -300,11 +302,15 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         live_pen=min(.40,pct_pen+.10*dark) if terminus else pct_pen
         ea=effective_resistance(armor,live_pen,flat_pen)
         hit_magic_pen=min(.40,pct_mpen+.10*dark) if terminus else pct_mpen
+        from damage_classification import event_profile,ability_magnification
+        classification=event_profile(champion,action)
+        components=[]
         if action=='AA':
+            components.append({'damage_type':'physical','raw_amount':current_ad*(1+probability*(crit_damage-1)),'tags':['BasicAttack'],'status':'fundamental_basic_attack'})
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
                 hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
-                damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
+                components.extend(hit.get('damage_components',[]));damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))
                 item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken')}
@@ -324,10 +330,12 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             rank=ranks[slot]
             magic_pen=min(.40,pct_mpen+.10*dark) if terminus else pct_mpen
             if champion=='Smolder':
-                if action=='Burn tick':damage=cast_id[1]
+                if action=='Burn tick':
+                    damage=cast_id[1];components.append({'damage_type':'true','raw_amount':damage,'tags':[],'status':'WR_wiki_classification','classification':'default_damage'})
                 else:
                     phy,magic=smolder_skill(slot,rank,current_ad,base_ad,ap,dragon,current_crit,crit_damage)
-                    damage=(phy*resistance_multiplier(ea)+magic*resistance_multiplier(effective_resistance(mr,magic_pen,flat_mpen)))*skill_amp
+                    components.extend({'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',phy),('magic',magic)) if v)
+                    damage=(phy*resistance_multiplier(ea)+magic*resistance_multiplier(effective_resistance(mr,magic_pen,flat_mpen)))*skill_amp*ability_magnification(champion,action,abs(target_position-position) if timed_combat else distance,kit_options.get('hexoptics',False))
                     if slot=='Q' and dragon>=175:
                         burn_id+=1;burn_until=t+3.
                         tick=(.00025*max(0,current_ad-base_ad)+.00005*dragon)*hp/7
@@ -336,6 +344,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             else:
                 hit=samira_skill(slot,rank,current_ad,probability,crit_damage,armor,pct_pen=live_pen,flat_pen=flat_pen,outcome='Expected',hits=1 if timed_combat or slot!='W' else 2,base_ad=base_ad,mr=mr,pct_mpen=magic_pen,flat_mpen=flat_mpen)
                 damage=hit.total*skill_amp
+                components.extend({'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',hit.physical),('magic',hit.magic)) if v)
             if not timed_combat and action in ('Q','W','E'):
                 ready[action]=t+abilities[action]['cooldown'][rank-1]/(1+ability_haste/100);casts+=1;spell_pending=True;spell_cast_times.append(t)
                 if action=='E':
@@ -343,11 +352,17 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                 if transcendence and level>=9 and t>=transcend_ready:
                     for basic in ('Q','W','E'):ready[basic]=t+max(0.,ready[basic]-t)*.92
                     transcend_ready=t+8.;effects.append('Transcendence: remaining basic cooldown ×0.92')
+        if action!='AA' and action!='Burn tick' and classification.get('properties',{}).get('TriggerOnHitEvents') is True and aa_hit:
+            hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':0.,'crit':0.,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else distance,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':effective_resistance(mr,hit_magic_pen,flat_mpen),'skill_on_hit':True})
+            damage+=hit['damage'];components.extend(hit.get('damage_components',[]));effects.extend(hit.get('notes',[]));dark=hit.get('dark',dark)
+            item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken')}
+            spell_pending=False;spell_cast_times.clear()
         passive_eligible=champion=='Samira' and ((action in ('W','E') or (action=='AA' and melee) or (action=='Q' and cast_id[2])) if timed_combat else melee and action!='R tick')
         if passive_eligible:
             # User-accepted level and linear missing-health model; one passive per landed hit.
             magic_pen=min(.40,pct_mpen+.10*dark) if terminus else pct_mpen
             passive=(level+5+(.05+.008*level)*current_ad)*(1+(hp-before_hp)/hp)
+            components.append({'damage_type':'magic','raw_amount':passive*(2 if action=='W' and not timed_combat else 1),'tags':[],'status':'WR_wiki_classification','classification':'default_damage','component':'Samira melee bonus'})
             damage+=passive*resistance_multiplier(effective_resistance(mr,hit_magic_pen,flat_mpen))*(2 if action=='W' and not timed_combat else 1)*skill_amp
         if muramana and action not in ('AA','Burn tick'):
             key=(action if action!='R tick' else 'R',cast_id[0] if timed_combat or action=='R tick' else casts)
@@ -379,6 +394,6 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action in ('AA','Q','W','E') and action!=last_style:style=min(6,style+1);last_style=action
         if action in ('AA','Q','W','E'):style_expiry=t+6.
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-        log.append({'time':t,'action':action,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
+        log.append({'time':t,'action':action,'damage_classification':classification,'damage_components':components,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
         if health<=0:killed=t
     return FightResult(log,rejected,health,aa,casts,total,killed)
