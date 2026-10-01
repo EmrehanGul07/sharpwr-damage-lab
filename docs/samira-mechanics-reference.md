@@ -20,6 +20,6 @@ All range, width, queue, target immunity and targeting values from the excerpt a
 
 ## Source boundaries
 
-Do not change existing WR base damage, AD/AS ratios, cooldown tables, crit scaling or level progression from these PC formulas. R PC static cooldown 5s is recorded only; WR 6s stays intact and its haste applicability needs confirmation. P's PC passive list includes blade AA/W/E/Q slash/E-Q explosives, but not R; the WR R passive question remains open.
+Do not change existing WR base damage, AD/AS ratios, cooldown tables, crit scaling or level progression from these PC formulas. R PC static cooldown 5s is recorded only; WR 6s stays intact and its haste applicability needs confirmation. P's PC passive list includes blade AA/W/E/Q slash/E-Q explosives, but not R; WR R exclusion is confirmed by the user’s 2026-09-30 practice test, reported 2026-10-01. The engine now excludes melee passive from every R shot.
 
 Current instant expected-damage fight behavior remains unchanged. This record prepares future timing/lockout integration; it does not silently switch simulation modes.

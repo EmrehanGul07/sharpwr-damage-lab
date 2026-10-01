@@ -99,6 +99,13 @@ class ReplayTests(unittest.TestCase):
         self.assertTrue(r.log[1]['melee'])
         self.assertTrue(r.log[2]['melee'])
         self.assertGreater(r.log[2]['damage'],r.log[0]['damage'])
+    def test_r_never_receives_melee_passive(self):
+        actions=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(4.2,'R')]
+        for melee in (False,True):
+            r=self.run_fight(actions,melee=melee,crit_chance=.5)
+            shots=[x for x in r.log if x['action']=='R tick']
+            self.assertEqual(len(shots),10)
+            self.assertTrue(all(x['damage']==(20+.5*100)*1.5 for x in shots))
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 

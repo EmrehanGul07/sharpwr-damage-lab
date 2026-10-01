@@ -121,7 +121,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     for basic in ('Q','W','E'):ready[basic]=t+max(0.,ready[basic]-t)*.92
                     transcend_ready=t+8.;effects.append('Transcendence: remaining basic cooldown ×0.92')
             if action in ('Q','W','E') and 'Battle Zeal' in sub_runes and combat_start is not None:damage*=1+.014*min(3,int(t-combat_start))
-        if melee:
+        if melee and action!='R tick':
             # User-accepted level and linear missing-health model; one passive per landed hit.
             magic_pen=min(.40,pct_mpen+.10*dark) if terminus else pct_mpen
             passive=(level+5+(.05+.008*level)*current_ad)*(1+(hp-before_hp)/hp)

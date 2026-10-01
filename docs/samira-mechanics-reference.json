@@ -35,7 +35,7 @@
       "Q slash",
       "E-Q explosives"
     ],
-    "R_passive_application": "R is absent from the PC excerpt list; WR needs independent confirmation. Do not auto-remove WR passive on this evidence.",
+    "R_passive_application": "Confirmed excluded in Wild Rift by user practice test on 2026-09-30, reported 2026-10-01. R never receives melee passive.",
     "immobilized_attack": {
       "uncancellable_windup": true,
       "bolts": 6,
@@ -154,7 +154,7 @@
   "next_verification": [
     "WR Style expiry/refresh",
     "WR W/R action locks",
-    "WR passive eligibility per skill especially R",
+    "WR passive eligibility per skill (R exclusion confirmed)",
     "WR Q/E projectile and dash speeds",
     "WR R duration/shot schedule and cooldown haste applicability"
   ]
