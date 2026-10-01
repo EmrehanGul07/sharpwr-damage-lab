@@ -50,6 +50,23 @@ class InterfaceTests(unittest.TestCase):
         self.assertFalse(any('Outcome' in x.value.columns for x in a.dataframe))
         self.assertTrue(any('not available' in i.value for i in a.info))
 
+    def test_fight_timeline_replay(self):
+        a=self.app
+        a.selectbox(key='build_champ').set_value('Samira').run()
+        a.checkbox(key='fight_override_crit').set_value(True).run()
+        a.number_input(key='fight_base_crit').set_value(50).run()
+        a.button(key='build_keystone__7__Conqueror').click().run()
+        a.button(key='fight_calculate').click().run()
+        self.assertFalse(a.exception)
+        table=next(x.value for x in a.dataframe if 'Stacks after' in x.value.columns)
+        self.assertEqual(len(table),3)
+        self.assertGreater(table['AD'].iloc[2],table['AD'].iloc[0])
+        self.assertTrue(all(x==50 for x in table['Crit %']))
+        a.text_area(key='fight_timeline').set_value('0 R').run()
+        a.button(key='fight_calculate').click().run()
+        rejected=next(x.value for x in a.dataframe if 'reason' in x.value.columns)
+        self.assertIn('S style',rejected['reason'].iloc[0])
+
     def test_keystone_calculations(self):
         a=self.app
         for i,name in enumerate(['First Strike','Ice Overlord','Phase Rush','Arcane Comet','Aery','Guardian','Grasp of the Undying','Conqueror','Fleet Footwork','Lethal Tempo','Empowerment','Dark Harvest']):

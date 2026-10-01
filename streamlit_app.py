@@ -6,11 +6,12 @@ import streamlit.components.v1 as components
 from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_abilities import SAMIRA_ABILITIES, samira_skill
+from fight_engine import FightEvent, replay_samira
 
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
     for key in list(st.session_state):
-        if key.startswith(("iv_","tier_","ability_")) and not key.startswith("ability_calculate") or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
+        if key.startswith(("iv_","tier_","ability_","fight_")) and not key.startswith(("ability_calculate","fight_calculate")) or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
             st.session_state[key]=st.session_state[key]
 
 _preserve_widgets()
@@ -735,11 +736,19 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
     fh=3 if "Fiendhunter Bolts" in items and ult and item_proc else 0
+    fiend_until=8.; last_ult_cast=None; spell_pending=False
     if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
     state=yield None
     while k<500:
         hp=float(state["hp"]); t=float(state["time"]); k+=1
         current_ad=ad+float(state.get("bonus_ad",0))
+        event_driven=bool(state.get("event_driven",False))
+        if event_driven:
+            if state.get("spell_cast"): spell_pending=True
+            _ult_time=state.get("ultimate_cast_time")
+            if _ult_time is not None and _ult_time!=last_ult_cast:
+                last_ult_cast=_ult_time; fiend_until=_ult_time+8
+                if "Fiendhunter Bolts" in items and item_proc: fh=3
         dyn=(.08*rb if ("Guinsoo's Rageblade" in items and item_proc) else 0.0)+(.06*pd_stacks if ("Phantom Dancer" in items and item_proc) else 0.0)
         if ("Yun Tal Wildarrows" in items and item_proc) and t<yt_until: dyn+=.35
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))))
@@ -753,7 +762,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         # Patch 7.3 Rageblade no longer disables critical strikes; crit remains normal AA expected damage.
         phy=current_ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
 
-        if fh and t<=8:
+        if fh and t<=fiend_until:
             asp=min(3,asp+s["ratio"]*.50); phy=current_ad*cd*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
         if "Hexoptics C44" in items:
             amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01)
@@ -798,11 +807,12 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         for eit,period,magic,label in (("Rapid Firecannon",7,80,"RFC Energized"),("Stormrazor",7,120,"Storm Energized"),("Statikk Shiv",5,60,"Shiv Energized")):
             if eit in items and item_proc:
                 proc=(k==1 or (k>1 and (k-1)%period==0)) if energized else (k%period==0)
+                if event_driven: proc=bool((energized and k==1) or state.get("energized_ready",False))
                 if proc: onm+=magic; note.append(label)
         if "Kircheis Shard" in items and energized and k==1:
             onm+=40; note.append("Jolt")
 
-        if spell and t>=spellblade_ready:
+        if ((spell and not event_driven) or (event_driven and spell_pending)) and t>=spellblade_ready:
             triggered=False
             if ("Essence Reaver" in items and item_proc):
                 onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER"); triggered=True
@@ -812,7 +822,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                 onp+=s["basead"]+.25*total("armor"); note.append("Iceborn"); triggered=True
             if "Sheen" in items:
                 onp+=s["basead"]; note.append("Sheen"); triggered=True
-            if triggered: spellblade_ready=t+1.5
+            if triggered: spellblade_ready=t+1.5; spell_pending=False
 
         if ("Duskblade of Draktharr" in items and item_proc) and k==1:
             onp+=60+(l-1)/14*100; note.append("Nightstalker")
@@ -839,8 +849,8 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                 yt_until=t+6; yt_cd=t+25; note.append("Flurry")
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
-        if fh and t<=8: fh-=1
-        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"ad":current_ad}
+        if fh and t<=fiend_until: fh-=1
+        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"ad":current_ad,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -1755,6 +1765,57 @@ with tabs[1]:
             else:
                 st.info("Learn Q or learn R and reach S style to see skill damage.")
             if _rrank and _style<6: st.warning("Inferno Trigger unavailable: S style is required.")
+            with st.expander("50% crit chance reference"):
+                st.caption("Reference scenario only; it does not change your build. Expected = 50% normal + 50% critical.")
+                _ref=[]
+                for _slot,_rank in [("Q",_qrank),("R",_rrank)]:
+                    if _rank:
+                        _n=samira_skill(_slot,_rank,_skill_ad,.5,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome="Normal",hits=_shots if _slot=="R" else 1)
+                        _c=samira_skill(_slot,_rank,_skill_ad,.5,_skill_cd,armor,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],outcome="Critical",hits=_shots if _slot=="R" else 1)
+                        _ref.append([_slot,round(_n.total,2),round(_c.total,2),round((_n.total+_c.total)/2,2)])
+                if _ref: st.table(pd.DataFrame(_ref,columns=["Ability","Normal","Critical","Expected @ 50% crit"]))
+            st.markdown("**Fight timeline · AA / Q / R**")
+            st.caption("Stacks start at zero and are earned after landed events. Impact times are supplied by you; rejected actions do not grant stacks.")
+            _fight_script=st.text_area("Impact timeline (seconds, action)","0 AA\n0.8 Q\n1.8 AA",key="fight_timeline",help="One impact per line: 0 AA, 0.8 Q. Actions: AA, Q, R. R expands into 10 timed shots.")
+            _fight_cols=st.columns(2)
+            _fight_mode=_fight_cols[0].selectbox("Critical mode",["Expected","Seeded critical rolls"],key="fight_crit_mode")
+            _fight_seed=_fight_cols[1].number_input("Random seed",0,1000000,1,key="fight_seed")
+            _manual_r=st.checkbox("Provide measured R channel duration",False,key="fight_r_measured")
+            _fight_r_duration=st.number_input("Measured R duration (seconds)",.1,10.,2.23,.01,key="fight_r_duration") if _manual_r else None
+            st.warning("Impact replay, not a complete game simulation: mana, projectile/cast timing, Style expiry, melee passive, Collector execution, skill on-hit procs and movement-driven Energized recharge remain unverified. This models outgoing damage only; healing and own survival are excluded. Expected mode approximates nonlinear HP-dependent effects; seeded rolls replay individual crits.")
+            _supported_fight_runes={"Brutal","Cut Down","Coup de Grace","Battle Zeal","Legend: Alacrity"}
+            _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in {"Legend: Bloodline","Bone Plating","Second Wind","Perseverance","Overgrowth","Unshakeable"}]
+            _custom_fight_crit=st.checkbox("Override base crit chance for replay",False,key="fight_override_crit")
+            _replay_crit=st.number_input("Base crit chance before Yun Tal stacks (%)",0,100,50,key="fight_base_crit")/100 if _custom_fight_crit else min(1.,_skill_total["crit"])
+            _fight_key=keystone if keystone!="None" else None
+            _fight_blocked=_fight_key not in (None,"Conqueror","Lethal Tempo") or bool(_offensive_unknown)
+            if _fight_blocked: st.info("Replay currently supports Conqueror / Lethal Tempo and the listed damage runes. Choose a supported loadout to run it.")
+            if st.button("Replay fight",key="fight_calculate",disabled=_fight_blocked):
+                try:
+                    _events=[]
+                    for _line in _fight_script.splitlines():
+                        if _line.strip():
+                            _time,_action=_line.split(); _events.append(FightEvent(float(_time),_action.upper()))
+                    if not _events: raise ValueError("Add at least one impact event.")
+                    if len(_events)>200: raise ValueError("Use at most 200 input events.")
+                    _kernel=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),mana,False,energized,False,execs,False,boot)
+                    next(_kernel)
+                    _alacrity=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.
+                    def _fight_aa(state):
+                        state=dict(state);state["bonus_as"]+=_alacrity
+                        _hit=_kernel.send(state)
+                        if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
+                        return _hit
+                    _fight_base_crit=_replay_crit
+                    _fight_result=replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_skill_total["ah"],pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode=_fight_mode,seed=int(_fight_seed),keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],r_duration=_fight_r_duration,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=yt_bonus_crit,terminus="Terminus" in build)
+                    st.caption(f"Landed: {_fight_result.aa_count} AAs / {_fight_result.skill_count} skill casts • Damage {_fight_result.total_damage:.1f} • HP remaining {_fight_result.hp_remaining:.1f}")
+                    _fight_rows=[]
+                    for _e in _fight_result.log:
+                        _fight_rows.append([round(_e["time"],3),_e["action"],round(_e["AD"],2),round(_e["crit_chance"]*100,2),_e["critical"],round(_e["damage"],2),round(_e["hp_after"],2),str(_e["before"]),str(_e["after"])])
+                    if _fight_rows: st.dataframe(pd.DataFrame(_fight_rows,columns=["Time","Event","AD","Crit %","Critical roll","Damage","Target HP","Stacks before","Stacks after"]),hide_index=True,use_container_width=True)
+                    if _fight_result.rejected: st.dataframe(pd.DataFrame(_fight_result.rejected),hide_index=True,use_container_width=True)
+                except (ValueError,StopIteration) as _err:
+                    st.error(f"Timeline could not run: {_err}")
             _cd_rows=[]
             for _slot,_rank in [("Q",_qrank),("R",_rrank)]:
                 if _rank:
@@ -2290,4 +2351,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.46 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.47 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
