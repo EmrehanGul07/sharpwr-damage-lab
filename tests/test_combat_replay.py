@@ -30,6 +30,11 @@ class CombatReplay(unittest.TestCase):
   with patch('engine_runtime.importlib.reload') as reload:
    engine_runtime.ensure_engine_revision('stale-dependency-test')
    reload.assert_not_called()
+ def test_displayed_starting_crit_includes_yuntal_and_caps(self):
+  for stacks,items,expected in ((0,['Yun Tal Wildarrows'],0),(50,['Yun Tal Wildarrows'],10),(125,['Yun Tal Wildarrows'],25),(125,['Yun Tal Wildarrows','Infinity Edge'],50),(125,['Infinity Edge'],25),(125,['Yun Tal Wildarrows','Infinity Edge','The Collector','Phantom Dancer','Navori Quickblades'],100)):
+   ev=BuildFightEvaluator(self.ns,'Samira',15,2000,100,100,yuntal_stacks=stacks)
+   row=ev.evaluate(items);self.assertAlmostEqual(row['Crit %'],expected)
+   trace=ev.replay_row(row);self.assertGreaterEqual(trace.log[0]['crit_chance']*100,row['Crit %'])
  def test_html_escapes_data_and_keeps_real_damage(self):
   ev=BuildFightEvaluator(self.ns,'Samira',15,2000,100,100);row=ev.evaluate([]);r=ev.replay_row(row)
   p=replay_payload(r,champion='Samira',level=15,target='</script><script>alert(1)</script>',hp=2000,build=row)
