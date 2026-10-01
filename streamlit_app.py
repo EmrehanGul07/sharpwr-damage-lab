@@ -11,6 +11,11 @@ from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
+import build_fight_optimizer as _build_optimizer
+# Streamlit can rerun the entrypoint while retaining a pre-deploy module.
+if not callable(getattr(_build_optimizer.BuildFightEvaluator, "replay_row", None)):
+    import importlib
+    _build_optimizer = importlib.reload(_build_optimizer)
 from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPELLBLADE
 
 def _preserve_widgets():
@@ -1024,7 +1029,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.66.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.66.1",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1040,7 +1045,7 @@ with tabs[0]:
                 try:
                     _winner_trace=_evaluator.replay_row(_winner)
                     _replay_data=replay_payload(_winner_trace,champion=tier_champ,level=int(tier_level),target=tier_target,hp=tier_hp,build=_winner)
-                except (ValueError,LookupError,StopIteration) as _err:
+                except (ValueError,LookupError,StopIteration,AttributeError) as _err:
                     _replay_error=str(_err)
             st.session_state["tier_fight_results"]={"signature":_tier_signature,"results":_search,"replay":_replay_data,"replay_error":_replay_error}
         except (ValueError,LookupError,StopIteration) as _err:
@@ -2029,4 +2034,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.66.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.66.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
