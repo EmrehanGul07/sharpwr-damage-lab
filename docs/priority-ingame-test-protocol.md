@@ -1,0 +1,184 @@
+# Öncelikli üç oyun içi test — 1 Ekim 2026
+
+Durum: **Kurulum ve engine tahminleri hazır; oyun içi sonuçlar henüz gelmedi.** Sıra: Hexoptics → Rageblade/Kraken/Terminus → Xayah. Video veya ekran kaydı gerekmiyor; sayı ve tooltip metni yeterli. Önce kolay kontrol noktaları, yalnızca fark bulunursa ek ölçüm.
+
+Bu testler yeni damage katsayısı atamaz. [Engine tahminleri](../data/priority-test-predictions.json) mevcut modelin hipotezleridir; doğrulanmış oyun sonuçları değildir. AD/HP/armor değişirse JSON'daki örnek hasarları birebir bekleme.
+
+## Her ölçümde ortak kurulum
+
+- Practice tool, sabit tek kukla. Mevcut referans: 10.000 HP, 100 armor, 100 MR. MR değiştirilemiyorsa değiştirmeye çalışma.
+- Hero level15: beklerken level değişmesi sorunu olmasın. Skill ranklarını belirtilen şekilde ayarla. Ability dışında kalan puanların dağılımı zarar vermiyorsa önemli değil.
+- Practice tool sabit rünle açılıyorsa aynı rünleri kullan. Sayfayı değiştirmeye çalışma. Başlangıçta isimleri bir kere yaz; özellikle Brutal, Cut Down, Battle Zeal, Conqueror/First Strike aktifliği önemli.
+- Her item değişiminde ekrandaki **toplam AD/AP/AS, crit chance/damage** değerlerini yaz. Aynı build ile mesafe karşılaştırırken statlar değişmesin.
+- Fiziksel ve büyü hasarını ayrı yaz: `31 physical + 4 magical`. Ekrandaki yuvarlamadan dolayı ±1 fark tek başına yanlış formül demek değildir.
+- Kuklanın hasar öncesi HP'sini kaydet. Art arda AA testinde HP azalır; Kraken missing-HP bonusu ile Cut Down eşikleri bunu değiştirir. Engine örneklerinde HP her vuruş öncesi sabittir; gerçek kuklanın kendiliğinden tam kaldığını varsayma.
+- Testler arasında item/champion stacklerini sıfırla ve kuklayı iyileştir. Reset düğmesi stackleri silmiyorsa şampiyonu değiştirip geri dön; level ve itemleri yeniden kontrol et. Her AA arasında reset yapma: sayaç testini bozar.
+- Rune tetiklenmesi normaldir. Tooltip rün bonusu ve buff aktifliği kayıt altına alınır; hasar farkı hemen item formülüne bağlanmaz.
+
+## 1. Hexoptics C44 — I02
+
+### H01 — Tooltip ve AA yakın/uzak karşılaştırması
+
+**Ezreal level15, yalnızca Hexoptics, Q rank1.** W/E/R kullanma. Önce itemin pasif açıklamasını yaz. Toplam AD, crit chance/damage ve rünleri kaydet.
+
+1. Kuklaya olabildiğince yakınken tek **kritiksiz** AA ölç.
+2. Aynı item/statlarla maksimum AA menzilinde tek **kritiksiz** AA ölç. Auto için karakterin kendiliğinden yaklaşıp durduğu sınır kullanılabilir.
+3. Her iki deneme öncesi kuklanın HP'si ve rune durumu aynı olsun. Crit gelirse o sonucu ayrı işaretle; bir sonraki normal AA'yı önceki rune/item state'iyle karıştırma.
+
+Mevcut model ana AA fiziksel hasarını mesafeye göre büyütür. 550 birimde +%10; 100'den yakınsa +%0. Yakın konumun gerçekten 100'den küçük olduğu bilinmiyorsa ratio'nun tam1.10 olmaması modeli otomatik çürütmez. Oyunda sayısal mesafe yoksa 99/100 gibi piksel ölçümleri istenmez.
+
+| Model mesafesi | Mevcut bonus |
+|---:|---:|
+| <100 | %0 |
+| 100–149 | %1 |
+| 150–199 | %2 |
+| 200–249 | %3 |
+| 500–549 | %9 |
+| ≥550 | %10 |
+
+Bunlar **engine breakpoint hipotezleri**. Gerçek breakpoint ve edge/center mesafe tanımı, tooltip/kaynak veya güvenilir mesafe referansı olmadan kapatılmaz.
+
+### H02 — Skill hasarına uygulanıyor mu?
+
+Aynı Ezreal/build ile yakın ve maksimum AA mesafesinden Q rank1 vur. Maksimum Q menziline çıkmak gerekmiyor; AA testindeki iki konumu kullan. Her denemede tam HP ve aynı rune başlangıç durumu.
+
+**Mevcut model tahmini:** Hexoptics Q'nun doğrudan skill hasarını büyütmüyor. Q yakın/uzak hasarı aynı kalmalı; taşıdığı AA/on-hit parçaları varsa ayrı değerlendirilmeli. Yakın/uzak arasında fark çıkarsa scope'u ölçümle genişleteceğiz. Battle Zeal/Brutal/First Strike aynı durumda değilse tekrar kontrol.
+
+### H03 — Magic on-hit kapsamı (H01/H02 sonrası)
+
+Ezreal'a **Hexoptics + Wit's End** tak. Statları tekrar yaz. Yakın/uzak kritiksiz AA'da kırmızı ve mavi sayıları ayrı kaydet. Mevcut model mavi Wit's End on-hit'ini Hexoptics ile büyütmüyor. Hedefin MR'ı sabitken mavi sayı mesafeyle değişirse bu varsayım yanlıştır.
+
+True damage/passive kapsamı ancak bunlar tamamlandıktan sonra: Vayne W üçüncü-hit veya Smolder burn kontrollü A/B. Champion pasifi, hedef HP ve rune amplifikasyonlarını ayırmadan tek sayıdan genelleme yapılmaz; şimdilik açık kalır.
+
+**Bana yazılacak ilk paket:**
+
+```text
+Ezreal15 / sadece Hexoptics
+AD ... AP ... AS ... crit ... crit damage ...
+Rünler: ...
+Tooltip: ...
+Yakın normal AA: ... physical + ... magical / HP önce ...
+Max AA range normal AA: ... physical + ... magical / HP önce ...
+Yakın Q1: ... / Max AA range'den Q1: ...
+Aktif rune/buff farkı: ...
+```
+
+## 2. Rageblade + Kraken + Terminus — I01
+
+**Ezreal level15, skill kullanmadan AA.** Pasifi skill kullanınca AS artırdığı için bu bölümde Q/W/E/R yok. Bir seferde bir build; aynı kukla. Crit veren başka item yok. İlk etapta her üç itemin tooltip'ini kaydet.
+
+### K01 — Kraken tek başına
+
+Kraken tak, sayaç sıfırdan 9 AA vur. **3., 6., 9. AA'da** ek fiziksel proc var mı? Her AA'nın kırmızı/mavi sayısı, varsa Kraken göstergesi ve hasar öncesi HP yazılır.
+
+Mevcut model: her üçüncü eligible hit; level15 ek **168 raw fiziksel**, tam HP/100 armor'da rune hariç +84 hasar. Hedef %50 HP'deyken ek raw231, %25 HP'deyken262.5. Kuklayı bu HP'lere getirmek kolaysa ek test yapılabilir; zorunlu ilk adım değildir. Büyük ilk vuruşu görmek tek başına doğru sayaç demek değil; üçlü ritim gerekli.
+
+### K02 — Rageblade tek başına
+
+Stackler sıfırdan 10 AA. Stack sayısı/AS göstergesini 1–5. AA'dan sonra oku; **7. ve 10. AA** çevresinde mavi on-hit iki kez geliyor mu? Mevcut model 4 stack cap, stack başına %8 bonus AS; tam stackten sonraki üçüncü AA phantom verir. İlk phantom AA7, sonraki AA10. Normal +30 raw magic, phantom sırasında +60 raw magic; 100 MR'da15/30, rune hariç.
+
+### K03 — Terminus tek başına
+
+Sıfırdan 8 AA. İlk stack Light mı Dark mı, Dark hangi AA'dan sonra artıyor? Stat panelindeki penetration varsa oku. Mevcut model **Dark AA2/4/6 sonunda** kazanılır; hasara **bir sonraki AA** yansır. İlkAA +30 raw magic; penetrasyon arttıkça hem kırmızı hem mavi hasar artabilir.
+
+| AA | Hasar hesaplanırken Dark | Armor/MR, başlangıç100 ise | AA sonunda Light/Dark |
+|---:|---:|---:|---:|
+| 1 | 0 | 100 | 1 / 0 |
+| 2 | 0 | 100 | 1 / 1 |
+| 3 | 1 | 90 | 2 / 1 |
+| 4 | 1 | 90 | 2 / 2 |
+| 5 | 2 | 80 | 3 / 2 |
+| 6 | 2 | 80 | 3 / 3 |
+| 7–8 | 3 | 70 | 3 / 3 |
+
+### K04 — Rageblade + Kraken
+
+Sıfırdan 18 AA. Sadece her hitin hasarını veya ekstra proc oluşan **AA numaralarını** yazmak yeterli. Model phantom'ı Kraken için ek hit sayıyor.
+
+- Kraken yalnızken model proc numaraları: **3, 6, 9, 12, 15, 18**.
+- İkisi birlikte model proc numaraları: **3, 6, 8, 10, 13, 15, 17**.
+- Phantom numaraları: **7, 10, 13, 16**.
+
+Gerçek ritim ilk liste gibi kalırsa phantom Kraken sayacını ilerletmiyor olabilir. Ritim farklıysa stack başlangıcı ve işlem sırasını inceleyeceğiz. Bu listeler doğrulanmış WR kuralı değildir.
+
+### K05 — Rageblade + Terminus, sonra üçü birlikte
+
+Her setup'ta sıfırdan12 AA. AA7/10 çevresindeki mavi hasar ve Dark stack artışı önemli. Model phantom'da Terminus'un +30 magic'ini tekrarlar; **ek Light/Dark stack vermez**. Bu doğru mu, sayaç/pen paneliyle kontrol edilir. Üçlü setup'ta Kraken proc ritmi K04 ile aynı olmalı; Terminus yüzünden hasar miktarı farklıdır.
+
+### K06 — Q on-hit kapsamı (AA tablolarından sonra)
+
+Kraken yalnızken Q1→Q1→Q1 (cooldown/reset sayacı koruyorsa) veya **AA→AA→Q1**. Q Kraken'ı tamamlıyor mu? Rageblade/Terminus ile ayrıca Q sonrası item stackleri artıyor mu? Her champion'un skill'ine genelleme yapmadan önce yalnızca Ezreal Q kaydedilir.
+
+**Bana yazılacak paket:**
+
+```text
+Build: ... / AD ... AP ... AS ... crit ...
+Rünler: ... / başlangıç kukla HP ... armor ... MR ...
+AA1: ... physical + ... magical / HP önce ... / stack ...
+AA2: ...
+...
+Kraken proc AA numaraları: ...
+Phantom AA numaraları: ...
+Dark stack AA2/4/6 ve phantom sonrası: ...
+```
+
+## 3. Xayah — tüy hasarı ve yol testi
+
+**Level15, Q1/W1/E4; ilk karşılaştırmada itemsiz.** AD/AP/crit chance/damage ve rünleri kaydet. R kullanma: fan geometrisi tüy sayısı ile isabet sayısını karıştırır. Önce kuklayla aynı doğru üzerinde dur; E anında konumu değiştirme.
+
+### X01 — Tek tüy referansı
+
+W→1AA→E. W sonrası pasif AA tek yerdeki tüyü üretmeli. **Sadece E hasarı** kaydedilir, setup AA ve W bonusu dahil edilmez. Kuklanın E öncesi HP'sini yaz. Bu değer `D1`.
+
+### X02 — Üç ve beş aynı doğrultudaki tüy
+
+Ayrı resetlenmiş denemeler:
+
+- W→3AA→E: üç tüy. E toplamı `D3`; root geldi mi?
+- Q→3AA→E: Q'dan iki, pasif AA'lardan üç = beş tüy. E toplamı `D5`; Q ve AA hasarını toplama dahil etme.
+
+Her setup **ilk tüyden itibaren6s dolmadan** tamamlansın. Geç kalınırsa tüy silinmesi formül farkı gibi görünür. Q1/W1 ile AS yeterliyse ilave item gerekmez. Hedef HP farklılığı Battle Zeal/Cut Down/Coup de Grace gibi rünleri etkiliyorsa ayni durumla yeniden ölç veya buff bilgisi yaz.
+
+| Gerçek isabet sayısı | Kaynaklı model E toplamı / D1 |
+|---:|---:|
+| 1 | 1 |
+| 2 | 1.9 |
+| 3 | 2.7 |
+| 5 | 4 |
+| 7 | 4.9 |
+| 10 | 5.5 |
+| 12 | 5.7 |
+
+İlk zorunlu noktalar **1/3/5**. On tüy oluşturmak için karmaşık AH/AS buildi kurmak gerekmiyor; %10 tabanını oyunda doğrulamak ayrı ileri test olarak kalabilir. Itemsiz E4/bonusAD0/crit0, 100 armor/rune yoksa model D1=50, D3=135, D5=200; bunlar rune ve statlar eşleşmeden birebir hedef sayı değildir.
+
+### X03 — Sağ-sol hareketin etkisi
+
+X02 beş-tüy setup'ını tekrar et. Tüyleri oluşturduktan sonra, E'den önce:
+
+1. Aynı hat üzerinde durup E (referans).
+2. Aynı mesafeyi yaklaşık koruyarak sağa kısa yürüyüp E.
+3. Aynı mesafeyi yaklaşık koruyarak sola kısa yürüyüp E.
+
+Video gerekmez: E fiziksel hasarı, root var/yok, mümkünse kaç tüy çizgisinin kukladan geçtiği. **Atılan beş tüyün beşi de isabet etti varsayımı yapılmaz.** Lateral hasar farkı hit sayısından da kaynaklanır; per-feather katsayısı hemen değiştirilmez. Root, en az3hit için yardımcı işarettir; tam kaç tüy vurduğunu tek başına kanıtlamaz.
+
+### X04 — R fanı (X01–X03 sonrasında)
+
+AA/Q olmadan R→E; yakın ve normal AA mesafesinde dene. Her durumda beş R tüyünün hedefe geri dönerken gerçekten isabet etmesi garanti değil. D1 ile hasar/root karşılaştırılır. Exact lateral collision width/target hitbox/range kaynağı olmadan general collision engine doğrulanmış sayılmaz.
+
+**Bana yazılacak paket:**
+
+```text
+Xayah15 Q1 W1 E4 / AD ... AP ... crit ... crit damage ...
+Rünler: ...
+W→1AA→E: E ... physical / HP önce ... / rune buff ...
+W→3AA→E: E ... physical / root ... / HP önce ...
+Q→3AA→E: E ... physical / root ... / HP önce ...
+Beş tüy sonrası sağa kısa hareket→E: ... / root ...
+Beş tüy sonrası sola kısa hareket→E: ... / root ...
+```
+
+## Sonuç geldiğinde kapanış kuralı
+
+Ölçülen statlar ve rune durumu ile modele tekrar hesap yaptır. İlk farkta kaynak/engine/game state ayrımını yap; birbiriyle çelişen ölçümleri silme. İki tutarlı karşılaştırma ile desteklenen scope/sayaç kuralını uygula; bilinmeyen alanı açık bırak. Katsayı değişirse regression ve Jhin/Xayah sıralama doğrulaması tekrar çalıştırılır.
+
+RFC/Stormrazor/Statikk, YunTal ve PD için kullanıcı onaylı değerler bu testlerin konusu değil. Spellblade satın alma kısıtı tamamlandı; tekrar birden fazla Spellblade alma testi istenmez.

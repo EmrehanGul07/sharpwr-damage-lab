@@ -10,10 +10,10 @@ Bu liste kalıcıdır. Akşam test sonuçları geldikçe maddeler kapanacak; bil
 - [ ] **T04 — Level büyümesi.** Samira itemsiz level1/5/9/15 AD, AS, max mana, HP, armor/MR. Var olan AD/AS kullanıcı referansları korunuyor; engine'in eski büyüme eğrisi WR ile ayrıca doğrulanmalı. Sadece ekran statlarını yazmak yeterli.
 - [ ] **T05 — Skill on-hit/Spellblade.** Tek itemle Q/W/E/R kullan; BORK, Wit's End, Nashor, Terminus, Kraken ve Rageblade stack/proc üretiyor mu? Essence Reaver/Trinity/Iceborn için skill'in kendisi proc hasarı veriyor mu, yoksa sonraki AA mı? Aynı cast içinde kaç kez? İtemler tek tek test edilmeli.
 - [ ] **T06 — Energized dolumu.** Başlangıç charge, tek AA sonrası charge, skill sonrası charge, yürürken/dash sonrası charge. RFC/Stormrazor/Shiv için ortak charge olup olmadığı, reset ve dolum katsayıları. Engine hareketi artık hesaplıyor, fakat doğrulanmış dolum katsayısı olmadığından tekrar charge üretmiyor.
-- [ ] **T07 — AS item buff süreleri.** Phantom Dancer/Rageblade stack süreleri ve reset şartları; Yun Tal Flurry süresi/CD/AA ile cooldown azaltımı; Fiendhunter R sonrasında AA sayısı ve AS buff sona ermesi. Metin tooltip yeterli olan alanlar önce kapatılmalı.
+- [ ] **T07 — AS item buff süreleri.** Rageblade stack süreleri ve reset şartları (PD 6s kullanıcı teyitli; yeniden ölçüm istenmez); Yun Tal Flurry süresi/CD/AA ile cooldown azaltımı; Fiendhunter R sonrasında AA sayısı ve AS buff sona ermesi. Metin tooltip yeterli olan alanlar önce kapatılmalı.
 - [ ] **T08 — WR skill timing/range metinleri.** W aktif süresi, R süresi, E dash mesafesi/hızı, Q ve AA projectile hızları varsa kaynak/tooltip. Şu anda kullanıcı onaylı PC timing fallback'ları ayrı kayıtlı.
 - [ ] **T09 — Style/Conqueror çoklu-hit davranışı.** W1→E→W2 hangi Style artışını veriyor? W2/R'nin sonraki atışları Conqueror süresini yeniliyor mu? Yeni stack mi yoksa yalnızca süre yenileme mi?
-- [ ] **T10 — İtem unique grupları.** Birden fazla Spellblade itemini aynı build'e alınca hangi proc geçerli? Aynı isimli unique etkiler toplanıyor mu, tek güçlü etki mi uygulanıyor?
+- [x] **T10 — Spellblade satın alma kısıtı.** Kullanıcı teyidi: yalnızca bir Spellblade alınabilir. Picker ve optimizer bu kuralı uygular; tekrar oyun içi test istenmez.
 
 ## Sonraya bırakılabilen, daha zor doğrulamalar
 
@@ -58,7 +58,7 @@ Priority: Jhin conversion in-game cross-check (WR 7.3 formula implemented); Xaya
 
 User locks: Phantom Dancer stack duration is 6 seconds; continuous attacking benchmark does not pause that long. No change requested. Youmuu momentum is out-of-combat and excluded from this always-in-combat benchmark. RFC, Stormrazor, Statikk and Yun Tal measured defaults stay unchanged.
 
-Implemented rules: highest percentage Spellblade only; Galeforce dash up to 325 and hit radius 600; Fiendhunter only after actual R cast. Champion mana/growth/regen comes from recorded WR stats. Yunara missing core mana is still manual, never invented.
+Implemented rules: only one Spellblade purchase; strongest-percentage fallback exists for legacy input only; Galeforce dash up to 325 and hit radius 600; Fiendhunter only after actual R cast. Champion mana/growth/regen comes from recorded WR stats. Yunara missing core mana is still manual, never invented.
 
 Muramana 7.3: Shock has no additional mana consumption and uses maximum mana (AA 1.5%, ranged ability 3%); Awe refunds 15% of skill mana spending. Ability damage can carry ordinary on-hits without also injecting AA Shock a second time. Repeat Shock eligibility for multihit channels remains a separate unresolved WR detail.
 Source: https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-notes-7-3/
@@ -67,3 +67,18 @@ Source: https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-p
 
 - Jhin: compare displayed AD at fixed level with crit and AS items; confirm conversion excludes no eligible temporary AS source. Coefficients are sourced, not missing: 30% bonus AS + 40% crit chance + 3% level.
 - Xayah: compare E with 1/3/5/10 aligned feathers; sourced multipliers are 1/2.7/4/5.5 times single-feather damage. Check expiry and lateral recall paths separately. No PC coefficient substitution.
+
+## Hazır ölçüm sırası — Hexoptics → item üçlüsü → Xayah
+
+Oyun içi ölçümler bekleniyor. Üçünün offline model kontrolü ve ölçüm kurulumu hazır; bu, oyun kurallarının teyit edildiği anlamına gelmez. [Adım adım ölçüm listesi](priority-ingame-test-protocol.md), [mevcut engine tahminleri](../data/priority-test-predictions.json).
+
+1. **I02 / Hexoptics:** H01 tooltip + yakın/max-range normal AA; H02 yakın/uzak Q; H03 magic on-hit kapsamı. Sayısal menzil ekranı yoksa pixel/breakpoint ölçümü zorunlu değil.
+2. **I01 / Rageblade–Kraken–Terminus:** K01–K03 tekli sayaçlar; K04/K05 ikili/üçlü proc ritmi ve stack sırası; K06 Ezreal Q eligible on-hit.
+3. **I03 / Xayah:** X01–X02 bir/üç/beş tüy E oranları; X03 sağ-sol hareketle gerçek hit; X04 R fanı sonraki adım.
+
+- [ ] H01–H03 Hexoptics scope/mesafe ölçümleri.
+- [ ] K01–K06 item sayaç/phantom/penetration ölçümleri.
+- [ ] X01–X03 Xayah E hasar ve lateral yol ölçümleri.
+- [ ] X04 R fanı; 10+ tüy/floor kontrolü ve kesin collision geometry daha sonra.
+
+Sabit practice rünleri değiştirilmeyecek, MR ayarı değiştirilemediğinde mevcut100 MR kullanılacak. Video istenmiyor; red/blue ayrı hasar + stat/HP/buff kaydı yeterli. Rün kaynaklı farklar analiz edilmeden item katsayısı değiştirilmeyecek.
