@@ -1016,7 +1016,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.60.4",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.61.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1040,9 +1040,9 @@ with tabs[0]:
             _ttk=f'{_r["TTK"]:.3f}s TTK' if _r["TTK"] is not None else 'Target survived'
             _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div><p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
         _cards.append('</div>');st.markdown(''.join(_cards),unsafe_allow_html=True)
-        st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP items in the current database are included. No incoming damage or defensive value is ranked.')
+        st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP, crit, on-hit, penetration and hybrid paths are retained. Finalists are rechecked with six skill priorities, movement alternatives, AA weaving and two ultimate timings. No incoming damage or defensive value is ranked.')
         def _tier_result_frame(rows):
-            return pd.DataFrame([{"Rank":i,"Build":" + ".join(r["Items"])+(" + "+r["Boots"] if r["Boots"] else ""),"TTK (s)":r["TTK"],"DPS":round(r["DPS"],1),"AA damage":round(r["AA damage"],1),"Abilities / passives":round(r["Other damage"],1),"Gold":r["Gold"],"AD":round(r["AD"],1),"AP":r["AP"],"Crit %":r["Crit %"],"AH":r["AH"],"Starting AS":round(r["Starting AS"],3),"AS above starting cap":round(r["AS over cap"],3)} for i,r in enumerate(rows,1)])
+            return pd.DataFrame([{"Rank":i,"Build":" + ".join(r["Items"])+(" + "+r["Boots"] if r["Boots"] else ""),"TTK (s)":r["TTK"],"DPS":round(r["DPS"],1),"AA damage":round(r["AA damage"],1),"Abilities / passives":round(r["Other damage"],1),"Gold":r["Gold"],"AD":round(r["AD"],1),"AP":r["AP"],"Crit %":r["Crit %"],"AH":r["AH"],"Skill order":r["Rotation"],"Movement":{"skill_envelope":"Ready skill range","aa_envelope":"Maximum AA range","close_envelope":"Close range","approach":"Melee approach"}.get(r.get("Movement"),"Kit default"),"Ultimate timing":"After basic skills" if r.get("Ultimate timing")=="after_basics" else "Before basic skills","AA weaving":"AA between skills" if r.get("Attack weaving")=="aa_weave" else "Skills first","Starting AS":round(r["Starting AS"],3),"AS above starting cap":round(r["AS over cap"],3)} for i,r in enumerate(rows,1)])
         st.dataframe(_tier_result_frame(_search["full"]),hide_index=True,width="stretch")
         with st.expander("Best build · measured item contributions"):
             st.dataframe(pd.DataFrame(_search["marginal"]),hide_index=True,width="stretch")
@@ -1994,4 +1994,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.60.4 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.61.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

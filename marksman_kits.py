@@ -127,7 +127,7 @@ class Kit:
         if c=='Vayne' and slot=='Q':return not s.get('tumble_attack',0)
         if c=='Tristana' and slot=='E':return not s.get('bomb_active',0)
         if c=='Ezreal' and slot=='W':return not s.get('flux',0)
-        if c=='Xayah' and slot=='E':return len(self.feathers)>=3
+        if c=='Xayah' and slot=='E':return len(self.feathers)>=1
         if c=='Jinx' and slot=='Q':return False # weapon is a candidate policy, not a toggle spam
         if c=='Corki' and slot=='R':return self.ammo>0
         if c=='Jhin' and slot=='R':return self.ammo==0

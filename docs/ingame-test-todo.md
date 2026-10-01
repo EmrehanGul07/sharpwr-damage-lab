@@ -48,7 +48,7 @@ All 23 champions have an ordered checklist in [marksman-task-queue.md](marksman-
 
 See [all-marksman-fight-engine.md](all-marksman-fight-engine.md) for per-champion runtime assumptions. All integration work is complete; the listed in-game measurements remain open.
 
-Priority: Jhin AS/crit-to-AD conversion; Xayah feather falloff and path; Yunara core stats and W linger; Senna mist generation and level scaling; Twitch patch conflict; Corki recharge and package; Varus W mana and Q bonus-vs-total AD scope; Kog’Maw R mana ramp. General AA windup/projectile timings and exact dash endpoints remain unresolved except explicitly sourced values. Do not repeat previously confirmed mana costs.
+Priority: Jhin conversion in-game cross-check (WR 7.3 formula implemented); Xayah lateral feather paths (WR falloff implemented); Yunara core stats and W linger; Senna mist generation and level scaling; Twitch patch conflict; Corki recharge and package; Varus W mana and Q bonus-vs-total AD scope; Kog’Maw R mana ramp. General AA windup/projectile timings and exact dash endpoints remain unresolved except explicitly sourced values. Do not repeat previously confirmed mana costs.
 
 
 ## User-requested item tests — V5.60.3
@@ -62,3 +62,8 @@ Implemented rules: highest percentage Spellblade only; Galeforce dash up to 325 
 
 Muramana 7.3: Shock has no additional mana consumption and uses maximum mana (AA 1.5%, ranged ability 3%); Awe refunds 15% of skill mana spending. Ability damage can carry ordinary on-hits without also injecting AA Shock a second time. Repeat Shock eligibility for multihit channels remains a separate unresolved WR detail.
 Source: https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-notes-7-3/
+
+### Ranking formula cross-checks (offline formulas completed in V5.61.0)
+
+- Jhin: compare displayed AD at fixed level with crit and AS items; confirm conversion excludes no eligible temporary AS source. Coefficients are sourced, not missing: 30% bonus AS + 40% crit chance + 3% level.
+- Xayah: compare E with 1/3/5/10 aligned feathers; sourced multipliers are 1/2.7/4/5.5 times single-feather damage. Check expiry and lateral recall paths separately. No PC coefficient substitution.

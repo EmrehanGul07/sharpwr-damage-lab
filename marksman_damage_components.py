@@ -38,6 +38,21 @@ LINEAR={
  'Senna':{'Q':('physical',(50,80,110,140),0,.6,0),'W':('physical',(90,155,220,285),0,.7,0),'R':('physical',(250,400,550),0,1.2,.7)},
 }
 
+def jhin_attack_damage(unconverted_ad,level,bonus_as,crit_chance):
+    """WR 7.3 Whisper: total pre-passive AD × (1 + .30 AS + .40 crit + .03 level).
+
+    All percentages are decimal fractions; conversion is applied once, including
+    transient AS and AD. Source: Riot Wild Rift patch 7.3 (2026-09-21).
+    """
+    if not all(math.isfinite(x) for x in (unconverted_ad,bonus_as,crit_chance)) or unconverted_ad<0 or bonus_as<0 or not 0<=crit_chance<=1 or not isinstance(level,int) or not 1<=level<=15:
+        raise ValueError('Invalid Jhin conversion stats')
+    return unconverted_ad*(1+.30*bonus_as+.40*crit_chance+.03*level)
+
+def xayah_feather_multiplier(hits):
+    """WR Bladecaller template source: -10 percentage points per preceding feather, floor10%."""
+    if not isinstance(hits,int) or isinstance(hits,bool) or hits<0:raise ValueError('Invalid feather count')
+    return sum(max(.1,1-.1*i) for i in range(hits))
+
 def damage_component(champion,slot,rank,*,ad,base_ad,ap=0.,crit_chance=0.,crit_damage=2.,stacks=0,hits=1,target_max_hp=0.,target_missing_hp=0.,level=1,empowered=False,wall=False):
     values=(ad,base_ad,ap,crit_chance,crit_damage,target_max_hp,target_missing_hp)
     if not all(math.isfinite(v) for v in values) or min(ad,base_ad,ap,target_max_hp,target_missing_hp)<0 or target_missing_hp>target_max_hp or not 0<=crit_chance<=1 or crit_damage<1:raise ValueError('Invalid damage stats')
@@ -74,12 +89,11 @@ def damage_component(champion,slot,rank,*,ad,base_ad,ap=0.,crit_chance=0.,crit_d
     elif champion=='Vayne' and slot=='W':kind='true';value=max((50,65,80,95)[i],target_max_hp*(.06,.07,.08,.09)[i])
     elif champion=='Vayne' and slot=='E' and wall:value+=(105,145,185,225)[i]+.75*b
     elif champion=='Varus' and slot=='Q':
-        if rank!=1:raise LookupError('Varus Q rank 2–4 AD ratios unresolved')
-        value=(120+1.65*b) if empowered else (80+1.1*b)
+        value=((120,210,300,390)[i]+(1.65,1.8,1.95,2.1)[i]*b) if empowered else ((80,140,200,260)[i]+(1.1,1.2,1.3,1.4)[i]*b)
     elif champion=='Varus' and slot=='W':
         kind='magic';value=(15,25,35,45)[i]+.35*ap
     elif champion=='Xayah' and slot=='E':
-        if hits!=1:raise LookupError('Xayah multi-feather falloff unresolved')
+        mult=xayah_feather_multiplier(hits)
         value=((70,80,90,100)[i]+.5*b)*(1+.5*c*(d-1))
     elif champion=='Miss Fortune' and slot=='E':kind='magic';value=(15,20,25,30)[i]+(.10,.11,.12,.13)[i]*ap
     elif champion=='Miss Fortune' and slot=='R':value=((20,30,40)[i]+.6*ad+.2*ap)*(1+c*(.3+.3*(d-2)))

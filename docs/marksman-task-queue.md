@@ -191,7 +191,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Feather lifetime, recall hit detection and falloff; Q/R feather placement; passive attack storage versus ground feathers.
+Remaining mechanics: Feather lifetime, lateral recall collision detection and Q/R placement. WR per-feather 10 percentage-point falloff with 10% floor implemented; stationary aligned benchmark counts recalled feathers.
 Unresolved mana: none.
 
 ### 19. Sivir
@@ -236,7 +236,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Fixed-AS AD conversion, reload duration, fourth-AA missing-health progression; R fourth-shot crit/item interaction and channel cadence.
+Remaining mechanics: R fourth-shot item interaction and channel cadence; in-game conversion cross-check. WR AD conversion, 2.5s reload and fourth-AA 11%-25% missing-HP level progression implemented.
 Unresolved mana: none.
 
 ## Important source limits

@@ -24,7 +24,10 @@ class AllMarksmanFights(unittest.TestCase):
                     self.assertGreaterEqual(x['hp_after'],0);self.assertLessEqual(x['hp_after'],x['hp_before'])
                     self.assertTrue(math.isfinite(x['damage']));self.assertGreaterEqual(x['damage'],0)
                     self.assertTrue(0<=x['mana']<=2000);self.assertGreaterEqual(x['distance'],0)
-                self.assertGreater(max(x['kite_arc'] for x in r.log),0)
+                if name=='Xayah':
+                    self.assertEqual(max(x['kite_arc'] for x in r.log),0)
+                    self.assertTrue(any('aligned radial movement' in a for a in r.assumptions))
+                else:self.assertGreater(max(x['kite_arc'] for x in r.log),0)
     def test_skill_orders_obey_rank_caps_and_ultimate_unlocks(self):
         for name in PRIORITIES:
             for level in range(1,16):

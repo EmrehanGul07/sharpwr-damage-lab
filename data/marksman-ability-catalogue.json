@@ -2087,7 +2087,36 @@
           "target_range_by_rank": null,
           "effect_radius_by_rank": null,
           "duration_by_rank": null,
-          "cooldown_source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow"
+          "cooldown_source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+          "verified_supplement": {
+            "status": "sourced_growth_user_AD_scope",
+            "minimum_base": [
+              80,
+              140,
+              200,
+              260
+            ],
+            "maximum_base": [
+              120,
+              210,
+              300,
+              390
+            ],
+            "minimum_AD_ratio": [
+              1.1,
+              1.2,
+              1.3,
+              1.4
+            ],
+            "maximum_AD_ratio": [
+              1.65,
+              1.8,
+              1.95,
+              2.1
+            ],
+            "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow?action=raw",
+            "scope": "User bonus-AD reference preserved; wiki total-AD wording conflict remains. Fight adapter already used this rank progression; raw component library now matches."
+          }
         },
         "W": {
           "name": "Blighted Quiver on-hit büyü",
@@ -2281,7 +2310,24 @@
           },
           "target_range_by_rank": null,
           "effect_radius_by_rank": null,
-          "duration_by_rank": null
+          "duration_by_rank": null,
+          "verified_feather_timeline": {
+            "status": "sourced_WR_templates",
+            "q": "two damage instances and two planted feathers",
+            "passive_storage": "3 stacks per ability, cap5, 7.5s refreshed lifetime",
+            "ground_feathers": "6s lifetime",
+            "manual_E": "requires at least one feather",
+            "benchmark_recall_thresholds": [
+              1,
+              3,
+              5
+            ],
+            "sources": [
+              "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers?action=raw",
+              "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts?action=raw",
+              "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller?action=raw"
+            ]
+          }
         },
         "Q": {
           "name": "Double Daggers",
@@ -2461,7 +2507,16 @@
           },
           "target_range_by_rank": null,
           "effect_radius_by_rank": null,
-          "duration_by_rank": null
+          "duration_by_rank": null,
+          "verified_supplement": {
+            "status": "sourced_WR_template",
+            "formula": "per_feather_user_damage * sum(max(0.10, 1 - 0.10 * previous_feathers_hit))",
+            "preserved_damage": "70/80/90/100 + 0.50 bonus_AD; user crit effectiveness unchanged",
+            "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+            "raw_source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller?action=raw",
+            "source_formula_field": "description2 pp formula",
+            "geometry": "stationary target, aligned radial movement; lateral collision geometry remains unverified"
+          }
         },
         "R": {
           "name": "Featherstorm F",
@@ -5675,7 +5730,21 @@
           },
           "target_range_by_rank": null,
           "effect_radius_by_rank": null,
-          "duration_by_rank": null
+          "duration_by_rank": null,
+          "verified_supplement": {
+            "status": "sourced_WR_7_3",
+            "formula": "unconverted_total_AD * (1 + 0.30 * bonus_AS + 0.40 * crit_chance + 0.03 * champion_level)",
+            "units": "AS and crit as decimal fractions; includes permanent and transient stats; applied once",
+            "source": "https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-notes-7-3/",
+            "latest_patch_checked": "https://wildrift.leagueoflegends.com/en-us/news/game-updates/wild-rift-patch-notes-7-3a/"
+          },
+          "verified_fourth_aa": {
+            "status": "sourced_WR_template",
+            "formula": "target_missing_HP * (0.11 + 0.01 * (champion_level-1))",
+            "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Whisper?action=raw",
+            "source_field": "description2 pp 11 to 25 for 15",
+            "preserved_reference": "11% level-one baseline"
+          }
         },
         "Q": {
           "name": "Dancing Grenade F",

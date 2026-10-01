@@ -20,7 +20,7 @@ This search is pruned and cannot prove the global optimum among every possible i
 
 ## Champion scaling and caps
 
-AP, AD, crit, haste and penetration are assembled from the selected items and enter the existing champion ability formulas. Dynamic Rageblade, Phantom Dancer, Yun Tal and Fiendhunter AS also feed the attack clock. The normal AS cap is 3.0; Zeri uses her locked 1.5 cap and excess-AS-to-AD conversion, with the existing provisional ultimate exception. An item is not deleted merely because AS overflows: its AD/AP, crit, haste and procs can still contribute. Jhin retains fixed natural AS and reloads; his missing AS/crit-to-AD coefficients remain explicitly unresolved and can change his ranking.
+AP, AD, crit, haste and penetration are assembled from the selected items and enter the existing champion ability formulas. Dynamic Rageblade, Phantom Dancer, Yun Tal and Fiendhunter AS also feed the attack clock. The normal AS cap is 3.0; Zeri uses her locked 1.5 cap and excess-AS-to-AD conversion, with the existing provisional ultimate exception. An item is not deleted merely because AS overflows: its AD/AP, crit, haste and procs can still contribute. Jhin retains fixed natural AS and reloads; WR 7.3 Whisper AD conversion is now applied once to permanent and transient AS/crit/AD, without speeding up his fixed attack clock.
 
 Each final build displays AD, AP, crit, haste, starting AS and starting AS above cap. This number is a starting-state diagnostic, not a measurement of every future buff window. The best-build contribution table removes each item and reruns the fight, including a new rotation search. DPS contribution and TTK increase show the conditional value of the entire item; overlapping contributions are not additive. It also accounts for changes in ability evolution thresholds.
 
@@ -39,3 +39,19 @@ Final validation: 127/127 automated tests passed in 88.226 seconds, including al
 V5.60.3: highest-percent Spellblade wins; Fiendhunter pre-cast defaults removed; recorded champion mana/growth/regen feeds the kernel. WR7.3 Muramana max-mana Shock remains unchanged in principle; actual skill consumption/refund/regen is tracked and skill-on-hit callbacks do not duplicate AA Shock.
 
 V5.60.4: only one Spellblade item is legal (ER/Trinity/Iceborn/Sheen). Full and partial build search exclude multiple Spellblade items.
+
+## V5.61.0 — wider search and final validation
+
+All legal singles and pairs are screened; promising partial builds receive six-priority rotation replays before advancing the beam. Stages 3–5 retain up to 80 candidates instead of 40. Half the slots retain performance leaders; remaining slots round-robin the strongest AP, crit, on-hit, penetration, exact archetype and pairwise hybrid candidates, then backfill. Terminus is classified as penetration despite its penetration being earned in combat. No AP/crit/on-hit/penetration class is discarded by a static champion stereotype. Exclusive purchase rules still apply.
+
+Up to 40 full-build finalists instead of 20 receive deeper replay. Replay compares six basic-skill priorities, E enabled/skipped, two R timings and skill-first/AA-weaving orders. At the default movement policy, all six priorities are tested; the champion's default priority is also compared at three movement envelopes (ready-skill envelope, AA envelope, close envelope). Samira retains her melee approach; Jinx also compares both weapons. This is 64 policy combinations per general champion build, 48 for Samira, 192 for Xayah (recall at 1/3/5 feathers), and 128 for Jinx. Top3 is reranked from these refined results, never merely copied from preliminary screening. The winning policy is displayed next to each result.
+
+Results remain best **tested** builds: beam pruning and the bounded policy grid are not an exhaustive proof of global optimum. Rankings can still change when unresolved collision/windup/kit assumptions are measured. Target never attacks and approved RFC/Stormrazor/Statikk/YunTal approximations are unchanged.
+
+Jhin Whisper now uses `AD_before_passive × (1 + 0.30 bonus_AS + 0.40 crit + 0.03 level)`, sourced from Riot WR 7.3 and checked against 7.3a. Dynamic item AS and crit change AD; they do not increase the attack clock. Displayed starting AD follows the same formula. Xayah E now sums every recalled feather at 100%, 90%, 80%, …, with a 10% floor, using the WR template's raw formula. User-tested E base/AD/crit coefficients are preserved. Xayah uses aligned radial movement for the stationary target benchmark; lateral path collision geometry remains a TODO, not a claim that arbitrary feathers always hit.
+
+Source records: `data/verified-ranking-formulas.json`. Regression checks cover class preservation, stronger refinement, conversion units/one-time application, feather floor and motion affecting the trace.
+
+Xayah Q now plants and damages with both daggers, stored passive attacks expire at 7.5s, and manual E accepts one feather. Automatic finalists compare recall thresholds of 1/3/5 feathers. Jhin fourth-AA missing-health damage follows the WR template level sequence 11% through 25%; the user-confirmed 11% level-one value is preserved.
+
+Varus Q rank 2–4 raw damage components now match the existing fight adapter using sourced 110/120/130/140% minimum and 165/180/195/210% maximum scaling. The user bonus-AD basis is preserved despite wiki total-AD wording; the scope conflict remains an explicit in-game TODO.

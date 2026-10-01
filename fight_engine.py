@@ -105,8 +105,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             elif start>=cast_until and start>=attack_windup_until and movement_speed:
                 stacks=style if start<style_expiry or start<channel_until else 0
                 speed=movement_speed*((1+.03*stacks)*(.7 if start<channel_until else 1.) if champion=='Samira' else (1.75 if start<flying_until else 1.))
-                kite_range=attack_range
-                if champion=='Smolder' and q_rank and start>=ready['Q'] and (mana is None or min(max_mana,mana+max(0,start-mana_time)*mana_regen_per_5s/5)>=mana_cost('Q')):kite_range=min(kite_range,550.)
+                kite_range=200. if kit_options.get('movement_policy')=='close_envelope' else attack_range
+                if champion=='Smolder' and kit_options.get('movement_policy')!='aa_envelope' and q_rank and start>=ready['Q'] and (mana is None or min(max_mana,mana+max(0,start-mana_time)*mana_regen_per_5s/5)>=mana_cost('Q')):kite_range=min(kite_range,550.)
                 desired=target_position if champion=='Samira' else target_position-kite_range
                 gap=desired-position
                 if champion!='Samira' and abs(gap)<1e-8:kite_arc+=speed*(end-start)
@@ -144,7 +144,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     if k=='Q' and gap>(950 if champion=='Samira' else 550):continue
                 choices.append((nt,i,k))
             if not timed_combat or (auto_time>=dash_end and abs(target_position-position)<=attack_range+1e-8):
-                choices.append((max(auto_time,next_aa,cast_until,w_until,channel_until,dash_end,attack_windup_until,flying_until) if timed_combat else max(auto_time,next_aa),4,'AA'))
+                choices.append((max(auto_time,next_aa,cast_until,w_until,channel_until,dash_end,attack_windup_until,flying_until) if timed_combat else max(auto_time,next_aa),-2 if kit_options.get('action_policy')=='aa_weave' else 4,'AA'))
             if r_rank and (style>=6 or champion=='Smolder') and (not timed_combat or abs(target_position-position)<=(600 if champion=='Samira' else 2000)):
                 rt=max(auto_time,next_r,cast_until,attack_windup_until,channel_until) if timed_combat else max(auto_time,next_r)
                 rcost=mana_cost('R')
@@ -154,7 +154,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     if available<rcost:
                         if mana_regen_per_5s:rt+=(rcost-available)/(mana_regen_per_5s/5)
                         else:r_ok=False
-                if r_ok:choices.append((rt,-1,'R'))
+                if r_ok:choices.append((rt,3 if kit_options.get('ultimate_policy')=='after_basics' else -1,'R'))
             if timed_combat and auto_time<dash_end:choices.append((dash_end,8,'Clock'))
             if timed_combat and movement_speed and (champion!='Samira' or abs(target_position-position)>1e-8):
                 choices.append((auto_time+.05,9,'Move'))
@@ -379,6 +379,6 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action in ('AA','Q','W','E') and action!=last_style:style=min(6,style+1);last_style=action
         if action in ('AA','Q','W','E'):style_expiry=t+6.
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-        log.append({'time':t,'action':action,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else 'max_range_kite','kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
+        log.append({'time':t,'action':action,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
         if health<=0:killed=t
     return FightResult(log,rejected,health,aa,casts,total,killed)

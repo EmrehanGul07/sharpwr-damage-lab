@@ -1,5 +1,5 @@
 {
-  "version": "5.59",
+  "version": "5.61.0",
   "status": "integrated_provisional",
   "sample": {
     "level": 15,
@@ -170,7 +170,7 @@
       "Xayah R range unresolved: conservative AA-range targeting",
       "Xayah W projectile timing unresolved: instant impact after cast",
       "Xayah W range unresolved: conservative AA-range targeting",
-      "Xayah feather falloff unresolved: only first confirmed feather contributes damage; full count retained in trace"
+      "Xayah benchmark uses aligned radial movement against a stationary target; lateral feather collision geometry unverified"
     ],
     "Sivir": [
       "Sivir Morale cap/expiry unresolved",
@@ -222,8 +222,6 @@
       "Jhin R range unresolved: conservative AA-range targeting",
       "Jhin W projectile timing unresolved: instant impact after cast",
       "Jhin W range unresolved: conservative AA-range targeting",
-      "Jhin bonus-AS/crit-to-AD conversion coefficients missing: supplied AD used without invented conversion",
-      "Jhin fourth-AA missing-health level progression unresolved: confirmed 11% baseline",
       "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
     ]
   }

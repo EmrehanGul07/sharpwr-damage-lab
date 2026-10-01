@@ -9,7 +9,7 @@ import itertools
 import math
 from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
-from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,RawDamage
+from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,jhin_attack_damage,RawDamage
 
 
 def replay_marksman(events,**p):
@@ -27,6 +27,9 @@ def replay_marksman(events,**p):
     maxmana=p.get('max_mana');mana=maxmana;regen=p.get('mana_regen_per_5s',0.)/5
     ms=p.get('movement_speed',0.);gap=float(p.get('distance',p.get('attack_range',550.)))
     if gap<0 or ms<0 or regen<0 or maxmana is not None and (maxmana<0 or not math.isfinite(maxmana)):raise ValueError('Invalid spatial/resource stats')
+    movement_policy=p.get('movement_policy','skill_envelope');ultimate_policy=p.get('ultimate_policy','immediate')
+    if movement_policy not in ('skill_envelope','aa_envelope','close_envelope'):raise ValueError('Invalid movement policy')
+    if ultimate_policy not in ('immediate','after_basics'):raise ValueError('Invalid ultimate policy')
     attack_range=p.get('attack_range',550.)
     if attack_range is None:attack_range=0.
     kit=Kit(name,ranks,level,attack_range,mist=p.get('mist',0),weapon=p.get('weapon','minigun'))
@@ -73,6 +76,8 @@ def replay_marksman(events,**p):
         return max(.01,min(3.,raw)),value
     def current_ad():
         value=ad+kit.bonus_ad(t)+(conq*(3+(level-1)*2/14) if keystone=='Conqueror' else 0.)
+        if name=='Jhin':
+            _,info=total_as();value=jhin_attack_damage(value,level,info.get('bonus_as_total',0.),probability())
         if name=='Sivir' and kit.active('morale',t):value+=kit.state.get('morale',0)*(2,2.5,3)[ranks['R']-1]
         if name=='Zeri':
             _,info=total_as();bonus=info.get('bonus_as_total',0.)
@@ -118,7 +123,7 @@ def replay_marksman(events,**p):
             if keystone=='Conqueror':conq=min(6,conq+1);conq_until=t+6
         if action=='AA' and keystone=='Lethal Tempo':lt=min(6,lt+1);lt_until=t+6
         if combat_start is None and damage:combat_start=t
-        log.append({'time':t,'action':action,'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':'max_range_kite'})
+        log.append({'time':t,'action':action,'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
         if health<=0:killed=t
     def tick(action,value,**kw):record(action,value,**kw)
     def damage_impact(slot,cid,index=0):
@@ -158,11 +163,10 @@ def replay_marksman(events,**p):
                     for j in range(1,4):queue(t+.5*j,'blight')
             elif c=='Kalista' and slot=='E':value=raw('E',stacks=s.get('rend',0));s['rend']=0
             elif c=='Xayah':
-                if slot=='Q':value=raw('Q');kit.feathers.append(t+6)
+                if slot=='Q':value=raw('Q',hits=2);kit.feathers.extend([t+6]*2)
                 elif slot=='E':
-                    count=s.pop('recall_count',0);normal=raw('E')
-                    kit.unresolved.add('Xayah feather falloff unresolved: only first confirmed feather contributes damage; full count retained in trace')
-                    value=normal if count else RawDamage();effects.append(f'{count} feathers recalled; unresolved falloff')
+                    count=s.pop('recall_count',0)
+                    value=raw('E',hits=count) if count else RawDamage();effects.append(f'{count} aligned feathers recalled; 10 percentage-point falloff, floor 10%')
                 elif slot=='R':value=raw('R');kit.feathers.extend([t+6]*5)
             elif c=="Kai'Sa":
                 if slot=='Q':value=raw('Q',hits=12 if s.get('q_evolved') else 6)
@@ -320,11 +324,9 @@ def replay_marksman(events,**p):
             reduce('E',seconds=.5+prob)
             if kit.active('zeri_ultimate_as',t):kit.buff_end['zeri_ultimate_as']=min(t+5,kit.buff_end['zeri_ultimate_as']+1.5)
         if name=='Jhin':
-            kit.unresolved.add('Jhin bonus-AS/crit-to-AD conversion coefficients missing: supplied AD used without invented conversion')
             physical=cad*(1+prob*(.8*critd-1));critical=cad*.8*critd
             if kit.ammo==1:
-                physical=critical+.11*(maxhp-health)
-                kit.unresolved.add('Jhin fourth-AA missing-health level progression unresolved: confirmed 11% baseline')
+                physical=critical+(.11+.01*(level-1))*(maxhp-health)
             kit.ammo-=1
             if kit.ammo==0:
                 kit.reloading_until=t+2.5;queue(t+2.5,'reload');effects.append('Reload started (2.5s WR source)')
@@ -401,7 +403,7 @@ def replay_marksman(events,**p):
             if slot=='Q':add('axes',cap=2);buff('axes',6,s['axes']);return True
             if slot=='W':buff('blood_rush_as',3,(.25,.3,.35,.4)[r-1]);return True
         if c=='Xayah':
-            add('feather_attacks',3,cap=5)
+            add('feather_attacks',3,cap=5,duration=7.5)
             if slot=='W':buff('plumage_as',4,(.4,.45,.5,.55)[r-1]);return True
             if slot=='E':s['recall_count']=len(kit.feathers);kit.feathers=[]
             if slot=='R':lock=max(lock,t+1.5);aa_lock=lock;kit.unresolved.add('Xayah R 1.5s untargetable lock provisional WR timing')
@@ -477,6 +479,8 @@ def replay_marksman(events,**p):
         kit.state['aa_windup']=windup;aa_clock=1.;aa_lock=t+windup
         queue(t+windup,'aa_hit',cid=('AA',aa_count+1))
     priority=p.get('skill_priority',('Q','W','E'));use_e=p.get('use_e',True)
+    action_policy=p.get('action_policy','skill_first')
+    if action_policy not in ('skill_first','aa_weave'):raise ValueError('Invalid action policy')
     if p.get('galeforce'):queue(.001,'galeforce')
     # Evolution is based on purchased bonus stats, never on temporary fight buffs.
     if name=="Kai'Sa":
@@ -494,11 +498,14 @@ def replay_marksman(events,**p):
                 for s in priority:
                     if s=='E' and not use_e:continue
                     if kit.enabled(s,t) and t>=ready[s] and (mana is None or mana>=kit.cost(s,t)):
-                        desired=min(desired,kit.range(s,t))
+                        if movement_policy!='aa_envelope':desired=min(desired,kit.range(s,t))
+                if movement_policy=='close_envelope':desired=min(desired,200.)
                 move_factor=kit.buff_values.get('charge_ms',1.) if kit.active('charge_ms',t) else 1.
                 if name=="Kai'Sa" and last_t<kit.state.get('mobile_cast_until',-1):move_factor=1+( .5,.55,.6,.65)[ranks['E']-1]
                 step=ms*move_factor*dt
-                if abs(gap-desired)<1e-7:kite_arc+=step
+                if abs(gap-desired)<1e-7:
+                    if name!='Xayah':kite_arc+=step
+                    else:kit.unresolved.add('Xayah benchmark uses aligned radial movement against a stationary target; lateral feather collision geometry unverified')
                 else:gap+=math.copysign(min(abs(gap-desired),step),desired-gap)
         kit.expire(t)
         if name=='Draven' and not kit.active('axes',t):kit.state['axes']=0
@@ -552,14 +559,17 @@ def replay_marksman(events,**p):
             elif kind=='transcend_end':reduce('W',fraction=.8);ready['E']=t
         if health<=0:break
         if not manual:
-            # Buffs, damaging skills and AA compete by their real lockout times.
+            # Compare AA weaving against skill-first priorities without bypassing locks.
+            if action_policy=='aa_weave' and t>=max(lock,channel,aa_lock,dash_until,kit.reloading_until) and aa_clock<=1e-9 and gap<=kit.attack_range(t)+1e-7:start_attack()
             if t>=max(lock,aa_lock) and (t>=channel or name=='Lucian'):
-                if t>=channel and kit.rank('R') and t>=ready['R']:cast('R')
+                if ultimate_policy=='immediate' and t>=channel and kit.rank('R') and t>=ready['R']:cast('R')
                 for s in priority:
                     if s=='E' and not use_e:continue
                     if t<channel and not(name=='Lucian' and s=='E'):continue
+                    if name=='Xayah' and s=='E' and len(kit.feathers)<p.get('recall_min_feathers',3):continue
                     if cast(s):
                         if t<lock or t<channel:break
+                if ultimate_policy=='after_basics' and t>=max(lock,channel,aa_lock) and kit.rank('R') and t>=ready['R']:cast('R')
                 if t>=max(lock,channel,aa_lock,dash_until,kit.reloading_until) and aa_clock<=1e-9 and gap<=kit.attack_range(t)+1e-7:
                     start_attack()
         last_t=t

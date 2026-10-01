@@ -35,10 +35,11 @@ class CatalogueTests(unittest.TestCase):
             self.assertEqual(damage_component('Twitch','P',1,ad=100,base_ad=60,level=level,stacks=5).true,base*5)
     def test_varus_blight_maximum_health(self):
         self.assertAlmostEqual(varus_blight(4,3,target_max_hp=10000,ap=100).magic,1710)
-    def test_unknown_varus_ratio_does_not_guess(self):
-        with self.assertRaises(LookupError):damage_component('Varus','Q',2,ad=100,base_ad=60)
-    def test_unresolved_xayah_falloff_does_not_multiply(self):
-        with self.assertRaises(LookupError):damage_component('Xayah','E',4,ad=100,base_ad=60,hits=5)
+    def test_varus_rank_ratios_keep_user_bonus_ad_basis(self):
+        self.assertAlmostEqual(damage_component('Varus','Q',2,ad=100,base_ad=60).physical,188)
+        self.assertAlmostEqual(damage_component('Varus','Q',4,ad=100,base_ad=60,empowered=True).physical,474)
+    def test_xayah_falloff_preserves_user_damage_coefficients(self):
+        self.assertAlmostEqual(damage_component('Xayah','E',4,ad=100,base_ad=60,hits=5).physical,120*4)
     def test_yunara_ultimate_rank_damage(self):
         self.assertEqual(yunara_arc_of_ruin(3,bonus_ad=100,ap=100).magic,675)
     def test_negative_and_nonfinite_inputs_rejected(self):

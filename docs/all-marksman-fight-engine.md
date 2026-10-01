@@ -16,7 +16,7 @@ All 23 database champions are exposed in Skill Lab. Samira and Smolder retain th
 
 Unknown casts and projectiles use instant impact; unknown ranges use the supplied AA envelope. These are reported as assumptions, not researched values. General AA windups remain unknown except the authorized Samira PC base fallback and sourced Senna WR level-one base. Expected damage is deterministic; threshold-dependent state follows expected HP rather than enumerating random fights. Movement is integrated at 50 ms steps while scheduled impacts retain their event time. Only the existing supported offensive rune set is available.
 
-Xayah recall currently includes the known first-feather damage only; uncertain subsequent-feather falloff/path is excluded. Missing Jhin AS/crit-to-AD coefficients are not invented. Senna uses supplied initial mist; further mist generation is pending. Corki package pickup, wall collisions, dash endpoints and exact return paths remain unverified. These limitations can change DPS materially.
+Xayah recall sums aligned feathers using sourced WR 10 percentage-point falloff, floored at 10%; lateral feather collision paths remain unverified. Jhin uses sourced WR 7.3 AS/crit/level-to-AD conversion without altering fixed attack speed. Senna uses supplied initial mist; further mist generation is pending. Corki package pickup, wall collisions, dash endpoints and exact return paths remain unverified. These limitations can change DPS materially.
 
 User WR values take priority over conflicting current wiki values, including Twitch Q/P, Xayah E, Corki recharge, Senna mist crit and Kai’Sa passive. Kog’Maw R mana ramp and Varus W blank mana cost remain provisional. Yunara lacks verified core mana/MS/range statistics; a result without supplied maximum mana cannot verify resource affordability.
 
@@ -198,7 +198,6 @@ User WR values take priority over conflicting current wiki values, including Twi
 - Xayah R range unresolved: conservative AA-range targeting
 - Xayah W projectile timing unresolved: instant impact after cast
 - Xayah W range unresolved: conservative AA-range targeting
-- Xayah feather falloff unresolved: only first confirmed feather contributes damage; full count retained in trace
 
 ### Sivir
 
@@ -255,8 +254,6 @@ User WR values take priority over conflicting current wiki values, including Twi
 - Jhin R range unresolved: conservative AA-range targeting
 - Jhin W projectile timing unresolved: instant impact after cast
 - Jhin W range unresolved: conservative AA-range targeting
-- Jhin bonus-AS/crit-to-AD conversion coefficients missing: supplied AD used without invented conversion
-- Jhin fourth-AA missing-health level progression unresolved: confirmed 11% baseline
 - Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback
 
 ## Validation
