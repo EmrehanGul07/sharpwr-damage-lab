@@ -24,7 +24,13 @@ class FightResult:
     killed_at: float | None
 
 
-def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None):
+SAMIRA_SKILL_ORDER=('Q','E','W','Q','R','Q','Q','E','R','E','E','W','R','W','W')
+
+def samira_ranks(level):
+    if not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
+    return {slot:SAMIRA_SKILL_ORDER[:level].count(slot) for slot in ('Q','W','E','R')}
+
+def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False):
     """Replay AA/Q impacts and an explicitly timed R channel against one champion.
 
     Conqueror: one grant per separate attack/cast (not each R tick).
@@ -49,13 +55,13 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     health=float(hp); log=[]; rejected=[]; total=0.; killed=None; r_cast_id=0
     def reject(t,action,reason):rejected.append({'time':t,'action':action,'reason':reason})
     auto_time=0.;auto_order=0
-    while (queue or automatic_until is not None) and health>0:
+    while (queue or automatic_until is not None or until_death) and health>0:
         if not queue:
             choices=[(max(auto_time,ready[k]),i,k) for i,k in enumerate(('E','W','Q')) if ranks[k]]
             choices.append((max(auto_time,next_aa),4,'AA'))
             if r_rank and style>=6:choices.append((max(auto_time,next_r),-1,'R'))
             nt,_,na=min(choices)
-            if nt>automatic_until or auto_order>=1000:break
+            if (automatic_until is not None and nt>automatic_until) or auto_order>=1000:break
             auto_order+=1;queue.append((nt,auto_order,na,None))
         t,order,action,cast_id=queue.pop(0)
         auto_time=t
@@ -85,7 +91,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action=='AA':
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
-                hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'event_driven':True,'spell_cast':spell_pending,'ultimate_cast_time':ultimate_cast_time})
+                hit=aa_hit({'hp':health,'time':t,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'ultimate_cast_time':ultimate_cast_time})
                 damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))
@@ -109,7 +115,8 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             damage=hit.total*skill_amp
             if action in ('Q','W','E'):
                 ready[action]=t+SAMIRA_ABILITIES[action]['cooldown'][rank-1]/(1+ability_haste/100);casts+=1;spell_pending=True
-                if action=='E':e_until=t+3.;effects.append('E attack speed buff (3s)')
+                if action=='E':
+                    e_until=t+3.;melee=True;effects.extend(['E attack speed buff (3s)','Dash reached target: melee range'])
                 if transcendence and level>=9 and t>=transcend_ready:
                     for basic in ('Q','W','E'):ready[basic]=t+max(0.,ready[basic]-t)*.92
                     transcend_ready=t+8.;effects.append('Transcendence: remaining basic cooldown ×0.92')
@@ -132,6 +139,6 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if keystone=='Lethal Tempo' and action=='AA':lt=min(6,lt+1);lt_expiry=t+6
         if action in ('AA','Q','W','E') and action!=last_style:style=min(6,style+1);last_style=action
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-        log.append({'time':t,'action':action,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after})
+        log.append({'time':t,'action':action,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after})
         if health<=0:killed=t
     return FightResult(log,rejected,health,aa,casts,total,killed)

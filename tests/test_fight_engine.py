@@ -1,5 +1,5 @@
 import unittest
-from fight_engine import FightEvent, replay_samira
+from fight_engine import FightEvent, replay_samira, samira_ranks
 
 class ReplayTests(unittest.TestCase):
     def run_fight(self,actions,**kw):
@@ -57,11 +57,11 @@ class ReplayTests(unittest.TestCase):
     def test_w_e_bonus_ad_and_magic_resistance(self):
         r=self.run_fight([(0,'W'),(.1,'E')],ad=100,base_ad=60,w_rank=1,e_rank=1,mr=100)
         self.assertEqual(r.log[0]['damage'],80)
-        self.assertEqual(r.log[1]['damage'],26.5)
+        self.assertAlmostEqual(r.log[1]['damage'],26.5+(20+.17*100)*(1+80/10000)/2)
         self.assertTrue(r.log[1]['E_buff'])
     def test_magic_penetration(self):
         r=self.run_fight([(0,'E')],e_rank=1,mr=100,pct_mpen=.3,flat_mpen=10)
-        self.assertAlmostEqual(r.total_damage,45*100/160)
+        self.assertAlmostEqual(r.total_damage,(45+20+.17*100)*100/160)
     def test_instant_r_and_stack_grant_once(self):
         actions=[(0,'AA'),(.1,'Q'),(1,'AA'),(2.1,'Q'),(3,'AA'),(4.1,'Q'),(4.2,'R')]
         r=self.run_fight(actions,keystone='Conqueror')
@@ -81,6 +81,24 @@ class ReplayTests(unittest.TestCase):
     def test_melee_user_accepted_passive(self):
         r=self.run_fight([(0,'AA')],ad=109,crit_chance=0,melee=True,mr=100)
         self.assertAlmostEqual(r.total_damage,109+(20+.17*109)/2)
+    def test_auto_skill_ranks_all_levels(self):
+        for level in range(1,16):
+            ranks=samira_ranks(level)
+            self.assertEqual(sum(ranks.values()),level)
+            self.assertTrue(all(0<=ranks[x]<=4 for x in ('Q','W','E')))
+            self.assertEqual(ranks['R'],sum(level>=x for x in (5,9,13)))
+        self.assertEqual(samira_ranks(1),dict(Q=1,W=0,E=0,R=0))
+        self.assertEqual(samira_ranks(15),dict(Q=4,W=4,E=4,R=3))
+    def test_until_death_no_duration_cutoff(self):
+        r=self.run_fight([],ad=10,q_rank=0,hp=1000,crit_chance=0,until_death=True)
+        self.assertEqual(r.hp_remaining,0)
+        self.assertEqual(r.killed_at,99)
+    def test_dash_switches_to_melee_automatically(self):
+        r=self.run_fight([(0,'AA'),(.1,'E'),(1.1,'AA')],e_rank=1,ad=100,crit_chance=0)
+        self.assertFalse(r.log[0]['melee'])
+        self.assertTrue(r.log[1]['melee'])
+        self.assertTrue(r.log[2]['melee'])
+        self.assertGreater(r.log[2]['damage'],r.log[0]['damage'])
     def test_unknown_rune_rejected(self):
         with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
 
