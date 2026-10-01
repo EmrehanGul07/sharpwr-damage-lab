@@ -25,6 +25,16 @@ Bu liste kalıcıdır. Akşam test sonuçları geldikçe maddeler kapanacak; bil
 
 - [ ] **T16 — Diğer offensive keystone/rünler.** Samira replay şu anda Conqueror/Lethal Tempo ve desteklenen damage rünleriyle sınırlı. First Strike vb. desteklenmeyen loadout çalıştırılmıyor; bunların ayrı proc/cooldown koşulları kaynak/test ile tamamlanmalı.
 
+## Smolder ve kite modeline eklenen açıklar
+
+- [ ] **T17 — Smolder timing/menziller.** Q/W/R cast ve projectile süreleri, E sırasında AA/diğer skill kilitleri ve E bolt gerçek offsetleri. Mevcut yeni adapter Q/W/R impactlerini anlık, E'yi1.25s içinde dağıtır; gerçek WR timing diye doğrulanmadı. Smolder AA windup bilinmiyor; PC Samira base'i ona aktarılmadı. Q550/W1000/E700/R2000 provisional range kapıları.
+- [ ] **T18 — E bolt/stack.** 10stack5 ve100stack7 tooltip ölçümleri nearest(5+0.0154S) adayını destekliyor. Gerçek bolt sayısı ve her boltun stack verip vermediği hâlâ açık. Adapter şimdilik cast/target başına+1stack kullanır; fazla stack uydurmaz.
+- [ ] **T19 — W işlem sırası.** Sneeze hit stack grant, explosion stack magic damage ve doğrudan hedefin bu iki hasarı alma sırası. Çoklu hedefte subsequent explosions birinci100%,diğerleri75% ölçümleri saklı; tek hedef modelinde ikincil kukla yok.
+- [ ] **T20 — Burn refresh/snapshot/tick.** İlk tick Q ile aynı anda ve6sonraki tick doğrulandı. Eşit0.5s aralık,D/7 ve yeniden Q'da eski burn iptali adaydır. Gerçek yenileme/tick offsetleri, rune true damage amplifikasyonu ve rounding açık.
+- [ ] **T21 — Q crit çapraz kombinasyon.** Resmî7.1e additive (critRate+bonusCritDamage)×45% yazıyor. Kullanıcı0/100crit ve200/230critdamage ölçümleriyle uyumlu. %50crit/%230critdamage gibi çapraz noktayı doğrula; critDamage200% üzerine gelen bonus ayrı tutulur.58.5 maksimum ifadesinin evrensel cap olup olmadığı açık.
+- [ ] **T22 — Q100stack ekstra patlamaların ana hedefe yeniden vurması.** Model tek champion'a Q direct damage ekler;25stack AoE/100stack arkaya giden patlamalar ikinci hedef olmadan hasarı çoğaltmaz. Gerçek overlap/geri isabet varsa koşul test edilmeli.
+- [ ] **T23 — Kite hareket/proc.** Hareket menzil çemberinde sağ-sol yay hareketi olarak modellenir. Hedef collision radius, MS cap'leri, Energized'ın bu hareket ve E flight ile dolumu ve RFC bonus AA range'i doğrulanmalı. Katsayı bulunmadan hareketten ek Energized proc uydurulmaz.
+
 ## Bilerek test istenmeyen kapsam
 
 Rakibin bize hasar vermesi, kendi ölümümüz, kendi regen/lifesteal ile hayatta kalma bu sabit-hedef hasar modelinin kapsamına dahil değil. Başka marksmanların özel ability engine'leri bu Samira denetiminin tamamlanması anlamına gelmez; ayrı aşamalardır.

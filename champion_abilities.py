@@ -52,3 +52,22 @@ def samira_skill(slot,rank,ad,crit_chance,crit_damage,armor,*,pct_pen=0.,flat_pe
     dealt=physical*resistance_multiplier(effective_resistance(armor,pct_pen,flat_pen))
     dealt_magic=magic*resistance_multiplier(effective_resistance(mr,pct_mpen,flat_mpen))
     return SkillDamage(slot,rank,outcome,count,raw if slot!='E' else 0.,physical,magic,0.,dealt,dealt_magic,0.)
+
+SMOLDER_ABILITIES={
+ 'Q':{'name':'Super Scorcher Breath','cooldown':(5.5,5.,4.5,4.),'mana':30},
+ 'W':{'name':'Achooo!','cooldown':(12.,11.,10.,9.),'mana':(50,55,60,65)},
+ 'E':{'name':'Flap Flap Flap','cooldown':(18.,16.,14.,12.),'mana':65},
+ 'R':{'name':'MOOOMMM!','cooldown':(80.,70.,60.),'mana':100},
+}
+
+def smolder_skill(slot,rank,ad,base_ad,ap,stacks,crit_chance,crit_damage):
+    """User WR data. Count/timing candidates explicitly remain provisional."""
+    bonus=max(0.,ad-base_ad)
+    if slot=='Q':
+        # User tests support this candidate; official 7.1e wording is additive.
+        amp=1+.45*(crit_chance+max(0.,crit_damage-2.))
+        return ((45,80,115,150)[rank-1]+1.1*bonus)*amp,.3*stacks*amp
+    if slot=='W':return (65,85,105,125)[rank-1]+.6*bonus+(10,35,60,85)[rank-1]+.55*bonus+.8*ap,.55*stacks
+    if slot=='E':return (15,20,25,30)[rank-1]+.3*ad,.12*stacks
+    if slot=='R':return (300,450,600)[rank-1]+1.65*bonus+1.5*ap,0.
+    raise ValueError('Unknown Smolder skill.')

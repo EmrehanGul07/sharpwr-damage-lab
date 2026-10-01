@@ -50,7 +50,25 @@ class InterfaceTests(unittest.TestCase):
         self.assertNotIn('Critical roll',table.columns)
         self.assertEqual(table['Target HP'].iloc[-1],0)
         self.assertTrue(any('Target defeated' in x.value for x in a.success))
-        self.assertTrue(all(x=='Melee' for x in table['Range']))
+        self.assertIn('Melee',set(table['Range']))
+        self.assertTrue(set(table['Range']).issubset({'Melee','Ranged'}))
+
+    def test_smolder_fight_panel_and_optimized_kite(self):
+        a=self.app
+        a.selectbox(key='build_champ').set_value('Smolder').run()
+        a.radio(key='build_target_profile').set_value('Tank • Ornn').run()
+        a.number_input(key='smolder_fight_stacks').set_value(175).run()
+        a.button(key='build_keystone__7__Conqueror').click().run()
+        a.button(key='fight_calculate').click().run()
+        self.assertFalse(a.exception)
+        self.assertFalse(a.error)
+        table=next(x.value for x in a.dataframe if 'Dragon stacks' in x.value.columns)
+        self.assertEqual(table['Target HP'].iloc[-1],0)
+        self.assertGreater(table['Dragon stacks'].iloc[-1],175)
+        from champion_database import level_stats
+        max_range=level_stats('Smolder',15)['attack_range']
+        self.assertTrue(all(550<=x<=max_range for x in table['Distance']))
+        self.assertIn('Q',set(table['Event']))
 
     def test_champion_database_fields(self):
         a=self.app

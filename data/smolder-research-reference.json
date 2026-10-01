@@ -1,0 +1,80 @@
+{
+  "champion": "Smolder",
+  "source_type": "previous_user_submission",
+  "source_keys": [],
+  "ability_observations": {
+    "P": [
+      "**P:** Q ek büyü 0.30S; W patlaması ek büyü 0.55S; E her mermi ek büyü 0.12S. Skill-champion hit ve Q kill stack verir; yakındaki Spectral Sickle/Relic Shield minion execute'u da stack verebilir."
+    ],
+    "Q": [
+      "**Q:** fiziksel 45/80/115/150 + 1.10B; büyü 0.30S. CD5.5/5/4.5/4s. Kill halinde cast başına bir kez15mana iadesi.",
+      "**Q25stack:** alan hasarı. **100stack:** hedef ötesine patlamalar; tooltip sayısı2+0.011S; her biri skill hasarının%50'si. Yuvarlama kuralı açık.",
+      "**Q175stack:** 3s true-damage burn; tooltip oranı (%0.025×B + %0.005×S)×H; ondalık (0.00025B+0.00005S)×H. Tick dağılımı açık. Yanarken HP<%6.5H olan champion execute edilir.",
+      "**Qcrit:** chance ve damage ile güçlenir; metindeki “max58.5increase” tam formül vermez. Mevcut statlara bağlı olup olmadığı bilinmiyor; evrensel tavan kabul edilmedi. Minion/monster×1.10."
+    ],
+    "W": [
+      "**Wilk fiziksel:**65/85/105/125+0.60B. **Patlama fiziksel:**10/35/60/85+0.55B+0.80AP; ayrıca **büyü:**0.55S.",
+      "**W:** sonraki patlama%75hasar; ardışık düşüşün uygulama şekli açık. Champion hit başına+1stack; işlem sırası açık. Slow%35,1.5s. CD12/11/10/9;mana50/55/60/65. Minion/monster×1.30."
+    ],
+    "E": [
+      "**Eher mermi:** fiziksel15/20/25/30+0.30A; büyü0.12S. Tooltip “32” mevcut AD ile hesaplanmış toplamdır, ayrı taban hasar değildir.",
+      "**Emermi:** tooltip5+0.0154S; pasif her65stackte+1 diyor. Tam sayı yuvarlaması bilinmiyor, floor varsayılmadı. CD18/16/14/12;hareket%75,terrain geçişi1.25s; düşükHP hedef/champion önceliği."
+    ],
+    "R": [
+      "**Rdış fiziksel:**200/300/400+1.10B+AP. **Rmerkez fiziksel:**300/450/600+1.65B+1.50AP. Merkez alternatif toplamdır; dış hasarın üzerine eklenmez.",
+      "**Rheal:**100/135/170+0.50B+0.75AP;Smolder'a hit koşullu. Merkezslow%40,2s;CD80/70/60;minion/monster×0.50."
+    ],
+    "mana_confirmed": [
+      "{'Q': [30, 30, 30, 30], 'W': [50, 55, 60, 65], 'E': [65, 65, 65, 65], 'R': [100, 100, 100]}"
+    ]
+  },
+  "curated_section": "### 16. Smolder\nKaynak: Kullanıcının 30 Eylül 2026'da aktardığı oyun içi P/Q/W/E/R metni. S = Dragon Practice stack sayısı. Q'daki “110 bonus AD”, %110 bonus AD olarak yorumlandı.\n\n- **P:** Q ek büyü 0.30S; W patlaması ek büyü 0.55S; E her mermi ek büyü 0.12S. Skill-champion hit ve Q kill stack verir; yakındaki Spectral Sickle/Relic Shield minion execute'u da stack verebilir.\n- **Q:** fiziksel 45/80/115/150 + 1.10B; büyü 0.30S. CD5.5/5/4.5/4s. Kill halinde cast başına bir kez15mana iadesi.\n- **Q25stack:** alan hasarı. **100stack:** hedef ötesine patlamalar; tooltip sayısı2+0.011S; her biri skill hasarının%50'si. Yuvarlama kuralı açık.\n- **Q175stack:** 3s true-damage burn; tooltip oranı (%0.025×B + %0.005×S)×H; ondalık (0.00025B+0.00005S)×H. Tick dağılımı açık. Yanarken HP<%6.5H olan champion execute edilir.\n- **Qcrit:** chance ve damage ile güçlenir; metindeki “max58.5increase” tam formül vermez. Mevcut statlara bağlı olup olmadığı bilinmiyor; evrensel tavan kabul edilmedi. Minion/monster×1.10.\n- **Wilk fiziksel:**65/85/105/125+0.60B. **Patlama fiziksel:**10/35/60/85+0.55B+0.80AP; ayrıca **büyü:**0.55S.\n- **W:** sonraki patlama%75hasar; ardışık düşüşün uygulama şekli açık. Champion hit başına+1stack; işlem sırası açık. Slow%35,1.5s. CD12/11/10/9;mana50/55/60/65. Minion/monster×1.30.\n- **Eher mermi:** fiziksel15/20/25/30+0.30A; büyü0.12S. Tooltip “32” mevcut AD ile hesaplanmış toplamdır, ayrı taban hasar değildir.\n- **Emermi:** tooltip5+0.0154S; pasif her65stackte+1 diyor. Tam sayı yuvarlaması bilinmiyor, floor varsayılmadı. CD18/16/14/12;hareket%75,terrain geçişi1.25s; düşükHP hedef/champion önceliği.\n- **Rdış fiziksel:**200/300/400+1.10B+AP. **Rmerkez fiziksel:**300/450/600+1.65B+1.50AP. Merkez alternatif toplamdır; dış hasarın üzerine eklenmez.\n- **Rheal:**100/135/170+0.50B+0.75AP;Smolder'a hit koşullu. Merkezslow%40,2s;CD80/70/60;minion/monster×0.50.\n- **Screenshot aşamasında kalan (güncel durum aşağıdaki 1 Ekim notunda):** Qcrit formülü; Q/Emermi yuvarlaması; burn tick dağılımı; Wpatlama ve stack kazanım sırası. Q/E/Rmana gönderilen metinde yok. Combo cast-time/proc mekanikleri ayrıca gerekli.\nOyun içi kayıt bu champion'ın önceki internet aday verilerinin yerine esas alındı.\n### 1 Ekim 2026 — Kullanıcı practice ölçümleri\nKoşullar: kukla10000HP/100armor/100MR. Qcrit testleri hero1/Qrank1/stack0. Sonraki stack/W/burn testleri hero15. Runeler Fleet Footwork, Battle Zeal, Cut Down, Legend:Bloodline, Bone Plating. Ekran hasarları kullanıcı metnidir; toplamHP kaybı/süre ölçülmedi.\n- Rune açıklamaları kullanıcıdan: Battle Zeal champion combat sırasında saniye başına1.4% basic ability amp,max3load; yalnızchampion. Cut Down HP>60% champion'a attacks+6.5%. Kullanıcı ilk W hitinden sonra Battle Zeal göstergesinin açıldığını gözledi. Tam hasar sınıflandırması/işlem sırası izole değil.\n- Mana tüm ranklarda: Q30,E65,R100; W50/55/60/65.\n- Qcrit fiziksel/büyü: AD54 critdamage200%; critchance0→24/1,50→30/1,95→35/1. AD129: critchance100/critdamage230→108/1;100/200→99/1;0/200→68/1. Kullanıcı108 buildinde zırhdelme/ekhasar olmadığını doğruladı. AD129 crit75/200→107/1 ölçümü Mortal Reminder içeriyordu; temizcrit karşılaştırmasından hariç. Build2xHearthbound Axe/Mortal Reminder/Navori/Phantom Dancer.\n- Qcrit aday çarpan1+0.45*c*(d-1); c=crit chance0..1,d=critdamage200% için2. Default200% fullcrit1.45;230% fullcrit1.585. AD12968/99/108 ölçümleri güçlü destekliyor. Başlangıç1+0.50*c adayı geri çekildi. Rune/rounding izole olmadığından tam engine-ready doğrulama sayılmadı.\n- StackQ: hero15 AD178 AP0 critdamage200%; castöncesi20stack crit0→124F/4M,sonrası21stack; castöncesi21stack crit100→180F/6M,sonrası22stack. F ve stackM aynı1.45 çarpanla uyumlu; küçükM yuvarlama/rune etkisi açık. StackMcrit güçlenmesi destekleniyor.\n- Qtooltip patlama sayısı:23stack3,100stack4. İlk100stack3 ifadesi kullanıcı23stack olduğunu belirterek düzeltildi. Tooltip ceil(2+0.011S) ile uyumlu; fiili projectile sayısı ölçülmedi.\n- Etooltip:100stack7,10stack5. nearest(5+0.0154S) adayı destekleniyor; floor/ceil iki ölçümle uyuşmuyor. Fiili bolt sayısı ve kesin eşikler doğrulanmadı; pasifteki65stackte+1 ifadesiyle fark açık tutuldu.\n- W hero15 AD103 AP0 castöncesi0stack: rank1tek40F/1M;aralıklıikiher40/1;önlüarkalı40/1 ve41/1,sonstack2. Dipdibe44/2 görselbirleşme nedeniyle tekhedef toplamı sayılmadı.41 kullanıcıBattleZeal göstergesiyle ilişkilendirdi.\n- Wrank4: tek112F/1M;önlüarkalı112 ve102; doğrudanhedef112,yalnızpatlamahedef46. W yolunda2hedef ve yanlarında yalnızpatlamahedef46+35; W yolunda3hedef ve yanda yalnızpatlamahedef46+35+35. Aynı hedefe ilkpatlama1.00,sonrakiler0.75 güçlü destekli; tekrarlı0.75 üs azalması reddedildi. Toplamnpatlama katsayısı1+0.75*(n-1). Hasar göstergesi toplamHP kaybı değildir. Patlama/stack kazanım sırasının ayrıntısı açık.\n- Burn:175stack AD103 AP0 crit0/200%,tooltip0.875%H over3s=0.025%bonusAD+0.005%S. TekQ:7kez14true. İlkQtemasında1tick,sonrasında6tick kullanıcı tarafından ayrıldı. Sonraki178stack ve yalnızAD bileşen eklenen testte tooltip1.888%H; toplamAD bildirilmedi;7tick ilk5=29,son2=30.\n- Burn aday dağılımı D/7,t0bir ve sonra6tick.10000HPde188.8/7=26.971;CutDown1.065 veBattleZeal1.014→29.13,1.028→29.53,29→30 ekranıyla uyumlu. İkiamp çarpımsal sırası, true-damage kapsamı ve gerçek interval kesinleşmedi. ÖncekiD/6 varsayımı geri çekildi.175stack7x14 ölçümü aynıadayla tam açıklanmadı; görüntüleme/rune yükleri açık.7görünen tick doğrulandı, eşitaralıklı0.5s yalnız adaydır.\n- Kalan: burnham dağılımı/rune kapsamı/interval; W stack ve patlama işlem sırası; gerçekQ/Eprojectile sayısı. Aday formüller çalıştırılabilir damage engine olarak yayınlanmadı.\n",
+  "calculation_ready": false,
+  "unresolved_note": "Önceki screenshot eksiklerinin güncel durumu 1 Ekim practice notunda belirtilmiştir; aday formüller tam doğrulanmış sayılmadı.",
+  "practice_test_evidence": "### 1 Ekim 2026 — Kullanıcı practice ölçümleri\nKoşullar: kukla10000HP/100armor/100MR. Qcrit testleri hero1/Qrank1/stack0. Sonraki stack/W/burn testleri hero15. Runeler Fleet Footwork, Battle Zeal, Cut Down, Legend:Bloodline, Bone Plating. Ekran hasarları kullanıcı metnidir; toplamHP kaybı/süre ölçülmedi.\n- Rune açıklamaları kullanıcıdan: Battle Zeal champion combat sırasında saniye başına1.4% basic ability amp,max3load; yalnızchampion. Cut Down HP>60% champion'a attacks+6.5%. Kullanıcı ilk W hitinden sonra Battle Zeal göstergesinin açıldığını gözledi. Tam hasar sınıflandırması/işlem sırası izole değil.\n- Mana tüm ranklarda: Q30,E65,R100; W50/55/60/65.\n- Qcrit fiziksel/büyü: AD54 critdamage200%; critchance0→24/1,50→30/1,95→35/1. AD129: critchance100/critdamage230→108/1;100/200→99/1;0/200→68/1. Kullanıcı108 buildinde zırhdelme/ekhasar olmadığını doğruladı. AD129 crit75/200→107/1 ölçümü Mortal Reminder içeriyordu; temizcrit karşılaştırmasından hariç. Build2xHearthbound Axe/Mortal Reminder/Navori/Phantom Dancer.\n- Qcrit aday çarpan1+0.45*c*(d-1); c=crit chance0..1,d=critdamage200% için2. Default200% fullcrit1.45;230% fullcrit1.585. AD12968/99/108 ölçümleri güçlü destekliyor. Başlangıç1+0.50*c adayı geri çekildi. Rune/rounding izole olmadığından tam engine-ready doğrulama sayılmadı.\n- StackQ: hero15 AD178 AP0 critdamage200%; castöncesi20stack crit0→124F/4M,sonrası21stack; castöncesi21stack crit100→180F/6M,sonrası22stack. F ve stackM aynı1.45 çarpanla uyumlu; küçükM yuvarlama/rune etkisi açık. StackMcrit güçlenmesi destekleniyor.\n- Qtooltip patlama sayısı:23stack3,100stack4. İlk100stack3 ifadesi kullanıcı23stack olduğunu belirterek düzeltildi. Tooltip ceil(2+0.011S) ile uyumlu; fiili projectile sayısı ölçülmedi.\n- Etooltip:100stack7,10stack5. nearest(5+0.0154S) adayı destekleniyor; floor/ceil iki ölçümle uyuşmuyor. Fiili bolt sayısı ve kesin eşikler doğrulanmadı; pasifteki65stackte+1 ifadesiyle fark açık tutuldu.\n- W hero15 AD103 AP0 castöncesi0stack: rank1tek40F/1M;aralıklıikiher40/1;önlüarkalı40/1 ve41/1,sonstack2. Dipdibe44/2 görselbirleşme nedeniyle tekhedef toplamı sayılmadı.41 kullanıcıBattleZeal göstergesiyle ilişkilendirdi.\n- Wrank4: tek112F/1M;önlüarkalı112 ve102; doğrudanhedef112,yalnızpatlamahedef46. W yolunda2hedef ve yanlarında yalnızpatlamahedef46+35; W yolunda3hedef ve yanda yalnızpatlamahedef46+35+35. Aynı hedefe ilkpatlama1.00,sonrakiler0.75 güçlü destekli; tekrarlı0.75 üs azalması reddedildi. Toplamnpatlama katsayısı1+0.75*(n-1). Hasar göstergesi toplamHP kaybı değildir. Patlama/stack kazanım sırasının ayrıntısı açık.\n- Burn:175stack AD103 AP0 crit0/200%,tooltip0.875%H over3s=0.025%bonusAD+0.005%S. TekQ:7kez14true. İlkQtemasında1tick,sonrasında6tick kullanıcı tarafından ayrıldı. Sonraki178stack ve yalnızAD bileşen eklenen testte tooltip1.888%H; toplamAD bildirilmedi;7tick ilk5=29,son2=30.\n- Burn aday dağılımı D/7,t0bir ve sonra6tick.10000HPde188.8/7=26.971;CutDown1.065 veBattleZeal1.014→29.13,1.028→29.53,29→30 ekranıyla uyumlu. İkiamp çarpımsal sırası, true-damage kapsamı ve gerçek interval kesinleşmedi. ÖncekiD/6 varsayımı geri çekildi.175stack7x14 ölçümü aynıadayla tam açıklanmadı; görüntüleme/rune yükleri açık.7görünen tick doğrulandı, eşitaralıklı0.5s yalnız adaydır.\n- Kalan: burnham dağılımı/rune kapsamı/interval; W stack ve patlama işlem sırası; gerçekQ/Eprojectile sayısı. Aday formüller çalıştırılabilir damage engine olarak yayınlanmadı.\n",
+  "mana_by_rank": {
+    "Q": [
+      30,
+      30,
+      30,
+      30
+    ],
+    "W": [
+      50,
+      55,
+      60,
+      65
+    ],
+    "E": [
+      65,
+      65,
+      65,
+      65
+    ],
+    "R": [
+      100,
+      100,
+      100
+    ]
+  },
+  "mana_evidence": {
+    "Q": {
+      "kind": "user_confirmed_all_ranks",
+      "date": "2026-10-01"
+    },
+    "W": {
+      "kind": "user_confirmed_all_ranks",
+      "date": "2026-10-01"
+    },
+    "E": {
+      "kind": "user_confirmed_all_ranks",
+      "date": "2026-10-01"
+    },
+    "R": {
+      "kind": "user_confirmed_all_ranks",
+      "date": "2026-10-01"
+    }
+  },
+  "missing_mana_slots": [],
+  "screenshot_audit_date": "2026-10-01"
+}
