@@ -6,6 +6,14 @@ import streamlit.components.v1 as components
 from pathlib import Path
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 
+def _preserve_widgets():
+    # Keep later-tab controls alive if an item/rune button requests an early rerun.
+    for key in list(st.session_state):
+        if key.startswith(("iv_","tier_")) or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
+            st.session_state[key]=st.session_state[key]
+
+_preserve_widgets()
+
 CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
 # Wild Rift rune icons served directly by RiftPatchNotes.
 # Their rune pages expose images at /runes/<slug>.png (e.g. Ice Overlord).
@@ -662,7 +670,7 @@ def stats(n,l,mist=0):
     ba,g,r,b,bba,asg=C[n]; u=gu(l)
     return {"basead":ba,"ad":ba+g*u+(mist*1.25 if n=="Senna" else 0),
             "ratio":r,"baseas":b,"bba":bba,"lvbas":asg*u}
-def rm(x): return 100/(100+max(0,x))
+def rm(x): return 100/(100+x) if x>=0 else 2-100/(100-x)
 def lvl_scale(lo,hi,lvl): return lo+(hi-lo)*(lvl-1)/14
 
 # User-tested level benchmark profiles.
@@ -680,127 +688,40 @@ def _target_profile_at_level(profile,lvl):
     return out
 
 
+def _validate_build(items,db,boot=None):
+    if len(items)>5: raise ValueError("At most five items are allowed.")
+    if len(items)!=len(set(items)): raise ValueError("Duplicate items are not allowed.")
+    if any(x not in db or x in B or x=="Boots of Speed" for x in items): raise ValueError("Choose valid items; boots use the separate slot.")
+    if boot is not None and boot not in B: raise ValueError("Unknown boots.")
+
+
+def _effective_resistance(value,pct=0.,flat=0.,cap=1.):
+    # Penetration cannot make a positive resistance negative; pre-existing negative resistance remains negative.
+    return value if value<0 else max(0.,value*(1-min(cap,max(0.,pct)))-max(0.,flat))
+
+
+def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True):
+    engine=_combat_hits(n,l,hp0,arm,mr,items,db,mist,bonus_hp,dist,target_aa_reduction,yuntal_start_stacks,base_mana,spell,energized,ult,execs,active_ready,boot,item_proc)
+    next(engine); hp=float(hp0); t=0.; log=[]
+    while hp>0 and len(log)<500:
+        h=engine.send({"hp":hp,"time":t}); before=hp; hp-=h["damage"]
+        if "The Collector" in items and item_proc and 0<hp<=hp0*min(1,.05+.001*execs): hp=0; h["notes"].append("Execute")
+        log.append([len(log)+1,round(t,3),round(h["as"],4),round(h["crit"]*100,2),round(h["armor"],1),round(before,1),round(h["damage"],1),round(max(hp,0),1),", ".join(h["notes"]),h["rage"],h["light"],h["dark"]])
+        t+=1/h["as"]
+    label=" + ".join(items)+((" + "+boot) if boot else "")
+    if hp>0: label+=" [NOT KILLED: 500 attacks]"
+    gold=sum(dct(db[x])["gold"] for x in items)+(dct(B[boot])["gold"] if boot else 0)
+    return [label,gold,round(t,3) if hp<=0 else float("inf"),len(log),round(sum(x[6] for x in log)/t,1) if t else 0.],log
+
+
 def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0,active_ready=False,yuntal_start_stacks=0):
-    s=stats(n,l,mist); q=dct(db[it]); mana=base_mana+q["mana"]
-    awe=.02*mana if it in ("Manamune","Muramana") else 0
-    ad=s["ad"]+q["ad"]+awe
-    hp=float(hp0); t=0.; k=0; log=[]
-    pd_stacks=rb=light=dark=0; rage_hits=0; ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.; spellblade_ready=0.
-    fh=3 if it=="Fiendhunter Bolts" and ult else 0
-    while hp>0 and k<500:
-        k+=1
-        dyn=(.06*pd_stacks if it=="Phantom Dancer" and item_proc else 0)+(.08*rb if it=="Guinsoo's Rageblade" and item_proc else 0)
-        if it=="Yun Tal Wildarrows" and item_proc and t<yt_until: dyn+=.35
-        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: dyn+=.50
-        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+q["as"]+dyn))
-        crit=q["crit"]+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if it=="Yun Tal Wildarrows" else 0)
-        crit=min(1,crit); cd=2.3 if it=="Infinity Edge" else 2.
-        if n=="Senna": cd*=.9
-        pct=q["pctpen"]+(.10*dark if it=="Terminus" and item_proc else 0)
-        if it=="Terminus": pct=min(.40,pct)
-        ea=max(0,arm*(1-pct)-q["flatpen"])
-        true=0.; mag=0.; onp=0.; onm=0.; note=[]
-        if it=="Galeforce" and item_proc and active_ready and k==1:
-            bonus_ad=max(0,ad-s["basead"])
-            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst")
-        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8:
-            phy=ad*(cd*.80); true=ad*.15*crit; note.append("Opening Barrage")
-        else: phy=ad*(1+crit*(cd-1))
-        if it=="Hexoptics C44":
-            amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01); phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
-        if it=="Wit's End": onm+=40
-        if it=="Nashor's Tooth": onm+=15+.20*q["ap"]
-        rage_extra=False
-        if it=="Guinsoo's Rageblade":
-            onm+=30
-            if rb>=4:
-                rage_hits+=1
-                if rage_hits>=3:
-                    rage_extra=True; rage_hits=0
-        if it=="Terminus": onm+=30
-        if it=="Recurve Bow": onp+=15
-        if it=="Blade of the Ruined King": onp+=max(15,.07*hp)
-        if it=="Muramana": onp+=.015*mana
-        if it=="Kraken Slayer" and item_proc and k%3==0:
-            base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
-            onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
-        if it=="Duskblade of Draktharr" and item_proc and k==1:
-            onp+=60+(l-1)/14*100; note.append("Nightstalker")
-        if item_proc:
-            # Energized benchmark cadence is based on current in-game kiting tests.
-            # If the fight starts charged, proc on hit 1 and then every N attacks.
-            # Otherwise the first proc arrives on hit N.
-            energized_proc=False
-            if it in ("Rapid Firecannon","Stormrazor"):
-                energized_proc = (k==1 or (k>1 and (k-1)%7==0)) if energized else (k%7==0)
-            elif it=="Statikk Shiv":
-                energized_proc = (k==1 or (k>1 and (k-1)%5==0)) if energized else (k%5==0)
-            elif it=="Kircheis Shard":
-                energized_proc = (k==1) if energized else False
-            if energized_proc:
-                if it=="Rapid Firecannon": onm+=80; note.append("RFC Energized")
-                if it=="Stormrazor": onm+=120; note.append("Storm Energized")
-                if it=="Statikk Shiv": onm+=60; note.append("Shiv Energized")
-                if it=="Kircheis Shard": onm+=40; note.append("Jolt")
-        if spell and item_proc and t>=spellblade_ready:
-            if it=="Essence Reaver":
-                onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER")
-                spellblade_ready=t+1.5
-            if it=="Trinity Force":
-                onp+=2*s["basead"]; note.append("Trinity")
-                spellblade_ready=t+1.5
-            if it=="Iceborn Gauntlet":
-                onp+=s["basead"]+.25*q["armor"]; note.append("Iceborn")
-                spellblade_ready=t+1.5
-            if it=="Sheen":
-                onp+=s["basead"]; note.append("Sheen")
-                spellblade_ready=t+1.5
-        if it=="Guinsoo's Rageblade" and item_proc and rage_extra:
-            # Phantom hit repeats Rageblade's own repeatable on-hit only.
-            # It must not duplicate unrelated every-N-attacks procs such as Kraken.
-            onm+=30; note.append("Rageblade phantom on-hit")
-        phy+=onp; mag+=onm
-        if it=="Lord Dominik's Regards":
-            amp=min(.12,max(0,bonus_hp)/125*.01); phy*=1+amp; mag*=1+amp; true*=1+amp
-        dmg=phy*rm(ea)+mag*rm(mr)+true
-        if target_aa_reduction: dmg*=1-target_aa_reduction
-        before=hp; hp-=dmg
-        if it=="The Collector" and item_proc:
-            th=min(1,.05+.001*execs)
-            if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
-        if it=="Phantom Dancer" and item_proc: pd_stacks=min(5,pd_stacks+1)
-        if it=="Guinsoo's Rageblade" and item_proc: rb=min(4,rb+1)
-        if it=="Terminus" and item_proc:
-            if k%2: light=min(3,light+1)
-            else: dark=min(3,dark+1)
-        if it=="Yun Tal Wildarrows" and item_proc:
-            # Practice Makes Perfect: ranged AAs permanently grant +0.2% crit (max +25%).
-            # Flurry (7.3a): first champion attack grants +35% AS for 6s, base CD 25s.
-            # Every AA reduces remaining Flurry CD by 1s; a crit reduces it by 2s instead.
-            # Crit is deterministic expected-value in this benchmark, so use the expected
-            # reduction 1 + crit seconds per attack (1s non-crit, 2s crit).
-            ytcrit=min(.25,ytcrit+.002)
-            if yt_cd<=t:
-                yt_until=t+6
-                yt_cd=t+25
-                note.append("Flurry")
-            else:
-                yt_cd=max(t,yt_cd-(1.0+crit))
-        if it=="Fiendhunter Bolts" and item_proc and fh and t<=8: fh-=1
-        log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note)])
-        # Count the full attack interval for every landed attack, including the killing hit.
-        # Tier-list DPS is based on actual simulated damage dealt over combat time rather
-        # than target HP / timestamp of the killing attack. This preserves differences
-        # between items that kill on the same attack number but deal different damage.
-        t+=1/asp
-        if hp<=0: break
-    total_sim_damage=sum(float(x[6]) for x in log)
-    return [it,q["gold"],round(t,3),k,round(total_sim_damage/t,1) if t else float("inf")],log
+    row,log=sim_build(n,l,hp0,arm,mr,[it],db,mist,bonus_hp,dist,target_aa_reduction,yuntal_start_stacks,base_mana,spell,energized,ult,execs,active_ready,item_proc=item_proc)
+    return row,[x[:9] for x in log]
 
-
-def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None):
+def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True,initial_flurry=False):
     """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
     items=list(items)
+    _validate_build(items,db,boot)
     s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
     bootq=dct(B[boot]) if boot in B else dct(())
     total=lambda key: sum(float(q[key]) for q in qs)+float(bootq.get(key,0))
@@ -812,42 +733,49 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
     kraken_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
-    while hp>0 and k<500:
-        k+=1
-        dyn=(.08*rb if "Guinsoo's Rageblade" in items else 0.0)+(.06*pd_stacks if "Phantom Dancer" in items else 0.0)
-        if "Yun Tal Wildarrows" in items and t<yt_until: dyn+=.35
-        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn))
-        crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if "Yun Tal Wildarrows" in items else 0))
+    fh=3 if "Fiendhunter Bolts" in items and ult and item_proc else 0
+    if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
+    state=yield None
+    while k<500:
+        hp=float(state["hp"]); t=float(state["time"]); k+=1
+        current_ad=ad+float(state.get("bonus_ad",0))
+        dyn=(.08*rb if ("Guinsoo's Rageblade" in items and item_proc) else 0.0)+(.06*pd_stacks if ("Phantom Dancer" in items and item_proc) else 0.0)
+        if ("Yun Tal Wildarrows" in items and item_proc) and t<yt_until: dyn+=.35
+        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))))
+        crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if ("Yun Tal Wildarrows" in items and item_proc) else 0))
+        crit=float(state.get("crit",crit))
         cd=2.3 if "Infinity Edge" in items else 2.0
         if n=="Senna": cd*=.9
-        pct=total("pctpen")+(.10*dark if "Terminus" in items else 0)
-        if "Terminus" in items: pct=min(.40,pct)
-        ea=max(0,arm*(1-pct)-total("flatpen"))
+        pct=total("pctpen")+(.10*dark if ("Terminus" in items and item_proc) else 0)
+        if ("Terminus" in items and item_proc): pct=min(.40,pct)
+        ea=_effective_resistance(arm,pct,total("flatpen"))
         # Patch 7.3 Rageblade no longer disables critical strikes; crit remains normal AA expected damage.
-        phy=ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
+        phy=current_ad*(1+crit*(cd-1)); onp=0.; onm=0.; true=0.; note=[]
 
+        if fh and t<=8:
+            asp=min(3,asp+s["ratio"]*.50); phy=current_ad*cd*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
         if "Hexoptics C44" in items:
             amp=0.0 if dist<100 else min(.10,(int((dist-100)//50)+1)*.01)
             phy*=1+amp; true*=1+amp; note.append(f"C44 {amp*100:.0f}%")
         if "Galeforce" in items and active_ready and k==1:
-            bonus_ad=max(0,ad-s["basead"])
+            bonus_ad=max(0,current_ad-s["basead"])
             onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst")
         if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
-        if "Terminus" in items: onm+=30
+        if ("Terminus" in items and item_proc): onm+=30
         if "Wit's End" in items: onm+=40
         if "Nashor's Tooth" in items:
-            qn=dct(db["Nashor's Tooth"]); onm+=15+.20*qn["ap"]
+            onm+=15+.20*total("ap")
         if "Recurve Bow" in items: onp+=15
         if "Muramana" in items: onp+=.015*mana
 
         rage_extra=False
-        if "Guinsoo's Rageblade" in items:
+        if ("Guinsoo's Rageblade" in items and item_proc):
             onm+=30
             if rb>=4:
                 rage_hits+=1
                 if rage_hits>=3: rage_extra=True; rage_hits=0
 
-        if "Kraken Slayer" in items:
+        if ("Kraken Slayer" in items and item_proc):
             kraken_hits+=1+(1 if rage_extra else 0)
             if kraken_hits>=3:
                 base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
@@ -857,17 +785,17 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
         if rage_extra:
             onm+=30
             if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
-            if "Terminus" in items: onm+=30
+            if ("Terminus" in items and item_proc): onm+=30
             if "Wit's End" in items: onm+=40
             if "Nashor's Tooth" in items:
-                qn=dct(db["Nashor's Tooth"]); onm+=15+.20*qn["ap"]
+                onm+=15+.20*total("ap")
             if "Recurve Bow" in items: onp+=15
             if "Muramana" in items: onp+=.015*mana
             note.append("Phantom Hit")
 
         # Recurring Energized cadence mirrors the audited single-item engine.
         for eit,period,magic,label in (("Rapid Firecannon",7,80,"RFC Energized"),("Stormrazor",7,120,"Storm Energized"),("Statikk Shiv",5,60,"Shiv Energized")):
-            if eit in items:
+            if eit in items and item_proc:
                 proc=(k==1 or (k>1 and (k-1)%period==0)) if energized else (k%period==0)
                 if proc: onm+=magic; note.append(label)
         if "Kircheis Shard" in items and energized and k==1:
@@ -875,17 +803,17 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
 
         if spell and t>=spellblade_ready:
             triggered=False
-            if "Essence Reaver" in items:
+            if ("Essence Reaver" in items and item_proc):
                 onp+=1.35*s["basead"]+min(80,.8*crit*100); note.append("ER"); triggered=True
-            if "Trinity Force" in items:
+            if ("Trinity Force" in items and item_proc):
                 onp+=2*s["basead"]; note.append("Trinity"); triggered=True
-            if "Iceborn Gauntlet" in items:
-                qi=dct(db["Iceborn Gauntlet"]); onp+=s["basead"]+.25*qi["armor"]; note.append("Iceborn"); triggered=True
+            if ("Iceborn Gauntlet" in items and item_proc):
+                onp+=s["basead"]+.25*total("armor"); note.append("Iceborn"); triggered=True
             if "Sheen" in items:
                 onp+=s["basead"]; note.append("Sheen"); triggered=True
             if triggered: spellblade_ready=t+1.5
 
-        if "Duskblade of Draktharr" in items and k==1:
+        if ("Duskblade of Draktharr" in items and item_proc) and k==1:
             onp+=60+(l-1)/14*100; note.append("Nightstalker")
 
         phy+=onp
@@ -893,32 +821,26 @@ def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_red
             gs=min(.12,max(0,bonus_hp)/125*.01)
             phy*=1+gs; onm*=1+gs; true*=1+gs
             if gs: note.append(f"Giant Slayer {gs*100:.0f}%")
-        dmg=phy*rm(ea)+onm*rm(mr)+true
+        em=_effective_resistance(mr,total("pctmpen")+(.10*dark if ("Terminus" in items and item_proc) and item_proc else 0),total("flatmpen"),cap=.40 if ("Terminus" in items and item_proc) else 1.)
+        dmg=phy*rm(ea)+onm*rm(em)+true
         if boot=="Immortal Treads": dmg*=1.05
         if target_aa_reduction: dmg*=1-target_aa_reduction
-        before=hp; hp-=dmg
+        before=hp
 
-        if "The Collector" in items:
-            th=min(1,.05+.001*execs)
-            if 0<hp<=hp0*th: hp=0; note.append(f"Execute {th*100:.1f}%")
-        if "Phantom Dancer" in items: pd_stacks=min(5,pd_stacks+1)
-        if "Guinsoo's Rageblade" in items: rb=min(4,rb+1)
-        if "Terminus" in items:
+        if ("Phantom Dancer" in items and item_proc): pd_stacks=min(5,pd_stacks+1)
+        if ("Guinsoo's Rageblade" in items and item_proc): rb=min(4,rb+1)
+        if ("Terminus" in items and item_proc):
             if k%2: light=min(3,light+1)
             else: dark=min(3,dark+1)
-        if "Yun Tal Wildarrows" in items:
+        if ("Yun Tal Wildarrows" in items and item_proc):
             ytcrit=min(.25,ytcrit+.002)
             if yt_cd<=t:
                 yt_until=t+6; yt_cd=t+25; note.append("Flurry")
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
-        log.append([k,round(t,3),round(asp,4),round(crit*100,2),round(ea,1),round(before,1),round(dmg,1),round(max(hp,0),1),", ".join(note),rb,light,dark])
-        t+=1/asp
-        if hp<=0: break
-    total_damage=sum(float(x[6]) for x in log)
-    gold=sum(float(q["gold"]) for q in qs)+float(bootq.get("gold",0))
-    _label=" + ".join(items)+((" + "+boot) if boot else "")
-    return [_label,gold,round(t,3),k,round(total_damage/t,1) if t else float("inf")],log
+        if fh and t<=8: fh-=1
+        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"rage":rb,"light":light,"dark":dark,"ad":current_ad}
+
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
 champ=st.session_state.get("build_champ",list(C)[0])
@@ -1787,6 +1709,7 @@ with tabs[1]:
             key="build_immortal_above_half"
         )
 
+    st.caption("Shared AA engine: Energized recharge follows the benchmark attack cadence; Spellblade-ready allows recurring casts every 1.5s. Skills themselves remain outside this model.")
     # Yun Tal assumptions are only relevant when the item is in the build.
     yt_bonus_crit=0.0
     yt_flurry=False
@@ -1846,7 +1769,8 @@ with tabs[1]:
         display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn+rune_bonus_as))
         if "Overgrowth" in selected_sub_runes:
             st.caption(f"Overgrowth applied to tracked build/rune HP: {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} flat rune HP → {build_max_hp:.1f} HP contribution after ×{overgrowth_health_mult:.2f}.")
-        hp2=float(hp); t=0.; attacks=0; pd_stacks=rb=dark=0; rage_hits=0; fh=3 if ("Fiendhunter Bolts" in build and ult) else 0
+        dealt_damage=0.
+        hp2=float(hp); t=0.; attacks=0
         rune_trace=[]
         rune_timeline=[]
         conq_stacks=0; lt_stacks=0; empowerment_hits=0; empowerment_active=False; brutal_cd_ready=0.0
@@ -1861,68 +1785,16 @@ with tabs[1]:
         chain_hits_left=2 if chain_marked else 0
         scorch_pending=(1.0 if ("Scorch" in selected_sub_runes and scorch_ability_hit) else None)
         scorch_ready_at=0.0
+        _engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),mana,spell,energized,ult,execs,False,boot,initial_flurry=yt_flurry)
+        next(_engine)
         while hp2>0 and attacks<500:
             attacks+=1
-            dyn=(.06*pd_stacks if "Phantom Dancer" in build else 0)+(.08*rb if "Guinsoo's Rageblade" in build else 0)
-            if "Yun Tal Wildarrows" in build and yt_flurry: dyn+=.35
-            if "Fiendhunter Bolts" in build and fh and t<=8: dyn+=.50
-            if keystone=="Conqueror":
-                # User-confirmed convention for tooltip ranges: linear Lv1 -> Lv15 scaling.
-                _conq_ad_per_stack=lvl_scale(3.0,5.0,level)
-                current_ad=ad+conq_stacks*_conq_ad_per_stack
-            else:
-                current_ad=ad
-            lt_as=.048*lt_stacks if keystone=="Lethal Tempo" else 0.0
-            asp=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+dyn+rune_bonus_as+lt_as))
-            cc=crit
-            pct=total["pctpen"]+(.10*dark if "Terminus" in build else 0)
-            if "Terminus" in build: pct=min(.40,pct)
-            ea=max(0,armor*(1-pct)-total["flatpen"])
-            true=0.; mag=0.; onp=0.
-            if "Fiendhunter Bolts" in build and fh and t<=8:
-                phy=current_ad*(cd*.80); true=current_ad*.15*cc
-            else: phy=current_ad*(1+cc*(cd-1))
-            if "Hexoptics C44" in build:
-                amp=max(0,min(.10,.10*dist/550)); phy*=1+amp; true*=1+amp
-            if "Wit's End" in build: mag+=40
-            if "Nashor's Tooth" in build: mag+=15+.20*total["ap"]
-            rage_extra=False
-            if "Guinsoo's Rageblade" in build:
-                mag+=30
-                if rb>=4:
-                    rage_hits+=1
-                    if rage_hits>=3:
-                        rage_extra=True; rage_hits=0
-            if "Terminus" in build: mag+=30
-            if "Blade of the Ruined King" in build: onp+=max(15,.07*hp2)
-            if "Muramana" in build: onp+=.015*maxmana
-            if "Kraken Slayer" in build and attacks%3==0:
-                base=120+(level-1)/14*48; miss=(hp-hp2)/hp
-                onp+=base*(1+min(.75,.75*miss))
-            if "Duskblade of Draktharr" in build and attacks==1: onp+=60+(level-1)/14*100
-            if energized and attacks==1:
-                if "Rapid Firecannon" in build: mag+=80
-                if "Stormrazor" in build: mag+=120
-                if "Statikk Shiv" in build: mag+=60
-            if spell and attacks==1:
-                if "Essence Reaver" in build: onp+=1.35*s0["basead"]+min(80,.8*cc*100)
-                if "Trinity Force" in build: onp+=2*s0["basead"]
-                if "Iceborn Gauntlet" in build: onp+=s0["basead"]+.25*total["armor"]
-            if "Guinsoo's Rageblade" in build and rage_extra:
-                # Repeat only repeatable on-hit effects; never duplicate Kraken,
-                # Energized, Spellblade, Duskblade, or the basic attack itself.
-                mag+=30
-                if "Wit's End" in build: mag+=40
-                if "Nashor's Tooth" in build: mag+=15+.20*total["ap"]
-                if "Terminus" in build: mag+=30
-                if "Blade of the Ruined King" in build: onp+=max(15,.07*hp2)
-                if "Muramana" in build: onp+=.015*maxmana
-            phy+=onp
-            if "Lord Dominik's Regards" in build:
-                amp=min(.12,.12*max(0,bonus_hp)/1200); phy*=1+amp; mag*=1+amp; true*=1+amp
-            em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
-            dmg=phy*rm(ea)+mag*rm(em)+true
-            if target_aa_reduction: dmg*=1-target_aa_reduction
+            current_ad=ad+conq_stacks*lvl_scale(3.,5.,level) if keystone=="Conqueror" else ad
+            lt_as=.048*lt_stacks if keystone=="Lethal Tempo" else 0.
+            _hit=_engine.send({"hp":hp2,"time":t,"bonus_ad":current_ad-(s0["ad"]+total["ad"]+awe),"bonus_as":rune_bonus_as+lt_as})
+            asp=_hit["as"]; cc=_hit["crit"]; ea=_hit["armor"]; em=_hit["mr"]; dmg=_hit["damage"]
+            # Immortal is controlled by the explicit own-health toggle in this tab.
+            if boot=="Immortal Treads": dmg/=1.05
 
             # Rune effects read the live state before this hit.
             hp_pct=hp2/hp if hp else 0
@@ -2004,10 +1876,11 @@ with tabs[1]:
                 empowered_attack_ready_at=t+8.0
             if scorch_pending is not None and t>=scorch_pending and t>=scorch_ready_at:
                 _sv=lvl_scale(21,49,level)*rm(em)
-                hp2-=_sv
+                hp2-=_sv; dealt_damage+=_sv
                 rune_trace.append(["EVENT",round(scorch_pending,3),round(hp_pct*100,1),f"Scorch +{_sv:.1f} magic",round(_sv,1),round(_sv,1)])
                 scorch_ready_at=scorch_pending+8.0
                 scorch_pending=None
+
             if boot=="Immortal Treads" and immortal_above_half: dmg*=1.05
             _rune_delta=dmg-_pre_rune_dmg
             _event_text=" • ".join(_rune_events+_rune_parts)
@@ -2019,7 +1892,7 @@ with tabs[1]:
             if "Sudden Impact" in selected_sub_runes: _cd_bits.append(f"Sudden {'READY' if sudden_impact_ready_at<=t else f'{sudden_impact_ready_at-t:.1f}s'}")
             if "Tyrant" in selected_sub_runes: _cd_bits.append(f"Tyrant {'READY' if tyrant_ready_at<=t else f'{tyrant_ready_at-t:.1f}s'}")
             if "Empowered Attack" in selected_sub_runes: _cd_bits.append(f"EmpAtk {'READY' if empowered_attack_ready_at<=t else f'{empowered_attack_ready_at-t:.1f}s'}")
-            hp2-=dmg
+            hp2-=dmg; dealt_damage+=dmg
             if "The Collector" in build:
                 th=min(1,.05+.001*execs)
                 if 0<hp2<=hp*th: hp2=0
@@ -2029,60 +1902,31 @@ with tabs[1]:
             if keystone=="Empowerment":
                 empowerment_hits=min(3,empowerment_hits+1)
                 if empowerment_hits>=3: empowerment_active=True
-            if "Phantom Dancer" in build: pd_stacks=min(5,pd_stacks+1)
-            if "Guinsoo's Rageblade" in build: rb=min(4,rb+1)
-            if "Terminus" in build and attacks%2==0: dark=min(3,dark+1)
-            if "Fiendhunter Bolts" in build and fh and t<=8: fh-=1
             _stack_after=f"Conq {conq_stacks}/6 | LT {lt_stacks}/6 | Empower {empowerment_hits}/3"
             rune_timeline.append([attacks,round(t,3),round(max(0,hp2),1),_stack_before+" → "+_stack_after," • ".join(_cd_bits) if _cd_bits else "—",_event_text or "—"])
-            if hp2<=0: break
             t+=1/asp
+            if hp2<=0: break
         cost=sum(F[x][0] for x in build)+B[boot][0]
 
-        # Highest legal one-AA damage. A crit is forced only when the build has non-zero crit chance.
+        # A fresh first-hit scenario uses the same item kernel, with a legal forced crit.
         maxcrit=crit>0
-        max_ea=max(0,armor*(1-total["pctpen"])-total["flatpen"])
-        hit_phy=ad*(cd if maxcrit else 1.0); hit_mag=0.; hit_true=0.
-        parts=[["Basic AA crit" if maxcrit else "Basic AA","Physical",hit_phy]]
-        if "Hexoptics C44" in build:
-            amp=max(0,min(.10,.10*dist/550)); hit_phy*=1+amp
-            parts=[[n,typ,v*(1+amp) if typ=="Physical" else v] for n,typ,v in parts]
-        for name,val in [("Wit's End",40 if "Wit's End" in build else 0),
-                         ("Rageblade",30 if "Guinsoo's Rageblade" in build else 0),
-                         ("Terminus",30 if "Terminus" in build else 0)]:
-            if val: hit_mag+=val; parts.append([name,"Magic",val])
-        if "Nashor's Tooth" in build:
-            v=15+.20*total["ap"]; hit_mag+=v; parts.append(["Nashor's Tooth","Magic",v])
-        if "Blade of the Ruined King" in build:
-            v=max(15,.07*hp); hit_phy+=v; parts.append(["BotRK current-HP","Physical",v])
-        if "Muramana" in build:
-            v=.015*maxmana; hit_phy+=v; parts.append(["Muramana Shock","Physical",v])
-        if energized:
-            for name,val in [("Rapid Firecannon",80),("Stormrazor",120),("Statikk Shiv",60)]:
-                if name in build: hit_mag+=val; parts.append([name,"Magic",val])
-        if spell:
-            if "Essence Reaver" in build:
-                v=1.35*s0["basead"]+min(80,80 if maxcrit else 0); hit_phy+=v; parts.append(["Essence Reaver","Physical",v])
-            if "Trinity Force" in build:
-                v=2*s0["basead"]; hit_phy+=v; parts.append(["Trinity Force","Physical",v])
-            if "Iceborn Gauntlet" in build:
-                v=s0["basead"]+.25*total["armor"]; hit_phy+=v; parts.append(["Iceborn Gauntlet","Physical",v])
-        if "Duskblade of Draktharr" in build:
-            v=60+(level-1)/14*100; hit_phy+=v; parts.append(["Duskblade","Physical",v])
-        ldramp=min(.12,.12*max(0,bonus_hp)/1200) if "Lord Dominik's Regards" in build else 0
-        if ldramp:
-            hit_phy*=1+ldramp; hit_mag*=1+ldramp; hit_true*=1+ldramp
-            parts=[[n,typ,v*(1+ldramp)] for n,typ,v in parts]
-        max_em=max(0,mr*(1-total["pctmpen"])-total["flatmpen"])
-        max_hit=(hit_phy*rm(max_ea)+hit_mag*rm(max_em)+hit_true)*(1-target_aa_reduction)
-        if boot=="Immortal Treads" and immortal_above_half:
-            max_hit*=1.05
-            parts=[[n+" × Immortal Treads",typ,v*1.05] for n,typ,v in parts]
+        _max_engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),mana,spell,energized,ult,execs,False,boot)
+        next(_max_engine)
+        _max=_max_engine.send({"hp":hp,"time":0.,"bonus_ad":rune_bonus_ad,"crit":1. if maxcrit else 0.})
+        max_ea=_max["armor"]; max_em=_max["mr"]; max_hit=_max["damage"]
+        parts=[["AA + item effects","Physical",_max["physical"]],["Item effects","Magic",_max["magic"]],["Item effects","True",_max["true"]]]
+        if boot=="Immortal Treads":
+            _imm=1.05 if immortal_above_half else 1.
+            parts=[[name,typ,value*_imm] for name,typ,value in parts]
+            if not immortal_above_half: max_hit/=1.05
 
-        _avg_dps=(hp/t) if t else float("inf")
+        _avg_dps=dealt_damage/t if t else 0.
+        _killed=hp2<=0
+        if not _killed: st.warning("Target not killed within 500 attacks. Time to kill is unavailable.")
+        _ttk_text=f"{t:.3f}" if _killed else "Not killed"
         st.markdown('<div class="combat-result-head"><div><span>COMBAT ANALYSIS</span><strong>Build Performance</strong></div><em>SHARPWR DAMAGE ENGINE</em></div>',unsafe_allow_html=True)
         _dps_text=f"{_avg_dps:.1f}" if t else "∞"
-        st.markdown(f'<div class="combat-hero"><div class="combat-kpi hero"><div class="label">AVERAGE DPS</div><div><span class="value">{_dps_text}</span> <span class="unit">DPS</span></div><div class="sub">Target-death benchmark</div></div><div class="combat-kpi"><div class="label">TIME TO KILL</div><div><span class="value">{t:.3f}</span> <span class="unit">SEC</span></div><div class="sub">{attacks} attacks</div></div><div class="combat-kpi"><div class="label">MAX SINGLE HIT</div><div><span class="value">{max_hit:.1f}</span></div><div class="sub">Highest legal AA setup</div></div><div class="combat-kpi"><div class="label">BUILD COST</div><div><span class="value">{cost:,}</span> <span class="unit">G</span></div><div class="sub">Items + boots</div></div></div>',unsafe_allow_html=True)
+        st.markdown(f'<div class="combat-hero"><div class="combat-kpi hero"><div class="label">AVERAGE DPS</div><div><span class="value">{_dps_text}</span> <span class="unit">DPS</span></div><div class="sub">Damage over attack intervals</div></div><div class="combat-kpi"><div class="label">TIME TO KILL</div><div><span class="value">{_ttk_text}</span> <span class="unit">SEC</span></div><div class="sub">{attacks} attacks</div></div><div class="combat-kpi"><div class="label">MAX SINGLE HIT</div><div><span class="value">{max_hit:.1f}</span></div><div class="sub">Highest legal AA setup</div></div><div class="combat-kpi"><div class="label">BUILD COST</div><div><span class="value">{cost:,}</span> <span class="unit">G</span></div><div class="sub">Items + boots</div></div></div>',unsafe_allow_html=True)
         _pieces="".join(f'<span class="piece">{html.escape(_x)}</span>' for _x in build)
         st.markdown(f'<div class="build-ribbon"><span class="tag">LOADOUT</span>{_pieces}<span class="piece boots">{html.escape(boot)}</span></div>',unsafe_allow_html=True)
         st.markdown('<div class="combat-stat-title">OFFENSIVE STAT PROFILE</div>',unsafe_allow_html=True)
@@ -2109,7 +1953,7 @@ with tabs[1]:
             m1.metric("Flat Magic Pen",f"{total['flatmpen']:.0f}")
             m2.metric("Magic Pen",f"{total['pctmpen']*100:.0f}%")
 
-        st.caption(f"Combat completed in {attacks} basic attacks against the configured {int(hp):,} HP target.")
+        st.caption(f"Simulation ran {attacks} basic attacks against the configured {int(hp):,} HP target.")
         with st.expander("Rune Combat Breakdown V2"):
             if rune_trace:
                 st.caption("Each rune contribution is separated. Multipliers show their exact damage delta on that hit.")
@@ -2120,7 +1964,7 @@ with tabs[1]:
             if rune_timeline:
                 st.dataframe(pd.DataFrame(rune_timeline,columns=["AA","Time","Target HP After","Stacks Before → After","Cooldowns","Rune Events"]),use_container_width=True,hide_index=True)
         with st.expander("Max Single Hit breakdown"):
-            st.caption("Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
+            st.caption("Item-only first-hit estimate using the shared engine; rune damage is excluded. Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
             br=[]
             for pn,pt,pv in parts:
                 dealt=pv*rm(max_ea) if pt=="Physical" else pv*rm(max_em) if pt=="Magic" else pv
@@ -2403,4 +2247,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.44 | Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
+st.caption("Web V5.45 | Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Jhin rankings disabled pending 4-shot/reload modeling.")
