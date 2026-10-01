@@ -4,7 +4,8 @@ from champion_database import level_stats
 from fight_engine import replay_samira,champion_ranks
 from marksman_kits import PRIORITIES
 
-EXCLUSIVE=({'Mortal Reminder',"Lord Dominik's Regards","Serylda's Grudge",'Terminus'},{'Manamune','Muramana'})
+SPELLBLADE=frozenset({'Trinity Force','Essence Reaver','Iceborn Gauntlet','Sheen'})
+EXCLUSIVE=({'Mortal Reminder',"Lord Dominik's Regards","Serylda's Grudge",'Terminus'},{'Manamune','Muramana'},SPELLBLADE)
 TIER3=('Immortal Treads','Crimson Lucidity','Gunmetal Greaves','Chainlaced Crushers','Armored Advance',"Spellslinger's Shoes",'Armorcrusher Boots')
 def legal(items):return len(items)==len(set(items)) and all(len(set(items)&group)<=1 for group in EXCLUSIVE)
 def score(row):return (row['TTK'] is None,row['TTK'] if row['TTK'] is not None else -row['Damage'],row['Gold'],row['Items'],row['Boots'] or '')

@@ -37,3 +37,5 @@ Coverage includes all 23 champion evaluators, AP ability scaling, Zeri cap diagn
 Final validation: 127/127 automated tests passed in 88.226 seconds, including all 23 champions, the item optimizer, ability-aware UI and offensive-active cooldown regression.
 
 V5.60.3: highest-percent Spellblade wins; Fiendhunter pre-cast defaults removed; recorded champion mana/growth/regen feeds the kernel. WR7.3 Muramana max-mana Shock remains unchanged in principle; actual skill consumption/refund/regen is tracked and skill-on-hit callbacks do not duplicate AA Shock.
+
+V5.60.4: only one Spellblade item is legal (ER/Trinity/Iceborn/Sheen). Full and partial build search exclude multiple Spellblade items.

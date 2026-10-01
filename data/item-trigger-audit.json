@@ -1,5 +1,5 @@
 {
-  "version": "5.60.3",
+  "version": "5.60.4",
   "basis": "Current code audit; does not assert unverified game trigger rules",
   "records": [
     {
@@ -136,7 +136,7 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
       "review_needed": false
     },
     {
@@ -236,7 +236,7 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
       "review_needed": false
     },
     {
@@ -293,7 +293,7 @@
       "scope": "completed",
       "trigger_category": "spell-trigger",
       "coverage": "modeled",
-      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
       "review_needed": false
     },
     {
@@ -397,7 +397,7 @@
     {
       "item": "Sheen",
       "scope": "component",
-      "finding": "Real cast-triggered Spellblade. Highest percentage coefficient wins; exactly one Spellblade damage proc. Internal CD 1.5s retained.",
+      "finding": "User confirms only one Spellblade item may be purchased. Other items disabled in picker, illegal combinations rejected by kernel and optimizer. Cast-triggered 1.5s proc remains.",
       "review_needed": false
     },
     {

@@ -128,3 +128,7 @@ Yun Tal existing starting crit/stack approximation is based on user in-game AA m
 ## V5.60.3 user rules
 
 PD/Youmuu closed as approved scope. Spellblade highest percentage coefficient only. Fiendhunter actual R only. Galeforce 325 max dash and 600 target radius implemented. I01 Rageblade/Kraken/Terminus and I02 Hexoptics are in-game TODO. Muramana uses recorded champion mana/growth/regen and skill spending/refund; 7.3 removed Shock drain, so max-mana damage remains correct.
+
+## V5.60.4 — exclusive Spellblade purchase
+
+User confirms only one Spellblade item can be purchased. Selecting ER, Trinity or Iceborn disables the other Spellblade choices; removing it unlocks them. Sheen shares the validation group. Optimizer excludes illegal combinations. Existing saved loadouts keep the first Spellblade and remove subsequent ones. Old tier results are invalidated for recalculation.

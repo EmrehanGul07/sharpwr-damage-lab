@@ -10,7 +10,7 @@ from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
-from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3
+from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPELLBLADE
 
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
@@ -695,6 +695,8 @@ def _target_profile_at_level(profile,lvl):
 
 
 def _validate_build(items,db,boot=None):
+    from build_fight_optimizer import SPELLBLADE
+    if len(set(items)&SPELLBLADE)>1:raise ValueError("Only one Spellblade item is allowed.")
     if len(items)>5: raise ValueError("At most five items are allowed.")
     if len(items)!=len(set(items)): raise ValueError("Duplicate items are not allowed.")
     if any(x not in db or x in B or x=="Boots of Speed" for x in items): raise ValueError("Choose valid items; boots use the separate slot.")
@@ -1014,7 +1016,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=(tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.60.4",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1262,6 +1264,13 @@ with tabs[1]:
 
     st.markdown("""<div class="build-forge-head"><div class="forge-icon">◆</div><div><span>BUILD FORGE</span><strong>Assemble Full Loadout</strong></div></div>""",unsafe_allow_html=True)
     build=list(st.session_state.build_items_v2)
+    _seen_spellblade=False;_legal_build=[]
+    for _item in build:
+        if _item in SPELLBLADE:
+            if _seen_spellblade:continue
+            _seen_spellblade=True
+        _legal_build.append(_item)
+    build=_legal_build;st.session_state.build_items_v2=build
     _item_gold=sum(float(dct(F[_x])["gold"]) for _x in build)
     _build_ready=len(build)==5 and len(set(build))==5
     st.markdown(f'<div class="build-summary"><span class="{"ready" if _build_ready else ""}">{len(build)}/5 ITEMS</span><span>{int(_item_gold):,}g ITEM COST</span><span>+ 1 BOOTS SLOT</span></div>',unsafe_allow_html=True)
@@ -1292,13 +1301,14 @@ with tabs[1]:
                     _val=f"{_v*100:g}%" if _key in ("as","crit","lifesteal","pctpen","ms") else f"{_v:g}"
                     _stats.append(f'<div class="wr-card-stat"><b>{html.escape(_val)}</b>{html.escape(_label)}</div>')
             _card=f'<div class="wr-hover-card"><div class="wr-card-title">{html.escape(_name)}</div><div class="wr-card-sub">◆ {int(_q["gold"])} Gold</div><div class="wr-card-rule"></div><div class="wr-card-stats">{"".join(_stats)}</div></div>'
+            _spellblade_locked=_name in SPELLBLADE and not _selected and bool(set(build)&SPELLBLADE)
             with _col:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button("Equipped" if _selected else "Build full" if len(build)>=5 else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5):
+                if st.button("Equipped" if _selected else "Spellblade locked" if _spellblade_locked else "Build full" if len(build)>=5 else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5 or _spellblade_locked):
                     _new=list(st.session_state.build_items_v2)
-                    if _name not in _new and len(_new)<5:
+                    if _name not in _new and len(_new)<5 and not (_name in SPELLBLADE and set(_new)&SPELLBLADE):
                         _new.append(_name); st.session_state.build_items_v2=_new
                     st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
@@ -1984,4 +1994,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.60.3 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.60.4 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
