@@ -1721,7 +1721,6 @@ with tabs[1]:
             key="build_immortal_above_half"
         )
 
-    st.caption("Shared AA engine: Energized recharge follows the benchmark attack cadence; Spellblade-ready allows recurring casts every 1.5s. AA DPS excludes skill casts; standalone supported skill estimates appear in Skill Lab.")
     # Yun Tal assumptions are only relevant when the item is in the build.
     yt_bonus_crit=0.0
     yt_flurry=False
