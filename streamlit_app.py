@@ -6,9 +6,13 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.67.0")
+ensure_engine_revision("5.68.0")
 from combat_replay import replay_payload, replay_html
-from item_consensus import consensus, adopters
+import item_consensus as _item_consensus
+if not hasattr(_item_consensus, "champion_items"):
+    import importlib
+    importlib.reload(_item_consensus)
+from item_consensus import consensus, adopters, champion_items
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -1027,7 +1031,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=st.number_input("Yunara base maximum mana",0.0,5000.0,0.0,50.0,key="tier_mana") if tier_champ=="Yunara" else None
-    _tier_signature=("5.67.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.68.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1051,7 +1055,7 @@ with tabs[0]:
         except (ValueError,LookupError,StopIteration) as _err:
             st.error(f"Build search could not run: {_err}")
         finally:_progress.empty()
-    if st.button("Compare all 3 target profiles",key="tier_all_profiles"):
+    if st.button("Compare all 3 target profiles",key="compare_all_profiles"):
         _history_key=(_tier_signature[0],tier_champ,tier_level,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
         _history=st.session_state.setdefault('combat_rank_history',{}).setdefault(_history_key,{})
         _progress=st.progress(0.,text="Comparing three target profiles…")
@@ -1083,13 +1087,21 @@ with tabs[0]:
             _tie=f'<p class="rank-tie">{html.escape(_r.get("Rank explanation", ""))}</p>' if _r.get("Rank explanation") else ""
             _cards.append(f'<div class="fight-build-card"><strong>#{_rank}</strong><div class="fight-build-icons">{_images}</div><p>{"<br>".join(html.escape(x) for x in _names)}</p><div class="fight-build-kpi">{_ttk}</div>{_tie}<p>{_r["DPS"]:.1f} DPS · {int(_r["Gold"]):,}g<br>{_r["AD"]:.0f} AD · {_r["AP"]:.0f} AP · {_r["Crit %"]:.0f}% crit · {_r["AH"]:.0f} AH<br>{_r["Starting AS"]:.2f} starting AS · {_r["AS over cap"]:.2f} AS above starting cap</p></div>')
         _cards.append('</div>');st.markdown(''.join(_cards),unsafe_allow_html=True)
+        st.markdown(f'### Item Tier List For "{tier_champ}"')
+        st.caption(f"Top 10 from this search · {tier_target} · full-build ranks plus 1–4 item ranks. These are matchup recommendations, not mandatory purchases.")
+        _item_cards=['<div class="partial-build-grid">']
+        for _rank,_item in enumerate(champion_items(_search),1):
+            _name=_item['Item']
+            _item_cards.append(f'<div class="partial-build-card"><div class="partial-build-rank">#{_rank}</div><div class="partial-build-body"><div class="partial-build-item"><img src="{html.escape(item_icon(_name))}" alt="{html.escape(_name)}"><span>{html.escape(_name)}</span></div><p>{html.escape(_item["Note"])}</p></div></div>')
+        _item_cards.append('</div>');st.markdown(''.join(_item_cards),unsafe_allow_html=True)
+
         if _saved.get('replay_error'):
             st.warning(f"Build results are available; replay could not be recorded: {_saved['replay_error']}")
         if _saved.get('replay'):
             st.markdown('### Combat Replay · #1 Build')
             components.html(replay_html(_saved['replay']),height=790,scrolling=True)
             import json as _replay_json
-            st.download_button("Download replay trace",_replay_json.dumps(_saved['replay'],ensure_ascii=False,indent=2),file_name=f"{tier_champ.lower().replace(' ', '-')}-combat-replay.json",mime="application/json",key="tier_replay_download")
+            st.download_button("Download replay trace",_replay_json.dumps(_saved['replay'],ensure_ascii=False,indent=2),file_name=f"{tier_champ.lower().replace(' ', '-')}-combat-replay.json",mime="application/json",key="combat_replay_download")
         st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP, crit, on-hit, penetration and hybrid paths are retained. Finalists are rechecked with six skill priorities, movement alternatives, AA weaving and two ultimate timings. No incoming damage or defensive value is ranked.')
         def _tier_result_frame(rows):
             return pd.DataFrame([{"Rank":i,"Build":" + ".join(r["Items"])+(" + "+r["Boots"] if r["Boots"] else ""),"TTK (s)":r["TTK"],"DPS":round(r["DPS"],1),"AA damage":round(r["AA damage"],1),"Abilities / passives":round(r["Other damage"],1),"Gold":r["Gold"],"AD":round(r["AD"],1),"AP":r["AP"],"Crit %":r["Crit %"],"AH":r["AH"],"Skill order":r["Rotation"],"Movement":{"skill_envelope":"Ready skill range","aa_envelope":"Maximum AA range","close_envelope":"Close range","approach":"Melee approach"}.get(r.get("Movement"),"Kit default"),"Ultimate timing":"After basic skills" if r.get("Ultimate timing")=="after_basics" else "Before basic skills","AA weaving":"AA between skills" if r.get("Attack weaving")=="aa_weave" else "Skills first","Starting AS":round(r["Starting AS"],3),"AS above starting cap":round(r["AS over cap"],3)} for i,r in enumerate(rows,1)])
@@ -1766,14 +1778,24 @@ with tabs[1]:
 with tabs[2]:
     _tab_hero("SHARPWR • GOLD & PERFORMANCE","Item Value","Find the strongest purchases for your selected champion and target. Compare combat output and directly priced raw stats.")
     st.caption("Raw Gold Efficiency uses only directly priced base components. DPS/1000g is shown separately.")
-    with st.expander("Item adoption across tested champions"):
-        _adoption={}
-        for _key,_runs in st.session_state.get('combat_rank_history',{}).items():
-            if _key[0]=="5.67.0" and _key[2]==tier_level and _key[3:]==(tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana):_adoption[_key[1]]=_runs
-        st.caption(f"Completed Item Tier List runs only · Level {tier_level} · {len(_adoption)}/23 champions. Run other champions with matching starting conditions to extend coverage. Counts items appearing in Top-3 full builds; not gold efficiency or all-match popularity.")
-        _adopters=adopters(_adoption)
-        if _adopters:st.dataframe(pd.DataFrame(_adopters),hide_index=True,width="stretch")
-        else:st.info("Run Item Tier List comparisons to populate this view.")
+    st.markdown("### Item Ranking · ADC Adoption")
+    import json as _adoption_json
+    _screen_path=Path(__file__).resolve().parent/'data/item-adoption-screen.json'
+    if _screen_path.exists():
+        _screen=_adoption_json.loads(_screen_path.read_text())
+        st.caption(f"Level {_screen['level']} · {_screen['champions']} champions × {_screen['targets']} targets · {_screen['simulations']:,} AA + ability simulations. Ranked by distinct champions where the item places in the Top 5, then target appearances. A small single/pair DPS screen, not full-build optimization or real-match pick rate. Yun Tal starts fully stacked; Yunara has unverified stat fallbacks.")
+        _adoption_cards=['<div class="value-grid">']
+        for _rank,_row in enumerate(_screen['ranking'][:10],1):
+            _name=_row['Item']
+            _adoption_cards.append(f'<div class="value-card"><span class="value-rank">#{_rank}</span><img src="{html.escape(item_icon(_name))}" alt="{html.escape(_name)}"><div class="value-name">{html.escape(_name)}</div><div class="value-score">{_row["Champions"]}/23</div><div class="value-unit">ADC TOP-5 COVERAGE</div></div>')
+        _adoption_cards.append('</div>');st.markdown(''.join(_adoption_cards),unsafe_allow_html=True)
+        st.dataframe(pd.DataFrame(_screen['ranking']),hide_index=True,width="stretch")
+        with st.expander("Screen method and champion results"):
+            st.write(_screen['method'])
+            _screen_champ=st.selectbox("Screen champion",list(_screen['results']),key="adoption_champ")
+            _screen_target=st.selectbox("Screen target",['squishy','bruiser','tank'],key="adoption_target")
+            st.dataframe(pd.DataFrame(_screen['results'][_screen_champ][_screen_target]),hide_index=True,width="stretch")
+    else:st.info("The ADC adoption screen has not been generated yet.")
     _iv_champion,_iv_target=st.columns(2,gap="medium")
     with _iv_champion,st.container(border=True):
         _setup_heading("01","YOUR CHAMPION","Champion Profile")
@@ -2061,4 +2083,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.67.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.68.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

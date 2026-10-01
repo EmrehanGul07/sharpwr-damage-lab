@@ -18,3 +18,14 @@ def adopters(history):
         for row in consensus(searches):
             found[row['Item']].add(champion);targets[row['Item']]+=row['Target coverage']
     return [{'Item':item,'Champions':len(names),'Champion names':', '.join(sorted(names)),'Target appearances':targets[item]} for item,names in sorted(found.items(),key=lambda x:(-len(x[1]),-targets[x[0]],x[0]))]
+
+NOTES={"Lord Dominik's Regards":"Tank answer · armor penetration and bonus-health damage",'The Collector':'Squishy finisher · flat penetration and execute','Muramana':'Mana scaling · attacks and damaging casts trigger Shock','Yun Tal Wildarrows':'Scaling crit · value depends on permanent stacks','Infinity Edge':'Crit damage payoff · pair with crit chance',"Guinsoo's Rageblade":'On-hit synergy · benefits from repeated attacks','Kraken Slayer':'Repeated-hit damage · sustained fights','Phantom Dancer':'Attack-speed ramp · check the champion AS cap',"Blade of the Ruined King":'Current-health on-hit · high-HP targets','Galeforce':'Active burst · contributes independently of attacks',"Mortal Reminder":'Armor penetration + anti-heal · healing is not simulated',"Serylda's Grudge":'Armor penetration · ability-oriented utility'}
+
+def champion_items(search):
+    scores=defaultdict(float)
+    for rank,row in enumerate(search['full'],1):
+        for item in row['Items']:scores[item]+=5/rank
+    for stage,rows in search['stages'].items():
+        for rank,row in enumerate(rows,1):
+            for item in row['Items']:scores[item]+=1/(rank*int(stage))
+    return [{'Item':i,'Score':round(v,3),'Note':NOTES.get(i,'Kit-dependent value · compare the tested builds')} for i,v in sorted(scores.items(),key=lambda x:(-x[1],x[0]))[:10]]
