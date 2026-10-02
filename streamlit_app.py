@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.86.0")
+ensure_engine_revision("5.86.1")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -1109,7 +1109,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.86.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.86.1",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1875,7 +1875,7 @@ with tabs[2]:
             _filtered={c:{k:v for k,v in cells.items() if v['level']==_stage_level} for c,cells in _screen['results'].items()}
             _ranking=progression_ranking(_filtered,F)
         _adoption_cards=['<div class="value-grid">']
-        for _rank,_row in enumerate(_ranking[:10],1):
+        for _rank,_row in enumerate(_ranking,1):
             _name=_row['Item']
             _adoption_cards.append(f'<div class="value-card"><span class="value-rank">#{_rank}</span><img src="{html.escape(item_icon(_name))}" alt="{html.escape(_name)}"><div class="value-name">{html.escape(_name)}</div><div class="value-score">{_row["Stage-balanced score"]:.2f}</div><div class="value-unit">WEIGHTED BUILD SHARE % · {_row["Champions"]}/23 ADCs</div></div>')
         _adoption_cards.append('</div>');st.markdown(''.join(_adoption_cards),unsafe_allow_html=True)
@@ -1941,9 +1941,9 @@ with tabs[2]:
         _iv_cols[0].metric("Best DPS / 1000g",f"{_iv_best['DPS / 1000g']:.1f}",str(_iv_best["Item"]),delta_color="off")
         _iv_cols[1].metric("Highest Raw Efficiency",f"{_iv_raw['Raw Gold Efficiency %']:.1f}%",str(_iv_raw["Item"]),delta_color="off")
         _iv_cols[2].metric("Highest Item DPS",f"{_iv_damage['DPS']:.1f}",str(_iv_damage["Item"]),delta_color="off")
-        st.markdown('<div class="combat-stat-title">VALUE LEADERBOARD · TOP 10</div>',unsafe_allow_html=True)
+        st.markdown('<div class="combat-stat-title">VALUE LEADERBOARD · ALL ITEMS</div>',unsafe_allow_html=True)
         _iv_cards=['<div class="value-grid">']
-        for _,_r in val.head(10).iterrows():
+        for _,_r in val.iterrows():
             _iv_name=html.escape(str(_r["Item"]))
             _iv_cards.append(f'<div class="value-card"><span class="value-rank">#{int(_r["Rank"]):02d}</span><img src="{html.escape(str(_r["Icon"]))}" alt="{_iv_name}"><div class="value-name">{_iv_name}</div><div class="value-score">{float(_r["DPS / 1000g"]):.1f}</div><div class="value-unit">DPS / 1000 GOLD</div><div class="value-detail"><span>{int(_r["Cost"]):,}g</span><span>{float(_r["Raw Gold Efficiency %"]):.1f}% raw</span></div></div>')
         st.markdown("".join(_iv_cards)+"</div>",unsafe_allow_html=True)
@@ -2186,4 +2186,4 @@ with tabs[4]:
     st.components.v1.html(_live_html,height=1100,scrolling=True)
 
 st.divider()
-st.caption("Web V5.86.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.86.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
