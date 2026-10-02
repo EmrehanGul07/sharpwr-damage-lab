@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-02",
+  "champion": "Ezreal",
+  "level": 15,
+  "q_rank": 1,
+  "target": {
+    "hp": 10000,
+    "armor": 100,
+    "mr": 100,
+    "source": "Agreed test setup; not independently re-reported with this result"
+  },
+  "runes": [
+    "Conqueror",
+    "Brutal",
+    "Cut Down",
+    "Legend: Bloodline",
+    "Bone Plating"
+  ],
+  "state_note": "User reports no different active rune/buff; exact Conqueror starting stack and numeric distances not recorded",
+  "conditions": [
+    {
+      "items": [
+        "Hexoptics C44"
+      ],
+      "ad": 178,
+      "ap": 0,
+      "attack_speed": 0.99,
+      "crit_chance": 0.25,
+      "crit_damage": 2,
+      "near": {
+        "AA": {
+          "physical": 102,
+          "magic": 0
+        },
+        "Q": {
+          "physical": 148,
+          "magic": 0
+        }
+      },
+      "far": {
+        "AA": {
+          "physical": 109,
+          "magic": 0
+        },
+        "Q": {
+          "physical": 159,
+          "magic": 0
+        }
+      }
+    },
+    {
+      "items": [
+        "Hexoptics C44",
+        "Wit's End"
+      ],
+      "ad": 178,
+      "ap": 0,
+      "attack_speed": 1.3,
+      "crit_chance": 0.25,
+      "crit_damage": 2,
+      "near": {
+        "AA": {
+          "physical": 102,
+          "magic": 22
+        },
+        "Q": {
+          "physical": 148,
+          "magic": 22
+        }
+      },
+      "far": {
+        "AA": {
+          "physical": 109,
+          "magic": 22
+        },
+        "Q": {
+          "physical": 159,
+          "magic": 22
+        }
+      }
+    }
+  ],
+  "confirmed_scope": [
+    "Hexoptics distance modifier affects Ezreal AA physical damage",
+    "Hexoptics distance modifier affects Ezreal Q physical damage",
+    "Wits End magic on-hit unchanged between tested near/far positions for both AA and Q"
+  ],
+  "unresolved": [
+    "Exact distances and center/edge convention",
+    "Precise distance breakpoints and maximum modifier",
+    "Absolute totals including Brutal eligibility/formula, Conqueror starting stack and UI rounding",
+    "Generalization to other champion abilities/passives"
+  ]
+}

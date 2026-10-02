@@ -4014,6 +4014,12 @@
           "effect_radius_by_rank": "geometry",
           "duration_by_rank": "timing",
           "offline_source_evidence": "evidence"
+        },
+        "user_validation": {
+          "date": "2026-10-02",
+          "evidence": "data/hexoptics-ezreal-user-test-20261002.json",
+          "finding": "Q physical damage increased with distance; carried Wits End magic on-hit did not",
+          "scope": "Hexoptics eligibility; not an exact distance coefficient calibration"
         }
       },
       "W": {
@@ -5149,6 +5155,18 @@
         "stats": "stat",
         "trigger_category": "trigger",
         "finding": "evidence"
+      },
+      "user_validation": {
+        "date": "2026-10-02",
+        "evidence": "data/hexoptics-ezreal-user-test-20261002.json",
+        "confirmed_targets": [
+          "Ezreal AA physical",
+          "Ezreal Q physical"
+        ],
+        "excluded_tested_components": [
+          "Wits End magic on-hit carried by Ezreal AA and Q"
+        ],
+        "remaining": "Distance curve and other champion components remain unresolved"
       }
     },
     "Kraken Slayer": {

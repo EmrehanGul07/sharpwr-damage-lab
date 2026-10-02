@@ -35,6 +35,22 @@ class DamageClassificationTests(unittest.TestCase):
         kw=dict(champion='Ezreal',level=15,ad=100,base_ad=60,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=0,mr=0,q_rank=1,w_rank=0,e_rank=0,r_rank=0,distance=550)
         a=replay_samira([FightEvent(0,'Q')],**kw);b=replay_samira([FightEvent(0,'Q')],hexoptics=True,**kw)
         self.assertAlmostEqual(b.total_damage,a.total_damage*1.1)
+    def test_user_verified_ezreal_q_does_not_magnify_carried_wits_end(self):
+        ns=engine_namespace()
+        def run(distance,items):
+            kernel=ns['_combat_hits']('Ezreal',15,10000,100,100,items,ns['F']);next(kernel)
+            def onhit(state):return kernel.send(state)
+            r=replay_samira([FightEvent(0,'Q')],champion='Ezreal',level=15,ad=178,base_ad=123,ap=0,attack_speed=.99,crit_chance=.25,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,distance=distance,attack_range=550,movement_speed=0,max_mana=2000,aa_hit=onhit,hexoptics=True,sub_runes=('Cut Down',),automatic_until=2)
+            return r.total_damage
+        near=run(0,['Hexoptics C44']);far=run(550,['Hexoptics C44'])
+        self.assertGreater(far,near)
+        near_onhit=run(0,['Hexoptics C44',"Wit's End"])-near
+        far_onhit=run(550,['Hexoptics C44',"Wit's End"])-far
+        self.assertAlmostEqual(near_onhit,far_onhit)
+        self.assertAlmostEqual(near_onhit,20*1.065)
+        profile=ability_profile('Ezreal','Q')
+        self.assertEqual(profile['user_validation']['date'],'2026-10-02')
+
     def test_galeforce_classification_exists_before_other_hits(self):
         r=replay_samira([],level=15,ad=100,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=0,mr=0,galeforce=True,automatic_until=.1)
         hit=next(x for x in r.log if x['action']=='Galeforce active')

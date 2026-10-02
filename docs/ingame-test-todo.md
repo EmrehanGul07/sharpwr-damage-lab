@@ -9,7 +9,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | ID | İş | Gereken bilgi |
 |---|---|---|
 | I01 | Rageblade + Kraken + Terminus | Tekli/ikili/üçlü sayaç; Phantom Hit tekrarı; penetration sırası; skill on-hit eligibility |
-| I02 | Hexoptics | Basic damage kapsamı; mesafe breakpoint/cap; Ezreal/MF Q ile Senna Q farkı; magic on-hit |
+| I02 | Hexoptics | Ezreal AA/Q fiziksel kapsamı ve taşınan Wits End büyü on-hitinin mesafeden etkilenmemesi teyitli (2026-10-02). Mesafe breakpoint/cap, diğer şampiyon basic/proc bileşenleri ve MF/Senna Q farkı açık. |
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
 | I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Diğer şampiyonların çoklu-hit/on-hit etkileşimleri ve melee animasyonunun ranged item sınıfına etkisi açık. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
@@ -83,3 +83,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 - Ezreal: level 15, Q rank 4, full Conqueror dahil 239 AD, 0 AP, 2276 maksimum mana, yalnızca Muramana. Kukla 10.000 HP, 100 armor, 100 MR. Q ölçümü 259 fiziksel hasar. Kullanıcının bağımsız teyidi: Brutal her vuruşta 6 net hasar.
 - Ezreal hesap: (115 + 1,35 × 239 + 0,03 × 2276) / 2 + 6 = 258,965. Skill Shock tek başına ölçümle uyumlu; ayrıca AA Shock eklenmesi ölçümle uyuşmuyor.
 - Sınır: bu ölçüm Brutal'ın genel AD scaling formülünü teyit etmez. Cut Down'ın bu denemedeki aktifliği/hedefin vuruş öncesi canı kaydedilmedi; bu yüzden genel rün etkileşimi doğrulanmış sayılmıyor. Başka champion/cast etkileşimleri bu üç testten otomatik teyit almıyor.
+
+## Hexoptics oyun içi teyidi — 2026-10-02
+
+Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend Bloodline/Bone Plating. Tek Hexoptics ile yakın/uzak AA102/109 fiziksel, Q1 148/159 fiziksel. Wits End eklenince aynı fiziksel sayılar korunuyor; AA ve Q'da iki mesafede de22 büyü hasarı ekleniyor. AS0.99→1.30. Farklı aktif rune/buff olmadığı kullanıcı tarafından bildirildi. Numeric mesafeler ve başlangıç Conqueror stack sayısı kaydedilmedi. Katsayılar bu ölçümden değiştirilmez; kaynak veri [hexoptics-ezreal-user-test-20261002.json](../data/hexoptics-ezreal-user-test-20261002.json).

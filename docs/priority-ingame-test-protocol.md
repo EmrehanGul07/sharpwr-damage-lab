@@ -42,7 +42,7 @@ Bunlar **engine breakpoint hipotezleri**. Gerçek breakpoint ve edge/center mesa
 
 Aynı Ezreal/build ile yakın ve maksimum AA mesafesinden Q rank1 vur. Maksimum Q menziline çıkmak gerekmiyor; AA testindeki iki konumu kullan. Her denemede tam HP ve aynı rune başlangıç durumu.
 
-**Mevcut model tahmini:** Hexoptics Q'nun doğrudan skill hasarını büyütmüyor. Q yakın/uzak hasarı aynı kalmalı; taşıdığı AA/on-hit parçaları varsa ayrı değerlendirilmeli. Yakın/uzak arasında fark çıkarsa scope'u ölçümle genişleteceğiz. Battle Zeal/Brutal/First Strike aynı durumda değilse tekrar kontrol.
+**Güncel model ve oyun içi teyit (2026-10-02):** Ezreal Q pozitif basic damage olarak etiketlidir ve Hexoptics kapsamındadır. Kullanıcı yakın148/uzak159 fiziksel hasar ölçtü; AA yakın102/uzak109. Wits End ile AA ve Q'da büyü hasarı iki mesafede de22 kaldı. Eski 'Q hasarı değişmemeli' yönergesi V5.62 classification bağlantısından önce kalmıştı ve kaldırıldı. Numeric mesafe/Brutal/Conqueror/yuvarlama ayrıştırılmadan breakpoint veya maksimum katsayı değiştirilmez.
 
 ### H03 — Magic on-hit kapsamı (H01/H02 sonrası)
 
