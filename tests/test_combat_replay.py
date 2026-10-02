@@ -15,6 +15,19 @@ class CombatReplay(unittest.TestCase):
     self.assertEqual(len({e['order'] for e in p['events']}),len(p['events']))
     self.assertEqual([e['event_id'] for e in p['events']],list(range(1,len(p['events'])+1)))
     self.assertFalse(ev.retain_traces)
+ def test_ezreal_w_visual_arrival_is_mark_application_not_detonation(self):
+  ev=BuildFightEvaluator(self.ns,'Ezreal',15,6000,100,100)
+  row=ev.evaluate(['Muramana','Trinity Force'],'Armorcrusher Boots',refine=True)
+  trace=ev.replay_row(row)
+  payload=replay_payload(trace,champion='Ezreal',level=15,target='Training target',hp=6000,build=row)
+  casts=[c for c in trace.timeline if c['kind']=='cast' and c['action']=='W']
+  flights=[f for f in payload['visual_flights'] if f['action']=='W']
+  self.assertTrue(casts);self.assertEqual(len(casts),len(flights))
+  for c,f in zip(casts,flights):
+   self.assertEqual(f['launch'],c['cast_end']);self.assertEqual(f['impact'],c['impact_time'])
+  detonations=[e['time'] for e in trace.log if e['action']=='W detonation']
+  self.assertTrue(detonations);self.assertLess(flights[0]['impact'],detonations[0])
+  self.assertEqual(payload['damage'],row['Damage']);self.assertEqual(payload['ttk'],row['TTK'])
  def test_runtime_recovers_stale_dependency_graph(self):
   import build_fight_optimizer as optimizer
   import marksman_damage_components as components

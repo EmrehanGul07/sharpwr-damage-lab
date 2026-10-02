@@ -505,6 +505,7 @@ def replay_marksman(events,**p):
             for j in range(4):queue(t+1+kit.travel('R',gap)+.25*(j+1),'skill_hit',slot='R',cid=cid,index=j)
             return True
         if c=='Draven' and slot=='R':queue(arrival+kit.travel('R',gap),'skill_hit',slot='R',cid=cid,index=1)
+        if c=='Ezreal':timeline[-1]['impact_time']=arrival # Replay metadata; scheduled event is unchanged.
         queue(arrival,'skill_hit',slot=slot,cid=cid,index=0,yunara_empowered=kit.active('transcend',t) if c=='Yunara' and slot=='W' else None)
         return True
     def start_attack():

@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.82.2")
+ensure_engine_revision("5.83.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -1109,7 +1109,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.82.2",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.83.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1152,6 +1152,12 @@ with tabs[0]:
         st.markdown("### Items across target profiles")
         st.caption(f"{tier_champ} · {len(_history)}/3 targets completed. Equal target weighting; Top-3 build appearances weighted 1, 1/2, 1/3. Offensive build coverage, not a complete item power rating.")
         st.dataframe(pd.DataFrame(consensus(_history)),hide_index=True,width="stretch")
+    if tier_champ=='Ezreal':
+        with st.expander("✦ Ezreal · 3D combat preview",expanded=False):
+            st.caption("Recorded level 15 training fight · example build. Your selected winning build has its own replay below after searching.")
+            import json as _preview_json
+            _preview=_preview_json.loads((Path(__file__).resolve().parent/'data/ezreal-3d-preview.json').read_text())
+            components.html(replay_html(_preview),height=920,scrolling=True)
     _saved=st.session_state.get("tier_fight_results")
     if _saved and _saved["signature"]==_tier_signature:
         _search=_saved["results"]
@@ -1177,7 +1183,7 @@ with tabs[0]:
             st.warning(f"Build results are available; replay could not be recorded: {_saved['replay_error']}")
         if _saved.get('replay'):
             st.markdown('### Combat Replay · #1 Build')
-            components.html(replay_html(_saved['replay']),height=790,scrolling=True)
+            components.html(replay_html(_saved['replay']),height=920 if tier_champ=='Ezreal' else 790,scrolling=True)
             import json as _replay_json
             st.download_button("Download replay trace",_replay_json.dumps(_saved['replay'],ensure_ascii=False,indent=2),file_name=f"{tier_champ.lower().replace(' ', '-')}-combat-replay.json",mime="application/json",key="combat_replay_download")
         st.caption(f'AA + abilities · expected crit · fastest target defeat · {_search["simulations"]:,} fight simulations. Top 3 among tested builds; 3–5 item searches retain {_search["beam_width"]} candidates per stage and refine {_search["refined"]} full-build finalists. AP, crit, on-hit, penetration and hybrid paths are retained. Finalists are rechecked with six skill priorities, movement alternatives, AA weaving and two ultimate timings. No incoming damage or defensive value is ranked.')
@@ -2173,4 +2179,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.82.2 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.83.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
