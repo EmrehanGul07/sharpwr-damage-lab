@@ -5166,7 +5166,12 @@
         "excluded_tested_components": [
           "Wits End magic on-hit carried by Ezreal AA and Q"
         ],
-        "remaining": "Distance curve and other champion components remain unresolved"
+        "remaining": "Intermediate distance curve/zero-bonus threshold, center/edge distance convention and other champion components remain unresolved",
+        "confirmed_distance_bounds": {
+          "minimum_bonus": 0,
+          "maximum_bonus": 0.1,
+          "maximum_bonus_range": 550
+        }
       }
     },
     "Kraken Slayer": {

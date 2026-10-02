@@ -36,7 +36,7 @@ Mevcut model ana AA fiziksel hasarını mesafeye göre büyütür. 550 birimde +
 | 500–549 | %9 |
 | ≥550 | %10 |
 
-Bunlar **engine breakpoint hipotezleri**. Gerçek breakpoint ve edge/center mesafe tanımı, tooltip/kaynak veya güvenilir mesafe referansı olmadan kapatılmaz.
+Kullanıcının aktardığı oyun içi tooltip (2026-10-02): “Deal 0-10% increased damage with attacks, based on how far the enemy is(max damage at 550 range.)” %10 cap ve550 maksimum mesafe teyitli. Tablodaki100 altı sıfır bonus ve50 birimlik basamaklar **engine hipotezi** olarak kalır; tooltip ara mesafe eğrisini veya edge/center tanımını vermiyor.
 
 ### H02 — Skill hasarına uygulanıyor mu?
 

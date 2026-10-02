@@ -9,7 +9,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | ID | İş | Gereken bilgi |
 |---|---|---|
 | I01 | Rageblade + Kraken + Terminus | Tekli/ikili/üçlü sayaç; Phantom Hit tekrarı; penetration sırası; skill on-hit eligibility |
-| I02 | Hexoptics | Ezreal AA/Q fiziksel kapsamı ve taşınan Wits End büyü on-hitinin mesafeden etkilenmemesi teyitli (2026-10-02). Mesafe breakpoint/cap, diğer şampiyon basic/proc bileşenleri ve MF/Senna Q farkı açık. |
+| I02 | Hexoptics | Ezreal AA/Q fiziksel kapsamı ve taşınan Wits End büyü on-hitinin mesafeden etkilenmemesi teyitli (2026-10-02). Tooltip ile %0–10 bonus ve 550 mesafede maksimum teyitli. Ara mesafe eğrisi/ilk bonus eşiği, center-edge mesafe tanımı, diğer şampiyon basic/proc bileşenleri ve MF/Senna Q farkı açık. |
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
 | I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Diğer şampiyonların çoklu-hit/on-hit etkileşimleri ve melee animasyonunun ranged item sınıfına etkisi açık. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
