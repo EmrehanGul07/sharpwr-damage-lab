@@ -1,4 +1,4 @@
-# Aktif TODO — V5.71.0 / 2 Ekim 2026
+# Aktif TODO — V5.72.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -22,7 +22,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 
 | Şampiyon | Kalan bilgi / test |
 |---|---|
-| Yunara | Gönderilen 1/3/5/8/10/13/15 seviyeleri kaydedildi; MS 335 ve AA range 575 teyitli. Ara seviyeler/growth, regen birimi ve growth; W linger contact/tick; Q/W/P damage classification açık. |
+| Yunara | Gönderilen 1/3/5/8/10/13/15 seviyeleri kaydedildi; MS 335 ve AA range 575 teyitli. Ara seviyeler/growth, regen birimi ve growth; W hareketli hedef/contact geometrisi; Q/W/P damage classification açık. Normal W ilk hit + 4 ek tick, 0.25s aralık/1s süre teyit edildi. |
 | Samira | R AH/static cooldown ve başlangıç anı; W1–E–W2 Style/Conqueror sırası; W2/R sonraki hit'lerde süre yenileme; CC özel AA/retrigger/reset; gerçek WR channel/shot offsetleri |
 | Smolder | E bolt sayısı/stack grant; W sneeze/explosion/stack işlem sırası; burn refresh/snapshot/rounding/rün amplification; %50 crit + %230 crit damage çapraz nokta; Q100 patlamalarının ana hedefe overlap'i |
 | Jhin | AD dönüşümü temporary AS dahil oyun içi çapraz kontrol; 4. AA launch/ammo/reload; W beam timing; W/R WR damage tag'leri |

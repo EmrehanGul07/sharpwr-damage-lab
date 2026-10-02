@@ -7446,7 +7446,22 @@
             ],
             "speed_status": "sourced_expression"
           },
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc_of_Judgment"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Arc_of_Judgment",
+          "linger": {
+            "duration_seconds": 1,
+            "tick_interval_seconds": 0.25,
+            "additional_ticks": 4,
+            "base_damage_by_rank": [
+              8,
+              14,
+              20,
+              26
+            ],
+            "bonus_ad_ratio": 0.12,
+            "ap_ratio": 0.075,
+            "source": "User WR ability screenshots and explicit confirmation 2026-10-02",
+            "scope": "Normal W, stationary target remaining in effect; empowered Arc of Ruin has no linger ticks"
+          }
         },
         "E": {
           "name": "Kanmei’s Steps",

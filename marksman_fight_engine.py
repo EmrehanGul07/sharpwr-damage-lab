@@ -11,7 +11,7 @@ from damage_classification import event_profile,ability_magnification,component_
 from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
 from combat_timing import attack_windup,attack_travel
-from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight,jhin_attack_damage,RawDamage
+from marksman_damage_components import damage_component,yunara_arc_of_ruin,yunara_linger_tick,varus_blight,jhin_attack_damage,RawDamage
 
 
 def replay_marksman(events,**p):
@@ -133,7 +133,7 @@ def replay_marksman(events,**p):
         log.append({'order':len(log)+len(timeline),'time':t,'action':action,'attack_id':cid[1] if action.startswith('AA') and isinstance(cid,tuple) else None,'damage_classification':classification,'damage_components':components if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':k,'raw_amount':v,'tags':classification['tags'],'status':classification['status']} for k,v in (('physical',value.physical),('magic',value.magic),('true',value.true)) if v],'AD':applied_ad,'crit_chance':applied_crit,'critical':None,'damage':dealt,'raw_damage':damage,'physical':value.physical,'magic':value.magic,'true':value.true,'hp_before':prior,'hp_after':health,'mana':mana,'max_mana':maxmana,'distance':gap,'windup':kit.state.get('aa_windup',0.) if action.startswith('AA') else None,'melee':gap<=200,'executed':executed,'effects':list(effects),'before':before or {},'after':kit.snapshot(t)|{'conqueror':conq,'lethal_tempo':lt,'items':dict(items)},'cooldowns':{s:max(0.,v-t) for s,v in ready.items()},'ability_haste':haste,'dragon_stacks':0,'kite_arc':kite_arc,'kite_angle':math.asin(math.sin(kite_arc/max(1.,kit.attack_range(t))*3))/3,'movement_policy':movement_policy})
         if health<=0:killed=t
     def tick(action,value,**kw):record(action,value,**kw)
-    def damage_impact(slot,cid,index=0):
+    def damage_impact(slot,cid,index=0,yunara_empowered=None):
         nonlocal mana,spell_pending,dark,items
         before=kit.snapshot(t);s=kit.state;c=name;r=ranks[slot];value=RawDamage();effects=[]
         try:
@@ -206,10 +206,12 @@ def replay_marksman(events,**p):
                     kit.unresolved.add('Kog’Maw R missing-health interpolation unresolved: non-amplified component above 40%')
                     value=RawDamage(magic=normal)
             elif c=='Yunara':
-                if slot=='W' and kit.active('transcend',t):value=yunara_arc_of_ruin(ranks['R'],bonus_ad=max(0.,current_ad()-base_ad),ap=ap)
+                if slot=='W' and (kit.active('transcend',t) if yunara_empowered is None else yunara_empowered):value=yunara_arc_of_ruin(ranks['R'],bonus_ad=max(0.,current_ad()-base_ad),ap=ap)
                 elif slot=='W':
-                    value=raw('W')
-                    kit.unresolved.add('Yunara W linger contact/total ticks unresolved: initial hit only')
+                    if index==0:
+                        value=raw('W')
+                        for j in range(1,5):queue(t+.25*j,'skill_hit',slot='W',cid=cid,index=j,yunara_empowered=False)
+                    else:value=yunara_linger_tick(r,bonus_ad=max(0.,current_ad()-base_ad),ap=ap)
                 else:return
             else:value=raw(slot)
         except LookupError as exc:
@@ -481,7 +483,7 @@ def replay_marksman(events,**p):
             for j in range(4):queue(t+1+kit.travel('R',gap)+.25*(j+1),'skill_hit',slot='R',cid=cid,index=j)
             return True
         if c=='Draven' and slot=='R':queue(arrival+kit.travel('R',gap),'skill_hit',slot='R',cid=cid,index=1)
-        queue(arrival,'skill_hit',slot=slot,cid=cid,index=0)
+        queue(arrival,'skill_hit',slot=slot,cid=cid,index=0,yunara_empowered=kit.active('transcend',t) if c=='Yunara' and slot=='W' else None)
         return True
     def start_attack():
         nonlocal aa_clock,aa_lock,attack_sequence,mana
@@ -557,7 +559,7 @@ def replay_marksman(events,**p):
                     record('Galeforce active',RawDamage(physical=40+(level-1)/14*80+.45*max(0.,current_ad()-base_ad)),effects=('Cloudburst active; 50s cooldown',))
                     queue(t+50,'galeforce')
             elif kind=='aa_hit':basic_attack(payload['cid'],payload.get('secondary',False),payload.get('fourth',False),payload.get('weapon'))
-            elif kind=='skill_hit':damage_impact(payload['slot'],payload['cid'],payload.get('index',0))
+            elif kind=='skill_hit':damage_impact(payload['slot'],payload['cid'],payload.get('index',0),payload.get('yunara_empowered'))
             elif kind=='buff':buff(payload['key'],payload['duration'],payload['value'])
             elif kind=='reload':kit.ammo=4
             elif kind=='corki_recharge':

@@ -130,3 +130,10 @@ def yunara_arc_of_ruin(ultimate_rank,*,bonus_ad,ap=0.):
 def varus_blight(rank,stacks,*,target_max_hp,ap=0.):
     if rank not in (1,2,3,4) or stacks not in (0,1,2,3) or min(target_max_hp,ap)<0 or not all(math.isfinite(v) for v in (target_max_hp,ap)):raise ValueError('Invalid blight stats')
     return RawDamage(magic=stacks*target_max_hp*((.03,.035,.04,.045)[rank-1]+.00012*ap))
+
+
+def yunara_linger_tick(rank,*,bonus_ad,ap=0.):
+    """User WR screenshot: one normal W tick, excluding its initial hit."""
+    if rank not in (1,2,3,4) or min(bonus_ad,ap)<0 or not all(math.isfinite(v) for v in (bonus_ad,ap)):
+        raise ValueError('Invalid Yunara W tick stats')
+    return RawDamage(magic=(8,14,20,26)[rank-1]+.12*bonus_ad+.075*ap)
