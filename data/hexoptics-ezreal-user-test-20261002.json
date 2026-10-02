@@ -89,7 +89,7 @@
     "Exact distances and center/edge convention",
     "Absolute totals including Brutal eligibility/formula, Conqueror starting stack and UI rounding",
     "Generalization to other champion abilities/passives",
-    "Intermediate distance curve, zero-bonus threshold and center/edge distance convention; tooltip confirms endpoints only"
+    "Center/edge distance convention and physical in-game near/far positions"
   ],
   "user_reported_tooltip": "Deal 0-10% increased damage with attacks, based on how far the enemy is(max damage at 550 range.)",
   "confirmed_distance_bounds": {
@@ -97,5 +97,52 @@
     "maximum_bonus": 0.1,
     "maximum_bonus_range": 550,
     "source": "User transcribed in-game tooltip, 2026-10-02"
+  },
+  "user_reaffirmed_distance_steps": {
+    "date": "2026-10-02",
+    "breakpoints": [
+      {
+        "range": 100,
+        "bonus": 0.01
+      },
+      {
+        "range": 150,
+        "bonus": 0.02
+      },
+      {
+        "range": 200,
+        "bonus": 0.03
+      },
+      {
+        "range": 250,
+        "bonus": 0.04
+      },
+      {
+        "range": 300,
+        "bonus": 0.05
+      },
+      {
+        "range": 350,
+        "bonus": 0.06
+      },
+      {
+        "range": 400,
+        "bonus": 0.07
+      },
+      {
+        "range": 450,
+        "bonus": 0.08
+      },
+      {
+        "range": 500,
+        "bonus": 0.09
+      },
+      {
+        "range": 550,
+        "bonus": 0.1
+      }
+    ],
+    "source": "User reaffirmed earlier verification: 100 range 1%, +1% each 50, 550 range 10%",
+    "note": "Existing runtime formula retained; no new damage calibration"
   }
 }

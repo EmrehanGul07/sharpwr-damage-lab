@@ -36,7 +36,7 @@ Mevcut model ana AA fiziksel hasarını mesafeye göre büyütür. 550 birimde +
 | 500–549 | %9 |
 | ≥550 | %10 |
 
-Kullanıcının aktardığı oyun içi tooltip (2026-10-02): “Deal 0-10% increased damage with attacks, based on how far the enemy is(max damage at 550 range.)” %10 cap ve550 maksimum mesafe teyitli. Tablodaki100 altı sıfır bonus ve50 birimlik basamaklar **engine hipotezi** olarak kalır; tooltip ara mesafe eğrisini veya edge/center tanımını vermiyor.
+Kullanıcının aktardığı oyun içi tooltip (2026-10-02): “Deal 0-10% increased damage with attacks, based on how far the enemy is(max damage at 550 range.)” %10 cap ve550 maksimum mesafe teyitli. Kullanıcı aynı gün önceki oyun içi teyidini yeniden belirtti:100 mesafede %1, her50 birimde +%1, 550 mesafede %10. Runtime basamakları kullanıcı teyidiyle korunuyor; yalnız edge/center mesafe tanımı açık.
 
 ### H02 — Skill hasarına uygulanıyor mu?
 

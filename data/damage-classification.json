@@ -5166,11 +5166,20 @@
         "excluded_tested_components": [
           "Wits End magic on-hit carried by Ezreal AA and Q"
         ],
-        "remaining": "Intermediate distance curve/zero-bonus threshold, center/edge distance convention and other champion components remain unresolved",
+        "remaining": "Center/edge distance convention and other champion components remain unresolved",
         "confirmed_distance_bounds": {
           "minimum_bonus": 0,
           "maximum_bonus": 0.1,
           "maximum_bonus_range": 550
+        },
+        "confirmed_distance_steps": {
+          "first_range": 100,
+          "first_bonus": 0.01,
+          "range_step": 50,
+          "bonus_step": 0.01,
+          "cap_range": 550,
+          "cap_bonus": 0.1,
+          "source": "User reaffirmation 2026-10-02"
         }
       }
     },
