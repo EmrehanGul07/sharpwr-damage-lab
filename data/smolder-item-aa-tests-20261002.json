@@ -396,6 +396,61 @@
           38
         ]
       ]
+    },
+    {
+      "items": [
+        "Blade of the Ruined King",
+        "Guinsoo's Rageblade"
+      ],
+      "level": 15,
+      "ad": 178,
+      "ap": 30,
+      "as": 1.46,
+      "physical": [
+        [
+          414
+        ],
+        [
+          401
+        ],
+        [
+          387
+        ],
+        [
+          374
+        ],
+        [
+          362
+        ],
+        [
+          350,
+          243
+        ]
+      ],
+      "magic": [
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16,
+          16
+        ]
+      ],
+      "ranged_current_hp_ratio": 0.06,
+      "melee_current_hp_ratio": 0.085,
+      "verification_scope": "Ranged6% measured; melee8.5% is user-reported live tooltip, not independently measured. Minimum15 raw and monster cap not measured. Phantom uses primary hit remaining health; exact indicator rounding remains approximate."
     }
   ],
   "remaining_uncertainty": "Exact within-hit missing-health snapshot and display rounding: triple AA6 is 249 predicted versus 250 displayed; split phantom Kraken AA12 rounding remains unverified. Proc cadence and Terminus damage progression verified independently."

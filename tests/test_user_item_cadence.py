@@ -8,7 +8,7 @@ class UserItemCadence(unittest.TestCase):
  def hits(self,item,physical,count):
   k=self.ns['_combat_hits']('Smolder',15,10000,100,100,(item if isinstance(item,list) else [item]),self.ns['F']);next(k);hp=10000;out=[]
   for i in range(count):
-   hit=k.send({'hp':hp,'time':i,'event_driven':True,'attack_physical':physical,'critical_attack_physical':physical*2})
+   hit=k.send({'hp':hp,'time':i,'event_driven':True,'on_hit_health_multiplier':1.065,'attack_physical':physical,'critical_attack_physical':physical*2})
    hit['rune_damage']=hit['damage']*1.065;hp-=hit['rune_damage'];out.append(hit)
   return out
  def test_rageblade_phantom_on_six_and_nine_from_zero(self):
@@ -41,3 +41,18 @@ class UserItemCadence(unittest.TestCase):
   self.assertEqual(hits[5]['dark'],3)
   self.assertEqual([math.ceil(e['magic_damage']*1.065) for e in hits[5]['on_hit_events']],[36,38])
   self.assertEqual([math.ceil(h['magic_damage']*1.065) for h in hits],[32,32,34,34,36,74,38,38,76,38,38,76])
+
+ def test_botrk_ranged_six_percent_and_phantom_remaining_hp(self):
+  hits=self.hits(["Guinsoo's Rageblade",'Blade of the Ruined King'],178,6)
+  for hit,observed in zip(hits[:5],[414,401,387,374,362]):
+   self.assertAlmostEqual(hit['physical_damage']*1.065,observed,delta=1.)
+  h=hits[5];events=h['on_hit_events']
+  primary=(178+events[0]['physical_proc_raw'])*.5*1.065
+  phantom=events[1]['physical_proc_raw']*.5*1.065
+  self.assertAlmostEqual(primary,350,delta=1.)
+  self.assertAlmostEqual(phantom,243,delta=1.)
+  self.assertLess(events[1]['physical_proc_raw'],events[0]['physical_proc_raw'])
+ def test_samira_close_range_retains_ranged_item_class(self):
+  k=self.ns['_combat_hits']('Samira',15,10000,100,100,['Blade of the Ruined King'],self.ns['F']);next(k)
+  h=k.send({'hp':10000,'time':0,'melee':True,'attack_physical':0})
+  self.assertEqual(h['physical'],600.)

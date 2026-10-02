@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.75.0")
+ensure_engine_revision("5.76.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -618,7 +618,7 @@ ITEM_SCENARIO_AUDIT={
 "Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
 "Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
-"Blade of the Ruined King":("current-HP/on-hit","modeled","Current-HP on-hit recalculated each attack."),
+"Blade of the Ruined King":("current-HP/on-hit","modeled","User-confirmed ranged 6% current HP; melee tooltip 8.5%. Phantom uses HP remaining after the primary hit. Minimum15 raw physical remains unverified."),
 "Guardian Angel":("defensive","not modeled","Revive excluded."),
 "Bloodthirster":("sustain","not modeled","Sustain is not scored as DPS."),
 "Lord Dominik's Regards":("bonus-HP scaling","partial","Penetration modeled; amp needs target Bonus HP."),
@@ -737,6 +737,9 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
 def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True,initial_flurry=False):
     """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
     items=list(items)
+    from champion_database import champion_stat
+    # Item melee/ranged class belongs to the champion, not distance to target.
+    botrk_ratio=.085 if champion_stat(n,"attack_type")=="Melee" else .06
     _validate_build(items,db,boot)
     s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
     bootq=dct(B[boot]) if boot in B else dct(())
@@ -795,7 +798,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if "Galeforce" in items and active_ready and not event_driven and not skill_on_hit and t>=galeforce_ready:
             bonus_ad=max(0,current_ad-s["basead"])
             onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst"); galeforce_ready=t+50
-        if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
+        if "Blade of the Ruined King" in items: onp+=max(15,botrk_ratio*hp)
         if ("Terminus" in items and item_proc): onm+=30
         if "Wit's End" in items: onm+=40
         if "Nashor's Tooth" in items:
@@ -830,7 +833,15 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         primary_onp=onp
         if rage_extra:
             onm+=30
-            if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
+            if "Blade of the Ruined King" in items:
+                primary_damage=(phy+primary_onp)*rm(ea)+primary_onm*rm(primary_em)+true
+                if "Lord Dominik's Regards" in items:primary_damage*=1+min(.12,max(0,bonus_hp)/125*.01)
+                if boot=="Immortal Treads":primary_damage*=1.05
+                if target_aa_reduction and not skill_on_hit:primary_damage*=1-target_aa_reduction
+                primary_damage*=float(state.get("on_hit_health_multiplier",1.))
+                phantom_hp=max(0.,hp-primary_damage-float(state.get("primary_external_damage",0.)))
+                onp+=max(15,botrk_ratio*phantom_hp)
+
             if ("Terminus" in items and item_proc): onm+=30
             if "Wit's End" in items: onm+=40
             if "Nashor's Tooth" in items:
@@ -1057,7 +1068,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.75.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.76.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2121,4 +2132,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.75.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.76.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

@@ -1,4 +1,4 @@
-# Aktif TODO — V5.75.0 / 2 Ekim 2026
+# Aktif TODO — V5.76.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -89,3 +89,5 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend Bloodline/Bone Plating. Tek Hexoptics ile yakın/uzak AA102/109 fiziksel, Q1 148/159 fiziksel. Wits End eklenince aynı fiziksel sayılar korunuyor; AA ve Q'da iki mesafede de22 büyü hasarı ekleniyor. AS0.99→1.30. Farklı aktif rune/buff olmadığı kullanıcı tarafından bildirildi. Numeric mesafeler ve başlangıç Conqueror stack sayısı kaydedilmedi. Katsayılar bu ölçümden değiştirilmez; kaynak veri [hexoptics-ezreal-user-test-20261002.json](../data/hexoptics-ezreal-user-test-20261002.json).
 
 - 2026-10-02: Terminus standalone and all three Rageblade/Kraken/Terminus AA combinations recorded. Phantom counter advancement confirmed. Exact Kraken within-hit missing-health snapshot / split indicator rounding remains open (triple AA6 249 calculated vs250 displayed).
+
+- BotRK ranged6% teyit: Smolder15 + Rageblade, 414/401/387/374/362 ve AA6 350+243 physical; Phantom ilk hit sonrasındaki canı kullanır. Melee8.5% kullanıcı live tooltipinden; bağımsız melee ölçümü, minimum15 ve monster cap açık.

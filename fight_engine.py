@@ -333,7 +333,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             components.append({'damage_type':'physical','raw_amount':current_ad*(1+probability*(crit_damage-1)),'tags':['BasicAttack'],'status':'fundamental_basic_attack'})
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
-                hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
+                hit=aa_hit({'on_hit_health_multiplier':(1.065 if 'Cut Down' in sub_runes and health/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and health/hp<.4 else 1.),'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
                 components.extend(hit.get('damage_components',[]));damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))

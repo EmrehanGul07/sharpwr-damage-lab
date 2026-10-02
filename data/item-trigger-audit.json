@@ -58,7 +58,7 @@
       "scope": "completed",
       "trigger_category": "multi-target",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Extra bolts excluded in single-target ranking.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Extra bolts excluded in single-target ranking.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -112,7 +112,7 @@
       "scope": "completed",
       "trigger_category": "ability-cooldown",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -137,7 +137,7 @@
       "scope": "completed",
       "trigger_category": "on-hit",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit each attack.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Magic on-hit each attack.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -165,7 +165,7 @@
       "scope": "completed",
       "trigger_category": "distance",
       "coverage": "modeled",
-      "finding": "Fight içinde gerçek mesafe kullanılır; eski AA hesaplayıcısında sabit distance varsayımı vardır. Kernel AA physical/true arttırır; ability ve diğer damage kapsamı doğrulanmalı.",
+      "finding": "Fight i\u00e7inde ger\u00e7ek mesafe kullan\u0131l\u0131r; eski AA hesaplay\u0131c\u0131s\u0131nda sabit distance varsay\u0131m\u0131 vard\u0131r. Kernel AA physical/true artt\u0131r\u0131r; ability ve di\u011fer damage kapsam\u0131 do\u011frulanmal\u0131.",
       "review_needed": true,
       "status": "ingame_test_todo",
       "todo": "I02",
@@ -192,7 +192,7 @@
       "scope": "completed",
       "trigger_category": "every-N-hit",
       "coverage": "modeled",
-      "finding": "Sayaç eligible kernel hitleriyle artıyor; skill-on-hit/Phantom Hit eligibility doğrulanmalı.",
+      "finding": "Saya\u00e7 eligible kernel hitleriyle art\u0131yor; skill-on-hit/Phantom Hit eligibility do\u011frulanmal\u0131.",
       "review_needed": true,
       "status": "ingame_test_todo",
       "todo": "I01",
@@ -222,7 +222,7 @@
       "scope": "completed",
       "trigger_category": "on-hit",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Magic on-hit.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Magic on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -247,7 +247,7 @@
       "scope": "completed",
       "trigger_category": "mana-scaling",
       "coverage": "modeled",
-      "finding": "Seçilmiş itemin flat mana ve Awe’su doğrudan uygulanır; Tear yüklenme geçmişi ayrı hesaplanmıyor.",
+      "finding": "Se\u00e7ilmi\u015f itemin flat mana ve Awe\u2019su do\u011frudan uygulan\u0131r; Tear y\u00fcklenme ge\u00e7mi\u015fi ayr\u0131 hesaplanm\u0131yor.",
       "review_needed": true,
       "damage_classification": {
         "origin_tags": [
@@ -326,7 +326,7 @@
       "scope": "completed",
       "trigger_category": "stacking/on-hit",
       "coverage": "modeled",
-      "finding": "Stack doğal eligible hitlerle artıyor; skill-on-hit callback’lerinin stack ve Phantom Hit sayımına uygunluğu tüm şampiyonlar için doğrulanmamış.",
+      "finding": "Stack do\u011fal eligible hitlerle art\u0131yor; skill-on-hit callback\u2019lerinin stack ve Phantom Hit say\u0131m\u0131na uygunlu\u011fu t\u00fcm \u015fampiyonlar i\u00e7in do\u011frulanmam\u0131\u015f.",
       "review_needed": true,
       "status": "ingame_test_todo",
       "todo": "I01",
@@ -356,7 +356,7 @@
       "scope": "completed",
       "trigger_category": "penetration",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Percent armor penetration.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Percent armor penetration.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -381,7 +381,7 @@
       "scope": "completed",
       "trigger_category": "defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -434,7 +434,7 @@
       "scope": "completed",
       "trigger_category": "defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Shield/survival excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -459,7 +459,7 @@
       "scope": "completed",
       "trigger_category": "execute",
       "coverage": "modeled",
-      "finding": "Önceki execute sayısı kullanıcı/progression state’i; hedef ölümü sırasında eşik kontrolü gerçek HP’ye bağlı. Maç geçmişi otomatik simüle edilmez.",
+      "finding": "\u00d6nceki execute say\u0131s\u0131 kullan\u0131c\u0131/progression state\u2019i; hedef \u00f6l\u00fcm\u00fc s\u0131ras\u0131nda e\u015fik kontrol\u00fc ger\u00e7ek HP\u2019ye ba\u011fl\u0131. Ma\u00e7 ge\u00e7mi\u015fi otomatik sim\u00fcle edilmez.",
       "review_needed": true,
       "damage_classification": {
         "origin_tags": [
@@ -484,7 +484,7 @@
       "scope": "completed",
       "trigger_category": "stacking/on-hit",
       "coverage": "modeled",
-      "finding": "Light/Dark alternasyonu kernel çağrı sayısına bağlı; eligible skill hitleri de sayacı etkiliyor. Skill eligibility/alternasyon sırası doğrulanmalı.",
+      "finding": "Light/Dark alternasyonu kernel \u00e7a\u011fr\u0131 say\u0131s\u0131na ba\u011fl\u0131; eligible skill hitleri de sayac\u0131 etkiliyor. Skill eligibility/alternasyon s\u0131ras\u0131 do\u011frulanmal\u0131.",
       "review_needed": true,
       "status": "ingame_test_todo",
       "todo": "I01",
@@ -594,7 +594,7 @@
       "scope": "completed",
       "trigger_category": "active/defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Cleanse/active excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Cleanse/active excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -619,7 +619,7 @@
       "scope": "completed",
       "trigger_category": "current-HP/on-hit",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Current-HP on-hit recalculated each attack.",
+      "finding": "User Smolder15 live test confirms ranged6% current HP; melee8.5% from reported live tooltip. Phantom recalculates current HP after the primary hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -640,6 +640,22 @@
           "trigger_category": "trigger",
           "finding": "evidence"
         }
+      },
+      "user_validation": {
+        "date": "2026-10-02",
+        "source": "data/smolder-item-aa-tests-20261002.json",
+        "confirmed": [
+          "ranged6% current HP",
+          "Phantom remaining HP"
+        ],
+        "tooltip_only": [
+          "melee8.5%"
+        ],
+        "unverified": [
+          "minimum15 raw",
+          "monster cap",
+          "universal damage indicator rounding"
+        ]
       }
     },
     {
@@ -647,7 +663,7 @@
       "scope": "completed",
       "trigger_category": "defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Revive excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Revive excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -672,7 +688,7 @@
       "scope": "completed",
       "trigger_category": "sustain",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Sustain is not scored as DPS.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Sustain is not scored as DPS.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -697,7 +713,7 @@
       "scope": "completed",
       "trigger_category": "bonus-HP scaling",
       "coverage": "partial",
-      "finding": "Hedef bonus HP manuel/profil farkından hesaplanır; anlık buff yok. Tek hedef profili dışındaki health growth belirsizlikleri sonucu etkiler.",
+      "finding": "Hedef bonus HP manuel/profil fark\u0131ndan hesaplan\u0131r; anl\u0131k buff yok. Tek hedef profili d\u0131\u015f\u0131ndaki health growth belirsizlikleri sonucu etkiler.",
       "review_needed": true,
       "damage_classification": {
         "origin_tags": [
@@ -750,7 +766,7 @@
       "scope": "completed",
       "trigger_category": "crit modifier",
       "coverage": "modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Critical damage modifier.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Critical damage modifier.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -775,7 +791,7 @@
       "scope": "completed",
       "trigger_category": "penetration/utility",
       "coverage": "partial",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Penetration modeled; slow excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Penetration modeled; slow excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -800,7 +816,7 @@
       "scope": "completed",
       "trigger_category": "shield-counter",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Needs target shield state.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Needs target shield state.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -876,7 +892,7 @@
       "scope": "completed",
       "trigger_category": "defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Spell shield excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Spell shield excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -929,7 +945,7 @@
       "scope": "completed",
       "trigger_category": "defensive",
       "coverage": "not modeled",
-      "finding": "Statik stat veya doğal on-hit/crit/defense-only kapsamı; yeni bir zorunlu-proc default’u tespit edilmedi. Mevcut kapsam: Damage delay/survival excluded.",
+      "finding": "Statik stat veya do\u011fal on-hit/crit/defense-only kapsam\u0131; yeni bir zorunlu-proc default\u2019u tespit edilmedi. Mevcut kapsam: Damage delay/survival excluded.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -952,7 +968,7 @@
     {
       "item": "Gluttonous Greaves",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -975,7 +991,7 @@
     {
       "item": "Immortal Treads",
       "scope": "boot",
-      "finding": "Kerneldaki +5% damage her zaman uygulanır. Build Lab kendi HP seçeneğiyle düzeltir; tier benchmark kendi HP >50% varsayar.",
+      "finding": "Kerneldaki +5% damage her zaman uygulan\u0131r. Build Lab kendi HP se\u00e7ene\u011fiyle d\u00fczeltir; tier benchmark kendi HP >50% varsayar.",
       "review_needed": true,
       "damage_classification": {
         "origin_tags": [
@@ -998,7 +1014,7 @@
     {
       "item": "Ionian Boots of Lucidity",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1021,7 +1037,7 @@
     {
       "item": "Crimson Lucidity",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1044,7 +1060,7 @@
     {
       "item": "Berserker's Greaves",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1070,7 +1086,7 @@
     {
       "item": "Gunmetal Greaves",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1093,7 +1109,7 @@
     {
       "item": "Mercury's Treads",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1116,7 +1132,7 @@
     {
       "item": "Chainlaced Crushers",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1139,7 +1155,7 @@
     {
       "item": "Plated Steelcaps",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1162,7 +1178,7 @@
     {
       "item": "Armored Advance",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1185,7 +1201,7 @@
     {
       "item": "Boots of Mana",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1208,7 +1224,7 @@
     {
       "item": "Spellslinger's Shoes",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1231,7 +1247,7 @@
     {
       "item": "Boots of Dynamism",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1254,7 +1270,7 @@
     {
       "item": "Armorcrusher Boots",
       "scope": "boot",
-      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmadığı için DPSye eklenmez.",
+      "finding": "Statik boot stats/MS; shield/defense/utility gelen hasar olmad\u0131\u011f\u0131 i\u00e7in DPSye eklenmez.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1277,7 +1293,7 @@
     {
       "item": "Pickaxe",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1326,7 +1342,7 @@
     {
       "item": "Kircheis Shard",
       "scope": "component",
-      "finding": "Başlangıç Energized checkbox’ı; gerçek hareket recharge yok.",
+      "finding": "Ba\u015flang\u0131\u00e7 Energized checkbox\u2019\u0131; ger\u00e7ek hareket recharge yok.",
       "review_needed": true,
       "damage_classification": {
         "origin_tags": [
@@ -1349,7 +1365,7 @@
     {
       "item": "Executioner's Calling",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1372,7 +1388,7 @@
     {
       "item": "Recurve Bow",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1398,7 +1414,7 @@
     {
       "item": "Quicksilver Sash",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1421,7 +1437,7 @@
     {
       "item": "Hearthbound Axe",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1444,7 +1460,7 @@
     {
       "item": "Vampiric Scepter",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1467,7 +1483,7 @@
     {
       "item": "Last Whisper",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1490,7 +1506,7 @@
     {
       "item": "Caulfield's Warhammer",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1513,7 +1529,7 @@
     {
       "item": "Noonquiver",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1536,7 +1552,7 @@
     {
       "item": "Zeal",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1559,7 +1575,7 @@
     {
       "item": "B.F. Sword",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1582,7 +1598,7 @@
     {
       "item": "Tear of the Goddess",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1605,7 +1621,7 @@
     {
       "item": "Dagger",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1628,7 +1644,7 @@
     {
       "item": "Long Sword",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1651,7 +1667,7 @@
     {
       "item": "Brawler's Gloves",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1674,7 +1690,7 @@
     {
       "item": "Cloth Armor",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1697,7 +1713,7 @@
     {
       "item": "Null-Magic Mantle",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1720,7 +1736,7 @@
     {
       "item": "Ruby Crystal",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1743,7 +1759,7 @@
     {
       "item": "Amplifying Tome",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1766,7 +1782,7 @@
     {
       "item": "Ring of Revelation",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [
@@ -1789,7 +1805,7 @@
     {
       "item": "Boots of Speed",
       "scope": "component",
-      "finding": "Statik stats; Recurve Bow doğal eligible on-hit.",
+      "finding": "Statik stats; Recurve Bow do\u011fal eligible on-hit.",
       "review_needed": false,
       "damage_classification": {
         "origin_tags": [

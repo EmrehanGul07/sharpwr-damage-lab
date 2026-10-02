@@ -7,7 +7,7 @@ import build_fight_optimizer as optimizer
 class TierFightUI(unittest.TestCase):
     def test_real_fight_search_renders_three_full_builds_then_four_top_tens(self):
         from engine_runtime import ensure_engine_revision
-        ensure_engine_revision("5.75.0")
+        ensure_engine_revision("5.76.0")
         original=optimizer.search_builds
         def bounded(evaluator,pool,boots,**kwargs):
             return original(evaluator,['Muramana',"Nashor's Tooth",'Infinity Edge','Phantom Dancer','Statikk Shiv',"Guinsoo's Rageblade"],boots[:2],beam_width=8,refine_count=4,progress=kwargs.get('progress'))
