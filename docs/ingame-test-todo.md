@@ -1,4 +1,4 @@
-# Aktif TODO — V5.78.0 / 2 Ekim 2026
+# Aktif TODO — V5.79.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -13,7 +13,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
 | I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Once-per-attack/cast kuralı ortak engine’de uygulanıyor; Phantom aynı attack Shock’unu tekrar etmez. Açık: default/indirect/pasif damage bileşenlerinin Shock eligibility sınıflandırması. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
-| I06 | Spellblade | Ezreal/Smolder Q mevcut modelde cast ile arm edip kendi hitinde ER/Trinity/Iceborn tüketir; bu bağlantı oyun içi teyitli değildir. Armed-window expiry; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi. ER Q crit katkısı: carrier crit=0 değeri ER hesabına da sızıyor; implementation bug olarak düzeltilecek. |
+| I06 | Spellblade | Ezreal/Smolder Q mevcut modelde cast ile arm edip kendi hitinde ER/Trinity/Iceborn tüketir; bu bağlantı oyun içi teyitli değildir. Armed-window expiry; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi. ER Q crit aktarım hatası V5.79’da düzeltildi; bu kod düzeltmesi Spellblade live eligibility teyidi değildir. |
 | I07 | Damage classification | Item BasicAttack/Proc kapsamı; AA damage reduction'ın item/pasif eklerine uygulanması; aşağıdaki bilinmeyen WR ability tag'leri |
 | I08 | Attack-only itemların basic/on-hit Q istisnaları | **AÇIK / oyun içi teyit yok:** PD ve Yun Tal Q ile stack kazanımı, R sonrası Q'nun Fiendhunter hakkını tüketmesi, Q'nun Duskblade proc/CD'sini tetiklemesi. Mevcut AA-only kodu ve regresyon testleri WR kanıtı sayılmaz. Ezreal/Smolder Q ayrı ele alınır. |
 

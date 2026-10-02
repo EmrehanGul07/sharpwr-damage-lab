@@ -70,3 +70,27 @@ class OnHitAuditRegression(unittest.TestCase):
         physical=sum(c['raw_amount'] for c in skill if c['damage_type']=='physical');magic=sum(c['raw_amount'] for c in skill if c['damage_type']=='magic')
         self.assertGreater(physical,0)
         self.assertAlmostEqual(row['damage'],(physical+magic)/1.9+15.)
+
+class EssenceReaverCarrierCrit(unittest.TestCase):
+    def test_zero_carrier_crit_retains_build_crit_for_er(self):
+        ns=engine_namespace()
+        for name in ('Ezreal','Smolder'):
+            with self.subTest(champion=name):
+                k=ns['_combat_hits'](name,15,10000,100,100,['Essence Reaver'],ns['F']);next(k)
+                h=k.send({'hp':10000,'time':0,'event_driven':True,'skill_on_hit':True,'spell_cast':True,'crit':0.,'attack_physical':0.})
+                self.assertAlmostEqual(h['physical'],1.35*ns['stats'](name,15)['basead']+20.)
+                self.assertEqual(h['crit'],0.)
+    def test_carrier_explicit_crit_uses_current_yuntal_progression(self):
+        ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,['Essence Reaver'],ns['F']);next(k)
+        h=k.send({'hp':10000,'time':0,'event_driven':True,'skill_on_hit':True,'spell_cast':True,'crit':0.,'spellblade_crit':.5,'attack_physical':0.})
+        self.assertAlmostEqual(h['physical'],1.35*ns['stats']('Ezreal',15)['basead']+40.)
+    def test_q_adapter_forwards_spellblade_crit_independently(self):
+        ns=engine_namespace()
+        for name in ('Ezreal','Smolder'):
+            with self.subTest(champion=name):
+                seen=[];k=ns['_combat_hits'](name,15,10000,100,100,['Essence Reaver'],ns['F']);next(k)
+                def hit(state):seen.append(state);return k.send(state)
+                r=replay_samira([FightEvent(0,'Q')],champion=name,level=15,ad=100,base_ad=60,attack_speed=1,crit_chance=.75,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,automatic_until=3,aa_hit=hit)
+                carriers=[s for s in seen if s.get('skill_on_hit')]
+                self.assertEqual(len(carriers),1);self.assertEqual(carriers[0]['crit'],0.);self.assertEqual(carriers[0]['spellblade_crit'],.75)
+                self.assertIn('ER',r.log[0]['effects'])

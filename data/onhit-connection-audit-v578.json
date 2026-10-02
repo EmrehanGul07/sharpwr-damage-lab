@@ -1006,8 +1006,11 @@
     "Smolder Q same-hit Terminus penetration",
     "Spellblade self-arming/consumption on Q and expiry"
   ],
-  "implementation_defects_pending": [
-    "Skill carrier crit=0 suppresses Essence Reaver crit contribution on Q"
-  ],
-  "regression_scope": "Tests confirm current implementation only; they do not prove unmeasured WR rules."
+  "implementation_defects_pending": [],
+  "regression_scope": "Tests confirm current implementation only; they do not prove unmeasured WR rules.",
+  "followup_fix": {
+    "version": "5.79.0",
+    "change": "Essence Reaver uses independent current build crit for skill carriers; zero AA crit no longer suppresses Spellblade crit term",
+    "WR_eligibility_confirmed": false
+  }
 }

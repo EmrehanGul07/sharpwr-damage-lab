@@ -22,3 +22,5 @@ This is a connection audit, not a claim that all115 profiles or all23 champions 
 ## Explicit open status correction
 
 PD/Yun Tal/Fiendhunter/Duskblade exceptions on BasicAttack/OnHit skills remain open ingame TODO (I08). Current guards are model choices, not proven WR exclusions. Smolder Q same-hit Terminus penetration was transferred from AA order; it remains an unmeasured model assumption. Ezreal/Smolder Q currently arms and consumes Spellblade on its own hit, subject to1.5s CD; exact live eligibility/expiry remains I06. Carrier crit=0 also suppresses ER crit-dependent bonus on Q; this is an implementation defect, not an ingame unknown.
+
+Follow-up V5.79: ER carrier crit defect fixed by independent Spellblade crit input; Q live eligibility remains unverified.

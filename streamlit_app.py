@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.78.0")
+ensure_engine_revision("5.79.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -776,6 +776,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if ("Yun Tal Wildarrows" in items and item_proc) and t<yt_until: dyn+=.35
         asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))))
         crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if ("Yun Tal Wildarrows" in items and item_proc) else 0))
+        spellblade_crit=float(state.get("spellblade_crit",crit))
         crit=float(state.get("crit",crit))
         cd=2.3 if "Infinity Edge" in items else 2.0
         if n=="Senna": cd*=.9
@@ -873,7 +874,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         if not event_driven and spell and k==1:spell_pending=True
         if spell_pending and t>=spellblade_ready:
             choices=[]
-            if "Essence Reaver" in items and item_proc:choices.append((1.35,1.35*s["basead"]+min(80,.8*crit*100),"ER"))
+            if "Essence Reaver" in items and item_proc:choices.append((1.35,1.35*s["basead"]+min(80,.8*spellblade_crit*100),"ER"))
             if "Trinity Force" in items and item_proc:choices.append((2.,2*s["basead"],"Trinity"))
             if "Iceborn Gauntlet" in items and item_proc:choices.append((1.,s["basead"]+.25*total("armor"),"Iceborn"))
             if "Sheen" in items:choices.append((1.,s["basead"],"Sheen"))
@@ -1068,7 +1069,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.78.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.79.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2132,4 +2133,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.78.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.79.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
