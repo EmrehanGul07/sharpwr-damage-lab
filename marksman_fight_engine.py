@@ -41,7 +41,7 @@ def replay_marksman(events,**p):
     aa_clock=0.;t=0.;last_t=0.;last_speed=base_as;lock=0.;channel=0.;root_until=0.;aa_lock=0.;dash_until=0.
     cast_id=0;attack_sequence=0;timeline=[];motion=[];aa_count=skill_count=0;log=[];rejected=[];total=0.;killed=None
     conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False;spell_cast_times=[]
-    items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
+    items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;movement_distance=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
     runes=set(p.get('sub_runes',()));keystone=p.get('keystone');aa_hit=p.get('aa_hit');aa_stats=p.get('aa_stats')
     if keystone not in (None,'Conqueror','Lethal Tempo'):raise ValueError('Unsupported offensive keystone')
     if not 0<=p.get('mana_refund',0.)<=1 or not 0<=p.get('collector_threshold',0.)<=1 or amp<=0:raise ValueError('Invalid modifiers')
@@ -219,9 +219,9 @@ def replay_marksman(events,**p):
         item_damage=0.
         if aa_hit and event_profile(name,slot).get('properties',{}).get('TriggerOnHitEvents') is True:
             ea,em=effective()
-            item=aa_hit({'on_hit_health_multiplier':multiplier(slot)/amp,'primary_external_damage':(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)*ability_magnification(name,slot,gap,p.get('hexoptics',False)),'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'spellblade_crit':probability(),'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
+            item=aa_hit({'movement_distance':movement_distance,'on_hit_health_multiplier':multiplier(slot)/amp,'primary_external_damage':(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)*ability_magnification(name,slot,gap,p.get('hexoptics',False)),'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'spellblade_crit':probability(),'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
             item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
-            items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')})
+            items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge')})
             effects.extend(item.get('notes',[]))
             if name=='Ezreal' and slot=='Q':
                 effects.append('WR user verified: Q advances Kraken/Rageblade Phantom/Terminus counters')
@@ -352,8 +352,8 @@ def replay_marksman(events,**p):
             external_damage=magic*resistance_multiplier(em)*amp+true*amp
             if 'Brutal' in runes:external_damage+=(6+.08*max(0.,cad-base_ad))*resistance_multiplier(ea)*amp
             if keystone=='Lethal Tempo' and lt>=6:external_damage+=(6+level-1)*(1+.33*total_as()[1].get('bonus_as_total',0.))*resistance_multiplier(ea)*amp
-            hit=aa_hit({'on_hit_health_multiplier':health_amp,'primary_external_damage':external_damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'nonbasic_attack_physical':nonbasic_physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
-            components.extend(hit.get('damage_components',[]));actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')}
+            hit=aa_hit({'attack_id':cid,'movement_distance':movement_distance,'on_hit_health_multiplier':health_amp,'primary_external_damage':external_damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'nonbasic_attack_physical':nonbasic_physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
+            components.extend(hit.get('damage_components',[]));actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge')}
             actual+=magic*resistance_multiplier(em)*amp+true*amp*(magnification(gap,component_profile(name,'P')['tags']) if p.get('hexoptics') and name=='Corki' else 1.);effects+=hit.get('notes',[])
         else:actual=((physical-nonbasic_physical)*magnification(gap,['BasicAttack'])*resistance_multiplier(ea)+nonbasic_physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true*(magnification(gap,component_profile(name,'P')['tags']) if name=='Corki' else 1.))*amp if p.get('hexoptics') else (physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
         if 'Brutal' in runes:actual+=(6+.08*max(0.,cad-base_ad))*resistance_multiplier(ea)*amp
@@ -384,7 +384,7 @@ def replay_marksman(events,**p):
         if name=='Ezreal' and s.get('flux',0):tick('W detonation',raw('W'),eligible=True,cid=cid);s['flux']=0
         if name=='Sivir' and kit.active('morale',t):add('morale')
     def cast(slot,manual_command=False):
-        nonlocal mana,skill_count,cast_id,spell_pending,ultimate,lock,channel,root_until,aa_clock,dash_until,aa_lock,transcend_ready
+        nonlocal gap,movement_distance,kite_arc,mana,skill_count,cast_id,spell_pending,ultimate,lock,channel,root_until,aa_clock,dash_until,aa_lock,transcend_ready
         if not kit.enabled(slot,t):
             if manual_command:rejected.append({'time':t,'action':slot,'reason':'Unlearned, resource unresolved, or kit prerequisite not met'})
             return False
@@ -411,6 +411,18 @@ def replay_marksman(events,**p):
             lock=t+1.5;channel=lock;arrival=lock+kit.travel(slot,gap);ready['Q']=lock+kit.cd('Q')/(1+haste/100);kit.state['mobile_cast_until']=lock;buff('charge_ms',1.5,.8)
         timeline[-1]['cast_end']=lock
         s=kit.state;r=ranks[slot];c=name
+        # Movement skill path is separate from target distance. Defaults are
+        # provisional movement proxies, overrideable without changing charge rules.
+        dash_paths={('Ezreal','E'):700.*16./26.,('Vayne','Q'):300.,
+                    ('Lucian','E'):425.,('Zeri','E'):300.,('Caitlyn','E'):390.,
+                    ('Corki','W'):600.,('Tristana','W'):min(gap,900.),
+                    ("Kai'Sa",'R'):gap}
+        if c=='Yunara' and slot=='E' and kit.active('transcend',t):dash_paths[(c,slot)]=300.
+        path=p.get('movement_skill_distances',{}).get(slot,dash_paths.get((c,slot),0.))
+        if path:
+            movement_distance+=path
+            timeline[-1]['movement_distance']=path
+            kit.unresolved.add('Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges')
         if p.get('transcendence') and level>=9 and t>=transcend_ready:
             for basic in 'QWE':reduce(basic,fraction=.08)
             transcend_ready=t+8
@@ -542,9 +554,11 @@ def replay_marksman(events,**p):
                 if name=="Kai'Sa" and last_t<kit.state.get('mobile_cast_until',-1):move_factor=1+( .5,.55,.6,.65)[ranks['E']-1]
                 step=ms*move_factor*dt
                 if abs(gap-desired)<1e-7:
-                    if name!='Xayah':kite_arc+=step
+                    if name!='Xayah':kite_arc+=step;movement_distance+=step
                     else:kit.unresolved.add('Xayah benchmark uses aligned radial movement against a stationary target; lateral feather collision geometry unverified')
-                else:gap+=math.copysign(min(abs(gap-desired),step),desired-gap)
+                else:
+                    walked=min(abs(gap-desired),step);movement_distance+=walked
+                    gap+=math.copysign(walked,desired-gap)
         kit.expire(t)
         if name=='Draven' and not kit.active('axes',t):kit.state['axes']=0
         if t>=conq_until:conq=0
@@ -563,7 +577,9 @@ def replay_marksman(events,**p):
                 else:
                     if gap>925:
                         queue(t+.05,'galeforce');continue
+                    old_gap=gap
                     gap=max(0.,gap-min(325.,max(0.,gap-(min(600.,kit.attack_range(t)) if name!='Samira' else 0.))))
+                    movement_distance+=old_gap-gap
                     if gap>600:
                         queue(t+.05,'galeforce');continue
                     record('Galeforce active',RawDamage(physical=40+(level-1)/14*80+.45*max(0.,current_ad()-base_ad)),effects=('Cloudburst active; 50s cooldown',))

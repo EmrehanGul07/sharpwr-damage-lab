@@ -99,3 +99,9 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 - V5.78 offline audit: tüm23 champion/115 profil tarandı. Gereksiz karma Q-AA sayaç testi kaldırıldı. Muramana Phantom duplicate, skill-carried BotRK HP snapshot ve Smolder Q Terminus fiziksel penetration düzeltildi. Yeni oyun içi test istenmedi.
 
 - 13:37 düzeltmesi: Attack-only item/Q etkileşimleri I08 olarak açık TODO. Kod testi mevcut varsayımı doğrular, oyun içi kuralı doğrulamaz. Smolder Q aynı-hit Terminus penetration genellemesi de doğrudan ölçülmedi; model varsayımıdır.
+
+### Stormrazor Energized — 2026-10-02
+- User reference: 26 charge / 700 travelled units, 9 / AA; Ezreal Q grants zero. Includes walking, lateral kiting, movement skills and Galeforce.
+- Ezreal E maximum distance grants 16 observed charges. Model calibrated distance = 430.769 units; this is inferred, not an independently measured range.
+- TODO: confirm whether the AA that reaches 100 procs immediately (current model: yes), and whether a ready proc can be consumed by Ezreal/Smolder Q (current existing on-hit routing retained).
+- TODO: exact movement skill paths/endpoints. Generic adapter uses provisional distance proxies credited at cast, including lateral Vayne/Lucian/Zeri movements; animated dash integration is not yet exact for these champions. Samira dash path is integrated over time.

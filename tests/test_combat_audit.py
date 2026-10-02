@@ -29,7 +29,7 @@ class CombatAudit(unittest.TestCase):
   self.assertEqual(commands[0]['mana_after'],cost*.5)
   rocket=next(x for x in hits if x['attack_id']==commands[0]['id']);self.assertAlmostEqual(rocket['physical'],112)
  def test_locked_energized_cadence_survives_event_driven_mode(self):
-  for item,period,label in [('Rapid Firecannon',7,'RFC Energized'),('Stormrazor',7,'Storm Energized'),('Statikk Shiv',5,'Shiv Energized')]:
+  for item,period,label in [('Rapid Firecannon',7,'RFC Energized'),('Statikk Shiv',5,'Shiv Energized')]:
    k=self.ns['_combat_hits']('Ezreal',15,1e6,0,0,[item],self.ns['F'],energized=False);next(k)
    indices=[i for i in range(1,22) if label in k.send({'time':i,'hp':1e6,'event_driven':True})['notes']]
    self.assertEqual(indices,list(range(period,22,period)))

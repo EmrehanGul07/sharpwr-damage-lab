@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.79.0")
+ensure_engine_revision("5.80.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -596,7 +596,7 @@ F={
 # Tier List combat-mechanic audit: CURRENT simulator coverage.
 ITEM_SCENARIO_AUDIT={
 "Fiendhunter Bolts":("ultimate-trigger","modeled","Opening Barrage requires an actual ultimate cast; pre-cast defaults removed."),
-"Rapid Firecannon":("energized","modeled","Sharpshooter: 80 bonus magic per Energized proc; kiting benchmark recharges every 7 AAs. Proc also grants +35% bonus attack range, capped at +150 (utility)."),
+"Rapid Firecannon":("energized","modeled","Sharpshooter: 80 bonus magic per Energized proc; charges 26 per 700 travelled units and 9 per AA; on-hit skills grant no AA charge. Proc also grants +35% bonus attack range, capped at +150 (utility)."),
 "Runaan's Hurricane":("multi-target","not modeled","Extra bolts excluded in single-target ranking."),
 "Phantom Dancer":("stacking","modeled","AS stacks build naturally from 0."),
 "Navori Quickblades":("ability-cooldown","modeled","Deft Strikes: each AA reduces remaining basic-ability cooldowns by 15%; effect activates when ability timeline is added."),
@@ -614,7 +614,7 @@ ITEM_SCENARIO_AUDIT={
 "Immortal Shieldbow":("defensive","not modeled","Shield/survival excluded."),
 "The Collector":("execute","modeled","Execute and previous executes."),
 "Terminus":("stacking/on-hit","modeled","Current in-game test: Shadow deals 30 bonus magic on-hit. Juxtaposition grants 10% armor + magic penetration per Dark stack, up to 3 stacks / 30%; no level scaling. Item percent penetration cap 40%. Defensive Light stacks are not scored in DPS."),
-"Stormrazor":("energized","modeled","Bolt: 120 bonus magic per Energized proc; kiting benchmark recharges every 7 AAs. Proc grants +45% movement speed for 1.5s (utility)."),
+"Stormrazor":("energized","modeled","Bolt: 120 bonus magic per Energized proc; charges 26 per 700 travelled units and 9 per AA; on-hit skills grant no AA charge. Proc grants +45% movement speed for 1.5s (utility)."),
 "Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
 "Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
@@ -753,6 +753,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     hp=float(hp0); t=0.; k=0; log=[]
     rb=light=dark=rage_hits=pd_stacks=0
     kraken_hits=0
+    storm_charge=100. if energized else 0.; storm_path=0.; storm_attacks=set()
     terminus_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
@@ -861,8 +862,21 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                     kraken_hits-=3
             note.append("Phantom Hit")
 
-        # Recurring Energized cadence mirrors the audited single-item engine.
-        for eit,period,magic,label in (("Rapid Firecannon",7,80,"RFC Energized"),("Stormrazor",7,120,"Storm Energized"),("Statikk Shiv",5,60,"Shiv Energized")):
+        # Stormrazor charges from actual travelled path, including lateral kiting.
+        # AA charge is credited before resolving the hit; on-hit skills add none.
+        if "Stormrazor" in items and item_proc:
+            travelled=max(storm_path,float(state.get("movement_distance",storm_path)))
+            storm_charge=min(100.,storm_charge+(travelled-storm_path)*26./700.)
+            storm_path=travelled
+            attack_id=state.get("attack_id")
+            if not skill_on_hit and (attack_id is None or attack_id not in storm_attacks):
+                storm_charge=min(100.,storm_charge+9.)
+                if attack_id is not None:storm_attacks.add(attack_id)
+            if storm_charge>=100.-1e-9:
+                onm+=120.;note.append("Storm Energized");storm_charge=0.
+
+        # User-calibrated RFC/Shiv cadence remains unchanged.
+        for eit,period,magic,label in (("Rapid Firecannon",7,80,"RFC Energized"),("Statikk Shiv",5,60,"Shiv Energized")):
             if eit in items and item_proc:
                 proc=(k==1 or (k>1 and (k-1)%period==0)) if energized else (k%period==0)
                 if event_driven and "energized_ready" in state: proc=bool(state["energized_ready"])
@@ -916,7 +930,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
         if fh and t<=fiend_until and not skill_on_hit: fh-=1
-        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"physical_damage":phy*rm(ea),"magic_damage":magic_damage,"on_hit_events":on_hit_events,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
+        state=yield {"stormrazor_charge":storm_charge,"movement_distance":storm_path,"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"physical_damage":phy*rm(ea),"magic_damage":magic_damage,"on_hit_events":on_hit_events,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -1069,7 +1083,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.79.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.80.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2133,4 +2147,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.79.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.80.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
