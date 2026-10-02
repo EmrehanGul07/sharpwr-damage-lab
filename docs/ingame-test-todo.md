@@ -13,8 +13,9 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
 | I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Once-per-attack/cast kuralı ortak engine’de uygulanıyor; Phantom aynı attack Shock’unu tekrar etmez. Açık: default/indirect/pasif damage bileşenlerinin Shock eligibility sınıflandırması. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
-| I06 | Spellblade | Armed-window expiry; eligible skill on-hit proc; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi |
+| I06 | Spellblade | Ezreal/Smolder Q mevcut modelde cast ile arm edip kendi hitinde ER/Trinity/Iceborn tüketir; bu bağlantı oyun içi teyitli değildir. Armed-window expiry; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi. ER Q crit katkısı: carrier crit=0 değeri ER hesabına da sızıyor; implementation bug olarak düzeltilecek. |
 | I07 | Damage classification | Item BasicAttack/Proc kapsamı; AA damage reduction'ın item/pasif eklerine uygulanması; aşağıdaki bilinmeyen WR ability tag'leri |
+| I08 | Attack-only itemların basic/on-hit Q istisnaları | **AÇIK / oyun içi teyit yok:** PD ve Yun Tal Q ile stack kazanımı, R sonrası Q'nun Fiendhunter hakkını tüketmesi, Q'nun Duskblade proc/CD'sini tetiklemesi. Mevcut AA-only kodu ve regresyon testleri WR kanıtı sayılmaz. Ezreal/Smolder Q ayrı ele alınır. |
 
 Ölçüm protokolü: [priority-ingame-test-protocol.md](priority-ingame-test-protocol.md). İlk pratik sıra: Hexoptics → item üçlüsü → Muramana → Xayah. Sıralama duyarlılığı sonucu ayrıca [offline-engine-review-v565.md](offline-engine-review-v565.md) içindedir.
 
@@ -96,3 +97,5 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 - Samira15 BotRK: uzak/yakın AA379, yakın blade AA ranged item sınıfını korur (AD149, Conqueror/Brutal/Coup de Grace).
 
 - V5.78 offline audit: tüm23 champion/115 profil tarandı. Gereksiz karma Q-AA sayaç testi kaldırıldı. Muramana Phantom duplicate, skill-carried BotRK HP snapshot ve Smolder Q Terminus fiziksel penetration düzeltildi. Yeni oyun içi test istenmedi.
+
+- 13:37 düzeltmesi: Attack-only item/Q etkileşimleri I08 olarak açık TODO. Kod testi mevcut varsayımı doğrular, oyun içi kuralı doğrulamaz. Smolder Q aynı-hit Terminus penetration genellemesi de doğrudan ölçülmedi; model varsayımıdır.

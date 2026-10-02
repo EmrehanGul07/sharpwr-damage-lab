@@ -998,5 +998,16 @@
         }
       }
     }
-  ]
+  ],
+  "open_model_assumptions": [
+    "PD/Yun Tal stack eligibility on basic/onhit Q",
+    "Fiendhunter charge consumption on basic/onhit Q",
+    "Duskblade eligibility on basic/onhit Q",
+    "Smolder Q same-hit Terminus penetration",
+    "Spellblade self-arming/consumption on Q and expiry"
+  ],
+  "implementation_defects_pending": [
+    "Skill carrier crit=0 suppresses Essence Reaver crit contribution on Q"
+  ],
+  "regression_scope": "Tests confirm current implementation only; they do not prove unmeasured WR rules."
 }

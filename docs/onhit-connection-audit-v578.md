@@ -11,10 +11,14 @@ All23 marksmen /115 ability profiles were compared with engine routes. Explicit 
 
 ## Regression coverage
 
-Attack-only guards: Phantom Dancer/Yun Tal AA progression, Fiendhunter charges and Duskblade first-AA proc do not advance/consume on Q. Muramana skill Shock stays one on Phantom Q; attack Shock stays one on Phantom AA. BotRK skill-base damage reduces the following Phantom HP snapshot. Smolder Q uses updated Terminus penetration. Existing Smolder and Ezreal measurements remain covered.
+**Implementation-assumption tests, not ingame proof:** Attack-only guards: Phantom Dancer/Yun Tal AA progression, Fiendhunter charges and Duskblade first-AA proc do not advance/consume on Q. Muramana skill Shock stays one on Phantom Q; attack Shock stays one on Phantom AA. BotRK skill-base damage reduces the following Phantom HP snapshot. Smolder Q uses updated Terminus penetration. Existing Smolder and Ezreal measurements remain covered.
 
 ## Closed versus open
 
 No extra mixed Q/AA counter measurement is requested: separate confirmed Q and AA events use the same persistent item counters. Closed AA and Ezreal Q counter tests were removed from active work. Remaining unknowns include Rageblade Q AS stack behavior, modifier/expiry details, other skills' special effects, source-unknown damage tags and exact display rounding. User-locked RFC/Stormrazor/Statikk/Yun Tal defaults are unchanged.
 
 This is a connection audit, not a claim that all115 profiles or all23 champions have been validated in game.
+
+## Explicit open status correction
+
+PD/Yun Tal/Fiendhunter/Duskblade exceptions on BasicAttack/OnHit skills remain open ingame TODO (I08). Current guards are model choices, not proven WR exclusions. Smolder Q same-hit Terminus penetration was transferred from AA order; it remains an unmeasured model assumption. Ezreal/Smolder Q currently arms and consumes Spellblade on its own hit, subject to1.5s CD; exact live eligibility/expiry remains I06. Carrier crit=0 also suppresses ER crit-dependent bonus on Q; this is an implementation defect, not an ingame unknown.
