@@ -124,14 +124,15 @@ def explain_ties(rows):
             row['Rank explanation']='Equal TTK · lower-cost option'
     return rows
 
-def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=None):
+def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=None,max_items=5):
     """All singles/pairs; diverse beam, rotation screening, then deeper policy validation."""
+    if not isinstance(max_items,int) or not 1<=max_items<=5:raise ValueError("Item budget must be 1–5")
     pool=tuple(sorted(set(pool)));stages={};beam=[()];tested={}
-    for stage in range(1,6):
+    for stage in range(1,max_items+1):
         candidates={tuple(sorted((*seed,item))) for seed in beam for item in pool if item not in seed and legal((*seed,item))}
         rows=[evaluator.evaluate(x) for x in sorted(candidates)]
         rows.sort(key=score);tested[stage]=len(rows);stages[stage]=rows[:10];beam=[x['Items'] for x in diverse_shortlist(evaluator,rows,max(beam_width,len(pool)) if stage==1 else beam_width)]
-        if stage<5:
+        if stage<max_items:
             shortlist=[evaluator.evaluate(x['Items'],refine='rotations') for x in diverse_shortlist(evaluator,rows,max(10,refine_count))]
             shortlist.sort(key=score);stages[stage]=shortlist[:10]
             refined_by_items={x['Items']:x for x in shortlist}
@@ -152,4 +153,4 @@ def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=
             without=evaluator.evaluate(tuple(x for x in best['Items'] if x!=removed),None if removed==best['Boots'] else best['Boots'],refine=True)
             marginal.append({'Item':removed,'DPS contribution':best['DPS']-without['DPS'],'TTK increase without item':None if best['TTK'] is None or without['TTK'] is None else without['TTK']-best['TTK'],'Target survives without item':without['TTK'] is None})
     if progress:progress(1.,'Complete')
-    return {'marginal':marginal,'stages':{k:explain_ties(v) for k,v in stages.items() if k<5},'full':explain_ties(refined)[:3],'tested':tested,'full_candidates':len(full),'refined':len(refined),'simulations':evaluator.simulations,'beam_width':beam_width,'pool_size':len(pool),'boot_count':len(boots),'search_status':'bounded diverse beam; not globally exhaustive','deep_policy_cross_product':True,'candidate_boot_policy':'boots compared at full build; stages 1-4 exclude boots','diversity_profiles':('AP','crit','on-hit','penetration','exact archetypes','pairwise hybrids')}
+    return {'marginal':marginal,'stages':{k:explain_ties(v) for k,v in stages.items() if k<max_items},'full':explain_ties(refined)[:3],'tested':tested,'full_candidates':len(full),'refined':len(refined),'simulations':evaluator.simulations,'beam_width':beam_width,'max_items':max_items,'pool_size':len(pool),'boot_count':len(boots),'search_status':'bounded diverse beam; not globally exhaustive','deep_policy_cross_product':True,'candidate_boot_policy':'boots compared at full build; stages 1-4 exclude boots','diversity_profiles':('AP','crit','on-hit','penetration','exact archetypes','pairwise hybrids')}

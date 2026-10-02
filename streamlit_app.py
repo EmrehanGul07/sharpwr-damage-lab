@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.81.0")
+ensure_engine_revision("5.82.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -977,6 +977,16 @@ def _champion_profile(name,lvl,mist_count=0):
     attack_speed=profile["baseas"]+profile["ratio"]*(profile["bba"]+profile["lvbas"])
     st.markdown(f'<div class="champion-profile"><img src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div></div>',unsafe_allow_html=True)
 
+    from core_items import core_record
+    _core=core_record(name)
+    if _core and _core.get('complete') and _core.get('ranking'):
+        _leaders=[r for r in _core['ranking'] if abs(r['Score']-_core['ranking'][0]['Score'])<1e-6][:2]
+        _icons=''.join(f'<img src="{html.escape(item_icon(r["Item"]))}" alt="{html.escape(r["Item"])}" style="width:38px;height:38px;border-radius:7px"><b>{html.escape(r["Item"])}</b>' for r in _leaders)
+        _tip='Standard Fight and default starting progression. Equal stage/target weighting; same Tier List search and boots. LDR/Serylda/Mortal Reminder/Infinity Edge/Terminus excluded. Muramana evaluated only at levels 11–15. Offensive benchmark, not a mandatory purchase.'
+        st.markdown(f'<div title="{html.escape(_tip)}" style="display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:9px 12px;margin-top:8px;border:1px solid #786337;border-radius:10px;background:#201d13"><span style="font-size:10px;color:#e8c976;font-weight:800">CORE ITEM</span>{_icons}</div>',unsafe_allow_html=True)
+    else:
+        st.caption('CORE ITEM · calculation pending')
+
 def _target_readout(target_hp,target_armor,target_mr,reduction=0):
     st.markdown(f'<div class="target-readout"><span><b>{target_hp:,.0f}</b> HP</span><span><b>{target_armor:g}</b> Armor</span><span><b>{target_mr:g}</b> MR</span><span><b>{reduction*100:.0f}%</b> AA reduction</span></div>',unsafe_allow_html=True)
 
@@ -1095,7 +1105,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.81.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.82.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2159,4 +2169,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.81.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.82.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
