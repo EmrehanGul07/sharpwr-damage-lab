@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-02",
+  "source": "User in-game observation",
+  "version": "5.81.0",
+  "confirmed": {
+    "movement_charge": {
+      "distance": 700,
+      "charge": 26
+    },
+    "aa_charge": 9,
+    "statikk_aa_charge": 14,
+    "shared_items": [
+      "Stormrazor",
+      "Rapid Firecannon",
+      "Statikk Shiv"
+    ],
+    "threshold": 100,
+    "threshold_reaching_attack_procs": false,
+    "ready_aa_consumption": "projectile launch",
+    "proc_damage_timing": "hit",
+    "proc_attack_gains_charge": false,
+    "ezreal_q": {
+      "charge_gain": 0,
+      "consumes_ready_energized_on_hit": true,
+      "phantom_dancer_stack_on_hit": true,
+      "yuntal_crit_stack": false,
+      "yuntal_flurry": false
+    }
+  },
+  "remaining_unknowns": [
+    "Other champion Q exceptions",
+    "Exact movement-skill path/endpoints/timing",
+    "Ezreal E exact distance: 16 observed charges, inferred model calibration only"
+  ]
+}

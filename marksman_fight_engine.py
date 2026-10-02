@@ -221,7 +221,7 @@ def replay_marksman(events,**p):
             ea,em=effective()
             item=aa_hit({'movement_distance':movement_distance,'on_hit_health_multiplier':multiplier(slot)/amp,'primary_external_damage':(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)*ability_magnification(name,slot,gap,p.get('hexoptics',False)),'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'spellblade_crit':probability(),'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
             item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
-            items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge')})
+            items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge','energized_charge')})
             effects.extend(item.get('notes',[]))
             if name=='Ezreal' and slot=='Q':
                 effects.append('WR user verified: Q advances Kraken/Rageblade Phantom/Terminus counters')
@@ -353,7 +353,7 @@ def replay_marksman(events,**p):
             if 'Brutal' in runes:external_damage+=(6+.08*max(0.,cad-base_ad))*resistance_multiplier(ea)*amp
             if keystone=='Lethal Tempo' and lt>=6:external_damage+=(6+level-1)*(1+.33*total_as()[1].get('bonus_as_total',0.))*resistance_multiplier(ea)*amp
             hit=aa_hit({'attack_id':cid,'movement_distance':movement_distance,'on_hit_health_multiplier':health_amp,'primary_external_damage':external_damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':bonus,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':prob,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':physical,'nonbasic_attack_physical':nonbasic_physical,'critical_attack_physical':critical,'armor_override':ea,'mr_override':em})
-            components.extend(hit.get('damage_components',[]));actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge')}
+            components.extend(hit.get('damage_components',[]));actual=hit['damage'];phantom='Phantom Hit' in hit.get('notes',[]);dark=hit.get('dark',dark);items={k:hit.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit','stormrazor_charge','energized_charge')}
             actual+=magic*resistance_multiplier(em)*amp+true*amp*(magnification(gap,component_profile(name,'P')['tags']) if p.get('hexoptics') and name=='Corki' else 1.);effects+=hit.get('notes',[])
         else:actual=((physical-nonbasic_physical)*magnification(gap,['BasicAttack'])*resistance_multiplier(ea)+nonbasic_physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true*(magnification(gap,component_profile(name,'P')['tags']) if name=='Corki' else 1.))*amp if p.get('hexoptics') else (physical*resistance_multiplier(ea)+magic*resistance_multiplier(em)+true)*amp
         if 'Brutal' in runes:actual+=(6+.08*max(0.,cad-base_ad))*resistance_multiplier(ea)*amp
@@ -527,6 +527,7 @@ def replay_marksman(events,**p):
         arrival=t+windup+attack_travel(name,gap,weapon=shot_weapon,ultimate=kit.active('ultimate_ad',t))
         timeline.append({'order':len(log)+len(timeline),'time':t,'kind':'attack','action':'AA','id':attack_sequence,'distance':gap,'attack_range':kit.attack_range(t),'windup_end':t+windup,'impact_time':arrival,'lock_before':max(lock,channel,aa_lock,dash_until),'mana_before':mana_before,'mana_after':mana,'weapon':shot_weapon,'fourth':fourth})
         kit.state['aa_windup']=windup;aa_clock=1.;aa_lock=t+windup
+        if aa_hit and p.get('energized_items'):queue(t+windup,'aa_launch',cid=('AA',attack_sequence))
         queue(arrival,'aa_hit',cid=('AA',attack_sequence),fourth=fourth,weapon=shot_weapon)
     priority=p.get('skill_priority',('Q','W','E'));use_e=p.get('use_e',True)
     action_policy=p.get('action_policy','skill_first')
@@ -584,6 +585,10 @@ def replay_marksman(events,**p):
                         queue(t+.05,'galeforce');continue
                     record('Galeforce active',RawDamage(physical=40+(level-1)/14*80+.45*max(0.,current_ad()-base_ad)),effects=('Cloudburst active; 50s cooldown',))
                     queue(t+50,'galeforce')
+            elif kind=='aa_launch':
+                result=aa_hit({'event_phase':'attack_launch','event_driven':True,'attack_id':payload['cid'],'hp':health,'time':t,'movement_distance':movement_distance,'ultimate_cast_time':ultimate})
+                items.update({k:result[k] for k in ('energized_charge','stormrazor_charge') if k in result})
+                timeline.append({'order':len(log)+len(timeline),'distance':gap,'time':t,'kind':'attack_launch','action':'AA','id':payload['cid'],'energized_charge':result.get('energized_charge'),'energized_reserved':result.get('energized_reserved',False)})
             elif kind=='aa_hit':basic_attack(payload['cid'],payload.get('secondary',False),payload.get('fourth',False),payload.get('weapon'))
             elif kind=='skill_hit':damage_impact(payload['slot'],payload['cid'],payload.get('index',0),payload.get('yunara_empowered'))
             elif kind=='buff':buff(payload['key'],payload['duration'],payload['value'])

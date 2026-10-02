@@ -50,10 +50,10 @@ class OnHitAuditRegression(unittest.TestCase):
     def test_onhit_skill_does_not_consume_attack_only_buffs(self):
         ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,['Phantom Dancer','Yun Tal Wildarrows','Fiendhunter Bolts','Duskblade of Draktharr'],ns['F']);next(k)
         q=k.send({'hp':10000,'time':0,'event_driven':True,'skill_on_hit':True,'attack_physical':0,'ultimate_cast_time':0})
-        self.assertEqual(q['phantom_dancer'],0);self.assertEqual(q['yuntal_crit'],0);self.assertEqual(q['fiend_remaining'],3)
+        self.assertEqual(q['phantom_dancer'],1);self.assertEqual(q['yuntal_crit'],0);self.assertEqual(q['fiend_remaining'],3)
         self.assertNotIn('Nightstalker',q['notes']);self.assertNotIn('Opening Barrage',q['notes'])
         aa=k.send({'hp':10000,'time':1,'event_driven':True,'ultimate_cast_time':0})
-        self.assertEqual(aa['phantom_dancer'],1);self.assertAlmostEqual(aa['yuntal_crit'],.002);self.assertEqual(aa['fiend_remaining'],2)
+        self.assertEqual(aa['phantom_dancer'],2);self.assertAlmostEqual(aa['yuntal_crit'],.002);self.assertEqual(aa['fiend_remaining'],2)
         self.assertIn('Nightstalker',aa['notes']);self.assertIn('Opening Barrage',aa['notes'])
     def test_muramana_skill_shock_once_with_phantom(self):
         ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,['Muramana',"Guinsoo's Rageblade"],ns['F']);next(k)

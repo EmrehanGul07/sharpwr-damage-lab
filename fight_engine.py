@@ -190,6 +190,11 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         auto_time=t
         if action in ('Move','Clock'):continue
         if mana is not None:mana=min(max_mana,mana+max(0.,t-mana_time)*mana_regen_per_5s/5);mana_time=t
+        if action=='AA launch':
+            result=aa_hit({'event_phase':'attack_launch','event_driven':True,'attack_id':cast_id,'hp':health,'time':t,'movement_distance':movement_distance,'ultimate_cast_time':ultimate_cast_time})
+            item_stacks.update({k:result[k] for k in ('energized_charge','stormrazor_charge') if k in result})
+            timeline.append({'order':len(log)+len(timeline),'distance':abs(target_position-position),'time':t,'kind':'attack_launch','action':'AA','id':cast_id,'energized_charge':result.get('energized_charge'),'energized_reserved':result.get('energized_reserved',False)})
+            continue
         if action=='Galeforce active':
             from damage_classification import event_profile
             classification=event_profile(champion,action)
@@ -290,6 +295,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     aa_remaining=1.;aa_clock_time=t
                     next_aa=t+1/attack_stats(t)[0]
                     timeline.append({'order':len(log)+len(timeline),'time':t,'kind':'attack','action':'AA','id':attack_sequence,'distance':gap,'attack_range':attack_range,'windup_end':t+windup,'impact_time':arrival,'lock_before':max(cast_until,w_until,channel_until,attack_windup_until-windup),'mana':mana})
+                    if aa_hit and kit_options.get('energized_items'):queue.append((t+windup,order-.5,'AA launch',attack_sequence))
                     queue.append((arrival,order,'AA hit',(attack_sequence,0,t,gap<=200,windup)));queue.sort(key=lambda x:(x[0],x[1]));continue
             else:
                 limit=({'AA':float('inf'),'Q':float('inf'),'W':325,'E':250,'R tick':600} if champion=='Samira' else {'AA':float('inf'),'Q':float('inf'),'W':1000,'E':700,'R tick':2000,'R':2000,'Burn tick':float('inf')})[action]
@@ -336,11 +342,11 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             components.append({'damage_type':'physical','raw_amount':current_ad*(1+probability*(crit_damage-1)),'tags':['BasicAttack'],'status':'fundamental_basic_attack'})
             bonus_as=(.048*lt if keystone=='Lethal Tempo' else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
             if aa_hit:
-                hit=aa_hit({'movement_distance':movement_distance,'on_hit_health_multiplier':(1.065 if 'Cut Down' in sub_runes and health/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and health/hp<.4 else 1.),'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
+                hit=aa_hit({'attack_id':cast_id[0] if timed_combat else None,'movement_distance':movement_distance,'on_hit_health_multiplier':(1.065 if 'Cut Down' in sub_runes and health/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and health/hp<.4 else 1.),'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':bonus_as,'crit':probability,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else None})
                 components.extend(hit.get('damage_components',[]));damage=hit['damage'];speed=hit['as'];ea=hit['armor'];dark=hit.get('dark',dark)
                 lt_bonus_as=hit.get('bonus_as_total',bonus_as)
                 effects.extend(hit.get('notes',[]))
-                item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken','stormrazor_charge')}
+                item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken','stormrazor_charge','energized_charge')}
                 item_stacks['yuntal_crit']=round(hit.get('yuntal_crit',0),4)
             else:
                 damage=current_ad*(1+probability*(crit_damage-1))*resistance_multiplier(ea)
@@ -382,12 +388,12 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action!='AA' and action!='Burn tick' and classification.get('properties',{}).get('TriggerOnHitEvents') is True and aa_hit:
             health_amp=(1.065 if 'Cut Down' in sub_runes and before_hp/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and before_hp/hp<.4 else 1.)
             if action in ('Q','W','E') and 'Battle Zeal' in sub_runes and combat_start is not None:health_amp*=1+.014*min(3,int(t-combat_start))
-            hit=aa_hit({'movement_distance':movement_distance,'on_hit_health_multiplier':health_amp,'primary_external_damage':damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':0.,'crit':0.,'spellblade_crit':current_crit,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else distance,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':effective_resistance(mr,hit_magic_pen,flat_mpen),'skill_on_hit':True})
+            hit=aa_hit({'attack_id':cast_id[0] if timed_combat else None,'movement_distance':movement_distance,'on_hit_health_multiplier':health_amp,'primary_external_damage':damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':0.,'crit':0.,'spellblade_crit':current_crit,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else distance,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':effective_resistance(mr,hit_magic_pen,flat_mpen),'skill_on_hit':True})
             if champion=='Smolder' and action=='Q' and terminus:
                 # Initial physical skill uses the Dark stack granted by its own hit.
                 damage=(phy*resistance_multiplier(hit['armor'])+magic*resistance_multiplier(hit['mr']))*skill_amp*ability_magnification(champion,action,abs(target_position-position) if timed_combat else distance,kit_options.get('hexoptics',False))
             damage+=hit['damage'];components.extend(hit.get('damage_components',[]));effects.extend(hit.get('notes',[]));dark=hit.get('dark',dark)
-            item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken','stormrazor_charge')}
+            item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken','stormrazor_charge','energized_charge')}
             spell_pending=False;spell_cast_times.clear()
         passive_eligible=champion=='Samira' and ((action in ('W','E') or (action=='AA' and melee) or (action=='Q' and cast_id[2])) if timed_combat else melee and action!='R tick')
         if passive_eligible:

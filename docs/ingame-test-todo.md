@@ -15,7 +15,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
 | I06 | Spellblade | Ezreal/Smolder Q mevcut modelde cast ile arm edip kendi hitinde ER/Trinity/Iceborn tüketir; bu bağlantı oyun içi teyitli değildir. Armed-window expiry; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi. ER Q crit aktarım hatası V5.79’da düzeltildi; bu kod düzeltmesi Spellblade live eligibility teyidi değildir. |
 | I07 | Damage classification | Item BasicAttack/Proc kapsamı; AA damage reduction'ın item/pasif eklerine uygulanması; aşağıdaki bilinmeyen WR ability tag'leri |
-| I08 | Attack-only itemların basic/on-hit Q istisnaları | **AÇIK / oyun içi teyit yok:** PD ve Yun Tal Q ile stack kazanımı, R sonrası Q'nun Fiendhunter hakkını tüketmesi, Q'nun Duskblade proc/CD'sini tetiklemesi. Mevcut AA-only kodu ve regresyon testleri WR kanıtı sayılmaz. Ezreal/Smolder Q ayrı ele alınır. |
+| I08 | Attack-only itemların basic/on-hit Q istisnaları | **Kısmen teyitli:** Ezreal Q hitinde PD stack kazanır; Yun Tal crit/Flurry kazanmaz (2026-10-02). **Açık:** diğer şampiyon Q/PD/Yun Tal istisnaları, R sonrası Q'nun Fiendhunter hakkını tüketmesi, Q'nun Duskblade proc/CD'sini tetiklemesi. Mevcut AA-only kodu ve regresyon testleri WR kanıtı sayılmaz. Ezreal/Smolder Q ayrı ele alınır. |
 
 Ölçüm protokolü: [priority-ingame-test-protocol.md](priority-ingame-test-protocol.md). İlk pratik sıra: Hexoptics → item üçlüsü → Muramana → Xayah. Sıralama duyarlılığı sonucu ayrıca [offline-engine-review-v565.md](offline-engine-review-v565.md) içindedir.
 
@@ -100,8 +100,9 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 
 - 13:37 düzeltmesi: Attack-only item/Q etkileşimleri I08 olarak açık TODO. Kod testi mevcut varsayımı doğrular, oyun içi kuralı doğrulamaz. Smolder Q aynı-hit Terminus penetration genellemesi de doğrudan ölçülmedi; model varsayımıdır.
 
-### Stormrazor Energized — 2026-10-02
-- User reference: 26 charge / 700 travelled units, 9 / AA; Ezreal Q grants zero. Includes walking, lateral kiting, movement skills and Galeforce.
-- Ezreal E maximum distance grants 16 observed charges. Model calibrated distance = 430.769 units; this is inferred, not an independently measured range.
-- TODO: confirm whether the AA that reaches 100 procs immediately (current model: yes), and whether a ready proc can be consumed by Ezreal/Smolder Q (current existing on-hit routing retained).
-- TODO: exact movement skill paths/endpoints. Generic adapter uses provisional distance proxies credited at cast, including lateral Vayne/Lucian/Zeri movements; animated dash integration is not yet exact for these champions. Samira dash path is integrated over time.
+### Energized — kullanıcı teyidi 2026-10-02
+- Ortak RFC/Stormrazor/Statikk yükü: 700 birim yola 26; AA hitine 9, Statikk varsa 14. Ezreal Q yük kazandırmaz.
+- Yükü 100 yapan AA proc yapmaz. Sonraki AA projectile launch yükü sıfırlar, hasar hitte gelir; proc hitinde yeniden AA yükü kazanılmaz.
+- Ezreal Q hitinde hazır yükü tüketir ve ek büyü hasarı verir. PD stack hitte artar; Yun Tal crit ve Flurry çalışmaz. Bu Ezreal testleri artık TODO değildir.
+- Ezreal E maksimum dash 16 yük: mesafe 430.769 model kalibrasyonudur, bağımsız menzil ölçümü değildir.
+- Açık: diğer şampiyon Q istisnaları; movement skill kesin path/end-point/timing. Generic dash mesafeleri geçici proxy ve cast anında yol ledger'ına eklenir. Samira timed dash yol integrasyonu kullanır.

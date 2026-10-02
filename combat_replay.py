@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 def replay_payload(result,*,champion,level,target,hp,build):
-    events=[dict(x,phase='command') for x in result.timeline]+[dict(x,phase='impact') for x in result.log]
+    events=[dict(x,phase='launch' if x.get('kind')=='attack_launch' else 'command') for x in result.timeline]+[dict(x,phase='impact') for x in result.log]
     events.sort(key=lambda x:(x['time'],x.get('order',0)))
     for i,x in enumerate(events):x['event_id']=i+1
     duration=result.killed_at if result.killed_at is not None else 60.
