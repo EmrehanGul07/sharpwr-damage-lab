@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-02",
+  "champion": "Smolder",
+  "level": 15,
+  "runes": [
+    "Fleet Footwork",
+    "Battle Zeal",
+    "Cut Down",
+    "Legend: Bloodline",
+    "Bone Plating"
+  ],
+  "target": {
+    "hp": 10000,
+    "armor": 100,
+    "mr": 100,
+    "source": "Agreed setup"
+  },
+  "kraken": {
+    "ad": 148,
+    "ap": 0,
+    "attack_speed": 1.3,
+    "crit_chance": 0,
+    "physical_sequence": [
+      79,
+      79,
+      170,
+      79,
+      79,
+      172,
+      79,
+      79,
+      174
+    ],
+    "confirmed_proc_attacks": [
+      3,
+      6,
+      9
+    ],
+    "tooltip": "Every third attack deals 150-201 bonus physical damage (120-168 for ranged champions), increased by 0.75% per 1% health the target is missing, up to +75%.",
+    "item_damage_counter_note": "User reports counter does not increase on dummy; requires champion target",
+    "validation": "Observed damage compatible with ranged level15 raw168, missing-health ratio and Cut Down; exact HP at each proc not independently recorded"
+  },
+  "rageblade": {
+    "ad": 138,
+    "ap": 30,
+    "attack_speed": 1.27,
+    "physical_sequence": [
+      74,
+      74,
+      74,
+      74,
+      74,
+      74,
+      74,
+      74,
+      74,
+      74
+    ],
+    "magic_instances": [
+      [
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        16
+      ]
+    ],
+    "confirmed_phantom_attacks": [
+      6,
+      9
+    ],
+    "assumption": "Test requested from zero item/combat stacks, no skills; user supplied ordered ten-hit sequence",
+    "fix": "Include fourth stack-granting attack in eligible Phantom cycle, preserving four-stack AS cap",
+    "unresolved": [
+      "AS stack values/expiry not independently measured",
+      "Phantom interaction with Kraken/Terminus and skill on-hit eligibility"
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-# Aktif TODO — V5.73.0 / 2 Ekim 2026
+# Aktif TODO — V5.74.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -8,7 +8,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 
 | ID | İş | Gereken bilgi |
 |---|---|---|
-| I01 | Rageblade + Kraken + Terminus | Tekli/ikili/üçlü sayaç; Phantom Hit tekrarı; penetration sırası; skill on-hit eligibility |
+| I01 | Rageblade + Kraken + Terminus | Kraken tek başına AA3/6/9 ve Rageblade tek başına AA6/9 phantom teyitli. Terminus tekli, ikili/üçlü sayaçlar; Phantom on-hit tekrarı; penetration sırası; skill on-hit eligibility |
 | I02 | Hexoptics | Ezreal AA/Q fiziksel kapsamı ve taşınan Wits End büyü on-hitinin mesafeden etkilenmemesi teyitli (2026-10-02). Tooltip ile %0–10 bonus ve 550 mesafede maksimum teyitli. 100 mesafede %1, her50 birimde +%1, 550 mesafede %10 basamakları kullanıcı tarafından yeniden teyit edildi. Center-edge mesafe tanımı, diğer şampiyon basic/proc bileşenleri ve MF/Senna Q farkı açık. |
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
 | I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Diğer şampiyonların çoklu-hit/on-hit etkileşimleri ve melee animasyonunun ranged item sınıfına etkisi açık. |

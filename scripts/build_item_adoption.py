@@ -7,6 +7,8 @@ from build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortl
 from item_consensus import progression_ranking
 parser=argparse.ArgumentParser()
 parser.add_argument('--champion', action='append', help='Recompute only selected champion(s), preserving other checkpoint cells')
+parser.add_argument('--checkpoint', help='Separate checkpoint path for an isolated worker')
+parser.add_argument('--output', help='Separate output path for an isolated worker')
 parser.add_argument('--refresh', action='store_true', help='Discard selected completed cells before recomputing')
 args=parser.parse_args()
 root=Path(__file__).resolve().parents[1];ns=engine_namespace();targets={}
@@ -19,7 +21,7 @@ def target_at(profile,level):
  lo=max(l for l in profile if l<level);hi=min(l for l in profile if l>level);u=(level-lo)/(hi-lo)
  t={k:profile[lo][k]+u*(profile[hi][k]-profile[lo][k]) for k in ('hp','armor','mr')};t['aa_reduction']=profile[hi].get('aa_reduction',0) if level>=5 else 0
  return t
-budgets={5:1,7:1,9:2,11:3,13:4,15:5};fingerprint=hashlib.sha256(repr(ns['F']).encode()).hexdigest();checkpoint=root/'data/item-progression-checkpoint.json'
+budgets={5:1,7:1,9:2,11:3,13:4,15:5};fingerprint=hashlib.sha256(repr(ns['F']).encode()).hexdigest();checkpoint=Path(args.checkpoint) if args.checkpoint else root/'data/item-progression-checkpoint.json'
 state=json.loads(checkpoint.read_text()) if checkpoint.exists() else {'fingerprint':fingerprint,'results':{},'simulations':0}
 if state['fingerprint']!=fingerprint:raise ValueError('Checkpoint uses different item stats')
 selected=args.champion or list(ns['C'])
@@ -51,10 +53,10 @@ for champion in selected:
    cells[key]={'level':level,'target':target,'item_count':count,'yuntal_start_stacks':stacks,'builds':refined[:10],'beam':refined,'candidates':len(candidates),'simulations':ev.simulations}
    state['simulations']+=ev.simulations;checkpoint.write_text(json.dumps(state,separators=(',',':')))
    print(champion,key,ev.simulations,'total',state['simulations'],flush=True)
-payload={'version':'5.73.0','levels':list(budgets),'item_budgets':budgets,'champions':len(state['results']),'targets':3,'simulations':state['simulations'],'method':'Equal level/target weighting. Exact single-item enumeration; later budgets grow a diverse 12-build beam, followed by rotation checks. Top-10 build reciprocal-rank item share is normalized by item count. Adoption = present in at least one retained build, once per champion. Muramana excluded below level 11. No boots/runes; expected crit; Yun Tal uses level-dependent starting progression (0 at 5, 62 at 7, 125 at 9+). Not exhaustive full-build optimization. Yunara uses user-verified level snapshots for HP/mana/armor/MR, MS 335 and range 575; all 15 levels are observed; mana regeneration uses user-confirmed per-5-second values. Normal Yunara W includes four linger ticks over one second.','fingerprint':fingerprint,'ranking':progression_ranking(state['results'],ns['F']),'results':state['results']}
+payload={'version':'5.74.0','levels':list(budgets),'item_budgets':budgets,'champions':len(state['results']),'targets':3,'simulations':state['simulations'],'method':'Equal level/target weighting. Exact single-item enumeration; later budgets grow a diverse 12-build beam, followed by rotation checks. Top-10 build reciprocal-rank item share is normalized by item count. Adoption = present in at least one retained build, once per champion. Muramana excluded below level 11. No boots/runes; expected crit; Yun Tal uses level-dependent starting progression (0 at 5, 62 at 7, 125 at 9+). Not exhaustive full-build optimization. Yunara uses user-verified level snapshots for HP/mana/armor/MR, MS 335 and range 575; all 15 levels are observed; mana regeneration uses user-confirmed per-5-second values. Normal Yunara W includes four linger ticks over one second.','fingerprint':fingerprint,'ranking':progression_ranking(state['results'],ns['F']),'results':state['results']}
 for cells in payload['results'].values():
  for cell in cells.values():
   cell.pop('beam',None)
   cell['builds']=[{k:r[k] for k in ('Items','DPS','TTK','Damage','Crit %','Rotation')} for r in cell['builds']]
-(root/'data/item-adoption-screen.json').write_text(json.dumps(payload,separators=(',',':')))
+(Path(args.output) if args.output else root/'data/item-adoption-screen.json').write_text(json.dumps(payload,separators=(',',':')))
 print('DONE',state['simulations'],flush=True)

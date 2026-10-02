@@ -75,7 +75,7 @@ Mevcut model: her üçüncü eligible hit; level15 ek **168 raw fiziksel**, tam 
 
 ### K02 — Rageblade tek başına
 
-Stackler sıfırdan 10 AA. Stack sayısı/AS göstergesini 1–5. AA'dan sonra oku; **7. ve 10. AA** çevresinde mavi on-hit iki kez geliyor mu? Mevcut model 4 stack cap, stack başına %8 bonus AS; tam stackten sonraki üçüncü AA phantom verir. İlk phantom AA7, sonraki AA10. Normal +30 raw magic, phantom sırasında +60 raw magic; 100 MR'da15/30, rune hariç.
+Stackler sıfırdan 10 AA. Stack sayısı/AS göstergesini 1–5. AA'dan sonra oku; **7. ve 10. AA** çevresinde mavi on-hit iki kez geliyor mu? Mevcut model 4 stack cap, stack başına %8 bonus AS; tam stackten sonraki üçüncü AA phantom verir. Kullanıcı Smolder ile AA6 ve AA9 phantom teyit etti (2026-10-02); engine stack4 kazandıran vuruşu döngünün ilk vuruşu sayacak şekilde düzeltildi. Normal +30 raw magic, phantom sırasında +60 raw magic; 100 MR'da15/30, rune hariç.
 
 ### K03 — Terminus tek başına
 

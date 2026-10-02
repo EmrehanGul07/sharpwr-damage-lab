@@ -81,7 +81,10 @@ class InterfaceTests(unittest.TestCase):
         self.assertEqual(table['base_mana'].iloc[0],345)
         a.text_input(key='db_champion_search').set_value('Yunara').run()
         self.assertFalse(a.exception)
-        self.assertTrue(any('manual data' in x.value for x in a.info))
+        self.assertTrue(any('manual core data at all 15 levels' in x.value for x in a.info))
+        observed=next(x.value for x in a.dataframe if 'mana_regen_per_5s' in x.value.columns)
+        self.assertEqual(len(observed),15)
+        self.assertEqual(observed.loc[observed['Level']=='15','mana'].iloc[0],807)
 
     def test_keystone_calculations(self):
         a=self.app
