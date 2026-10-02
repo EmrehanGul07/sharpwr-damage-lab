@@ -3301,20 +3301,20 @@
         "base_as": 0.65,
         "base_bonus_as": 0.23,
         "as_growth": 0.032,
-        "base_hp": null,
+        "base_hp": 630,
         "hp_growth": null,
         "base_hp_regen_per_5s": null,
         "hp_regen_growth_per_5s": null,
-        "base_mana": null,
+        "base_mana": 345,
         "mana_growth": null,
         "base_mana_regen_per_5s": null,
         "mana_regen_growth_per_5s": null,
-        "base_armor": null,
+        "base_armor": 35,
         "armor_growth": null,
-        "base_mr": null,
+        "base_mr": 30,
         "mr_growth": null,
-        "movement_speed": null,
-        "attack_range": null,
+        "movement_speed": 335,
+        "attack_range": 575,
         "attack_cast_time": 0.25,
         "attack_total_time": 1.538,
         "attack_delay_offset": null,
@@ -3357,27 +3357,45 @@
         "windup_modifier": {
           "url": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data",
           "game": "PC LoL proxy; user authorized"
+        },
+        "base_hp": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
+        },
+        "base_mana": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
+        },
+        "base_armor": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
+        },
+        "base_mr": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
+        },
+        "movement_speed": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
+        },
+        "attack_range": {
+          "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
+          "status": "manual_verified"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Yunara",
       "wiki_last_change_patch": null,
-      "source_status": "manual_pending_user_instruction",
+      "source_status": "manual_observed_levels_partial",
       "wiki_combat_values_not_applied": {},
       "unavailable_fields": [
-        "base_hp",
         "hp_growth",
         "base_hp_regen_per_5s",
         "hp_regen_growth_per_5s",
-        "base_mana",
         "mana_growth",
         "base_mana_regen_per_5s",
         "mana_regen_growth_per_5s",
-        "base_armor",
         "armor_growth",
-        "base_mr",
         "mr_growth",
-        "movement_speed",
-        "attack_range",
         "attack_delay_offset",
         "gameplay_radius"
       ],
@@ -3524,7 +3542,80 @@
           "status": "not_a_damage_instance"
         }
       },
-      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved"
+      "timing_policy": "User-authorized PC timing reference; WR numeric combat stats preserved",
+      "observed_level_stats": {
+        "1": {
+          "ad_displayed": 58,
+          "hp": 630,
+          "mana": 345,
+          "armor": 35,
+          "mr": 30,
+          "as_displayed": 0.82,
+          "hp_regen_displayed": 6,
+          "mana_regen_displayed": 9
+        },
+        "3": {
+          "ad_displayed": 63,
+          "hp": 825,
+          "mana": 396,
+          "armor": 42,
+          "mr": 33,
+          "as_displayed": 0.85,
+          "hp_regen_displayed": 7,
+          "mana_regen_displayed": 11
+        },
+        "5": {
+          "ad_displayed": 68,
+          "hp": 1040,
+          "mana": 451,
+          "armor": 50,
+          "mr": 35,
+          "as_displayed": 0.89,
+          "hp_regen_displayed": 8,
+          "mana_regen_displayed": 12
+        },
+        "8": {
+          "ad_displayed": 77,
+          "hp": 1401,
+          "mana": 544,
+          "armor": 63,
+          "mr": 39,
+          "as_displayed": 0.94,
+          "hp_regen_displayed": 10,
+          "mana_regen_displayed": 14
+        },
+        "10": {
+          "ad_displayed": 83,
+          "hp": 1667,
+          "mana": 613,
+          "armor": 72,
+          "mr": 42,
+          "as_displayed": 0.99,
+          "hp_regen_displayed": 11,
+          "mana_regen_displayed": 15
+        },
+        "13": {
+          "ad_displayed": 93,
+          "hp": 2105,
+          "mana": 726,
+          "armor": 87,
+          "mr": 47,
+          "as_displayed": 1.06,
+          "hp_regen_displayed": 13,
+          "mana_regen_displayed": 18
+        },
+        "15": {
+          "ad_displayed": 100,
+          "hp": 2422,
+          "mana": 807,
+          "armor": 98,
+          "mr": 50,
+          "as_displayed": 1.11,
+          "hp_regen_displayed": 14,
+          "mana_regen_displayed": 19
+        }
+      },
+      "observed_level_policy": "Exact displayed values at observed levels; piecewise linear interpolation for hp/mana/armor/mr at unobserved levels is provisional. Displayed regeneration units unconfirmed. Existing AD/AS formulas preserved."
     },
     {
       "name": "Kai'Sa",

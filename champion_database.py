@@ -24,5 +24,15 @@ def level_stats(name, level, growth_units=None):
              'armor':('base_armor','armor_growth'), 'mr':('base_mr','mr_growth')}
     out = {key: None if raw.get(b) is None or raw.get(g) is None else raw[b]+raw[g]*u
            for key,(b,g) in pairs.items()}
+    observations = champion_record(name).get('observed_level_stats', {})
+    for key in ('hp', 'mana', 'armor', 'mr'):
+        points = sorted((int(l), values[key]) for l, values in observations.items() if key in values)
+        exact = dict(points).get(level)
+        if exact is not None:
+            out[key] = exact
+        elif points and points[0][0] < level < points[-1][0]:
+            lo = max(p for p in points if p[0] < level)
+            hi = min(p for p in points if p[0] > level)
+            out[key] = lo[1] + (hi[1]-lo[1])*(level-lo[0])/(hi[0]-lo[0])
     out.update({key:raw.get(key) for key in ('movement_speed','attack_range')})
     return out
