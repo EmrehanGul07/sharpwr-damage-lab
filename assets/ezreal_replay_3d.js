@@ -11,15 +11,15 @@
  catch(error){const {SVGRenderer}=await import('https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/renderers/SVGRenderer.js');renderer=new SVGRenderer();renderer.setQuality('high');renderer.setPrecision(2);software=true;}
  stage.prepend(renderer.domElement);
  const Material=software?class extends THREE.MeshLambertMaterial{constructor(options={}){const {roughness,metalness,...rest}=options;super(rest);}}:THREE.MeshStandardMaterial;
- const camera=new THREE.PerspectiveCamera(38,1,.1,100);let yaw=.9,pitch=.78,zoom=22;const focus=new THREE.Vector3(-2,0,0);
+ const camera=new THREE.PerspectiveCamera(38,1,.1,100);let yaw=.9,pitch=.78,zoom=18;const focus=new THREE.Vector3(-2,0,0);
  scene.add(new THREE.HemisphereLight(0xb9e8ff,0x263528,2.3));const sun=new THREE.DirectionalLight(0xffe0a3,3.8);sun.position.set(-5,15,8);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16});sun.shadow.bias=-.001;scene.add(sun);
  const mats={stone:new Material({color:0x52655b,roughness:.9}),edge:new Material({color:0x233e37,roughness:1}),blue:new Material({color:0x307c9a,metalness:.35,roughness:.5}),cloth:new Material({color:0x343448,roughness:.8}),skin:new Material({color:0xdca77b,roughness:.7}),gold:new Material({color:0xcba356,metalness:.6,roughness:.35}),hair:new Material({color:0xe6bd69,roughness:.7}),dark:new Material({color:0x212e38,roughness:.7}),target:new Material({color:0x9c5255,roughness:.7})};
  const glow=c=>new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.9,depthWrite:false});const cyan=glow(0x62efff),gold=glow(0xffd26b),violet=glow(0xb6a2ff);
  function mesh(g,m,x=0,y=0,z=0,parent=scene){const a=new THREE.Mesh(g,m);a.position.set(x,y,z);a.castShadow=true;a.receiveShadow=true;parent.add(a);return a;}
  function box(w,h,d,m,x,y,z,parent){return mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z,parent);}function ball(r,m,x,y,z,parent){return mesh(new THREE.SphereGeometry(r,16,12),m,x,y,z,parent);}
  function ring(r,m,parent=scene){const a=mesh(new THREE.TorusGeometry(r,.025,8,80),m,0,.05,0,parent);a.rotation.x=Math.PI/2;return a;}
- mesh(new THREE.CylinderGeometry(17,17,1,72),mats.edge,0,-.6,0);
- for(let x=-12;x<=12;x+=1.65)for(let z=-10;z<=10;z+=1.65){if(x*x+z*z>220)continue;const color=new THREE.Color(0x52655b).multiplyScalar(.88+.12*Math.sin(x*31+z*13));const m=mats.stone.clone();m.color=color;box(1.59,.15,1.59,m,x,-.05,z);}
+ const base=mesh(new THREE.CylinderGeometry(17,17,1,72),mats.edge,0,-.6,0);base.renderOrder=-20;
+ for(let x=-12;x<=12;x+=1.65)for(let z=-10;z<=10;z+=1.65){if(x*x+z*z>220)continue;const color=new THREE.Color(0x52655b).multiplyScalar(.88+.12*Math.sin(x*31+z*13));const m=mats.stone.clone();m.color=color;box(1.59,.15,1.59,m,x,-.05,z).renderOrder=-10;}
  const rim=ring(14,new THREE.MeshBasicMaterial({color:0x78957b}));
  for(let j=0;j<24;j++){const a=j*Math.PI/12,r=14.3,x=Math.cos(a)*r,z=Math.sin(a)*r;box(1.3,.5,1.2,mats.edge,x,.13,z);if(j%3===0){box(.5,1.6,.5,mats.dark,x,.9,z);const crystal=mesh(new THREE.OctahedronGeometry(.35),cyan,x,1.95,z);const light=new THREE.PointLight(0x50d9eb,2,5);light.position.copy(crystal.position);scene.add(light);}else{mesh(new THREE.ConeGeometry(.8,2.5,7),new Material({color:0x254b3a}),x,1.6,z);}}
  const rune=ring(2.5,new THREE.MeshBasicMaterial({color:0x77927c,transparent:true,opacity:.25}));ring(3.2,new THREE.MeshBasicMaterial({color:0x77927c,transparent:true,opacity:.15}));
