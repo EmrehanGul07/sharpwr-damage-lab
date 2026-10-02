@@ -28,3 +28,20 @@ class CoreItems(unittest.TestCase):
   names={'F','stats'}
   self.assertEqual(_selected_digest(base,names),_selected_digest(base.replace('"old"','"new"'),names))
   self.assertNotEqual(_selected_digest(base,names),_selected_digest(base.replace('return 1','return 2'),names))
+
+ def test_fingerprint_is_independent_of_ast_dump_schema(self):
+  from unittest.mock import patch
+  from core_items import _selected_digest
+  source='F={"test":1}\ndef stats():return 1\n'
+  expected=_selected_digest(source,{'F','stats'})
+  with patch('ast.dump',side_effect=AssertionError('Runtime-specific AST serialization must not be hashed')):
+   self.assertEqual(_selected_digest(source,{'F','stats'}),expected)
+ def test_saved_results_match_current_fingerprint(self):
+  from core_items import core_record
+  ns=engine_namespace()
+  for name in ns['C']:
+   with self.subTest(champion=name):
+    record=core_record(name)
+    self.assertIsNotNone(record)
+    self.assertTrue(record['complete'])
+    self.assertEqual(len(record['cells']),18)

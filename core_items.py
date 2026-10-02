@@ -16,11 +16,11 @@ def _selected_digest(source,names):
  import ast
  selected=[]
  for node in ast.parse(source).body:
-  if isinstance(node,ast.FunctionDef) and node.name in names or isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id in names for t in node.targets):selected.append(ast.dump(node,include_attributes=False))
+  if isinstance(node,ast.FunctionDef) and node.name in names or isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id in names for t in node.targets):selected.append(ast.get_source_segment(source,node))
  return '\n'.join(selected)
 @lru_cache(maxsize=2)
 def _fingerprint(stamps):
- h=hashlib.sha256(b'core-protocol-v2')
+ h=hashlib.sha256(b'core-protocol-v3-source-segments')
  for name in SOURCE_FILES:h.update(name.encode());h.update((ROOT/name).read_bytes())
  engine_names={'stats','gu','dct','rm','lvl_scale','_combat_hits','_validate_build','_effective_resistance','sim','sim_build','C','F','B','P','K','SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'}
  h.update(_selected_digest((ROOT/'streamlit_app.py').read_text(),engine_names).encode())

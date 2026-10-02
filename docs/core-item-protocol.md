@@ -1,4 +1,4 @@
-# Champion core items — V5.82.0
+# Champion core items — V5.82.1
 
 Core candidates are selected by a separate constrained search, not by filtering an existing unrestricted winner. Lord Dominik's Regards, Serylda's Grudge, Mortal Reminder, Infinity Edge and Terminus are removed from the candidate pool before any build is evaluated. Normal Tier List searches keep their existing item pool.
 
@@ -13,3 +13,5 @@ Highest score selects the core candidate. Exact score ties display at most two i
 The shared champion profile displays CORE ITEM, icon and name in Tier List, Build Lab and Item Value. Saved results are checked against a source fingerprint; stale or incomplete results are not displayed as confirmed core items. Champion changes read saved results and do not start a new fight search.
 
 Cache identity covers engine rules, champion/item/ability/timing datasets, target profiles and core-search protocol. Pure UI styling changes do not invalidate numerical results.
+
+Fingerprint schema 3 hashes the exact source segments of selected model declarations rather than `ast.dump`. This avoids Python-version-specific AST serialization invalidating unchanged saved results on Streamlit Cloud. Numerical engine/search rules and all 414 results are unchanged.
