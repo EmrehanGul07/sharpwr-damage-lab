@@ -9,5 +9,5 @@ class CoreUI(unittest.TestCase):
    app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'streamlit_app.py'),default_timeout=60).run()
    app.selectbox(key='tier_champ').set_value('Ezreal').run()
    self.assertFalse(app.exception)
-   cards=[x.value for x in app.markdown if 'CORE ITEM</span>' in x.value]
-   self.assertTrue(cards);self.assertTrue(any('alt="Muramana"' in x and '<b>Muramana</b>' in x for x in cards))
+   cards=[x.value for x in app.markdown if 'class="champion-core"' in x.value]
+   self.assertTrue(cards);self.assertTrue(any('alt="Muramana"' in x and 'title="Muramana"' in x for x in cards))

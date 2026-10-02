@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.82.1")
+ensure_engine_revision("5.82.2")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -975,17 +975,17 @@ def _champion_profile(name,lvl,mist_count=0):
     slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(name,name)
     portrait=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{slug}.png"
     attack_speed=profile["baseas"]+profile["ratio"]*(profile["bba"]+profile["lvbas"])
-    st.markdown(f'<div class="champion-profile"><img src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div></div>',unsafe_allow_html=True)
-
     from core_items import core_record
     _core=core_record(name)
+    _core_card=''
     if _core and _core.get('complete') and _core.get('ranking'):
         _leaders=[r for r in _core['ranking'] if abs(r['Score']-_core['ranking'][0]['Score'])<1e-6][:2]
-        _icons=''.join(f'<img src="{html.escape(item_icon(r["Item"]))}" alt="{html.escape(r["Item"])}" style="width:38px;height:38px;border-radius:7px"><b>{html.escape(r["Item"])}</b>' for r in _leaders)
-        _tip='Standard Fight and default starting progression. Equal stage/target weighting; same Tier List search and boots. LDR/Serylda/Mortal Reminder/Infinity Edge/Terminus excluded. Muramana evaluated only at levels 11–15. Offensive benchmark, not a mandatory purchase.'
-        st.markdown(f'<div title="{html.escape(_tip)}" style="display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:9px 12px;margin-top:8px;border:1px solid #786337;border-radius:10px;background:#201d13"><span style="font-size:10px;color:#e8c976;font-weight:800">CORE ITEM</span>{_icons}</div>',unsafe_allow_html=True)
-    else:
+        _icons=''.join(f'<img src="{html.escape(item_icon(r["Item"]))}" alt="{html.escape(r["Item"])}" title="{html.escape(r["Item"])}">' for r in _leaders)
+        _core_card=f'<div class="champion-core"><span>CORE ITEM</span><div class="core-icons">{_icons}</div></div>'
+    st.markdown(f'<div class="champion-profile"><img class="champion-portrait" src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div>{_core_card}</div>',unsafe_allow_html=True)
+    if not _core_card:
         st.caption('CORE ITEM · calculation pending')
+
 
 def _target_readout(target_hp,target_armor,target_mr,reduction=0):
     st.markdown(f'<div class="target-readout"><span><b>{target_hp:,.0f}</b> HP</span><span><b>{target_armor:g}</b> Armor</span><span><b>{target_mr:g}</b> MR</span><span><b>{reduction*100:.0f}%</b> AA reduction</span></div>',unsafe_allow_html=True)
@@ -1000,7 +1000,11 @@ st.markdown("""<style>
 .setup-head{display:flex;align-items:center;gap:10px;margin:0 0 16px}.setup-step{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #6b5931;border-radius:9px;color:#f0d58a;font-size:11px;font-weight:850;background:#211e15}
 .setup-head strong{display:block;color:#edf2f8;font-size:17px}.setup-head small{display:block;font-size:9px;letter-spacing:.12em;color:#8796a9;text-transform:uppercase}
 .champion-profile{display:flex;gap:18px;align-items:center;margin-top:12px;padding:17px;border:1px solid #394052;border-radius:13px;background:linear-gradient(120deg,#1c2534,#0b111b)}
-.champion-profile img{width:86px;height:86px;border-radius:15px;object-fit:cover;border:1px solid #b9974d;box-shadow:0 8px 24px #0005}
+.champion-profile .champion-portrait{width:86px;height:86px;border-radius:15px;object-fit:cover;border:1px solid #b9974d;box-shadow:0 8px 24px #0005}
+.champion-core{flex-shrink:0;align-self:center;text-align:center;margin-left:auto;padding-left:14px;border-left:1px solid #b9974d30}
+.champion-core>span{display:block;color:#d8b45d;font-size:9px;font-weight:800;letter-spacing:.13em;margin-bottom:9px}
+.core-icons{display:flex;justify-content:center;gap:7px}
+.champion-profile .core-icons img{display:block;width:58px;height:58px;object-fit:cover;border-radius:8px;border:1px solid #b9974d90;box-shadow:0 5px 18px #0007}
 .champion-profile .identity{min-width:0;flex:1}.champion-profile .name{font-size:24px;font-weight:850;color:#f2f5fa;line-height:1.2}.champion-profile .level{font-size:10px;letter-spacing:.1em;color:#d8b45d;margin-top:4px}
 .champion-stats{display:flex;gap:25px;flex-wrap:wrap;margin-top:14px}.champion-stats b{display:block;font-size:18px;color:#edf2f8}.champion-stats span{font-size:9px;letter-spacing:.07em;color:#8f9bac}
 .target-readout{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:15px;padding:12px 14px;border:1px solid #303e50;border-radius:11px;background:#090f18;font-size:11px;color:#a7b6c8}.target-readout b{color:#dce7f4}
@@ -1008,7 +1012,7 @@ st.markdown("""<style>
 .wr-icon-name,.wr-tree-name{color:#aebbcf!important}
 div[data-testid="stColumn"]:has(.wr-selected) .wr-icon-name,div[data-testid="stColumn"]:has(.wr-tree-selected) .wr-tree-name{color:#f0d58a!important}
 @media(max-width:640px){
-  .champion-profile{gap:12px;padding:13px}.champion-profile img{width:68px;height:68px}.champion-profile .name{font-size:21px}.champion-stats{gap:18px;margin-top:10px}.champion-stats b{font-size:16px}
+  .champion-profile{gap:12px;padding:13px}.champion-profile .champion-portrait{width:68px;height:68px}.champion-profile .core-icons img{width:46px;height:46px}.champion-core{padding-left:9px}.champion-core>span{font-size:8px}.champion-profile .name{font-size:21px}.champion-stats{gap:18px;margin-top:10px}.champion-stats b{font-size:16px}
   div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-pick-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-tree-marker),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .wr-eq-label),div[data-testid="stHorizontalBlock"]:has(> div[data-testid="stColumn"] .build-slot-marker){flex-wrap:wrap!important;gap:10px!important}
   div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-pick-marker),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-tree-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important;padding:8px 4px!important;background:#0d1520;border:1px solid #29364a;border-radius:12px}
   div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.wr-eq-label),div[data-testid="stHorizontalBlock"]>div[data-testid="stColumn"]:has(.build-slot-marker){flex:0 0 calc((100% - 20px)/3)!important;width:calc((100% - 20px)/3)!important;min-width:0!important}
@@ -1105,7 +1109,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.82.1",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.82.2",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2169,4 +2173,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.82.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.82.2 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
