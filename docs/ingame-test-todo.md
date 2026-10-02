@@ -107,6 +107,7 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 - Ezreal E maksimum dash 16 yük: mesafe 430.769 model kalibrasyonudur, bağımsız menzil ölçümü değildir.
 - Açık: diğer şampiyon Q istisnaları; movement skill kesin path/end-point/timing. Generic dash mesafeleri geçici proxy ve cast anında yol ledger'ına eklenir. Samira timed dash yol integrasyonu kullanır.
 
-### Ezreal Q cooldown — source conflict
-- Screenshot/runtime: 5.5 / 5 / 4.5 / 4 s. Stored WR wiki metadata: 4.5 / 4 / 3.5 / 3 s. Verify current in-game rank table with ability haste accounted for; do not silently replace the user snapshot.
-- Paired sensitivity results are in data/ezreal-core-build-comparison.json; changing Q4 4→3 seconds materially improves the Muramana/Trinity family. Production formula remains unchanged pending confirmation.
+### Ezreal Q cooldown — KAPANDI, 2026-10-02
+- Kullanıcı mevcut engine değerlerini doğruladı: 5.5 / 5 / 4.5 / 4 s. Production hesabı korunur.
+- WR wiki 4.5 / 4 / 3.5 / 3 s eski referans olarak değerlendirilir. Kullanıcı 7.3 değişikliği olabileceğini belirtti; değişikliğin kesin patch tarihi doğrulanmadı.
+- Alternatif cooldown karşılaştırmaları yalnızca arşivlenmiş sensitivity testi; geçerli build sıralaması veya canlı veri değildir. Yeni oyun içi cooldown testi gerekmez.

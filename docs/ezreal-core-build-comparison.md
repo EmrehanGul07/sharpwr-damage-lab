@@ -74,3 +74,7 @@ Stored WR metadata lists CD 4.5/4/3.5/3; source snapshots take precedence in cur
 Conditions: level 15, five items + Armorcrusher Boots, Yun Tal starts fully stacked; no runes for the primary comparison, a separate Conqueror/Brutal/Cut Down variant is included. Individual builds search supported rotations, movement, and weaving independently; this is a fixed-family comparison rather than exhaustive build search. Damage by action includes the item's contribution carried by that hit. Target stands still, never retaliates, and every scheduled shot hits; short-range AA availability and E aggression are rewarded. This does not establish the strongest build in actual games or a poke-only scenario.
 
 Crit family: Duskblade / Infinity Edge / LDR / Collector / Yun Tal. Conventional family: Muramana / Trinity / LDR / BotRK / Navori. ER swap changes Trinity to Essence Reaver.
+
+## User confirmation, 2026-10-02
+
+Current runtime Q cooldown 5.5/5/4.5/4 is confirmed by the user. The alternative stored WR wiki table is treated as stale. Alternate-CD rows are archived sensitivity only, not current ranking evidence. No runtime change or further cooldown test is needed. User suggests a 7.3 patch change; precise patch attribution remains unverified and does not affect the confirmed values.
