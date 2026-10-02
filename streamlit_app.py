@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.86.2")
+ensure_engine_revision("5.86.3")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -1110,7 +1110,7 @@ with tabs[0]:
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
     st.info("Public preview · Build search is temporarily unavailable while the combat engine is being validated.")
-    _tier_signature=("5.86.2",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.86.3",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc",disabled=True):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2183,8 +2183,10 @@ with tabs[4]:
     import json
     _live_items=[{"name":name,"icon":item_icon(name)} for name in F]
     _live_data=json.dumps(_live_items,ensure_ascii=False).replace("<","\\u003c")
-    _live_html=Path("assets/live_tier_list.html").read_text().replace("__ITEMS__",_live_data)
+    _published_tiers=json.loads((Path(__file__).resolve().parent/"data/published-tier-list.json").read_text())
+    _published_data=json.dumps(_published_tiers,ensure_ascii=False).replace("<","\\u003c")
+    _live_html=Path("assets/live_tier_list.html").read_text().replace("__ITEMS__",_live_data).replace("__RANKING__",_published_data)
     st.components.v1.html(_live_html,height=1100,scrolling=True)
 
 st.divider()
-st.caption("Web V5.86.2 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.86.3 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

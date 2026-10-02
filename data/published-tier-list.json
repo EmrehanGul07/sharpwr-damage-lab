@@ -1,0 +1,54 @@
+{
+  "title": "ADC ITEM TIER LIST",
+  "tiers": {
+    "S": [
+      "Yun Tal Wildarrows",
+      "Infinity Edge",
+      "Lord Dominik's Regards",
+      "Stormrazor",
+      "Muramana",
+      "Manamune"
+    ],
+    "A": [
+      "Blade of the Ruined King",
+      "Guinsoo's Rageblade",
+      "Kraken Slayer",
+      "Hexoptics C44",
+      "The Collector",
+      "Serylda's Grudge",
+      "Terminus",
+      "Duskblade of Draktharr"
+    ],
+    "B": [
+      "Statikk Shiv",
+      "Phantom Dancer",
+      "Nashor's Tooth",
+      "Fiendhunter Bolts",
+      "Mortal Reminder",
+      "Galeforce"
+    ],
+    "C": [
+      "Runaan's Hurricane",
+      "Navori Quickblades",
+      "Wit's End",
+      "Essence Reaver",
+      "Bloodthirster",
+      "Trinity Force",
+      "Immortal Shieldbow"
+    ],
+    "D": [
+      "Maw of Malmortius",
+      "Mercurial Scimitar",
+      "Guardian Angel",
+      "Serpent's Fang",
+      "Youmuu's Ghostblade",
+      "Death's Dance",
+      "Edge of Night"
+    ],
+    "F": [
+      "Rapid Firecannon",
+      "Iceborn Gauntlet"
+    ],
+    "pool": []
+  }
+}
