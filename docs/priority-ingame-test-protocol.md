@@ -1,6 +1,6 @@
 # Öncelikli üç oyun içi test — 1 Ekim 2026
 
-Durum: **Kurulum ve engine tahminleri hazır; oyun içi sonuçlar henüz gelmedi.** Sıra: Hexoptics → Rageblade/Kraken/Terminus → Xayah. Video veya ekran kaydı gerekmiyor; sayı ve tooltip metni yeterli. Önce kolay kontrol noktaları, yalnızca fark bulunursa ek ölçüm.
+Durum: **Hexoptics ve Smolder item AA kombinasyonları ölçüldü; açık kalan skill etkileşimleri aşağıdadır.** Sıra: Hexoptics → Rageblade/Kraken/Terminus → Xayah. Video veya ekran kaydı gerekmiyor; sayı ve tooltip metni yeterli. Önce kolay kontrol noktaları, yalnızca fark bulunursa ek ölçüm.
 
 Bu testler yeni damage katsayısı atamaz. [Engine tahminleri](../data/priority-test-predictions.json) mevcut modelin hipotezleridir; doğrulanmış oyun sonuçları değildir. AD/HP/armor değişirse JSON'daki örnek hasarları birebir bekleme.
 
@@ -65,45 +65,24 @@ Aktif rune/buff farkı: ...
 
 ## 2. Rageblade + Kraken + Terminus — I01
 
-**Ezreal level15, skill kullanmadan AA.** Pasifi skill kullanınca AS artırdığı için bu bölümde Q/W/E/R yok. Bir seferde bir build; aynı kukla. Crit veren başka item yok. İlk etapta her üç itemin tooltip'ini kaydet.
+**Smolder level15, skill kullanmadan AA.** Kullanıcı Fleet/Battle Zeal/Cut Down/Bloodline/Bone Plating ile yalnız AA ölçtü; tüm sonuçlar `data/smolder-item-aa-tests-20261002.json` içinde.
 
-### K01 — Kraken tek başına
+### K01 — Kraken tek başına: teyit
+AA3/6/9 proc. AD148: 79/79/170, 79/79/172, 79/79/174. Eksik can katsayısı tooltipte her %1 eksik HP için %0.75, maksimum %75.
 
-Kraken tak, sayaç sıfırdan 9 AA vur. **3., 6., 9. AA'da** ek fiziksel proc var mı? Her AA'nın kırmızı/mavi sayısı, varsa Kraken göstergesi ve hasar öncesi HP yazılır.
+### K02 — Rageblade tek başına: teyit
+Phantom AA6/9; kombinasyonlarda AA12 de teyit edildi. AS stack cap/değer/süre bağımsız ölçülmedi.
 
-Mevcut model: her üçüncü eligible hit; level15 ek **168 raw fiziksel**, tam HP/100 armor'da rune hariç +84 hasar. Hedef %50 HP'deyken ek raw231, %25 HP'deyken262.5. Kuklayı bu HP'lere getirmek kolaysa ek test yapılabilir; zorunlu ilk adım değildir. Büyük ilk vuruşu görmek tek başına doğru sayaç demek değil; üçlü ritim gerekli.
+### K03 — Terminus tek başına: teyit
+Fiziksel hasar AA2/4/6'da, büyü AA3/5/7'de artar. Magic on-hit stack artışından önce, fiziksel hasar artıştan sonra hesaplanır. %10 Dark penetration katsayısı değişmedi.
 
-### K02 — Rageblade tek başına
+### K04 — Rageblade + Kraken: teyit
+İlk12 AA içinde Kraken **3/6/8/10/12**, Phantom **6/9/12**. AA12'de Kraken fiziksel hasarı ayrı gösterge olarak çıkar: 98+102.
 
-Stackler sıfırdan 10 AA. Stack sayısı/AS göstergesini 1–5. AA'dan sonra oku; **7. ve 10. AA** çevresinde mavi on-hit iki kez geliyor mu? Mevcut model 4 stack cap, stack başına %8 bonus AS; tam stackten sonraki üçüncü AA phantom verir. Kullanıcı Smolder ile AA6 ve AA9 phantom teyit etti (2026-10-02); engine stack4 kazandıran vuruşu döngünün ilk vuruşu sayacak şekilde düzeltildi. Normal +30 raw magic, phantom sırasında +60 raw magic; 100 MR'da15/30, rune hariç.
+### K05 — Rageblade + Terminus ve üçlü: teyit
+Phantom Terminus stacklerini ilerletir. AA6 magic **36+38**; aynı AA içindeki olaylar ayrı dirençlerle hesaplanır. Sonraki magic38; Phantom38+38. Üçlü setup aynı stack/proc sırasını doğrular.
 
-### K03 — Terminus tek başına
-
-Sıfırdan 8 AA. İlk stack Light mı Dark mı, Dark hangi AA'dan sonra artıyor? Stat panelindeki penetration varsa oku. Mevcut model **Dark AA2/4/6 sonunda** kazanılır; hasara **bir sonraki AA** yansır. İlkAA +30 raw magic; penetrasyon arttıkça hem kırmızı hem mavi hasar artabilir.
-
-| AA | Hasar hesaplanırken Dark | Armor/MR, başlangıç100 ise | AA sonunda Light/Dark |
-|---:|---:|---:|---:|
-| 1 | 0 | 100 | 1 / 0 |
-| 2 | 0 | 100 | 1 / 1 |
-| 3 | 1 | 90 | 2 / 1 |
-| 4 | 1 | 90 | 2 / 2 |
-| 5 | 2 | 80 | 3 / 2 |
-| 6 | 2 | 80 | 3 / 3 |
-| 7–8 | 3 | 70 | 3 / 3 |
-
-### K04 — Rageblade + Kraken
-
-Sıfırdan 18 AA. Sadece her hitin hasarını veya ekstra proc oluşan **AA numaralarını** yazmak yeterli. Model phantom'ı Kraken için ek hit sayıyor.
-
-- Kraken yalnızken model proc numaraları: **3, 6, 9, 12, 15, 18**.
-- İkisi birlikte model proc numaraları: **3, 6, 8, 10, 13, 15, 17**.
-- Phantom numaraları: **7, 10, 13, 16**.
-
-Gerçek ritim ilk liste gibi kalırsa phantom Kraken sayacını ilerletmiyor olabilir. Ritim farklıysa stack başlangıcı ve işlem sırasını inceleyeceğiz. Bu listeler doğrulanmış WR kuralı değildir.
-
-### K05 — Rageblade + Terminus, sonra üçü birlikte
-
-Her setup'ta sıfırdan12 AA. AA7/10 çevresindeki mavi hasar ve Dark stack artışı önemli. Model phantom'da Terminus'un +30 magic'ini tekrarlar; **ek Light/Dark stack vermez**. Bu doğru mu, sayaç/pen paneliyle kontrol edilir. Üçlü setup'ta Kraken proc ritmi K04 ile aynı olmalı; Terminus yüzünden hasar miktarı farklıdır.
+**Açık:** üçlü AA6 249 hesaplanan/250 görünen farkı ve ayrı fiziksel göstergelerin yuvarlaması. Proc anındaki hedef HP ve event içi HP snapshot ölçülmedi; katsayı uydurulmadı.
 
 ### K06 — Q on-hit kapsamı (AA tablolarından sonra)
 

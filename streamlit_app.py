@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.74.0")
+ensure_engine_revision("5.75.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -750,6 +750,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     hp=float(hp0); t=0.; k=0; log=[]
     rb=light=dark=rage_hits=pd_stacks=0
     kraken_hits=0
+    terminus_hits=0
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
     fh=0  # Only an actual ultimate_cast_time event arms Opening Barrage.
@@ -810,13 +811,23 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                 rage_hits+=1
                 if rage_hits>=3: rage_extra=True; rage_hits=0
 
+        # Resolve ordinary and Phantom on-hits in order. Magic lands before
+        # Juxtaposition advances; physical attack/procs use the updated penetration.
+        primary_onm=onm
+        primary_em=_effective_resistance(mr,total("pctmpen")+(.10*dark if "Terminus" in items and item_proc else 0),total("flatmpen"),cap=.40 if "Terminus" in items and item_proc else 1.)
+        if "Terminus" in items and item_proc:
+            terminus_hits+=1
+            if terminus_hits%2: light=min(3,light+1)
+            else: dark=min(3,dark+1)
+            ea=_effective_resistance(arm,min(.40,total("pctpen")+.10*dark),total("flatpen"))
         if ("Kraken Slayer" in items and item_proc):
-            kraken_hits+=1+(1 if rage_extra else 0)
+            kraken_hits+=1
             if kraken_hits>=3:
                 base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
                 onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
                 kraken_hits-=3
 
+        primary_onp=onp
         if rage_extra:
             onm+=30
             if "Blade of the Ruined King" in items: onp+=max(15,.07*hp)
@@ -826,6 +837,16 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
                 onm+=15+.20*total("ap")
             if "Recurve Bow" in items: onp+=15
             if "Muramana" in items and not skill_on_hit:onp+=.015*float(mana if state.get("max_mana") is None else state["max_mana"])
+            if "Terminus" in items and item_proc:
+                terminus_hits+=1
+                if terminus_hits%2: light=min(3,light+1)
+                else: dark=min(3,dark+1)
+            if "Kraken Slayer" in items and item_proc:
+                kraken_hits+=1
+                if kraken_hits>=3:
+                    base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
+                    onp+=base*(1+min(.75,.75*miss)); note.append("Kraken (Phantom)")
+                    kraken_hits-=3
             note.append("Phantom Hit")
 
         # Recurring Energized cadence mirrors the audited single-item engine.
@@ -858,20 +879,24 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
         phy+=onp
         if "Lord Dominik's Regards" in items:
             gs=min(.12,max(0,bonus_hp)/125*.01)
-            phy*=1+gs; onm*=1+gs; true*=1+gs
+            phy*=1+gs; onm*=1+gs; primary_onm*=1+gs; true*=1+gs
             if gs: note.append(f"Giant Slayer {gs*100:.0f}%")
         em=_effective_resistance(mr,total("pctmpen")+(.10*dark if ("Terminus" in items and item_proc) and item_proc else 0),total("flatmpen"),cap=.40 if ("Terminus" in items and item_proc) else 1.)
-        em=float(state.get("mr_override",em))
-        dmg=phy*rm(ea)+onm*rm(em)+true
+        em=float(state.get("mr_override",em)) if not ("Terminus" in items and item_proc) else em
+        magic_damage=onm*rm(em)
+        if "Terminus" in items and item_proc:
+            # Preserve the two resistances rather than multiplying merged raw magic.
+            magic_damage=primary_onm*rm(primary_em)+(onm-primary_onm)*rm(em)
+        dmg=phy*rm(ea)+magic_damage+true
         if boot=="Immortal Treads": dmg*=1.05
         if target_aa_reduction and not skill_on_hit: dmg*=1-target_aa_reduction
+        on_hit_events=[{"kind":"primary","magic_raw":primary_onm,"magic_damage":primary_onm*rm(primary_em),"physical_proc_raw":primary_onp}]
+        if rage_extra:
+            on_hit_events.append({"kind":"phantom","magic_raw":onm-primary_onm,"magic_damage":(onm-primary_onm)*rm(em),"physical_proc_raw":onp-primary_onp})
         before=hp
 
         if ("Phantom Dancer" in items and item_proc) and not skill_on_hit: pd_stacks=min(5,pd_stacks+1)
         if ("Guinsoo's Rageblade" in items and item_proc): rb=min(4,rb+1)
-        if ("Terminus" in items and item_proc):
-            if k%2: light=min(3,light+1)
-            else: dark=min(3,dark+1)
         if ("Yun Tal Wildarrows" in items and item_proc) and not skill_on_hit:
             ytcrit=min(.25,ytcrit+.002)
             if yt_cd<=t:
@@ -879,7 +904,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             else: yt_cd=max(t,yt_cd-(1.0+crit))
 
         if fh and t<=fiend_until and not skill_on_hit: fh-=1
-        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
+        state=yield {"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"physical_damage":phy*rm(ea),"magic_damage":magic_damage,"on_hit_events":on_hit_events,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -1032,7 +1057,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.74.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.75.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2096,4 +2121,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.74.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.75.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

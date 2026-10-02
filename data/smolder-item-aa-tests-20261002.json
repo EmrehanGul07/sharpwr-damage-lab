@@ -100,5 +100,303 @@
       "AS stack values/expiry not independently measured",
       "Phantom interaction with Kraken/Terminus and skill on-hit eligibility"
     ]
-  }
+  },
+  "additional_measurements": [
+    {
+      "items": [
+        "Terminus"
+      ],
+      "ad": 138,
+      "ap": 0,
+      "as": 1.3,
+      "physical": [
+        74,
+        78,
+        78,
+        82,
+        82,
+        87,
+        87,
+        87,
+        87,
+        87
+      ],
+      "magic": [
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          17
+        ],
+        [
+          17
+        ],
+        [
+          18
+        ],
+        [
+          18
+        ],
+        [
+          19
+        ],
+        [
+          19
+        ],
+        [
+          19
+        ],
+        [
+          19
+        ]
+      ]
+    },
+    {
+      "items": [
+        "Guinsoo's Rageblade",
+        "Kraken Slayer"
+      ],
+      "ad": 183,
+      "ap": 30,
+      "as": 1.49,
+      "physical": [
+        [
+          98
+        ],
+        [
+          98
+        ],
+        [
+          189
+        ],
+        [
+          98
+        ],
+        [
+          98
+        ],
+        [
+          192
+        ],
+        [
+          98
+        ],
+        [
+          194
+        ],
+        [
+          98
+        ],
+        [
+          196
+        ],
+        [
+          98
+        ],
+        [
+          98,
+          102
+        ]
+      ],
+      "magic": [
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16,
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16,
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16,
+          16
+        ]
+      ]
+    },
+    {
+      "items": [
+        "Guinsoo's Rageblade",
+        "Terminus"
+      ],
+      "ad": 173,
+      "ap": 30,
+      "as": 1.49,
+      "physical": [
+        93,
+        97,
+        97,
+        103,
+        103,
+        109,
+        109,
+        109,
+        109,
+        109,
+        109,
+        109
+      ],
+      "magic": [
+        [
+          32
+        ],
+        [
+          32
+        ],
+        [
+          34
+        ],
+        [
+          34
+        ],
+        [
+          36
+        ],
+        [
+          36,
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38,
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "items": [
+        "Guinsoo's Rageblade",
+        "Terminus",
+        "Kraken Slayer"
+      ],
+      "ad": 218,
+      "ap": 30,
+      "as": 1.71,
+      "physical": [
+        [
+          117
+        ],
+        [
+          123
+        ],
+        [
+          219
+        ],
+        [
+          129
+        ],
+        [
+          129
+        ],
+        [
+          250
+        ],
+        [
+          137
+        ],
+        [
+          253
+        ],
+        [
+          137
+        ],
+        [
+          257
+        ],
+        [
+          137
+        ],
+        [
+          137,
+          126
+        ]
+      ],
+      "magic": [
+        [
+          32
+        ],
+        [
+          32
+        ],
+        [
+          34
+        ],
+        [
+          34
+        ],
+        [
+          36
+        ],
+        [
+          36,
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38,
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38
+        ],
+        [
+          38,
+          38
+        ]
+      ]
+    }
+  ],
+  "remaining_uncertainty": "Exact within-hit missing-health snapshot and display rounding: triple AA6 is 249 predicted versus 250 displayed; split phantom Kraken AA12 rounding remains unverified. Proc cadence and Terminus damage progression verified independently."
 }

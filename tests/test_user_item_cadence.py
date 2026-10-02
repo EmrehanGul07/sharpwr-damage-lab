@@ -6,7 +6,7 @@ class UserItemCadence(unittest.TestCase):
  @classmethod
  def setUpClass(cls):cls.ns=engine_namespace()
  def hits(self,item,physical,count):
-  k=self.ns['_combat_hits']('Smolder',15,10000,100,100,[item],self.ns['F']);next(k);hp=10000;out=[]
+  k=self.ns['_combat_hits']('Smolder',15,10000,100,100,(item if isinstance(item,list) else [item]),self.ns['F']);next(k);hp=10000;out=[]
   for i in range(count):
    hit=k.send({'hp':hp,'time':i,'event_driven':True,'attack_physical':physical,'critical_attack_physical':physical*2})
    hit['rune_damage']=hit['damage']*1.065;hp-=hit['rune_damage'];out.append(hit)
@@ -20,3 +20,24 @@ class UserItemCadence(unittest.TestCase):
   hits=self.hits('Kraken Slayer',148,9)
   self.assertEqual([i for i,h in enumerate(hits,1) if 'Kraken' in h['notes']],[3,6,9])
   self.assertEqual([math.ceil(h['rune_damage']) for h in hits],[79,79,170,79,79,172,79,79,174])
+
+ def test_terminus_order(self):
+  hits=self.hits('Terminus',138,10)
+  self.assertEqual([math.ceil(h['physical_damage']*1.065) for h in hits],[74,78,78,82,82,87,87,87,87,87])
+  self.assertEqual([math.ceil(h['magic_damage']*1.065) for h in hits],[16,16,17,17,18,18,19,19,19,19])
+ def test_phantom_advances_kraken(self):
+  hits=self.hits(["Guinsoo's Rageblade",'Kraken Slayer'],183,12)
+  self.assertEqual([i for i,h in enumerate(hits,1) if any('Kraken' in x for x in h['notes'])],[3,6,8,10,12])
+  self.assertIn('Kraken (Phantom)',hits[11]['notes'])
+ def test_phantom_advances_terminus_between_magic_hits(self):
+  hits=self.hits(["Guinsoo's Rageblade",'Terminus'],173,12)
+  self.assertEqual([math.ceil(h['physical_damage']*1.065) for h in hits],[93,97,97,103,103,109,109,109,109,109,109,109])
+  self.assertEqual([math.ceil(h['magic_damage']*1.065) for h in hits],[32,32,34,34,36,74,38,38,76,38,38,76])
+  self.assertEqual(hits[5]['dark'],3)
+  self.assertEqual([math.ceil(e['magic_damage']*1.065) for e in hits[5]['on_hit_events']],[36,38])
+ def test_triple_item_proc_order(self):
+  hits=self.hits(["Guinsoo's Rageblade",'Terminus','Kraken Slayer'],218,12)
+  self.assertEqual([i for i,h in enumerate(hits,1) if any('Kraken' in x for x in h['notes'])],[3,6,8,10,12])
+  self.assertEqual(hits[5]['dark'],3)
+  self.assertEqual([math.ceil(e['magic_damage']*1.065) for e in hits[5]['on_hit_events']],[36,38])
+  self.assertEqual([math.ceil(h['magic_damage']*1.065) for h in hits],[32,32,34,34,36,74,38,38,76,38,38,76])
