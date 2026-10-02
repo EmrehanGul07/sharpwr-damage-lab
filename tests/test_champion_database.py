@@ -26,8 +26,8 @@ class ChampionDatabaseTests(unittest.TestCase):
                 self.assertEqual(record['field_sources'][field]['url'],record['wiki_source_url'])
     def test_unknown_is_null_and_yunara_manual(self):
         record=CHAMPION_DATABASE['Yunara']
-        self.assertEqual(record['source_status'],'manual_pending_user_instruction')
-        self.assertIsNone(champion_stat('Yunara','base_mana'))
+        self.assertEqual(record['source_status'],'manual_observed_levels_partial')
+        self.assertEqual(champion_stat('Yunara','base_mana'),345)
         for record in CHAMPION_DATABASE.values():
             self.assertEqual(set(record['unavailable_fields']),{field for field,value in record['stats'].items() if value is None})
 
@@ -38,4 +38,4 @@ class LevelStatTests(unittest.TestCase):
         from champion_database import level_stats
         self.assertEqual(level_stats('Samira',1)['mana'],345)
         self.assertAlmostEqual(level_stats('Samira',15)['mana'],345+49*13.265)
-        self.assertIsNone(level_stats('Yunara',15)['mana'])
+        self.assertEqual(level_stats('Yunara',15)['mana'],807)

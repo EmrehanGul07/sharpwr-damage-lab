@@ -40,7 +40,7 @@ class Kit:
         self.state={};self.buff_end={};self.buff_values={};self.cast_id=0
         self.feathers=[];self.ammo=4 if champion in ('Jhin','Corki') else None;self.recharge_at=None
         self.reloading_until=-1.;self.last_style=None
-        if champion=='Yunara':self.unresolved.add('Yunara core mana/MS/range await manual WR data; resource and spatial timing remain unresolved')
+        if champion=='Yunara':self.unresolved.add('Yunara unobserved level core stats interpolated; regeneration units/growth await WR confirmation')
         self.unresolved.add('AA windup/projectile use user-authorized PC timing proxies with WR AS scaling')
         from combat_timing import database
         if database()[champion]['aa']['projectile_speed'] is None:self.unresolved.add(f'{champion} AA projectile speed absent from PC wiki: explicit instant-flight fallback')

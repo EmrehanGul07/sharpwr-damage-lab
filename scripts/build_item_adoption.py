@@ -1,10 +1,14 @@
 """Progressive item-budget screen across six equally weighted game stages."""
-import sys,json,ast,hashlib
+import sys,json,ast,hashlib,argparse
 from pathlib import Path
 sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'tests')]
 from test_combat_engine import engine_namespace
 from build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortlist
 from item_consensus import progression_ranking
+parser=argparse.ArgumentParser()
+parser.add_argument('--champion', action='append', help='Recompute only selected champion(s), preserving other checkpoint cells')
+parser.add_argument('--refresh', action='store_true', help='Discard selected completed cells before recomputing')
+args=parser.parse_args()
 root=Path(__file__).resolve().parents[1];ns=engine_namespace();targets={}
 for node in ast.parse((root/'streamlit_app.py').read_text()).body:
  if isinstance(node,ast.Assign):
@@ -18,7 +22,14 @@ def target_at(profile,level):
 budgets={5:1,7:1,9:2,11:3,13:4,15:5};fingerprint=hashlib.sha256(repr(ns['F']).encode()).hexdigest();checkpoint=root/'data/item-progression-checkpoint.json'
 state=json.loads(checkpoint.read_text()) if checkpoint.exists() else {'fingerprint':fingerprint,'results':{},'simulations':0}
 if state['fingerprint']!=fingerprint:raise ValueError('Checkpoint uses different item stats')
-for champion in ns['C']:
+selected=args.champion or list(ns['C'])
+if any(n not in ns['C'] for n in selected):raise ValueError('Unknown champion')
+if args.refresh:
+ for name in selected:
+  removed=state['results'].pop(name,{})
+  state['simulations']-=sum(cell['simulations'] for cell in removed.values())
+ checkpoint.write_text(json.dumps(state,separators=(',',':')))
+for champion in selected:
  cells=state['results'].setdefault(champion,{})
  for target,profile in targets.items():
   beam=[()]
@@ -40,7 +51,7 @@ for champion in ns['C']:
    cells[key]={'level':level,'target':target,'item_count':count,'yuntal_start_stacks':stacks,'builds':refined[:10],'beam':refined,'candidates':len(candidates),'simulations':ev.simulations}
    state['simulations']+=ev.simulations;checkpoint.write_text(json.dumps(state,separators=(',',':')))
    print(champion,key,ev.simulations,'total',state['simulations'],flush=True)
-payload={'version':'5.69.0','levels':list(budgets),'item_budgets':budgets,'champions':len(state['results']),'targets':3,'simulations':state['simulations'],'method':'Equal level/target weighting. Exact single-item enumeration; later budgets grow a diverse 12-build beam, followed by rotation checks. Top-10 build reciprocal-rank item share is normalized by item count. Adoption = present in at least one retained build, once per champion. Muramana excluded below level 11. No boots/runes; expected crit; Yun Tal uses level-dependent starting progression (0 at 5, 62 at 7, 125 at 9+). Not exhaustive full-build optimization. Yunara unknown core stats remain provisional.','fingerprint':fingerprint,'ranking':progression_ranking(state['results'],ns['F']),'results':state['results']}
+payload={'version':'5.71.0','levels':list(budgets),'item_budgets':budgets,'champions':len(state['results']),'targets':3,'simulations':state['simulations'],'method':'Equal level/target weighting. Exact single-item enumeration; later budgets grow a diverse 12-build beam, followed by rotation checks. Top-10 build reciprocal-rank item share is normalized by item count. Adoption = present in at least one retained build, once per champion. Muramana excluded below level 11. No boots/runes; expected crit; Yun Tal uses level-dependent starting progression (0 at 5, 62 at 7, 125 at 9+). Not exhaustive full-build optimization. Yunara uses user-verified level snapshots for HP/mana/armor/MR, MS 335 and range 575; missing levels are interpolated and regen remains unverified.','fingerprint':fingerprint,'ranking':progression_ranking(state['results'],ns['F']),'results':state['results']}
 for cells in payload['results'].values():
  for cell in cells.values():
   cell.pop('beam',None)
