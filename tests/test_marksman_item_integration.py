@@ -20,7 +20,7 @@ class MarksmanItems(unittest.TestCase):
             dynamic=(.08*state['items'].get('rage',0) if "Guinsoo's Rageblade" in build else 0)+(.06*state['items'].get('phantom_dancer',0) if 'Phantom Dancer' in build else 0)
             bonus=s['bba']+s['lvbas']+total['as']+dynamic+state['bonus_as']
             return {'bonus_as_total':bonus,'as':s['baseas']+s['ratio']*bonus}
-        return replay_samira(events or [],champion=name,level=15,ad=s['ad']+total['ad'],base_ad=s['ad'],ap=total['ap'],attack_speed=s['baseas'],as_ratio=s['ratio'],natural_attack_speed=s['baseas']+s['ratio']*(s['bba']+s['lvbas']),crit_chance=min(1,total['crit']),crit_damage=2.3 if 'Infinity Edge' in build else 2,hp=10000,armor=100,mr=100,**{k.lower()+'_rank':v for k,v in champion_ranks(name,15).items()},ability_haste=total['ah'],pct_pen=total['pctpen'],flat_pen=total['flatpen'],pct_mpen=total['pctmpen'],flat_mpen=total['flatmpen'],movement_speed=core.get('movement_speed') or 350,attack_range=core.get('attack_range') or 550,distance=550,max_mana=mana,mana_regen_per_5s=core.get('mana_regen_per_5s') or 0,automatic_until=20,aa_hit=hit,aa_stats=stats,muramana='Muramana' in build,navori='Navori Quickblades' in build,terminus='Terminus' in build,yuntal='Yun Tal Wildarrows' in build,completed_items=len(build))
+        return replay_samira(events or [],champion=name,level=15,ad=s['ad']+total['ad'],base_ad=s['ad'],ap=total['ap'],attack_speed=s['baseas'],as_ratio=s['ratio'],natural_attack_speed=s['baseas']+s['ratio']*(s['bba']+s['lvbas']),crit_chance=min(1,total['crit']),crit_damage=2.3 if 'Infinity Edge' in build else 2,hp=10000,armor=100,mr=100,**{k.lower()+'_rank':v for k,v in champion_ranks(name,15).items()},ability_haste=total['ah'],pct_pen=total['pctpen'],flat_pen=total['flatpen'],pct_mpen=total['pctmpen'],flat_mpen=total['flatmpen'],movement_speed=core.get('movement_speed') or 350,attack_range=core.get('attack_range') or 550,distance=550,max_mana=mana,mana_regen_per_5s=core.get('mana_regen_per_5s') or 0,automatic_until=max(20,max((e.time for e in events or []),default=0)+3),aa_hit=hit,aa_stats=stats,muramana='Muramana' in build,navori='Navori Quickblades' in build,terminus='Terminus' in build,yuntal='Yun Tal Wildarrows' in build,completed_items=len(build))
     def test_three_build_families_on_every_new_adapter(self):
         for name in PENDING:
             for build in (['Infinity Edge','Phantom Dancer'],['Muramana',"Nashor's Tooth"],["Guinsoo's Rageblade",'Terminus']):
@@ -37,5 +37,11 @@ class MarksmanItems(unittest.TestCase):
                 plain=self.run_fight(name,[],event)
                 item=self.run_fight(name,["Nashor's Tooth"],event)
                 self.assertGreater(item.total_damage,plain.total_damage)
+
+    def test_ezreal_q_replay_uses_confirmed_item_counters(self):
+        for build,events,label in ((['Kraken Slayer'],[FightEvent(0,'AA'),FightEvent(2,'AA'),FightEvent(4,'Q')],'Kraken'),(["Guinsoo's Rageblade"],[FightEvent(i*7,'Q') for i in range(6)],'Phantom Hit'),(['Terminus'],[FightEvent(i*7,'Q') for i in range(8)],None)):
+            result=self.run_fight('Ezreal',build,events)
+            if label:self.assertTrue(any(label in str(row) for row in result.log))
+            self.assertFalse(any('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional' in str(a) for a in result.assumptions))
 
 if __name__=='__main__':unittest.main()

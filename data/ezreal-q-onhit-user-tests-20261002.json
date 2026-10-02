@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-02",
+  "champion": "Ezreal",
+  "level": 15,
+  "runes": [
+    "Conqueror",
+    "Brutal",
+    "Cut Down",
+    "Legend: Bloodline",
+    "Bone Plating"
+  ],
+  "target_setup": "agreed dummy10k HP/100 armor/100 MR",
+  "measurements": [
+    {
+      "items": [
+        "Kraken Slayer"
+      ],
+      "ad": 168,
+      "ap": 0,
+      "as": 1.21,
+      "q_rank": null,
+      "orders": [
+        {
+          "actions": [
+            "AA",
+            "AA",
+            "Q"
+          ],
+          "physical": [
+            94,
+            97,
+            237
+          ]
+        },
+        {
+          "actions": [
+            "Q",
+            "AA",
+            "AA"
+          ],
+          "physical": [
+            139,
+            97,
+            191
+          ]
+        }
+      ],
+      "confirmed": "Q advances and triggers Kraken; rank and cast timing not recorded"
+    },
+    {
+      "items": [
+        "Guinsoo's Rageblade"
+      ],
+      "ad": 158,
+      "ap": 30,
+      "as": 1.18,
+      "q_rank": 1,
+      "physical": [
+        136,
+        140,
+        144,
+        148,
+        151,
+        155
+      ],
+      "magic": [
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16
+        ],
+        [
+          16,
+          16
+        ]
+      ],
+      "confirmed": "Q advances Phantom counter and triggers Phantom on Q6; AS stack gain not independently measured"
+    },
+    {
+      "items": [
+        "Terminus"
+      ],
+      "ad": 158,
+      "ap": 0,
+      "as": 1.21,
+      "confirmation_method": "User directly observed item stack indicator advancing with Q",
+      "confirmed": "Q grants Terminus stacks",
+      "unmeasured": [
+        "per-Q damage order",
+        "expiry"
+      ]
+    }
+  ],
+  "scope": "Do not transfer Ezreal Q confirmation to all on-hit skills. Mixed item skill sequences, penetration within Q and exact Conqueror timing remain unmeasured."
+}

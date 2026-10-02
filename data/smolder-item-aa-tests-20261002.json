@@ -453,5 +453,25 @@
       "verification_scope": "Ranged6% measured; melee8.5% is user-reported live tooltip, not independently measured. Minimum15 raw and monster cap not measured. Phantom uses primary hit remaining health; exact indicator rounding remains approximate."
     }
   ],
-  "remaining_uncertainty": "Exact within-hit missing-health snapshot and display rounding: triple AA6 is 249 predicted versus 250 displayed; split phantom Kraken AA12 rounding remains unverified. Proc cadence and Terminus damage progression verified independently."
+  "remaining_uncertainty": "Exact within-hit missing-health snapshot and display rounding: triple AA6 is 249 predicted versus 250 displayed; split phantom Kraken AA12 rounding remains unverified. Proc cadence and Terminus damage progression verified independently.",
+  "samira_botrk_range_validation": {
+    "champion": "Samira",
+    "level": 15,
+    "items": [
+      "Blade of the Ruined King"
+    ],
+    "ad": 149,
+    "ap": 0,
+    "as": 1.22,
+    "runes": [
+      "Conqueror",
+      "Brutal",
+      "Coup de Grace",
+      "Legend: Bloodline",
+      "Bone Plating"
+    ],
+    "ranged_physical": 379,
+    "close_physical": 379,
+    "confirmed": "Close blade attacks retain ranged BotRK class; exact Brutal/rounding contribution not independently isolated"
+  }
 }

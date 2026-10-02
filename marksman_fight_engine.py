@@ -222,7 +222,12 @@ def replay_marksman(events,**p):
             item=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':maxmana,'bonus_ad':current_ad()-ad,'bonus_as':kit.bonus_as(t)+(.048*lt if keystone=='Lethal Tempo' else 0.),'crit':0.,'melee':gap<=200,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate,'distance':gap,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':em,'skill_on_hit':True})
             item_damage=item['damage'];spell_pending=False;spell_cast_times.clear();dark=item.get('dark',dark)
             items.update({k:item.get(k,0) for k in ('rage','dark','light','phantom_dancer','kraken','yuntal_crit')})
-            effects.extend(item.get('notes',[]));kit.unresolved.add('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional')
+            effects.extend(item.get('notes',[]))
+            if name=='Ezreal' and slot=='Q':
+                effects.append('WR user verified: Q advances Kraken/Rageblade Phantom/Terminus counters')
+                if p.get('item_as',0.) and items.get('rage',0):kit.unresolved.add('Ezreal Q Rageblade attack-speed stack gain is not independently verified')
+            else:
+                kit.unresolved.add('Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional')
         if item_damage:
             ea,em=effective();dealt=(value.physical*resistance_multiplier(ea)+value.magic*resistance_multiplier(em)+value.true)*multiplier(slot)*ability_magnification(name,slot,gap,p.get('hexoptics',False))+item_damage*multiplier(slot)/amp
             record(slot if index==0 else slot+' hit',value,cid=cid,eligible=True,effects=effects,before=before,raw_override=dealt)

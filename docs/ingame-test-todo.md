@@ -1,4 +1,4 @@
-# Aktif TODO — V5.76.0 / 2 Ekim 2026
+# Aktif TODO — V5.77.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -43,7 +43,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | Vayne | Tumble süresi/endpoint; passive/on-hit classification |
 | Draven | Axe catch gerçek timing; axe crit scope |
 | Tristana | W trajectory; E/R hedef menzili; R damage tag |
-| Ezreal | Skill on-hit Phantom/stack kapsamı; Q/W detonation ve item eligibility |
+| Ezreal | Q Kraken/Phantom/Terminus sayaç kapsamı teyitli; Q Rageblade AS stack kazanımı, karma skill-item kombinasyonları, Q/W detonation ve diğer item eligibility açık |
 | Sivir | Q 1450/1200 gidiş/dönüş WR doğrulaması; Morale cap/expiry |
 
 ## Ortak kaynak / oyun doğrulaması
@@ -91,3 +91,6 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 - 2026-10-02: Terminus standalone and all three Rageblade/Kraken/Terminus AA combinations recorded. Phantom counter advancement confirmed. Exact Kraken within-hit missing-health snapshot / split indicator rounding remains open (triple AA6 249 calculated vs250 displayed).
 
 - BotRK ranged6% teyit: Smolder15 + Rageblade, 414/401/387/374/362 ve AA6 350+243 physical; Phantom ilk hit sonrasındaki canı kullanır. Melee8.5% kullanıcı live tooltipinden; bağımsız melee ölçümü, minimum15 ve monster cap açık.
+
+- Ezreal15 Q: Kraken AA-AA-Q ve Q-AA-AA proc teyitli; Rageblade altıncı Q Phantom teyitli; Terminus Q stack ilerlemesi karakter göstergesinden teyitli. Kaynak: data/ezreal-q-onhit-user-tests-20261002.json.
+- Samira15 BotRK: uzak/yakın AA379, yakın blade AA ranged item sınıfını korur (AD149, Conqueror/Brutal/Coup de Grace).
