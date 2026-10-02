@@ -30,4 +30,4 @@ def replay_payload(result,*,champion,level,target,hp,build):
 
 def replay_html(payload):
     data=json.dumps(payload,ensure_ascii=False,allow_nan=False).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
-    return (Path(__file__).resolve().parent/'assets/combat_replay.html').read_text().replace('__REPLAY_DATA__',data).replace('__EZREAL_3D_SCRIPT__',(Path(__file__).resolve().parent/'assets/ezreal_replay_3d.js').read_text())
+    return (Path(__file__).resolve().parent/'assets/combat_replay.html').read_text().replace('__REPLAY_DATA__',data).replace('__REPLAY_STATE_SCRIPT__',(Path(__file__).resolve().parent/'assets/replay_state.js').read_text()).replace('__EZREAL_3D_SCRIPT__',(Path(__file__).resolve().parent/'assets/ezreal_replay_3d.js').read_text())
