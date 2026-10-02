@@ -1,0 +1,1002 @@
+{
+  "version": "5.78.0",
+  "date": "2026-10-02",
+  "champions": 23,
+  "profiles": 115,
+  "direct_skill_onhit_routes": [
+    "Ezreal Q",
+    "Miss Fortune Q",
+    "Senna Q",
+    "Smolder Q"
+  ],
+  "confirmed_by_user": [
+    "Ezreal Q Kraken counter/trigger",
+    "Ezreal Q Rageblade Phantom counter/trigger",
+    "Ezreal Q Terminus stack",
+    "Smolder AA combo counters",
+    "BotRK ranged6% and Phantom remaining HP",
+    "Samira close AA ranged BotRK"
+  ],
+  "fixed": [
+    "Muramana Shock no longer repeats on same-attack Phantom",
+    "On-hit skill base damage and rune multiplier forwarded to Phantom HP calculation",
+    "Smolder initial Q uses updated Terminus physical penetration",
+    "Skill carrier no longer emits misleading Hexoptics attack-base note",
+    "Untimed Smolder impact gets a valid stack/cast key"
+  ],
+  "preserved_user_locked": [
+    "RFC/Stormrazor/Statikk cadence",
+    "Yun Tal approximation",
+    "PD continuous combat assumption"
+  ],
+  "new_ingame_test_requests": [],
+  "scope": "Offline connection and consistency audit; not proof of complete WR parity. Skill-carried BotRK relative ordering remains a source/model assumption, not an independently measured Q+BotRK result.",
+  "matrix": [
+    {
+      "champion": "Kalista",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Martial_Poise",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Pierce",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Sentinel",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Rend",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Fate%27s_Call",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Tristana",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Draw_a_Bead",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rapid_Fire",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rocket_Jump",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Explosive_Charge",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Twitch",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Deadly_Venom",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Ambush",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Venom_Cask",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Contaminate",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Spray_and_Pray",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Draven",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/League_of_Draven",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Spinning_Axe",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Blood_Rush",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Stand_Aside",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Whirling_Death",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Kog'Maw",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Icathian_Surprise",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Caustic_Spittle",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Bio-Arcane_Barrage",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Void_Ooze",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Living_Artillery",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Vayne",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Night_Hunter",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Tumble",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Silver_Bolts",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Condemn",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Final_Hour",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Ashe",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Frost_Shot",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "mixed_WR_components",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Ranger%27s_Focus",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Volley",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Hawkshot",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Enchanted_Crystal_Arrow",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Varus",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Living_Vengeance",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Blighted_Quiver",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Hail_of_Arrows",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Xayah",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Deadly_Plumage",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Featherstorm",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Samira",
+      "aa_route": "shared item kernel",
+      "skill_route": "fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Daredevil_Impulse",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Miss Fortune",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Love_Tap",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": true,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Double_Up",
+          "item_kernel_direct_call": true,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Strut",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Make_It_Rain",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Bullet_Time",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Yunara",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": null,
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": null,
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": null,
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": null,
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": null,
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Kai'Sa",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Second_Skin",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Icathian_Rain",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Void_Seeker",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Supercharge",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Killer_Instinct",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Corki",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Hextech_Munitions",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Phosphorus_Bomb",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Valkyrie",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Gatling_Gun",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Missile_Barrage",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Lucian",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Lightslinger",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Piercing_Light",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Ardent_Blaze",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Relentless_Pursuit",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/The_Culling",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Smolder",
+      "aa_route": "shared item kernel",
+      "skill_route": "fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Dragon_Practice",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": true,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Super_Scorcher_Breath",
+          "item_kernel_direct_call": true,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Achooo%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Flap%2C_Flap%2C_Flap",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/MMOOOMMMM%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Caitlyn",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Headshot",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Piltover_Peacemaker",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Yordle_Snap_Trap",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/90_Caliber_Net",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Ace_in_the_Hole",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Jinx",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Get_Excited%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Zap%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Flame_Chompers%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Super_Mega_Death_Rocket%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Ezreal",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Rising_Spell_Force",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": true,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Mystic_Shot",
+          "item_kernel_direct_call": true,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Essence_Flux",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Arcane_Shift",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Trueshot_Barrage",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Zeri",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Living_Battery",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Electrocute%21",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Ultrashock_Laser",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Spark_Surge",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Lightning_Crash",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Jhin",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Whisper",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Dancing_Grenade",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Captive_Audience",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Sivir",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Fleet_of_Foot",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Boomerang_Blade",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Ricochet",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Spell_Shield",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/On_the_Hunt",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    },
+    {
+      "champion": "Senna",
+      "aa_route": "shared item kernel",
+      "skill_route": "marksman_fight_engine.py",
+      "slots": {
+        "P": {
+          "trigger_on_hit": null,
+          "classification_status": "unknown_WR",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Absolution",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "Q": {
+          "trigger_on_hit": true,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Piercing_Darkness",
+          "item_kernel_direct_call": true,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "W": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Last_Embrace",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "E": {
+          "trigger_on_hit": null,
+          "classification_status": "no_direct_damage",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Curse_of_the_Black_Mist",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        },
+        "R": {
+          "trigger_on_hit": null,
+          "classification_status": "WR_wiki_classification",
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Dawning_Shadow",
+          "item_kernel_direct_call": false,
+          "notes": "Buff/empowered attack additions execute on AA route; null means no explicit on-hit property, not an ingame negative proof"
+        }
+      }
+    }
+  ]
+}

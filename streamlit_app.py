@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.77.0")
+ensure_engine_revision("5.78.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -787,7 +787,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
 
         if fh and t<=fiend_until and not skill_on_hit:
             asp=min(3,asp+s["ratio"]*.50); phy=float(state.get("critical_attack_physical",current_ad*cd))*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
-        if "Hexoptics C44" in items:
+        if "Hexoptics C44" in items and not skill_on_hit:
             from damage_classification import magnification
             hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
             factor=magnification(hit_dist,['BasicAttack'])
@@ -847,7 +847,7 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
             if "Nashor's Tooth" in items:
                 onm+=15+.20*total("ap")
             if "Recurve Bow" in items: onp+=15
-            if "Muramana" in items and not skill_on_hit:onp+=.015*float(mana if state.get("max_mana") is None else state["max_mana"])
+            # Muramana Shock is once per attack/cast, so Phantom cannot repeat it.
             if "Terminus" in items and item_proc:
                 terminus_hits+=1
                 if terminus_hits%2: light=min(3,light+1)
@@ -1068,7 +1068,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.77.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.78.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2132,4 +2132,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.77.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.78.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

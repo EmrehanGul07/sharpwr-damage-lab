@@ -45,3 +45,28 @@ class NewUserRules(unittest.TestCase):
         self.assertLess(seen[0][0],1000)
         self.assertEqual(seen[0][0],r.log[0]['mana'])
         self.assertTrue(all(mana==seen[0][0] for mana,maxmana in seen))
+
+class OnHitAuditRegression(unittest.TestCase):
+    def test_onhit_skill_does_not_consume_attack_only_buffs(self):
+        ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,['Phantom Dancer','Yun Tal Wildarrows','Fiendhunter Bolts','Duskblade of Draktharr'],ns['F']);next(k)
+        q=k.send({'hp':10000,'time':0,'event_driven':True,'skill_on_hit':True,'attack_physical':0,'ultimate_cast_time':0})
+        self.assertEqual(q['phantom_dancer'],0);self.assertEqual(q['yuntal_crit'],0);self.assertEqual(q['fiend_remaining'],3)
+        self.assertNotIn('Nightstalker',q['notes']);self.assertNotIn('Opening Barrage',q['notes'])
+        aa=k.send({'hp':10000,'time':1,'event_driven':True,'ultimate_cast_time':0})
+        self.assertEqual(aa['phantom_dancer'],1);self.assertAlmostEqual(aa['yuntal_crit'],.002);self.assertEqual(aa['fiend_remaining'],2)
+        self.assertIn('Nightstalker',aa['notes']);self.assertIn('Opening Barrage',aa['notes'])
+    def test_muramana_skill_shock_once_with_phantom(self):
+        ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,['Muramana',"Guinsoo's Rageblade"],ns['F']);next(k)
+        r=replay_samira([FightEvent(i*7,'Q') for i in range(6)],champion='Ezreal',level=15,ad=100,base_ad=60,ap=0,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,max_mana=1000,mana_regen_per_5s=10,automatic_until=40,muramana=True,aa_hit=lambda state:k.send(state))
+        self.assertEqual(len(r.log),6)
+        for row in r.log:
+            shocks=[c for c in row['damage_components'] if c.get('component')=='Muramana skill Shock']
+            self.assertEqual(len(shocks),1);self.assertEqual(shocks[0]['raw_amount'],30)
+        self.assertIn('Phantom Hit',r.log[-1]['effects'])
+    def test_smolder_q_uses_new_terminus_physical_penetration(self):
+        ns=engine_namespace();k=ns['_combat_hits']('Smolder',15,10000,100,100,['Terminus'],ns['F']);next(k)
+        r=replay_samira([FightEvent(0,'Q'),FightEvent(7,'Q')],champion='Smolder',level=15,ad=100,base_ad=60,ap=0,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,automatic_until=10,terminus=True,aa_hit=lambda state:k.send(state))
+        row=r.log[1];skill=[c for c in row['damage_components'] if c.get('tags')==['ActiveSpell','BasicAttack']]
+        physical=sum(c['raw_amount'] for c in skill if c['damage_type']=='physical');magic=sum(c['raw_amount'] for c in skill if c['damage_type']=='magic')
+        self.assertGreater(physical,0)
+        self.assertAlmostEqual(row['damage'],(physical+magic)/1.9+15.)

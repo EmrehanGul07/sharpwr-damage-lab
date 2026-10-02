@@ -1,4 +1,4 @@
-# Aktif TODO — V5.77.0 / 2 Ekim 2026
+# Aktif TODO — V5.78.0 / 2 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -8,10 +8,10 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 
 | ID | İş | Gereken bilgi |
 |---|---|---|
-| I01 | Rageblade + Kraken + Terminus | Kraken tek başına AA3/6/9 ve Rageblade tek başına AA6/9 phantom teyitli. Terminus tekli, ikili/üçlü sayaçlar; Phantom on-hit tekrarı; penetration sırası; skill on-hit eligibility |
+| I01 | Rageblade + Kraken + Terminus | Tekli/ikili/üçlü AA sayaçları, Terminus penetration sırası ve Ezreal Q Kraken/Phantom/Terminus sayaçları kapandı. Açık: Rageblade AS stack kazanımı/expiry, diğer skillerin özel on-hit kapsamı, proc içi eksik-can snapshot ve gösterge yuvarlaması. |
 | I02 | Hexoptics | Ezreal AA/Q fiziksel kapsamı ve taşınan Wits End büyü on-hitinin mesafeden etkilenmemesi teyitli (2026-10-02). Tooltip ile %0–10 bonus ve 550 mesafede maksimum teyitli. 100 mesafede %1, her50 birimde +%1, 550 mesafede %10 basamakları kullanıcı tarafından yeniden teyit edildi. Center-edge mesafe tanımı, diğer şampiyon basic/proc bileşenleri ve MF/Senna Q farkı açık. |
 | I03 | Xayah | 1/3/5/10 tüy E; tüy expiry ve lateral recall collision; R fanı/10+ tüy floor |
-| I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Diğer şampiyonların çoklu-hit/on-hit etkileşimleri ve melee animasyonunun ranged item sınıfına etkisi açık. |
+| I04 | Muramana | Samira R/W kullanım başına tek Shock ve Ezreal Q skill Shock teyit edildi (2026-10-01). Once-per-attack/cast kuralı ortak engine’de uygulanıyor; Phantom aynı attack Shock’unu tekrar etmez. Açık: default/indirect/pasif damage bileşenlerinin Shock eligibility sınıflandırması. |
 | I05 | Fiendhunter | R sonrası üç AA/8s penceresi; Lucian ikinci shot tüketimi ve AS buff bitişi |
 | I06 | Spellblade | Armed-window expiry; eligible skill on-hit proc; cooldown sırasında cast edilen skill'in sonraki AA'yı arm edip etmemesi |
 | I07 | Damage classification | Item BasicAttack/Proc kapsamı; AA damage reduction'ın item/pasif eklerine uygulanması; aşağıdaki bilinmeyen WR ability tag'leri |
@@ -43,7 +43,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | Vayne | Tumble süresi/endpoint; passive/on-hit classification |
 | Draven | Axe catch gerçek timing; axe crit scope |
 | Tristana | W trajectory; E/R hedef menzili; R damage tag |
-| Ezreal | Q Kraken/Phantom/Terminus sayaç kapsamı teyitli; Q Rageblade AS stack kazanımı, karma skill-item kombinasyonları, Q/W detonation ve diğer item eligibility açık |
+| Ezreal | Q Kraken/Phantom/Terminus sayaç kapsamı teyitli; Q Rageblade AS stack kazanımı, Q/W detonation ve diğer item eligibility açık; Q/AA ortak sayaç testi tekrar istenmez |
 | Sivir | Q 1450/1200 gidiş/dönüş WR doğrulaması; Morale cap/expiry |
 
 ## Ortak kaynak / oyun doğrulaması
@@ -94,3 +94,5 @@ Ezreal15, AD178/AP0, crit25%/crit damage200%. Conqueror/Brutal/Cut Down/Legend B
 
 - Ezreal15 Q: Kraken AA-AA-Q ve Q-AA-AA proc teyitli; Rageblade altıncı Q Phantom teyitli; Terminus Q stack ilerlemesi karakter göstergesinden teyitli. Kaynak: data/ezreal-q-onhit-user-tests-20261002.json.
 - Samira15 BotRK: uzak/yakın AA379, yakın blade AA ranged item sınıfını korur (AD149, Conqueror/Brutal/Coup de Grace).
+
+- V5.78 offline audit: tüm23 champion/115 profil tarandı. Gereksiz karma Q-AA sayaç testi kaldırıldı. Muramana Phantom duplicate, skill-carried BotRK HP snapshot ve Smolder Q Terminus fiziksel penetration düzeltildi. Yeni oyun içi test istenmedi.

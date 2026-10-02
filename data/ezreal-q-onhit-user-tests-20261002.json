@@ -101,5 +101,5 @@
       ]
     }
   ],
-  "scope": "Do not transfer Ezreal Q confirmation to all on-hit skills. Mixed item skill sequences, penetration within Q and exact Conqueror timing remain unmeasured."
+  "scope": "Ezreal Q and AA advance the same persistent item counters; no redundant mixed-sequence ingame test is needed. Do not transfer Q confirmation to every other on-hit skill. Exact penetration within Q, attack-speed stack gain, expiry and Conqueror timing remain unmeasured."
 }

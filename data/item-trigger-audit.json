@@ -293,6 +293,12 @@
           "trigger_category": "trigger",
           "finding": "evidence"
         }
+      },
+      "offline_connection_audit": {
+        "version": "5.78.0",
+        "rule": "Shock once per attack/cast; same-attack Phantom does not repeat AA Shock; skill carrier excludes AA Shock",
+        "source": "user-reported live tooltip and existing Samira/Ezreal cast tests",
+        "regression": "tests/test_item_active_events.py"
       }
     },
     {

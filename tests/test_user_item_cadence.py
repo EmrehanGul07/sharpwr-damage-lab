@@ -73,3 +73,15 @@ class UserItemCadence(unittest.TestCase):
   kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Terminus'],self.ns['F']);next(kernel)
   out=[kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':True,'attack_physical':0}) for i in range(8)]
   self.assertEqual([(h['light'],h['dark']) for h in out],[(1,0),(1,1),(2,1),(2,2),(3,2),(3,3),(3,3),(3,3)])
+
+ def test_muramana_does_not_repeat_shock_on_phantom(self):
+  kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Muramana',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
+  out=[kernel.send({'hp':10000,'time':i,'event_driven':True,'max_mana':1000,'attack_physical':0}) for i in range(6)]
+  self.assertEqual([h['physical'] for h in out],[15.]*6)
+  self.assertEqual(out[5]['on_hit_events'][1]['physical_proc_raw'],0.)
+ def test_skill_phantom_botrk_includes_primary_skill_damage(self):
+  def run(extra):
+   kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Blade of the Ruined King',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
+   for i in range(6):h=kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':True,'attack_physical':0,'primary_external_damage':extra})
+   return h['on_hit_events'][1]['physical_proc_raw']
+  self.assertAlmostEqual(run(0)-run(200),12.)

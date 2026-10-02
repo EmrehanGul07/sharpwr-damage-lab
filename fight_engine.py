@@ -377,7 +377,12 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     for basic in ('Q','W','E'):ready[basic]=t+max(0.,ready[basic]-t)*.92
                     transcend_ready=t+8.;effects.append('Transcendence: remaining basic cooldown ×0.92')
         if action!='AA' and action!='Burn tick' and classification.get('properties',{}).get('TriggerOnHitEvents') is True and aa_hit:
-            hit=aa_hit({'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':0.,'crit':0.,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else distance,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':effective_resistance(mr,hit_magic_pen,flat_mpen),'skill_on_hit':True})
+            health_amp=(1.065 if 'Cut Down' in sub_runes and before_hp/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and before_hp/hp<.4 else 1.)
+            if action in ('Q','W','E') and 'Battle Zeal' in sub_runes and combat_start is not None:health_amp*=1+.014*min(3,int(t-combat_start))
+            hit=aa_hit({'on_hit_health_multiplier':health_amp,'primary_external_damage':damage*health_amp,'hp':health,'time':t,'mana':mana,'max_mana':max_mana,'bonus_ad':bonus_ad,'bonus_as':0.,'crit':0.,'melee':melee,'event_driven':True,'spell_cast':spell_pending,'spell_cast_times':list(spell_cast_times),'ultimate_cast_time':ultimate_cast_time,'distance':abs(target_position-position) if timed_combat else distance,'attack_physical':0.,'critical_attack_physical':0.,'armor_override':ea,'mr_override':effective_resistance(mr,hit_magic_pen,flat_mpen),'skill_on_hit':True})
+            if champion=='Smolder' and action=='Q' and terminus:
+                # Initial physical skill uses the Dark stack granted by its own hit.
+                damage=(phy*resistance_multiplier(hit['armor'])+magic*resistance_multiplier(hit['mr']))*skill_amp*ability_magnification(champion,action,abs(target_position-position) if timed_combat else distance,kit_options.get('hexoptics',False))
             damage+=hit['damage'];components.extend(hit.get('damage_components',[]));effects.extend(hit.get('notes',[]));dark=hit.get('dark',dark)
             item_stacks={k:hit.get(k,0) for k in ('rage','light','dark','phantom_dancer','kraken')}
             spell_pending=False;spell_cast_times.clear()
@@ -406,7 +411,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         damage=before_hp-health
         total+=damage
         if champion=='Smolder' and action not in ('AA','Burn tick'):
-            key=(action,cast_id[0])
+            key=(action,cast_id[0] if cast_id is not None else (t,order))
             if key not in dragon_casts:dragon+=1;dragon_casts.add(key)
             if action=='Q' and health<=0:
                 dragon+=1
