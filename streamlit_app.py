@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.72.0")
+ensure_engine_revision("5.73.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -1031,7 +1031,7 @@ with tabs[0]:
             tier_yuntal_stacks=st.number_input("Yun Tal permanent stacks",0,125,int(_tier_yuntal_default),1,key=f"tier_yuntal_stacks_{tier_level}")
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
-    _tier_signature=("5.72.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.73.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc"):
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -1783,7 +1783,7 @@ with tabs[2]:
     _screen_path=Path(__file__).resolve().parent/'data/item-adoption-screen.json'
     if _screen_path.exists():
         _screen=_adoption_json.loads(_screen_path.read_text())
-        st.caption(f"{_screen['champions']} ADCs × 6 levels × 3 targets · {_screen['simulations']:,} AA + ability simulations. Budgets: 5→1, 7→1, 9→2, 11→3, 13→4, 15→5 items. Muramana excluded before level 11. Each level/target has equal weight; build item shares are normalized by item count. No boots, runes or incoming damage. Yunara uses observed mana values; unobserved levels are interpolated and regeneration remains unverified.")
+        st.caption(f"{_screen['champions']} ADCs × 6 levels × 3 targets · {_screen['simulations']:,} AA + ability simulations. Budgets: 5→1, 7→1, 9→2, 11→3, 13→4, 15→5 items. Muramana excluded before level 11. Each level/target has equal weight; build item shares are normalized by item count. No boots, runes or incoming damage. Yunara uses observed core stats and mana regeneration at all 15 levels.")
         _screen_mode=st.selectbox("Ranking stage",['All stages']+[f"Level {l}" for l in _screen['levels']],key="adoption_stage")
         if _screen_mode=='All stages':_ranking=_screen['ranking']
         else:
@@ -1890,7 +1890,7 @@ with tabs[3]:
             _champ_record=CHAMPION_DATABASE[_inspect_champ]
             if _champ_record["source_status"]=="manual_pending_user_instruction":st.info("Yunara: additional stats pending manual data.")
             elif _champ_record["source_status"]=="manual_observed_levels_partial":
-                st.info("Yunara: verified manual data at levels 1, 3, 5, 8, 10, 13 and 15. Intermediate core stats are interpolated; regeneration units remain pending.")
+                st.info("Yunara: verified manual core data at all 15 levels. Mana regeneration is per 5 seconds; HP regeneration units remain pending.")
                 st.dataframe(pd.DataFrame.from_dict(_champ_record["observed_level_stats"],orient="index").rename_axis("Level").reset_index(),hide_index=True,width="stretch")
             else:st.markdown(f"[Wild Rift wiki source]({_champ_record['wiki_source_url']})")
             _field_rows=[]
@@ -2095,4 +2095,4 @@ with tabs[3]:
         st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 st.divider()
-st.caption("Web V5.72.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.73.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

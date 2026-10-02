@@ -25,7 +25,7 @@ def level_stats(name, level, growth_units=None):
     out = {key: None if raw.get(b) is None or raw.get(g) is None else raw[b]+raw[g]*u
            for key,(b,g) in pairs.items()}
     observations = champion_record(name).get('observed_level_stats', {})
-    for key in ('hp', 'mana', 'armor', 'mr'):
+    for key in ('hp', 'mana', 'armor', 'mr', 'mana_regen_per_5s'):
         points = sorted((int(l), values[key]) for l, values in observations.items() if key in values)
         exact = dict(points).get(level)
         if exact is not None:

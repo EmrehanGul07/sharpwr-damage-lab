@@ -3307,7 +3307,7 @@
         "hp_regen_growth_per_5s": null,
         "base_mana": 345,
         "mana_growth": null,
-        "base_mana_regen_per_5s": null,
+        "base_mana_regen_per_5s": 9,
         "mana_regen_growth_per_5s": null,
         "base_armor": 35,
         "armor_growth": null,
@@ -3381,6 +3381,10 @@
         "attack_range": {
           "source": "User WR practice screenshots and explicit confirmation, 2026-10-02",
           "status": "manual_verified"
+        },
+        "base_mana_regen_per_5s": {
+          "source": "User WR screenshots and regeneration test, 2026-10-02",
+          "status": "manual_verified"
         }
       },
       "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Yunara",
@@ -3392,7 +3396,6 @@
         "base_hp_regen_per_5s",
         "hp_regen_growth_per_5s",
         "mana_growth",
-        "base_mana_regen_per_5s",
         "mana_regen_growth_per_5s",
         "armor_growth",
         "mr_growth",
@@ -3552,7 +3555,19 @@
           "mr": 30,
           "as_displayed": 0.82,
           "hp_regen_displayed": 6,
-          "mana_regen_displayed": 9
+          "mana_regen_displayed": 9,
+          "mana_regen_per_5s": 9
+        },
+        "2": {
+          "ad_displayed": 61,
+          "hp": 725,
+          "mana": 370,
+          "armor": 39,
+          "mr": 32,
+          "as_displayed": 0.83,
+          "hp_regen_displayed": 7,
+          "mana_regen_displayed": 10,
+          "mana_regen_per_5s": 10
         },
         "3": {
           "ad_displayed": 63,
@@ -3562,7 +3577,19 @@
           "mr": 33,
           "as_displayed": 0.85,
           "hp_regen_displayed": 7,
-          "mana_regen_displayed": 11
+          "mana_regen_displayed": 11,
+          "mana_regen_per_5s": 11
+        },
+        "4": {
+          "ad_displayed": 66,
+          "hp": 930,
+          "mana": 423,
+          "armor": 46,
+          "mr": 34,
+          "as_displayed": 0.87,
+          "hp_regen_displayed": 8,
+          "mana_regen_displayed": 11,
+          "mana_regen_per_5s": 11
         },
         "5": {
           "ad_displayed": 68,
@@ -3572,7 +3599,30 @@
           "mr": 35,
           "as_displayed": 0.89,
           "hp_regen_displayed": 8,
-          "mana_regen_displayed": 12
+          "mana_regen_displayed": 12,
+          "mana_regen_per_5s": 12
+        },
+        "6": {
+          "ad_displayed": 71,
+          "hp": 1155,
+          "mana": 481,
+          "armor": 54,
+          "mr": 36,
+          "as_displayed": 0.9,
+          "hp_regen_displayed": 9,
+          "mana_regen_displayed": 12,
+          "mana_regen_per_5s": 12
+        },
+        "7": {
+          "ad_displayed": 74,
+          "hp": 1276,
+          "mana": 512,
+          "armor": 58,
+          "mr": 38,
+          "as_displayed": 0.92,
+          "hp_regen_displayed": 9,
+          "mana_regen_displayed": 13,
+          "mana_regen_per_5s": 13
         },
         "8": {
           "ad_displayed": 77,
@@ -3582,7 +3632,19 @@
           "mr": 39,
           "as_displayed": 0.94,
           "hp_regen_displayed": 10,
-          "mana_regen_displayed": 14
+          "mana_regen_displayed": 14,
+          "mana_regen_per_5s": 14
+        },
+        "9": {
+          "ad_displayed": 80,
+          "hp": 1532,
+          "mana": 578,
+          "armor": 67,
+          "mr": 40,
+          "as_displayed": 0.97,
+          "hp_regen_displayed": 10,
+          "mana_regen_displayed": 14,
+          "mana_regen_per_5s": 14
         },
         "10": {
           "ad_displayed": 83,
@@ -3592,7 +3654,30 @@
           "mr": 42,
           "as_displayed": 0.99,
           "hp_regen_displayed": 11,
-          "mana_regen_displayed": 15
+          "mana_regen_displayed": 15,
+          "mana_regen_per_5s": 15
+        },
+        "11": {
+          "ad_displayed": 86,
+          "hp": 1808,
+          "mana": 649,
+          "armor": 77,
+          "mr": 43,
+          "as_displayed": 1.01,
+          "hp_regen_displayed": 12,
+          "mana_regen_displayed": 16,
+          "mana_regen_per_5s": 16
+        },
+        "12": {
+          "ad_displayed": 90,
+          "hp": 1954,
+          "mana": 687,
+          "armor": 82,
+          "mr": 45,
+          "as_displayed": 1.03,
+          "hp_regen_displayed": 12,
+          "mana_regen_displayed": 17,
+          "mana_regen_per_5s": 17
         },
         "13": {
           "ad_displayed": 93,
@@ -3602,7 +3687,19 @@
           "mr": 47,
           "as_displayed": 1.06,
           "hp_regen_displayed": 13,
-          "mana_regen_displayed": 18
+          "mana_regen_displayed": 18,
+          "mana_regen_per_5s": 18
+        },
+        "14": {
+          "ad_displayed": 97,
+          "hp": 2261,
+          "mana": 766,
+          "armor": 93,
+          "mr": 48,
+          "as_displayed": 1.08,
+          "hp_regen_displayed": 14,
+          "mana_regen_displayed": 18,
+          "mana_regen_per_5s": 18
         },
         "15": {
           "ad_displayed": 100,
@@ -3612,10 +3709,11 @@
           "mr": 50,
           "as_displayed": 1.11,
           "hp_regen_displayed": 14,
-          "mana_regen_displayed": 19
+          "mana_regen_displayed": 19,
+          "mana_regen_per_5s": 19
         }
       },
-      "observed_level_policy": "Exact displayed values at observed levels; piecewise linear interpolation for hp/mana/armor/mr at unobserved levels is provisional. Displayed regeneration units unconfirmed. Existing AD/AS formulas preserved."
+      "observed_level_policy": "All 15 levels use exact displayed HP/mana/armor/MR and mana regen per 5 seconds. Mana regen units confirmed by user: displayed 19 regenerates about 4 per second. Values are rounded in the game UI; growth coefficients not inferred. HP regeneration unit remains unconfirmed. Existing AD/AS formulas preserved; displayed AD/AS retained as observations."
     },
     {
       "name": "Kai'Sa",

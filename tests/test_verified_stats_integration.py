@@ -10,11 +10,12 @@ class VerifiedStatsIntegration(unittest.TestCase):
     def setUpClass(cls): cls.ns=engine_namespace()
 
     def test_yunara_observations_and_interpolation(self):
-        observed={1:345,3:396,5:451,8:544,10:613,13:726,15:807}
+        observed=dict(enumerate([345,370,396,423,451,481,512,544,578,613,649,687,726,766,807],1))
         for level,mana in observed.items():
             self.assertEqual(level_stats('Yunara',level)['mana'],mana)
-        self.assertEqual(level_stats('Yunara',14)['mana'],766.5)
-        self.assertIsNone(level_stats('Yunara',15)['mana_regen_per_5s'])
+        self.assertEqual(level_stats('Yunara',14)['mana'],766)
+        self.assertEqual(level_stats('Yunara',15)['mana_regen_per_5s'],19)
+        self.assertEqual(set(CHAMPION_DATABASE['Yunara']['observed_level_stats']),set(map(str,range(1,16))))
         self.assertIsNone(CHAMPION_DATABASE['Yunara']['stats']['mana_growth'])
 
     def test_yunara_muramana_reaches_fight_and_item_kernel(self):
@@ -52,3 +53,14 @@ class VerifiedStatsIntegration(unittest.TestCase):
                             self.assertGreaterEqual(event['impact_time'],event['windup_end'])
                             self.assertLessEqual(event['distance'],event['attack_range']+1e-6)
                     self.assertAlmostEqual(sum(x['damage'] for x in trace.log),row['Damage'])
+
+    def test_yunara_regenerates_mana_between_actions(self):
+        from fight_engine import FightEvent,replay_samira
+        core=level_stats('Yunara',15)
+        r=replay_samira([FightEvent(0,'W'),FightEvent(5,'AA')],champion='Yunara',level=15,ad=100,base_ad=100,ap=0,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=0,w_rank=1,e_rank=1,r_rank=0,max_mana=core['mana'],mana_regen_per_5s=core['mana_regen_per_5s'],timed_combat=False,movement_speed=0,distance=500,attack_range=575,automatic_until=6)
+        w=next(x for x in r.timeline if x['kind']=='cast' and x['action']=='W')
+        self.assertEqual(w['mana_after'],747)
+        attack=next(x for x in r.timeline if x['kind']=='attack')
+        self.assertEqual(attack['time'],5)
+        self.assertAlmostEqual(attack['mana_before'],766)
+        self.assertAlmostEqual(r.log[-1]['mana'],747+r.log[-1]['time']*3.8)
