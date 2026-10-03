@@ -7,19 +7,20 @@ const pulse=(u,a,b)=>u<a?smooth(u/a):u>b?1-smooth((u-b)/(1-b)):1;
 function createRig(T,profile,options={}){
  const root=new T.Group();root.name='SharpWR_'+profile.id;root.userData={champion:profile.name,artBrief:profile.art_brief,originalArt:true};
  const joints={},rest={},secondary=[],sockets={},details=[],geometryCache=new Map();let serial=0;
- const palette=profile.palette,materials={};
+ const palette=profile.palette,materials={},low=!!options.lowPoly;
+ const seg=low?8:20,rows=low?5:14;
  for(const [name,color]of Object.entries(palette))materials[name]=new T.MeshStandardMaterial({color,metalness:name==='metal'?.72:name==='light'?.22:.08,roughness:name==='skin'?.66:name==='metal'?.32:.57,emissive:name==='energy'?color:'#000000',emissiveIntensity:name==='energy'?1.35:0});
  materials.dark=new T.MeshStandardMaterial({color:'#10171f',roughness:.7});materials.eye=new T.MeshStandardMaterial({color:palette.energy,emissive:palette.energy,emissiveIntensity:.35,roughness:.2});materials.white=new T.MeshStandardMaterial({color:'#f7f1e7',roughness:.6});materials.glass=new T.MeshStandardMaterial({color:palette.energy,transparent:true,opacity:.5,metalness:.25,roughness:.2});
  const mat=(name)=>materials[name]||materials.cloth;
  function bone(name,parent,x=0,y=0,z=0){const b=new T.Bone();b.name=name;b.position.set(x,y,z);parent.add(b);joints[name]=b;return b;}
  function mesh(g,m,parent=root,x=0,y=0,z=0){if(g.parameters&&!['ExtrudeGeometry','TubeGeometry','LatheGeometry'].includes(g.type)){const key=g.type+JSON.stringify(g.parameters);if(geometryCache.has(key)){g.dispose();g=geometryCache.get(key);}else geometryCache.set(key,g);}const o=new T.Mesh(g,typeof m==='string'?mat(m):m);o.name='part_'+serial++;o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
- function ellipsoid(parent,m,r,x,y,z,sx=1,sy=1,sz=1){const o=mesh(new T.SphereGeometry(1,20,14),m,parent,x,y,z);o.scale.set(sx*r,sy*r,sz*r);return o;}
- function capsule(parent,m,r,length,x=0,y=0,z=0){return mesh(new T.CapsuleGeometry(r,Math.max(.01,length-2*r),6,14),m,parent,x,y,z);}
- function rounded(parent,m,w,h,d,x=0,y=0,z=0,bevel=.035){const s=new T.Shape(),r=Math.min(bevel,w/3,h/3);s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);const g=new T.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelThickness:r/2,bevelSize:r/2,bevelSegments:3,steps:1,curveSegments:5});g.translate(0,0,-d/2);return mesh(g,m,parent,x,y,z);}
- function tube(parent,m,points,r=.025){const curve=new T.CatmullRomCurve3(points.map(v=>new T.Vector3(...v)));return mesh(new T.TubeGeometry(curve,Math.max(10,points.length*5),r,8,false),m,parent);}
- function taper(parent,m,r1,r2,length,x=0,y=0,z=0){return mesh(new T.CylinderGeometry(r1,r2,length,16,1),m,parent,x,y,z);}
- function ring(parent,m,r,thick=.025,x=0,y=0,z=0){return mesh(new T.TorusGeometry(r,thick,8,36),m,parent,x,y,z);}
- function blade(parent,m,points,depth=.05){const s=new T.Shape();points.forEach(([x,y],i)=>i?s.lineTo(x,y):s.moveTo(x,y));s.closePath();const g=new T.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelThickness:.012,bevelSize:.015,bevelSegments:2,curveSegments:6});g.translate(0,0,-depth/2);return mesh(g,m,parent);}
+ function ellipsoid(parent,m,r,x,y,z,sx=1,sy=1,sz=1){const o=mesh(new T.SphereGeometry(1,seg,rows),m,parent,x,y,z);o.scale.set(sx*r,sy*r,sz*r);return o;}
+ function capsule(parent,m,r,length,x=0,y=0,z=0){return mesh(new T.CapsuleGeometry(r,Math.max(.01,length-2*r),low?3:6,low?7:14),m,parent,x,y,z);}
+ function rounded(parent,m,w,h,d,x=0,y=0,z=0,bevel=.035){const s=new T.Shape(),r=Math.min(bevel,w/3,h/3);s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);const g=new T.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelThickness:r/2,bevelSize:r/2,bevelSegments:low?1:3,steps:1,curveSegments:low?3:5});g.translate(0,0,-d/2);return mesh(g,m,parent,x,y,z);}
+ function tube(parent,m,points,r=.025){const curve=new T.CatmullRomCurve3(points.map(v=>new T.Vector3(...v)));return mesh(new T.TubeGeometry(curve,Math.max(6,points.length*(low?2:5)),r,low?4:8,false),m,parent);}
+ function taper(parent,m,r1,r2,length,x=0,y=0,z=0){return mesh(new T.CylinderGeometry(r1,r2,length,low?8:16,1),m,parent,x,y,z);}
+ function ring(parent,m,r,thick=.025,x=0,y=0,z=0){return mesh(new T.TorusGeometry(r,thick,low?4:8,low?14:36),m,parent,x,y,z);}
+ function blade(parent,m,points,depth=.05){const s=new T.Shape();points.forEach(([x,y],i)=>i?s.lineTo(x,y):s.moveTo(x,y));s.closePath();const g=new T.ExtrudeGeometry(s,{depth,bevelEnabled:true,bevelThickness:.012,bevelSize:.015,bevelSegments:low?1:2,curveSegments:low?3:6});g.translate(0,0,-depth/2);return mesh(g,m,parent);}
  function attachSocket(name,parent,x=0,y=0,z=0){const o=new T.Object3D();o.name='socket_'+name;o.position.set(x,y,z);parent.add(o);sockets[name]=o;return o;}
  function ribbon(name,parent,m,width,length,spread=0){const chain=bone(name,parent,0,0,0),segments=[];let prev=chain;
   for(let i=0;i<5;i++){const b=bone(name+'_'+i,prev,0,i===0?0:-length/5,0);const o=rounded(b,m,width*(1-i*.11),length/5+.018,.035,spread*i/5,-length/10,-.015,.016);segments.push(b);prev=b;}
@@ -118,7 +119,7 @@ function createRig(T,profile,options={}){
   const small=profile.rig==='yordle',bodyScale=profile.body==='broad'?1.24:profile.body==='slender'?.86:1.;
   const hip=bone('hips',root,0,small?.87:1.23,0),spine=bone('spine',hip,0,.21,0),chest=bone('chest',spine,0,small?.28:.36,0),neck=bone('neck',chest,0,.19,0),head=bone('head',neck,0,small?.25:.23,0);
   const rings=[new T.Vector2(.2,0),new T.Vector2(.21,.11),new T.Vector2(.18,.24),new T.Vector2(.25,.43),new T.Vector2(.31,.58),new T.Vector2(.19,.69)];
-  const torso=mesh(new T.LatheGeometry(rings,28),'cloth',hip,0,0,0);torso.scale.set(bodyScale,small?.78:1,.64);ellipsoid(hip,'secondary',.24,0,-.015,0,bodyScale,.7,.69);
+  const torso=mesh(new T.LatheGeometry(rings,low?12:28),'cloth',hip,0,0,0);torso.scale.set(bodyScale,small?.78:1,.64);ellipsoid(hip,'secondary',.24,0,-.015,0,bodyScale,.7,.69);
   const breast=ellipsoid(chest,'cloth',.25,0,-.105,.025,bodyScale,1.1,.69);
   for(const side of [-1,1]){const panel=ellipsoid(chest,'secondary',.155,side*.12*bodyScale,-.1,.112,.92,.91,.43);panel.rotation.z=side*.12;}
   tube(chest,'metal',[[-.22,.06,.08],[-.16,.0,.17],[0,-.02,.205],[.16,.0,.17],[.22,.06,.08]],.013);
