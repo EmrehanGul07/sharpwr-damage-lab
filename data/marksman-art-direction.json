@@ -1,0 +1,1802 @@
+{
+  "schema": 1,
+  "version": "1.0.0",
+  "style": "Original stylized PBR models; authored joint animation, deterministic particles; no extracted Riot game meshes/textures.",
+  "timing_policy": "Animation study durations are artistic presentation only. Combat replay remaps poses to recorded windup/cast/channel windows and effects to recorded launches/impacts.",
+  "champions": {
+    "Ashe": {
+      "id": "ashe",
+      "rig": "human",
+      "weapon": "bow",
+      "theme": "frost",
+      "hair": "long",
+      "headgear": "hood",
+      "locomotion": "archer",
+      "body": "slender",
+      "palette": {
+        "cloth": "#152d59",
+        "secondary": "#719ecb",
+        "light": "#d8e9ef",
+        "metal": "#b8a275",
+        "skin": "#e3c8b6",
+        "energy": "#82efff"
+      },
+      "art_brief": "Ivory hood, layered navy mantle, frost crystal longbow and pale braided hair",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "focus",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ranger’s Focus",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "fan",
+          "pose": "bow",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Volley F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "hawk",
+          "pose": "release",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Hawkshot",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "ice_arrow",
+          "pose": "bow_charge",
+          "study_duration": 1.45,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Enchanted Crystal Arrow M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "frost_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Frost Shot"
+      },
+      "attack": {
+        "pose": "bow",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Caitlyn": {
+      "id": "caitlyn",
+      "rig": "human",
+      "weapon": "rifle",
+      "theme": "hextech",
+      "hair": "long",
+      "headgear": "hat",
+      "locomotion": "rifle",
+      "body": "tall",
+      "palette": {
+        "cloth": "#382d64",
+        "secondary": "#643da2",
+        "light": "#edf1f4",
+        "metal": "#b57b49",
+        "skin": "#edc5a4",
+        "energy": "#8ae4ff"
+      },
+      "art_brief": "Tall structured hat, tailored violet jacket, copper rifle with scope and side braid",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "pierce",
+          "pose": "rifle",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Piltover Peacemaker F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "trap",
+          "pose": "place",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Yordle Snap Trap",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "net",
+          "pose": "recoil_dash",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "90 Caliber Net M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "sniper",
+          "pose": "kneel",
+          "study_duration": 1.35,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ace in the Hole F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "hextech_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Headshot"
+      },
+      "attack": {
+        "pose": "rifle",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Corki": {
+      "id": "corki",
+      "rig": "vehicle",
+      "weapon": "aircraft",
+      "theme": "hextech",
+      "hair": "short",
+      "headgear": "pilot",
+      "locomotion": "hover",
+      "body": "small",
+      "palette": {
+        "cloth": "#382d64",
+        "secondary": "#643da2",
+        "light": "#edf1f4",
+        "metal": "#b57b49",
+        "skin": "#edc5a4",
+        "energy": "#8ae4ff"
+      },
+      "art_brief": "Yordle aviator, moustache, goggles, twin-wing hextech aircraft, rotor and exhaust",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "bomb",
+          "pose": "bomb",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Phosphorus Bomb M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "fire_path",
+          "pose": "dash",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Valkyrie M/s",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "gatling",
+          "pose": "barrage",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Gatling Gun F/s",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "rocket",
+          "pose": "rocket",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Missile Barrage F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "hextech_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Hextech Munitions"
+      },
+      "attack": {
+        "pose": "barrage",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Draven": {
+      "id": "draven",
+      "rig": "human",
+      "weapon": "axes",
+      "theme": "blood",
+      "hair": "crest",
+      "headgear": "moustache",
+      "locomotion": "bruiser",
+      "body": "broad",
+      "palette": {
+        "cloth": "#36232a",
+        "secondary": "#a83933",
+        "light": "#211e24",
+        "metal": "#d6ae67",
+        "skin": "#cfa386",
+        "energy": "#ff7259"
+      },
+      "art_brief": "Broad bare arms, angular moustache, high black crest, fur collar and two crescent axes",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "axe_orbit",
+          "pose": "brandish",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Spinning Axe ek F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "rush",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Blood Rush",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "axe_pair",
+          "pose": "dual_throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Stand Aside F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "axe_return",
+          "pose": "throw_heavy",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Whirling Death F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "blood_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "League of Draven"
+      },
+      "attack": {
+        "pose": "axe",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Ezreal": {
+      "id": "ezreal",
+      "rig": "human",
+      "weapon": "gauntlet",
+      "theme": "arcane",
+      "hair": "swept",
+      "headgear": "goggles",
+      "locomotion": "caster",
+      "body": "lean",
+      "palette": {
+        "cloth": "#1c657e",
+        "secondary": "#353947",
+        "light": "#e2c572",
+        "metal": "#bb8c45",
+        "skin": "#e6b58f",
+        "energy": "#60edff"
+      },
+      "art_brief": "Blond swept hair, blue explorer jacket, leather belts, scarf and luminous left-hand gauntlet",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "mystic_arrow",
+          "pose": "gauntlet",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Mystic Shot F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "flux",
+          "pose": "cast",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Essence Flux M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "blink",
+          "pose": "blink",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Arcane Shift M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "crescent",
+          "pose": "two_hand",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Trueshot Barrage M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "arcane_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Rising Spell Force"
+      },
+      "attack": {
+        "pose": "gauntlet",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Jhin": {
+      "id": "jhin",
+      "rig": "human",
+      "weapon": "rifle",
+      "theme": "rose",
+      "hair": "short",
+      "headgear": "mask",
+      "locomotion": "theatrical",
+      "body": "tall",
+      "palette": {
+        "cloth": "#372639",
+        "secondary": "#97294d",
+        "light": "#eae3d6",
+        "metal": "#d6ba76",
+        "skin": "#d4bda6",
+        "energy": "#f26491"
+      },
+      "art_brief": "Porcelain half-mask, asymmetrical gold shoulder shell, white coat tails and ornate four-shot rifle",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "grenade",
+          "pose": "throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Dancing Grenade F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "flourish",
+          "pose": "rifle",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Deadly Flourish F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "lotus",
+          "pose": "place",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Captive Audience M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "curtain",
+          "pose": "kneel_channel",
+          "study_duration": 2.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Curtain Call F/shot",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "rose_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Whisper"
+      },
+      "attack": {
+        "pose": "rifle",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Jinx": {
+      "id": "jinx",
+      "rig": "human",
+      "weapon": "launcher",
+      "theme": "chaos",
+      "hair": "braids",
+      "headgear": "tattoo",
+      "locomotion": "loose",
+      "body": "slender",
+      "palette": {
+        "cloth": "#222a40",
+        "secondary": "#d14886",
+        "light": "#26bdd4",
+        "metal": "#aa939a",
+        "skin": "#e3b4a2",
+        "energy": "#6bffff"
+      },
+      "art_brief": "Long cyan twin braids, magenta top, striped stockings, minigun and shark-shaped rocket launcher",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "switch",
+          "pose": "switch",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Switcheroo",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "zap",
+          "pose": "rifle",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Zap F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "chompers",
+          "pose": "place",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Flame Chompers M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "mega_rocket",
+          "pose": "rocket_heavy",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Super Mega Death Rocket F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "chaos_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Get Excited"
+      },
+      "attack": {
+        "pose": "rifle",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Kai'Sa": {
+      "id": "kaisa",
+      "rig": "human",
+      "weapon": "void_cannons",
+      "theme": "void",
+      "hair": "swept",
+      "headgear": "visor",
+      "locomotion": "agile",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#291a43",
+        "secondary": "#61417d",
+        "light": "#a082c9",
+        "metal": "#371e54",
+        "skin": "#d4b1ad",
+        "energy": "#ca7bff"
+      },
+      "art_brief": "Sculpted violet void carapace, dark hair, glowing eyes and articulated shoulder missile pods",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "missile_swarm",
+          "pose": "spread",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Icathian Rain F/missile",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "void_lance",
+          "pose": "two_hand",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Void Seeker M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "supercharge",
+          "pose": "sprint",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Supercharge",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "void_dash",
+          "pose": "dash_guard",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Killer Instinct shield",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "void_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Second Skin"
+      },
+      "attack": {
+        "pose": "spread",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Kalista": {
+      "id": "kalista",
+      "rig": "human",
+      "weapon": "spear",
+      "theme": "spectral",
+      "hair": "long",
+      "headgear": "crown",
+      "locomotion": "hop",
+      "body": "slender",
+      "palette": {
+        "cloth": "#193e40",
+        "secondary": "#32747b",
+        "light": "#88bcb5",
+        "metal": "#9cb6a6",
+        "skin": "#77d7c6",
+        "energy": "#67ffe1"
+      },
+      "art_brief": "Translucent teal armored revenant, spear, torn floating hair and angular spirit crown",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "spear",
+          "pose": "spear_throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Pierce F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "sentinel",
+          "pose": "summon",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Sentinel",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "rend",
+          "pose": "pull",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Rend F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "oath",
+          "pose": "summon_wide",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Fate’s Call",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "spectral_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Martial Poise"
+      },
+      "attack": {
+        "pose": "spear_throw",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Kog'Maw": {
+      "id": "kogmaw",
+      "rig": "creature",
+      "weapon": "maw",
+      "theme": "acid",
+      "hair": "none",
+      "headgear": "horns",
+      "locomotion": "scuttle",
+      "body": "wide",
+      "palette": {
+        "cloth": "#334329",
+        "secondary": "#788352",
+        "light": "#aaba77",
+        "metal": "#4d4c2b",
+        "skin": "#acb581",
+        "energy": "#afff57"
+      },
+      "art_brief": "Low six-limbed void creature, large glowing mouth, ridged carapace, tusks and bulbous acid sacs",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "spit",
+          "pose": "spit",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Caustic Spittle M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "bio_barrage",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Bio-Arcane Barrage ek M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "ooze",
+          "pose": "spit_low",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Void Ooze M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "artillery",
+          "pose": "artillery",
+          "study_duration": 1.2,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Living Artillery",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "acid_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Icathian Surprise T"
+      },
+      "attack": {
+        "pose": "spit",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Lucian": {
+      "id": "lucian",
+      "rig": "human",
+      "weapon": "pistols",
+      "theme": "light",
+      "hair": "short",
+      "headgear": "none",
+      "locomotion": "gunslinger",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#20232a",
+        "secondary": "#34383b",
+        "light": "#e5e2ca",
+        "metal": "#ad9566",
+        "skin": "#74503c",
+        "energy": "#f2e6a2"
+      },
+      "art_brief": "Dark skin, close-cropped hair, long black split coat and paired ivory relic pistols",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "light_beam",
+          "pose": "pistol",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Piercing Light F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "star",
+          "pose": "dual_cast",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ardent Blaze M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "light_dash",
+          "pose": "dash",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Relentless Pursuit",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "culling",
+          "pose": "dual_channel",
+          "study_duration": 2.5,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "The Culling F/shot",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "light_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Lightslinger"
+      },
+      "attack": {
+        "pose": "pistol",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Miss Fortune": {
+      "id": "miss-fortune",
+      "rig": "human",
+      "weapon": "pistols",
+      "theme": "powder",
+      "hair": "long",
+      "headgear": "pirate",
+      "locomotion": "gunslinger",
+      "body": "curvy",
+      "palette": {
+        "cloth": "#22334f",
+        "secondary": "#9b3243",
+        "light": "#ede1ca",
+        "metal": "#bc9658",
+        "skin": "#dab298",
+        "energy": "#ffbc68"
+      },
+      "art_brief": "Copper-red flowing hair, broad pirate hat, navy/red corset coat and two brass flintlocks",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "ricochet",
+          "pose": "pistol",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Double Up F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "strut",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Strut",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "rain",
+          "pose": "point",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Make It Rain M/tick",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "bullet_cone",
+          "pose": "dual_channel",
+          "study_duration": 2.5,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Bullet Time F/wave",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "powder_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Love Tap"
+      },
+      "attack": {
+        "pose": "pistol",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Samira": {
+      "id": "samira",
+      "rig": "human",
+      "weapon": "blade_pistol",
+      "theme": "steel",
+      "hair": "long",
+      "headgear": "eyepatch",
+      "locomotion": "duelist",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#24272c",
+        "secondary": "#a0353b",
+        "light": "#b9c4c3",
+        "metal": "#ac8a59",
+        "skin": "#a76f54",
+        "energy": "#ff7050"
+      },
+      "art_brief": "Dark swept hair, eyepatch, red scarf, armored leather suit, curved blade and compact pistol",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "flair",
+          "pose": "pistol",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Flair",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "blade_whirl",
+          "pose": "spin",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Blade Whirl",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "wild_rush",
+          "pose": "dash_slash",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Wild Rush",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "inferno",
+          "pose": "spin_channel",
+          "study_duration": 2.3,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Inferno Trigger",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "steel_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Daredevil Impulse"
+      },
+      "attack": {
+        "pose": "pistol",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Senna": {
+      "id": "senna",
+      "rig": "human",
+      "weapon": "relic_cannon",
+      "theme": "mist",
+      "hair": "locks",
+      "headgear": "none",
+      "locomotion": "heavy",
+      "body": "tall",
+      "palette": {
+        "cloth": "#243932",
+        "secondary": "#416856",
+        "light": "#e3dcd0",
+        "metal": "#a49870",
+        "skin": "#74503c",
+        "energy": "#76ffcd"
+      },
+      "art_brief": "Dark skin, white long coat, flowing dark locks and oversized spectral relic cannon",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "dark_beam",
+          "pose": "heavy_rifle",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Piercing Darkness F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "root",
+          "pose": "cast",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Last Embrace F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "mist",
+          "pose": "fade",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Curse of the Black Mist",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "dawning",
+          "pose": "heavy_two_hand",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Dawning Shadow",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "mist_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Absolution"
+      },
+      "attack": {
+        "pose": "heavy_rifle",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Sivir": {
+      "id": "sivir",
+      "rig": "human",
+      "weapon": "crossblade",
+      "theme": "sand",
+      "hair": "long",
+      "headgear": "tiara",
+      "locomotion": "thrower",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#194f54",
+        "secondary": "#973e36",
+        "light": "#f1deaf",
+        "metal": "#d3b164",
+        "skin": "#ba8158",
+        "energy": "#ffdb73"
+      },
+      "art_brief": "Dark hair, gold tiara, teal armor, red sash and broad four-point crossblade",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "boomerang",
+          "pose": "disc_throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Boomerang Blade F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "ricochet_blade",
+          "pose": "brandish",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ricochet F/bounce",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "spell_shield",
+          "pose": "guard",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Spell Shield",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "hunt",
+          "pose": "rally",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "On the Hunt",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "sand_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Fleet of Foot"
+      },
+      "attack": {
+        "pose": "disc_throw",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Smolder": {
+      "id": "smolder",
+      "rig": "dragon",
+      "weapon": "breath",
+      "theme": "ember",
+      "hair": "none",
+      "headgear": "horns",
+      "locomotion": "quadruped",
+      "body": "small",
+      "palette": {
+        "cloth": "#9c4b24",
+        "secondary": "#dc7a35",
+        "light": "#ffdf92",
+        "metal": "#623d33",
+        "skin": "#df8740",
+        "energy": "#ffbe4a"
+      },
+      "art_brief": "Orange young dragon, large expressive muzzle, curved horns, membranous wings and tapered tail",
+      "scale": 0.86,
+      "skills": {
+        "Q": {
+          "effect": "fire_breath",
+          "pose": "breath",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Super Scorcher Breath",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "sneeze",
+          "pose": "sneeze",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Achooo!",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "wing_flight",
+          "pose": "fly",
+          "study_duration": 1.8,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Flap Flap Flap",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "mother_flame",
+          "pose": "call",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "MOOOMMM!",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "ember_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Dragon Practice"
+      },
+      "attack": {
+        "pose": "breath",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Tristana": {
+      "id": "tristana",
+      "rig": "yordle",
+      "weapon": "cannon",
+      "theme": "powder",
+      "hair": "crest",
+      "headgear": "ears",
+      "locomotion": "hop",
+      "body": "small",
+      "palette": {
+        "cloth": "#22334f",
+        "secondary": "#9b3243",
+        "light": "#ede1ca",
+        "metal": "#bc9658",
+        "skin": "#709dc3",
+        "energy": "#ffbc68"
+      },
+      "art_brief": "Blue-skinned yordle, oversized ears, silver hair, pilot goggles and oversized brass cannon",
+      "scale": 0.78,
+      "skills": {
+        "Q": {
+          "effect": "rapid",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Rapid Fire",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "rocket_jump",
+          "pose": "jump",
+          "study_duration": 1.25,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Rocket Jump M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "charge",
+          "pose": "throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Explosive Charge",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "buster",
+          "pose": "cannon",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Buster Shot M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "powder_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Draw a Bead"
+      },
+      "attack": {
+        "pose": "cannon",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Twitch": {
+      "id": "twitch",
+      "rig": "human",
+      "weapon": "crossbow",
+      "theme": "toxic",
+      "hair": "none",
+      "headgear": "rat",
+      "locomotion": "hunched",
+      "body": "lean",
+      "palette": {
+        "cloth": "#28312b",
+        "secondary": "#687339",
+        "light": "#a28f68",
+        "metal": "#625a49",
+        "skin": "#9f9a79",
+        "energy": "#baff4e"
+      },
+      "art_brief": "Hunched rat marksman, long snout, pink ears, articulated tail, ragged hood and chem crossbow",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "ambush",
+          "pose": "fade",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ambush",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "cask",
+          "pose": "throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Venom Cask",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "contaminate",
+          "pose": "pull",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Contaminate",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "spray",
+          "pose": "crossbow_channel",
+          "study_duration": 2.2,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Spray and Pray",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "toxic_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Deadly Venom T"
+      },
+      "attack": {
+        "pose": "crossbow",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Varus": {
+      "id": "varus",
+      "rig": "human",
+      "weapon": "bow",
+      "theme": "corruption",
+      "hair": "long",
+      "headgear": "horns",
+      "locomotion": "archer",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#211d3f",
+        "secondary": "#663558",
+        "light": "#c1c5cd",
+        "metal": "#aa8394",
+        "skin": "#d2c4c6",
+        "energy": "#e678ea"
+      },
+      "art_brief": "Pale archer, white flowing hair, black-violet corrupted lower body and sculptural living bow",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "charged_arrow",
+          "pose": "bow_charge",
+          "study_duration": 1.45,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Piercing Arrow",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "blight",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Blighted Quiver on-hit büyü",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "arrow_rain",
+          "pose": "bow_high",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Hail of Arrows",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "corruption",
+          "pose": "bow_charge",
+          "study_duration": 1.45,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Chain of Corruption",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "corruption_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Living Vengeance"
+      },
+      "attack": {
+        "pose": "bow",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Vayne": {
+      "id": "vayne",
+      "rig": "human",
+      "weapon": "crossbows",
+      "theme": "silver",
+      "hair": "tied",
+      "headgear": "goggles",
+      "locomotion": "agile",
+      "body": "slender",
+      "palette": {
+        "cloth": "#202e4c",
+        "secondary": "#a43448",
+        "light": "#c7d6db",
+        "metal": "#766a74",
+        "skin": "#dfb198",
+        "energy": "#aeccff"
+      },
+      "art_brief": "Dark ponytail, red-lensed goggles, navy armor, crimson cape and wrist-mounted crossbows",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "tumble",
+          "pose": "roll",
+          "study_duration": 0.72,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Tumble ek F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "silver_rings",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Silver Bolts",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "condemn",
+          "pose": "crossbow",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Condemn F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "final_hour",
+          "pose": "fade",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Final Hour",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "silver_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Night Hunter"
+      },
+      "attack": {
+        "pose": "crossbow",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Xayah": {
+      "id": "xayah",
+      "rig": "human",
+      "weapon": "feathers",
+      "theme": "feather",
+      "hair": "long",
+      "headgear": "ears",
+      "locomotion": "thrower",
+      "body": "slender",
+      "palette": {
+        "cloth": "#352643",
+        "secondary": "#853761",
+        "light": "#ba73a0",
+        "metal": "#cbb079",
+        "skin": "#cea4a8",
+        "energy": "#ef9dda"
+      },
+      "art_brief": "Magenta hair and hood, feather cape, gold-edged armor, bird feet and twin feather blades",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "feather_pair",
+          "pose": "dual_throw",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Double Daggers",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "plumage",
+          "pose": "buff",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Deadly Plumage",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "recall",
+          "pose": "pull",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Bladecaller",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "feather_fan",
+          "pose": "leap_fan",
+          "study_duration": 1.3,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Featherstorm F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "feather_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Clean Cuts"
+      },
+      "attack": {
+        "pose": "dual_throw",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Yunara": {
+      "id": "yunara",
+      "rig": "human",
+      "weapon": "spirit_orbs",
+      "theme": "spirit",
+      "hair": "long",
+      "headgear": "tiara",
+      "locomotion": "float",
+      "body": "slender",
+      "palette": {
+        "cloth": "#244f51",
+        "secondary": "#357e76",
+        "light": "#eee5d0",
+        "metal": "#c8a462",
+        "skin": "#d9b9a5",
+        "energy": "#a2ffe4"
+      },
+      "art_brief": "Ivory/teal ceremonial robes, black flowing hair, golden headdress and orbiting prayer beads",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "cultivate",
+          "pose": "orbit",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Cultivation of Spirit",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "spirit_arc",
+          "pose": "cast",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Arc of Judgment",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "kanmei",
+          "pose": "glide",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Kanmei’s Steps",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "transcend",
+          "pose": "ascend",
+          "study_duration": 1.5,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Transcend One’s Self",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "spirit_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Vow of the First Lands"
+      },
+      "attack": {
+        "pose": "cast",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    },
+    "Zeri": {
+      "id": "zeri",
+      "rig": "human",
+      "weapon": "electric_rifle",
+      "theme": "electric",
+      "hair": "tied",
+      "headgear": "none",
+      "locomotion": "agile",
+      "body": "athletic",
+      "palette": {
+        "cloth": "#19635b",
+        "secondary": "#d0ae3c",
+        "light": "#91c450",
+        "metal": "#796938",
+        "skin": "#b98862",
+        "energy": "#c8ff58"
+      },
+      "art_brief": "Bright green twin hair knots, yellow jacket, teal shirt, articulated electric rifle and battery pack",
+      "scale": 1.0,
+      "skills": {
+        "Q": {
+          "effect": "spark",
+          "pose": "rifle",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Electrocute M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "W": {
+          "effect": "laser",
+          "pose": "two_hand",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Ultrashock Laser F",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "E": {
+          "effect": "surge",
+          "pose": "slide",
+          "study_duration": 0.95,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Spark Surge",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        },
+        "R": {
+          "effect": "lightning",
+          "pose": "burst",
+          "study_duration": 1.4,
+          "anticipation": 0.28,
+          "release": 0.46,
+          "recovery": 0.26,
+          "label": "Lightning Crash M",
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+        }
+      },
+      "passive": {
+        "effect": "electric_aura",
+        "pose": "passive",
+        "study_duration": 2.0,
+        "label": "Living Battery"
+      },
+      "attack": {
+        "pose": "rifle",
+        "study_duration": 0.9
+      },
+      "secondary_motion": [
+        "hair",
+        "cloth",
+        "weapon_followthrough",
+        "ears_tail_wings_when_present"
+      ]
+    }
+  }
+}

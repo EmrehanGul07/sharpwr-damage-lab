@@ -1,0 +1,1619 @@
+{
+  "schema": 1,
+  "version": "1.0.0",
+  "format": "glTF 2.0 binary",
+  "license": "Original SharpWR procedural geometry and animation; champion identities belong to Riot Games. No extracted game asset used.",
+  "timing": "Animation study durations are artistic presentation only. Combat replay remaps poses to recorded windup/cast/channel windows and effects to recorded launches/impacts.",
+  "champions": {
+    "Ashe": {
+      "file": "ashe.glb",
+      "bytes": 1755296,
+      "meshes": 118,
+      "vertices": 45153,
+      "triangles": 47984,
+      "joints": 72,
+      "rig": "human",
+      "weapon": "bow",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 48
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 54
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 54
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 53
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 53
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 54
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 50
+        },
+        {
+          "name": "R",
+          "duration": 1.4500000476837158,
+          "tracks": 54
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "buff",
+          "effect": "focus"
+        },
+        "W": {
+          "pose": "bow",
+          "effect": "fan"
+        },
+        "E": {
+          "pose": "release",
+          "effect": "hawk"
+        },
+        "R": {
+          "pose": "bow_charge",
+          "effect": "ice_arrow"
+        }
+      }
+    },
+    "Caitlyn": {
+      "file": "caitlyn.glb",
+      "bytes": 1879404,
+      "meshes": 121,
+      "vertices": 48847,
+      "triangles": 47928,
+      "joints": 65,
+      "rig": "human",
+      "weapon": "rifle",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 43
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 49
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 49
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 48
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 49
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 50
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 51
+        },
+        {
+          "name": "R",
+          "duration": 1.350000023841858,
+          "tracks": 55
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "rifle",
+          "effect": "pierce"
+        },
+        "W": {
+          "pose": "place",
+          "effect": "trap"
+        },
+        "E": {
+          "pose": "recoil_dash",
+          "effect": "net"
+        },
+        "R": {
+          "pose": "kneel",
+          "effect": "sniper"
+        }
+      }
+    },
+    "Corki": {
+      "file": "corki.glb",
+      "bytes": 540308,
+      "meshes": 50,
+      "vertices": 21637,
+      "triangles": 21788,
+      "joints": 12,
+      "rig": "vehicle",
+      "weapon": "aircraft",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 4
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 4
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 5
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 9
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 8
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 7
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 5
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 10
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "bomb",
+          "effect": "bomb"
+        },
+        "W": {
+          "pose": "dash",
+          "effect": "fire_path"
+        },
+        "E": {
+          "pose": "barrage",
+          "effect": "gatling"
+        },
+        "R": {
+          "pose": "rocket",
+          "effect": "rocket"
+        }
+      }
+    },
+    "Draven": {
+      "file": "draven.glb",
+      "bytes": 472628,
+      "meshes": 92,
+      "vertices": 29351,
+      "triangles": 43876,
+      "joints": 17,
+      "rig": "human",
+      "weapon": "axes",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 3
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 11
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 9
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 8
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 9
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 8
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 9
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 9
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "brandish",
+          "effect": "axe_orbit"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "rush"
+        },
+        "E": {
+          "pose": "dual_throw",
+          "effect": "axe_pair"
+        },
+        "R": {
+          "pose": "throw_heavy",
+          "effect": "axe_return"
+        }
+      }
+    },
+    "Ezreal": {
+      "file": "ezreal.glb",
+      "bytes": 884796,
+      "meshes": 83,
+      "vertices": 34191,
+      "triangles": 38888,
+      "joints": 23,
+      "rig": "human",
+      "weapon": "gauntlet",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 8
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 16
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 14
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 13
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 14
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 14
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 16
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 13
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "gauntlet",
+          "effect": "mystic_arrow"
+        },
+        "W": {
+          "pose": "cast",
+          "effect": "flux"
+        },
+        "E": {
+          "pose": "blink",
+          "effect": "blink"
+        },
+        "R": {
+          "pose": "two_hand",
+          "effect": "crescent"
+        }
+      }
+    },
+    "Jhin": {
+      "file": "jhin.glb",
+      "bytes": 1688756,
+      "meshes": 88,
+      "vertices": 52025,
+      "triangles": 39876,
+      "joints": 36,
+      "rig": "human",
+      "weapon": "rifle",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 18
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 24
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 24
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 23
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 24
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 24
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 25
+        },
+        {
+          "name": "R",
+          "duration": 2.4000000953674316,
+          "tracks": 30
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "throw",
+          "effect": "grenade"
+        },
+        "W": {
+          "pose": "rifle",
+          "effect": "flourish"
+        },
+        "E": {
+          "pose": "place",
+          "effect": "lotus"
+        },
+        "R": {
+          "pose": "kneel_channel",
+          "effect": "curtain"
+        }
+      }
+    },
+    "Jinx": {
+      "file": "jinx.glb",
+      "bytes": 1201776,
+      "meshes": 124,
+      "vertices": 46166,
+      "triangles": 50580,
+      "joints": 29,
+      "rig": "human",
+      "weapon": "launcher",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 13
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 19
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 19
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 18
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 19
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 19
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 20
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 19
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "switch",
+          "effect": "switch"
+        },
+        "W": {
+          "pose": "rifle",
+          "effect": "zap"
+        },
+        "E": {
+          "pose": "place",
+          "effect": "chompers"
+        },
+        "R": {
+          "pose": "rocket_heavy",
+          "effect": "mega_rocket"
+        }
+      }
+    },
+    "Kai'Sa": {
+      "file": "kaisa.glb",
+      "bytes": 461204,
+      "meshes": 76,
+      "vertices": 24330,
+      "triangles": 35724,
+      "joints": 17,
+      "rig": "human",
+      "weapon": "void_cannons",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 3
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 11
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 8
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 8
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 8
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 8
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 11
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 8
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "spread",
+          "effect": "missile_swarm"
+        },
+        "W": {
+          "pose": "two_hand",
+          "effect": "void_lance"
+        },
+        "E": {
+          "pose": "sprint",
+          "effect": "supercharge"
+        },
+        "R": {
+          "pose": "dash_guard",
+          "effect": "void_dash"
+        }
+      }
+    },
+    "Kalista": {
+      "file": "kalista.glb",
+      "bytes": 1778692,
+      "meshes": 125,
+      "vertices": 46036,
+      "triangles": 48708,
+      "joints": 72,
+      "rig": "human",
+      "weapon": "spear",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 48
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 56
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 54
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 53
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 54
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 53
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 53
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 53
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "spear_throw",
+          "effect": "spear"
+        },
+        "W": {
+          "pose": "summon",
+          "effect": "sentinel"
+        },
+        "E": {
+          "pose": "pull",
+          "effect": "rend"
+        },
+        "R": {
+          "pose": "summon_wide",
+          "effect": "oath"
+        }
+      }
+    },
+    "Kog'Maw": {
+      "file": "kogmaw.glb",
+      "bytes": 253788,
+      "meshes": 73,
+      "vertices": 20648,
+      "triangles": 33848,
+      "joints": 32,
+      "rig": "creature",
+      "weapon": "maw",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 9
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 27
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 13
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 11
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 13
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 11
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 13
+        },
+        {
+          "name": "R",
+          "duration": 1.2000000476837158,
+          "tracks": 13
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "spit",
+          "effect": "spit"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "bio_barrage"
+        },
+        "E": {
+          "pose": "spit_low",
+          "effect": "ooze"
+        },
+        "R": {
+          "pose": "artillery",
+          "effect": "artillery"
+        }
+      }
+    },
+    "Lucian": {
+      "file": "lucian.glb",
+      "bytes": 1668536,
+      "meshes": 99,
+      "vertices": 53822,
+      "triangles": 44056,
+      "joints": 36,
+      "rig": "human",
+      "weapon": "pistols",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 18
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 26
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 24
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 23
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 24
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 23
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 26
+        },
+        {
+          "name": "R",
+          "duration": 2.5,
+          "tracks": 23
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "pistol",
+          "effect": "light_beam"
+        },
+        "W": {
+          "pose": "dual_cast",
+          "effect": "star"
+        },
+        "E": {
+          "pose": "dash",
+          "effect": "light_dash"
+        },
+        "R": {
+          "pose": "dual_channel",
+          "effect": "culling"
+        }
+      }
+    },
+    "Miss Fortune": {
+      "file": "miss-fortune.glb",
+      "bytes": 2044732,
+      "meshes": 126,
+      "vertices": 53758,
+      "triangles": 50080,
+      "joints": 65,
+      "rig": "human",
+      "weapon": "pistols",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 43
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 51
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 49
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 48
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 49
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 48
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 49
+        },
+        {
+          "name": "R",
+          "duration": 2.5,
+          "tracks": 48
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "pistol",
+          "effect": "ricochet"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "strut"
+        },
+        "E": {
+          "pose": "point",
+          "effect": "rain"
+        },
+        "R": {
+          "pose": "dual_channel",
+          "effect": "bullet_cone"
+        }
+      }
+    },
+    "Samira": {
+      "file": "samira.glb",
+      "bytes": 2300152,
+      "meshes": 131,
+      "vertices": 58184,
+      "triangles": 53080,
+      "joints": 78,
+      "rig": "human",
+      "weapon": "blade_pistol",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 53
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 61
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 59
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 58
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 59
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 60
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 60
+        },
+        {
+          "name": "R",
+          "duration": 2.299999952316284,
+          "tracks": 60
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "pistol",
+          "effect": "flair"
+        },
+        "W": {
+          "pose": "spin",
+          "effect": "blade_whirl"
+        },
+        "E": {
+          "pose": "dash_slash",
+          "effect": "wild_rush"
+        },
+        "R": {
+          "pose": "spin_channel",
+          "effect": "inferno"
+        }
+      }
+    },
+    "Senna": {
+      "file": "senna.glb",
+      "bytes": 2472572,
+      "meshes": 138,
+      "vertices": 61651,
+      "triangles": 54488,
+      "joints": 84,
+      "rig": "human",
+      "weapon": "relic_cannon",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 58
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 64
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 64
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 63
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 64
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 64
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 66
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 63
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "heavy_rifle",
+          "effect": "dark_beam"
+        },
+        "W": {
+          "pose": "cast",
+          "effect": "root"
+        },
+        "E": {
+          "pose": "fade",
+          "effect": "mist"
+        },
+        "R": {
+          "pose": "heavy_two_hand",
+          "effect": "dawning"
+        }
+      }
+    },
+    "Sivir": {
+      "file": "sivir.glb",
+      "bytes": 1548712,
+      "meshes": 117,
+      "vertices": 39414,
+      "triangles": 44852,
+      "joints": 65,
+      "rig": "human",
+      "weapon": "crossblade",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 43
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 51
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 49
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 48
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 49
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 49
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 48
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 48
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "disc_throw",
+          "effect": "boomerang"
+        },
+        "W": {
+          "pose": "brandish",
+          "effect": "ricochet_blade"
+        },
+        "E": {
+          "pose": "guard",
+          "effect": "spell_shield"
+        },
+        "R": {
+          "pose": "rally",
+          "effect": "hunt"
+        }
+      }
+    },
+    "Smolder": {
+      "file": "smolder.glb",
+      "bytes": 354376,
+      "meshes": 66,
+      "vertices": 15153,
+      "triangles": 23824,
+      "joints": 28,
+      "rig": "dragon",
+      "weapon": "breath",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 11
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 23
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 15
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 13
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 15
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 15
+        },
+        {
+          "name": "E",
+          "duration": 1.7999999523162842,
+          "tracks": 17
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 15
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "breath",
+          "effect": "fire_breath"
+        },
+        "W": {
+          "pose": "sneeze",
+          "effect": "sneeze"
+        },
+        "E": {
+          "pose": "fly",
+          "effect": "wing_flight"
+        },
+        "R": {
+          "pose": "call",
+          "effect": "mother_flame"
+        }
+      }
+    },
+    "Tristana": {
+      "file": "tristana.glb",
+      "bytes": 918672,
+      "meshes": 90,
+      "vertices": 39383,
+      "triangles": 43100,
+      "joints": 17,
+      "rig": "yordle",
+      "weapon": "cannon",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 3
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 9
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 9
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 8
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 8
+        },
+        {
+          "name": "W",
+          "duration": 1.25,
+          "tracks": 11
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 9
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 9
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "buff",
+          "effect": "rapid"
+        },
+        "W": {
+          "pose": "jump",
+          "effect": "rocket_jump"
+        },
+        "E": {
+          "pose": "throw",
+          "effect": "charge"
+        },
+        "R": {
+          "pose": "cannon",
+          "effect": "buster"
+        }
+      }
+    },
+    "Twitch": {
+      "file": "twitch.glb",
+      "bytes": 925960,
+      "meshes": 86,
+      "vertices": 34072,
+      "triangles": 42252,
+      "joints": 25,
+      "rig": "human",
+      "weapon": "crossbow",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 10
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 18
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 15
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 15
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 18
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 16
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 15
+        },
+        {
+          "name": "R",
+          "duration": 2.200000047683716,
+          "tracks": 15
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "fade",
+          "effect": "ambush"
+        },
+        "W": {
+          "pose": "throw",
+          "effect": "cask"
+        },
+        "E": {
+          "pose": "pull",
+          "effect": "contaminate"
+        },
+        "R": {
+          "pose": "crossbow_channel",
+          "effect": "spray"
+        }
+      }
+    },
+    "Varus": {
+      "file": "varus.glb",
+      "bytes": 1056180,
+      "meshes": 106,
+      "vertices": 27912,
+      "triangles": 41420,
+      "joints": 53,
+      "rig": "human",
+      "weapon": "bow",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 33
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 39
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 39
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 38
+        },
+        {
+          "name": "Q",
+          "duration": 1.4500000476837158,
+          "tracks": 39
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 38
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 39
+        },
+        {
+          "name": "R",
+          "duration": 1.4500000476837158,
+          "tracks": 39
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "bow_charge",
+          "effect": "charged_arrow"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "blight"
+        },
+        "E": {
+          "pose": "bow_high",
+          "effect": "arrow_rain"
+        },
+        "R": {
+          "pose": "bow_charge",
+          "effect": "corruption"
+        }
+      }
+    },
+    "Vayne": {
+      "file": "vayne.glb",
+      "bytes": 1369044,
+      "meshes": 94,
+      "vertices": 43218,
+      "triangles": 42088,
+      "joints": 42,
+      "rig": "human",
+      "weapon": "crossbows",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 23
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 31
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 28
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 28
+        },
+        {
+          "name": "Q",
+          "duration": 0.7200000286102295,
+          "tracks": 31
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 28
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 28
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 31
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "roll",
+          "effect": "tumble"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "silver_rings"
+        },
+        "E": {
+          "pose": "crossbow",
+          "effect": "condemn"
+        },
+        "R": {
+          "pose": "fade",
+          "effect": "final_hour"
+        }
+      }
+    },
+    "Xayah": {
+      "file": "xayah.glb",
+      "bytes": 1795836,
+      "meshes": 129,
+      "vertices": 46608,
+      "triangles": 47788,
+      "joints": 72,
+      "rig": "human",
+      "weapon": "feathers",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 48
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 56
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 54
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 53
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 54
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 53
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 53
+        },
+        {
+          "name": "R",
+          "duration": 1.2999999523162842,
+          "tracks": 56
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "dual_throw",
+          "effect": "feather_pair"
+        },
+        "W": {
+          "pose": "buff",
+          "effect": "plumage"
+        },
+        "E": {
+          "pose": "pull",
+          "effect": "recall"
+        },
+        "R": {
+          "pose": "leap_fan",
+          "effect": "feather_fan"
+        }
+      }
+    },
+    "Yunara": {
+      "file": "yunara.glb",
+      "bytes": 2503704,
+      "meshes": 153,
+      "vertices": 68013,
+      "triangles": 62908,
+      "joints": 90,
+      "rig": "human",
+      "weapon": "spirit_orbs",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 63
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 67
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 69
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 68
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 68
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 69
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 71
+        },
+        {
+          "name": "R",
+          "duration": 1.5,
+          "tracks": 72
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "orbit",
+          "effect": "cultivate"
+        },
+        "W": {
+          "pose": "cast",
+          "effect": "spirit_arc"
+        },
+        "E": {
+          "pose": "glide",
+          "effect": "kanmei"
+        },
+        "R": {
+          "pose": "ascend",
+          "effect": "transcend"
+        }
+      }
+    },
+    "Zeri": {
+      "file": "zeri.glb",
+      "bytes": 947400,
+      "meshes": 87,
+      "vertices": 35359,
+      "triangles": 39196,
+      "joints": 23,
+      "rig": "human",
+      "weapon": "electric_rifle",
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 3,
+          "tracks": 8
+        },
+        {
+          "name": "Walk",
+          "duration": 1.2000000476837158,
+          "tracks": 14
+        },
+        {
+          "name": "AA",
+          "duration": 0.8999999761581421,
+          "tracks": 14
+        },
+        {
+          "name": "P",
+          "duration": 2,
+          "tracks": 13
+        },
+        {
+          "name": "Q",
+          "duration": 0.949999988079071,
+          "tracks": 14
+        },
+        {
+          "name": "W",
+          "duration": 0.949999988079071,
+          "tracks": 13
+        },
+        {
+          "name": "E",
+          "duration": 0.949999988079071,
+          "tracks": 16
+        },
+        {
+          "name": "R",
+          "duration": 1.399999976158142,
+          "tracks": 10
+        }
+      ],
+      "skills": {
+        "Q": {
+          "pose": "rifle",
+          "effect": "spark"
+        },
+        "W": {
+          "pose": "two_hand",
+          "effect": "laser"
+        },
+        "E": {
+          "pose": "slide",
+          "effect": "surge"
+        },
+        "R": {
+          "pose": "burst",
+          "effect": "lightning"
+        }
+      }
+    }
+  }
+}

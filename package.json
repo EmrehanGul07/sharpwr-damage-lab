@@ -1,0 +1,11 @@
+{
+  "name": "sharpwr-marksman-art",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Original marksman rigs, deterministic animation and GLB exports; presentation only",
+  "scripts": {
+    "test:art": "node tests/test_marksman_art.cjs",
+    "export:art": "node scripts/export_marksman_art.mjs"
+  },
+  "devDependencies": { "three": "0.169.0" }
+}

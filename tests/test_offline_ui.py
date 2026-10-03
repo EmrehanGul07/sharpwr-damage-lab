@@ -8,7 +8,9 @@ ROOT=Path(__file__).resolve().parents[1]
 
 class OfflineInterface(unittest.TestCase):
     def test_skill_replay_uses_rune_stats_mana_override_and_yuntal_start(self):
-        ensure_engine_revision('5.87.1')
+        import re
+        revision=re.search(r'ensure_engine_revision\("([^"]+)"\)',(ROOT/'streamlit_app.py').read_text()).group(1)
+        ensure_engine_revision(revision)
         import fight_engine
         original=fight_engine.replay_samira;calls=[]
         def capture(events,**kwargs):

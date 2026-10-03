@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.87.1")
+ensure_engine_revision("5.88.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -1093,7 +1093,7 @@ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button:disabled{curso
 @media(prefers-reduced-motion:reduce){.stButton button,.tier-rank-card,.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{transition:none!important;transform:none!important}}
 </style>""",unsafe_allow_html=True)
 
-tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database","🎙️ Live Tier List"])
+tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database","🎙️ Live Tier List","🎬 Animation Studio"])
 
 with tabs[0]:
     _tab_hero("SHARPWR • ITEM BENCHMARKS","Item Tier List","Compare AA + ability fights. Full build Top 3 first, then 1–4 item Top 10 rankings.")
@@ -1122,7 +1122,7 @@ with tabs[0]:
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
     st.info("Public preview · Build search is temporarily unavailable while the combat engine is being validated.")
-    _tier_signature=("5.87.1",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    _tier_signature=("5.88.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
     if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc",disabled=True) and False:
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
@@ -2212,4 +2212,11 @@ with tabs[4]:
     st.components.v1.html(_live_html,height=1100,scrolling=True)
 
 st.divider()
-st.caption("Web V5.87.1 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+with tabs[5]:
+    _tab_hero("SHARPWR • CHARACTER ART","Animation Studio","Explore 23 original marksman models, full-body performances and signature spell effects.")
+    from marksman_art import studio_html
+    components.html(studio_html(),height=1220,scrolling=True)
+    st.download_button("Download 23 animated GLB models",data=(Path(__file__).resolve().parent/"assets/marksman-3d/sharpwr-marksman-art-v1.zip").read_bytes(),file_name="sharpwr-marksman-art-v1.zip",mime="application/zip",key="marksman_art_download")
+
+
+st.caption("Web V5.88.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
