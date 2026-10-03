@@ -1,4 +1,4 @@
-# Aktif WR kanıt TODO — V5.87.0 / 3 Ekim 2026
+# Aktif WR kanıt TODO — V5.87.1 / 3 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 

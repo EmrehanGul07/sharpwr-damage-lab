@@ -1,4 +1,4 @@
-# Marksman fight adapters — V5.87.0
+# Marksman fight adapters — V5.87.1
 
 All 23 champions are connected to Skill Lab and have executable fight adapters. Integration is complete; Wild Rift parity is unresolved. This file describes the current engine. Older dated reports remain historical evidence.
 

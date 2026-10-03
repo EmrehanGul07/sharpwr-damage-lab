@@ -1,4 +1,4 @@
-# SharpWR Damage Lab — V5.87.0
+# SharpWR Damage Lab — V5.87.1
 
 Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays. Entry point: `streamlit_app.py`.
 

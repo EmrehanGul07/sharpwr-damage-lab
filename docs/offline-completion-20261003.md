@@ -1,4 +1,4 @@
-# Offline tamamlanan işler — V5.87.0 / 3 Ekim 2026
+# Offline tamamlanan işler — V5.87.1 / 3 Ekim 2026
 
 Bu çalışma yalnız dosyadaki `TODO` kelimelerini saymadı: canlı UI → stat → item kernel → 23 fight adapter → build search → kayıtlı sonuç → catalogue üretimi → test ve dokümantasyon bağlantılarını taradı. Mevcut kaynaklarla uygulanabilen yazılım işlerini kapattı. Yeni WR katsayısı, damage tag veya timing uydurulmadı. Proje hâlâ WR araştırma modelidir; birebir WR motoru değildir.
 
@@ -21,15 +21,17 @@ Bu çalışma yalnız dosyadaki `TODO` kelimelerini saymadı: canlı UI → stat
 | O13 | Yunara CD metadata | Runtime'da zaten kullanılan Q resource gate/W/E/R cooldownları catalogue'a işlendi; yeni formül çıkarılmadı. |
 | O14 | Yayınlı tier koruması | Public search/compare sentetik disabled-button click'inde bile çalışmaz. Yayınlı 36-item tier JSON ve HTML değiştirilmedi. |
 | O15 | Güncel kuyruk ve assumptions | 23 champion remaining kaydı aktif kanıt TODO'sundan üretilir; eski “Yunara mana yok / timing yok” raporları güncel dosyalardan kaldırıldı. README güncellendi. |
+| O17 | Canlı sürüm module cache | Core-item/consensus modülleri sürüm değişiminde yenilenir; stale module regression testi. |
 | O16 | Yeniden üretilebilir audit/cache | Matrix yeni current dosyalarına yazılır ve failure'da nonzero exit verir. 414 core cell/1.242 retained finalist eski-yeni exact-policy replay ile doğrulandı; bounded search tekrar yapılmış gibi gösterilmedi. |
 
 ## Doğrulama
 
-- Python suite: **251 test, 0 failure/error (82.313s)**; Streamlit state/starting-stat/public-freeze regresyonları dahil. Yapılandırılmış sonuç `data/offline-task-inventory.json` içinde.
+- Python suite: **252 test, 0 failure/error (82.559s)**; Streamlit state/starting-stat/public-freeze regresyonları dahil. Yapılandırılmış sonuç `data/offline-task-inventory.json` içinde.
 - Combat integrity matrix: **3.312 senaryo, 6.912 fight, 0 failure**. Champion seviyeleri 1 ve 15; üç hedef; item başına ve altı build profili.
 - Cache migration: **1.242 finalist** için baseline `6f31574` ve yeni motorun time/action/damage hit ledger, total damage, remaining HP ve TTK sonuçları birebir eşit. Her finalist mevcut kayıtla da karşılaştırıldı. 414 cell ve ranking değişmedi.
 - JS replay state regresyonu ve Python compile/diff kontrolleri geçti.
 - Public tier board asset/data byte-for-byte korundu; arama hâlâ kapalı.
+- Canlı V5.87.1: core-item görünümü düzeldi; Kalista9 / 1.475 HP Squishy hedef replay 3.900s, 1.475 damage, 0 remaining HP; hata yok.
 
 Komutlar README'de; baseline karşılaştırması `scripts/verify_core_rows.py BASELINE_REPO baseline.json` ve `scripts/verify_core_rows.py CANDIDATE_REPO candidate.json` ile yeniden üretilebilir. Sayısal `rows` alanları karşılaştırılır; `warnings` alanındaki metin değişiklikleri sayısal eşitlik değildir.
 

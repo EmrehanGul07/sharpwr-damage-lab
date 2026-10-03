@@ -1,5 +1,5 @@
 {
-  "version": "5.87.0",
+  "version": "5.87.1",
   "date": "2026-10-03",
   "scope": "All actionable software work found in this audit using existing recorded evidence; no claim of WR gameplay parity or globally optimal builds.",
   "closed": [
@@ -97,6 +97,12 @@
       "id": "O16",
       "task": "Yeniden üretilebilir audit/cache",
       "result": "Matrix yeni current dosyalarına yazılır ve failure'da nonzero exit verir. 414 core cell/1.242 retained finalist eski-yeni exact-policy replay ile doğrulandı; bounded search tekrar yapılmış gibi gösterilmedi.",
+      "state": "implemented_verified_model"
+    },
+    {
+      "id": "O17",
+      "task": "Canlı sürüm module cache",
+      "result": "Core-item/consensus modülleri sürüm değişiminde yenilenir; stale module regression testi.",
       "state": "implemented_verified_model"
     }
   ],
@@ -278,10 +284,10 @@
   ],
   "validation": {
     "python_suite": {
-      "tests": 251,
+      "tests": 252,
       "failures": 0,
       "errors": 0,
-      "seconds": 82.313
+      "seconds": 82.559
     },
     "matrix_cases": 3312,
     "matrix_fights": 6912,
@@ -289,6 +295,17 @@
     "baseline_finalists_exact_match": 1242,
     "retained_core_cells": 414,
     "js_replay_state": "passed",
-    "published_tier_assets": "unchanged"
+    "published_tier_assets": "unchanged",
+    "live_smoke": {
+      "version": "5.87.1",
+      "core_item_visible": true,
+      "public_search_disabled": true,
+      "replay_champion": "Kalista",
+      "replay_level": 9,
+      "target_hp": 1475,
+      "damage": 1475,
+      "remaining_hp": 0,
+      "ttk": 3.9
+    }
   }
 }
