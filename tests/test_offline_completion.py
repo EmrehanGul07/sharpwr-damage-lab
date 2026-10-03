@@ -66,6 +66,18 @@ class OfflineCompletion(unittest.TestCase):
             return kernel.send({'hp':10000,'time':0.,'event_driven':True,'spell_cast_times':[]})
         self.assertIn('Trinity',hit(True)['notes'])
         self.assertNotIn('Trinity',hit(False)['notes'])
+    def test_deployed_revision_refreshes_cached_core_module(self):
+        import core_items
+        from engine_runtime import ensure_engine_revision
+        old=core_items.SOURCE_FILES
+        try:
+            core_items.SOURCE_FILES=('stale-module-sentinel',)
+            ensure_engine_revision('core-hot-reload-regression')
+            self.assertIn('rune_runtime.py',core_items.SOURCE_FILES)
+            self.assertIsNotNone(core_items.core_record('Ezreal'))
+        finally:
+            core_items.SOURCE_FILES=old
+            ensure_engine_revision('5.87.1')
     def test_unknown_runes_never_silently_disappear(self):
         with self.assertRaises(ValueError):
             replay_samira([],champion='Ezreal',level=15,ad=100,attack_speed=1,crit_chance=0,crit_damage=2,hp=1000,armor=100,sub_runes=['Scorch'])

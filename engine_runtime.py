@@ -10,7 +10,7 @@ _MODULES = (
     'marksman_ability_database', 'damage_classification', 'combat_timing',
     'marksman_state', 'marksman_damage_components', 'marksman_kits',
     'marksman_fight_engine', 'fight_engine', 'build_fight_optimizer',
-    'combat_replay',
+    'combat_replay', 'core_items', 'item_consensus',
 )
 
 def ensure_engine_revision(revision):
