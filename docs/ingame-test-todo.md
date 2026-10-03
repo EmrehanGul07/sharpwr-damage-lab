@@ -1,4 +1,4 @@
-# Aktif TODO — V5.79.0 / 2 Ekim 2026
+# Aktif WR kanıt TODO — V5.87.0 / 3 Ekim 2026
 
 Bu dosya yalnız açık işleri içerir. Eski “adapter bağlı değil”, “AA windup yok” ve “Smolder skilleri anlık” kayıtları kaldırıldı: 23 adapter bağlı, PC timing proxy verileri girilmiş ve impact zamanlaması çalışıyor. Bunların WR doğrulaması ayrı bir iştir.
 
@@ -54,7 +54,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 - [ ] AD/crit buff snapshot'ı launch'ta mı impact'te mi? Item/rün stack grant ve expiry'nin aynı timestamp sırası.
 - [ ] Level growth eğrisi: Samira itemsiz level1/5/9/15 AD/AS/mana/HP/armor/MR; mevcut referansları değiştirmeden kontrol.
 - [ ] Manamune/Muramana %15 mana iadesi: skill tüketimi ile regen'i ayırarak kontrol.
-- [ ] Desteklenmeyen offensive keystone/rünler için kaynaklı proc/cooldown kuralları (First Strike vb.).
+- [ ] Desteklenmeyen offensive keystone/rünler için tam proc/trigger/arrival kuralları; First Strike yeniden-hazır-olma ve gold/state modeli. İlk hazır 3s First Strike ve kayıtlı ADC Dark Harvest/Tyrant/Empowered Attack modeli offline bağlandı; WR adaptive classification/aynı-hit işlem sırası kanıtı değildir.
 - [ ] Bilinmeyen WR ability/property/item tag'leri: PC sözlüğü kaynak sınıflandırmasının yerine geçmez. Registry'deki unknown alanlar açık kalır.
 
 ## Ölçüm istemediğimiz kullanıcı kilitleri
@@ -67,6 +67,18 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 - Rakibin saldırması, kendi ölümümüz ve lifesteal ile hayatta kalma model kapsamı değildir.
 
 ## Offline kapanan işler
+
+3 Ekim tam döküm: [offline-completion-20261003.md](offline-completion-20261003.md). Kod TODO sayısı, ürünün WR parity açıklarının sayısı değildir.
+
+- [x] Skill Lab ve AA-only hesapta persistent AD/mana/haste stat aktarımı; Manaflow/Awe/Shock bağlantısı.
+- [x] Full own HP/armor/MR ile Overgrowth/Unshakeable ve Grasp own-HP hesabı.
+- [x] Başlangıç Yun Tal crit/Flurry, Spellblade ready ve Energized launch bağlantıları.
+- [x] First Strike ilk hazır pencere, Last Stand ve kayıtlı ADC damage proc modellerinin fight adapterlarına bağlantısı.
+- [x] Geçersiz/non-finite girdiler, illegal build ve event zaman sırası kontrolleri.
+- [x] Catalogue rebuild veri kaybı koruması; Yunara zaten kullanılan cooldownlarının catalogue ile eşleşmesi.
+- [x] Güncel kuyruk/runtime assumptions/README; testten sentetik tıklamada bile public search kapalı.
+- [x] Mevcut kayıtlı finalistler için baseline-vs-current replay karşılaştırması ve yeniden üretilebilir güncel matrix audit.
+
 
 - [x] 23 adapter ve timing bağlantısı; mana/cast/AA lock akışı.
 - [x] Jhin/Jinx launch resource ve in-flight kimlik düzeltmeleri.

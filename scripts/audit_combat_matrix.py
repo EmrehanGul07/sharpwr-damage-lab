@@ -74,7 +74,7 @@ def check(result,maxhp,name):
  verify(all(count<=3 for count in barrages.values()),'Fiendhunter more than three attacks per R')
  return sorted(set(errors))
 
-def run():
+def run(output=None, trace_output=None):
  ns=namespace();rows=[];warnings=defaultdict(set);started=time.perf_counter();simulations=0;examples={}
  for name in PRIORITIES:
   count=0
@@ -97,10 +97,16 @@ def run():
     simulations+=e.simulations
   print(name,count,'cases',flush=True)
  failures=[r for r in rows if r['status']=='FAIL']
- out={'version':'5.65.0','purpose':'Integrity audit only; PC timing proxies and provisional WR mechanics do not establish gameplay parity or globally optimal builds. Not a build cache.','champions':len(PRIORITIES),'levels':[1,15],'targets':list(ns['TARGET_PROFILES']),'case_count':len(rows),'fight_simulations':simulations,'elapsed_seconds':time.perf_counter()-started,'failures':failures,'warnings':{k:sorted(v) for k,v in warnings.items()},'rows':rows}
- (ROOT/'data/combat-audit-v565.json').write_text(json.dumps(out,ensure_ascii=False,separators=(',',':'))+'\n')
- (ROOT/'data/combat-audit-traces-v565.json').write_text(json.dumps(examples,ensure_ascii=False,separators=(',',':'))+'\n')
+ import re
+ version=re.search(r'ensure_engine_revision\("([^" ]+)"\)',(ROOT/'streamlit_app.py').read_text()).group(1)
+ out={'version':version,'purpose':'Integrity audit only; PC timing proxies and provisional WR mechanics do not establish gameplay parity or globally optimal builds. Not a build cache.','champions':len(PRIORITIES),'levels':[1,15],'targets':list(ns['TARGET_PROFILES']),'case_count':len(rows),'fight_simulations':simulations,'elapsed_seconds':time.perf_counter()-started,'failures':failures,'warnings':{k:sorted(v) for k,v in warnings.items()},'rows':rows}
+ Path(output or ROOT/'data/combat-audit-current.json').write_text(json.dumps(out,ensure_ascii=False,separators=(',',':'))+'\n')
+ Path(trace_output or ROOT/'data/combat-audit-traces-current.json').write_text(json.dumps(examples,ensure_ascii=False,separators=(',',':'))+'\n')
  print('RESULT',len(rows),'cases',simulations,'fights',len(failures),'failures',out['elapsed_seconds'],'seconds',flush=True)
  if failures:print(json.dumps(failures[:10],ensure_ascii=False))
  return out
-if __name__=='__main__':run()
+if __name__=='__main__':
+ import argparse
+ parser=argparse.ArgumentParser();parser.add_argument('--output');parser.add_argument('--trace-output');args=parser.parse_args()
+ result=run(args.output,args.trace_output)
+ sys.exit(bool(result['failures']))

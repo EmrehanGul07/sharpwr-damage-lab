@@ -9,7 +9,7 @@ SOURCE_FILES=('build_fight_optimizer.py','fight_engine.py','marksman_fight_engin
  'marksman_damage_components.py','marksman_kits.py','champion_database.py',
  'combat_timing.py','damage_classification.py','champion_abilities.py',
  'champion_skill_data.py','marksman_state.py','marksman_ability_database.py',
- 'rune_database.py','scripts/build_core_items.py',
+ 'rune_database.py','rune_runtime.py','combat_validation.py','scripts/build_core_items.py',
  'data/marksman-ability-catalogue.json','data/pc-combat-timing.json',
  'data/marksman_champion_stats.json','data/damage-classification.json')
 def _selected_digest(source,names):

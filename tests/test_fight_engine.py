@@ -203,6 +203,6 @@ class ReplayTests(unittest.TestCase):
         r=self.run_fight(a,timed_combat=True,distance=0)
         self.assertEqual(r.rejected[-1]['reason'],'S style required')
     def test_unknown_rune_rejected(self):
-        with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='First Strike')
+        with self.assertRaises(ValueError):self.run_fight([(0,'AA')],keystone='unrecognized')
 
 if __name__=='__main__':unittest.main()

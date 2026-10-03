@@ -15,3 +15,7 @@ The shared champion profile displays CORE ITEM, icon and name in Tier List, Buil
 Cache identity covers engine rules, champion/item/ability/timing datasets, target profiles and core-search protocol. Pure UI styling changes do not invalidate numerical results.
 
 Fingerprint schema 3 hashes the exact source segments of selected model declarations rather than `ast.dump`. This avoids Python-version-specific AST serialization invalidating unchanged saved results on Streamlit Cloud. Numerical engine/search rules and all 414 results are unchanged.
+
+## V5.87.0 cache migration
+
+The cache now records a verified migration from baseline commit `6f31574`. All 414 cells and 1,242 retained finalists were replayed under their exact selected policy. Baseline and candidate hit timestamps/actions/damage, total damage, health and TTK are identical; every replay also matches its original saved row. Default numerical rules are unchanged by non-default rune/UI wiring and input validation. The source fingerprint was advanced with this evidence, rather than skipping stale-cache checks. This preserves the original bounded search results; it does not claim a fresh search or global optimality. See `verification` in `data/champion-core-items.json` and `scripts/verify_core_rows.py`.

@@ -39,12 +39,12 @@ for record in source['champions']:
         if costs is not None and len(costs)==1:costs=costs*n
         slots[slot]={'name':ability_name,'observations':observations,'source_keys':record.get('source_keys',[]),'mana_by_rank':costs,'mana_evidence':provenance,'cooldown_by_rank':cd,'cast_time_seconds':None,'projectile_speed':None,'range':None,'timing_source':None}
         prior=existing.get(name,{}).get('abilities',{}).get(slot,{})
-        for field in ('wr_wiki_metadata','cast_time_seconds','projectile_speed','range','timing_source','target_range_by_rank','effect_radius_by_rank','duration_by_rank','cooldown_source'):
-            if field in prior:slots[slot][field]=prior[field]
-        if costs is None and (prior.get('mana_evidence') or {}).get('kind')=='WR_wiki_parameter':
-            slots[slot]['mana_by_rank']=prior['mana_by_rank'];slots[slot]['mana_evidence']=prior['mana_evidence']
-        if cd is None and prior.get('cooldown_source'):
-            slots[slot]['cooldown_by_rank']=prior['cooldown_by_rank']
+        # The committed catalogue includes later user confirmations and WR
+        # research. Rebuilding from older screenshots must not erase them.
+        for field,value in prior.items():
+            if field not in ('name','observations','source_keys'):
+                slots[slot][field]=value
+        if prior.get('name'):slots[slot]['name']=prior['name']
     records[name]={'abilities':slots,'fight_engine_supported':True,'remaining':record.get('unresolved_note'),'source_type':record.get('source_type')}
 out={'schema_version':1,'unknown_policy':'null means unresolved, never assumed zero','champions':records}
 (ROOT/'data/marksman-ability-catalogue.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')

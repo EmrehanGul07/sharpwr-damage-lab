@@ -1,6 +1,7 @@
 """Ability-aware build search. Candidate pruning is explicit, never global optimality."""
 from itertools import combinations,permutations,product
 from collections import defaultdict
+from combat_validation import benchmark, integer
 from champion_database import level_stats
 from fight_engine import replay_samira,champion_ranks
 from marksman_kits import PRIORITIES
@@ -9,7 +10,7 @@ from marksman_damage_components import jhin_attack_damage
 SPELLBLADE=frozenset({'Trinity Force','Essence Reaver','Iceborn Gauntlet','Sheen'})
 EXCLUSIVE=({'Mortal Reminder',"Lord Dominik's Regards","Serylda's Grudge",'Terminus'},{'Manamune','Muramana'},SPELLBLADE)
 TIER3=('Immortal Treads','Crimson Lucidity','Gunmetal Greaves','Chainlaced Crushers','Armored Advance',"Spellslinger's Shoes",'Armorcrusher Boots')
-def legal(items):return len(items)==len(set(items)) and all(len(set(items)&group)<=1 for group in EXCLUSIVE)
+def legal(items):return len(items)<=5 and len(items)==len(set(items)) and all(len(set(items)&group)<=1 for group in EXCLUSIVE)
 ON_HIT=frozenset({"Nashor's Tooth","Wit's End","Guinsoo's Rageblade","Blade of the Ruined King","Kraken Slayer","Terminus"})
 def build_profiles(evaluator,items):
     """Preserve distinct damage paths and mixed paths, irrespective of current DPS."""
@@ -51,10 +52,13 @@ def score(row):return (row['TTK'] is None,row['TTK'] if row['TTK'] is not None e
 
 class BuildFightEvaluator:
     def __init__(self,namespace,champion,level,hp,armor,mr,*,mist=0,bonus_hp=0,aa_reduction=0,base_mana=None,energized=False,yuntal_stacks=0,execs=0,dragon_stacks=0,retain_traces=False,simulation_overrides=None):
+        benchmark(champion,level,hp,armor,mr,mist=mist,bonus_hp=bonus_hp,reduction=aa_reduction,mana=0 if base_mana is None else base_mana,stacks=yuntal_stacks,executes=execs)
+        integer(dragon_stacks,'Dragon stacks',0)
         self.ns=namespace;self.champion=champion;self.level=level;self.hp=hp;self.armor=armor;self.mr=mr;self.mist=mist;self.bonus_hp=bonus_hp;self.aa_reduction=aa_reduction;self.base_mana=base_mana;self.energized=energized;self.yuntal_stacks=yuntal_stacks;self.execs=execs;self.dragon_stacks=dragon_stacks;self.cache={};self.simulations=0;self.retain_traces=retain_traces;self.traces={};self.simulation_overrides=dict(simulation_overrides or {})
     def evaluate(self,items,boot=None,refine=False):
         items=tuple(sorted(items));key=(items,boot,refine)
         if key in self.cache:return self.cache[key]
+        self.ns['_validate_build'](items,self.ns['F'],boot)
         if not legal(items):raise ValueError('Illegal build')
         ns=self.ns;n=self.champion;l=self.level;core=level_stats(n,l);s=ns['stats'](n,l,self.mist)
         stats=[ns['dct'](ns['F'][x]) for x in items]+[ns['dct'](ns['B'][boot]) if boot else ns['dct'](())]
@@ -126,8 +130,14 @@ def explain_ties(rows):
 
 def search_builds(evaluator,pool,boots,*,beam_width=80,refine_count=40,progress=None,max_items=5):
     """All singles/pairs; diverse beam, rotation screening, then deeper policy validation."""
-    if not isinstance(max_items,int) or not 1<=max_items<=5:raise ValueError("Item budget must be 1–5")
-    pool=tuple(sorted(set(pool)));stages={};beam=[()];tested={}
+    if isinstance(max_items,bool) or not isinstance(max_items,int) or not 1<=max_items<=5:raise ValueError("Item budget must be 1–5")
+    integer(beam_width,'beam width',1)
+    integer(refine_count,'refine count',1)
+    if any(x not in evaluator.ns['F'] for x in pool):raise ValueError('Unknown search item')
+    if any(x not in evaluator.ns['B'] for x in boots):raise ValueError('Unknown search boots')
+    pool=tuple(sorted(set(pool)));boots=tuple(sorted(set(boots)))
+    if not pool or not boots:raise ValueError('Search requires items and boots')
+    stages={};beam=[()];tested={}
     for stage in range(1,max_items+1):
         candidates={tuple(sorted((*seed,item))) for seed in beam for item in pool if item not in seed and legal((*seed,item))}
         rows=[evaluator.evaluate(x) for x in sorted(candidates)]

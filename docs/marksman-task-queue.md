@@ -1,6 +1,4 @@
-# Marksman implementation queue — 2026-10-01
-
-**Current active follow-up:** [ingame-test-todo.md](ingame-test-todo.md). This queue records adapter integration and earlier research notes; V5.65 offline coverage is in [offline-engine-review-v565.md](offline-engine-review-v565.md).
+# Marksman implementation queue — 2026-10-03
 
 All 23 champions are connected to Skill Lab. All adapters are provisional: integration completion does not imply verified Wild Rift parity.
 
@@ -40,7 +38,7 @@ Each champion has an executable event timeline, automatic ranks, item callbacks,
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: See docs/ingame-test-todo.md T01–T16. Mana and S Style are user-confirmed; they are not missing.
+Remaining mechanics: R AH/static cooldown ve başlangıç anı; W1–E–W2 Style/Conqueror sırası; W2/R sonraki hit'lerde süre yenileme; CC özel AA/retrigger/reset; gerçek WR channel/shot offsetleri
 Unresolved mana: none.
 
 ### 2. Smolder
@@ -49,7 +47,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: See docs/ingame-test-todo.md T17–T23. Mana is user-confirmed; it is not missing.
+Remaining mechanics: E bolt sayısı/stack grant; W sneeze/explosion/stack işlem sırası; burn refresh/snapshot/rounding/rün amplification; %50 crit + %230 crit damage çapraz nokta; Q100 patlamalarının ana hedefe overlap'i
 Unresolved mana: none.
 
 ### 3. Twitch
@@ -58,7 +56,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Poison refresh/AP tick order, first spread tick, E spread radius and R item-proc falloff.
+Remaining mechanics: Patch/veri çelişkisi; E global metadata ve hedef eligibility; W AS-dependent cast candidate
 Unresolved mana: none.
 
 ### 4. Yunara
@@ -67,7 +65,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: User mana Q30/W60/E40/R100 and empowered W160/320/480 are recorded. Base HP/mana/MS/core stats remain manual pending. Burn/linger/crit interaction timing needs WR validation.
+Remaining mechanics: 1–15 tüm seviyelerde core stat ve mana regen kaydedildi; MS 335 ve AA range 575 teyitli. HP regen birimi; AD/AS görüntüleri ile eski formüllerin/rün katkılarının uzlaştırılması; W hareketli hedef/contact geometrisi; Q/W/P damage classification açık. Normal W ilk hit + 4 ek tick, 0.25s aralık/1s süre teyit edildi.
 Unresolved mana: none.
 
 ### 5. Lucian
@@ -76,7 +74,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Lightslinger second-shot level progression; R bullet rounding/cap; W mark and passive proc order.
+Remaining mechanics: İkinci shot level progression; R bullet rounding/cap; Q level-dependent cast timing
 Unresolved mana: none.
 
 ### 6. Varus
@@ -85,7 +83,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Q rank 2–4 bonus AD ratios and charge curve; W active missing-health scaling; blight application/detonation order.
+Remaining mechanics: W mana bedeli; Q bonus AD vs total AD kaynak çelişkisi; skill menzilleri; Phantom damage tags
 Unresolved mana: W.
 
 ### 7. Ezreal
@@ -94,7 +92,7 @@ Unresolved mana: W.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: W detonation relative to Q on-hit/item effects; launch snapshot and projectile hit order.
+Remaining mechanics: Q Kraken/Phantom/Terminus sayaç kapsamı teyitli; Q Rageblade AS stack kazanımı, Q/W detonation ve diğer item eligibility açık; Q/AA ortak sayaç testi tekrar istenmez
 Unresolved mana: none.
 
 ### 8. Vayne
@@ -103,7 +101,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Q crit/on-hit eligibility; Silver Bolts proc classification and stack expiry; dash endpoint and wall detection.
+Remaining mechanics: Tumble süresi/endpoint; passive/on-hit classification
 Unresolved mana: none.
 
 ### 9. Tristana
@@ -112,7 +110,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Level-one range offset; Explosive Charge crit/stack/proc order; jump endpoint and timed expiry explosion.
+Remaining mechanics: W trajectory; E/R hedef menzili; R damage tag
 Unresolved mana: none.
 
 ### 10. Ashe
@@ -121,7 +119,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Frost first-hit/crit calculation; Q flurry on-hit count; target distance stun scaling.
+Remaining mechanics: Q oklarında on-hit/Hexoptics split; Frost ilk hit farkı; Volley mana kaynağıyla kullanıcı referansı çelişiyor (kullanıcı değerleri korundu)
 Unresolved mana: E.
 
 ### 11. Kalista
@@ -130,7 +128,7 @@ Unresolved mana: E.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Boot-dependent hop distance/speed; Rend proc order; allied Oathsworn damage excluded from solo simulation.
+Remaining mechanics: Hop speed/distance/boots ve kite geometrisi; Q/E range
 Unresolved mana: W.
 
 ### 12. Draven
@@ -139,7 +137,7 @@ Unresolved mana: W.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Q bonus critical eligibility; axe landing/catch timing and movement; R return/falloff/execute order.
+Remaining mechanics: Axe catch gerçek timing; axe crit scope
 Unresolved mana: none.
 
 ### 13. Caitlyn
@@ -148,7 +146,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Headshot level/crit progression; trap arming and headshot/net/trap item-proc order; R crit calculation.
+Remaining mechanics: Headshot level/crit progression; R crit etkisi; trap ammo/recharge/arming
 Unresolved mana: none.
 
 ### 14. Jinx
@@ -157,7 +155,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Rocket flight damage curve; trap arming and overlap; minigun AS stack distribution; rocket mana consumption.
+Remaining mechanics: Rocket mana ve silah geçişi; E delivery/arming; R mesafe hasar eğrisi
 Unresolved mana: none.
 
 ### 15. Kai'Sa
@@ -166,7 +164,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Plasma level progression and AP detonation coefficient; evolve conditions; E charge duration versus AS; W multi-stack ordering.
+Remaining mechanics: Passive level progression; E WR charge/AS formülü; Phantom on-hit kapsamı
 Unresolved mana: none.
 
 ### 16. Kog'Maw
@@ -175,7 +173,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: R mana ramp and source conflict; missing-health interpolation and exact 40% boundary; W attack-proc order.
+Remaining mechanics: R mana ramp kaynak çelişkisi; R missing-health interpolation; 5 değerli range kaydının WR 3 rank eşlemesi
 Unresolved mana: R.
 
 ### 17. Miss Fortune
@@ -184,7 +182,7 @@ Unresolved mana: R.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Love Tap crit modifier, level amp and expiry; Q bounce geometry; R shot/item eligibility.
+Remaining mechanics: Love Tap level/crit progression; eligible on-hit
 Unresolved mana: none.
 
 ### 18. Xayah
@@ -193,7 +191,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Feather lifetime, lateral recall collision detection and Q/R placement. WR per-feather 10 percentage-point falloff with 10% floor implemented; stationary aligned benchmark counts recalled feathers.
+Remaining mechanics: Q efektif hız ve yukarıdaki I03; R WR lock süresi
 Unresolved mana: none.
 
 ### 19. Sivir
@@ -202,7 +200,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Morale cap/expiry and R cooldown reduction order; Q cast scaling/return overlap; W bounce-only versus primary-target effects.
+Remaining mechanics: Q 1450/1200 gidiş/dönüş WR doğrulaması; Morale cap/expiry
 Unresolved mana: E.
 
 ### 20. Corki
@@ -211,7 +209,7 @@ Unresolved mana: E.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Passive true-damage base and proc order; W/E tick cadence/shred order; R charge reload ranks and critical-AA refund units.
+Remaining mechanics: R recharge kaynak çelişkisi ve package kapsamı; AA refund; E/W tick cadence; pasif–Spellblade/crit sırası
 Unresolved mana: none.
 
 ### 21. Senna
@@ -220,7 +218,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Mist state and level passive damage; Q cast scaling; passive two-hit/target lockout/crit item-proc order.
+Remaining mechanics: Soul generation ve pasif level progression; WR windup level modifier; Q target reach ile beam reach ayrımı
 Unresolved mana: none.
 
 ### 22. Zeri
@@ -229,7 +227,7 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: Burst Fire level base; wall crit item interaction; R AS-cap exception/extension; E cooldown-refund crit handling.
+Remaining mechanics: Flat damage progression; Q cast/attack ilişkisi; E endpoint ve W normal/wall varyant menzili
 Unresolved mana: none.
 
 ### 23. Jhin
@@ -238,12 +236,12 @@ Unresolved mana: none.
 - [x] Available WR template metadata researched; user damage/CD values preserved.
 - [x] Timeline adapter, item/rune interaction, kit movement and rotation search.
 - [ ] WR parity checks for unresolved details.
-Remaining mechanics: R fourth-shot item interaction and channel cadence; in-game conversion cross-check. WR AD conversion, 2.5s reload and fourth-AA 11%-25% missing-HP level progression implemented.
+Remaining mechanics: AD dönüşümü temporary AS dahil oyun içi çapraz kontrol; 4. AA launch/ammo/reload; W beam timing; W/R WR damage tag'leri
 Unresolved mana: none.
 
 ## Important source limits
 
 Blank cost fields were not interpreted as zero. Explicit `none` was interpreted as zero with its source retained.
 Kog’Maw R template has five ranks and a 40–400 conditional cost; the user WR record has three ranks and a different mana ramp. This conflict is retained and not applied.
-PC base windup is authorized for Samira only. No PC timing fallback was added for other champions.
+All 23 champions use user-authorized PC timing proxies with WR stats. Proxy data is present; WR parity remains unverified.
 See docs/all-marksman-fight-engine.md for executable mechanics, conservative exclusions and outstanding parity checks.

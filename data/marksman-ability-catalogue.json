@@ -7295,7 +7295,12 @@
             "kind": "user_confirmation",
             "source": "visible conversation: every rank constant"
           },
-          "cooldown_by_rank": null,
+          "cooldown_by_rank": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
           "cast_time_seconds": 0.0,
           "projectile_speed": 10000.0,
           "range": null,
@@ -7357,7 +7362,8 @@
             "speed_status": "sourced_expression"
           },
           "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation_of_Spirit",
-          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation_of_Spirit"
+          "projectile_speed_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Cultivation_of_Spirit",
+          "cooldown_source": "preserved user WR observations; Q uses Unleash gating, no independent cooldown"
         },
         "W": {
           "name": "Arc of Judgment",
@@ -7385,7 +7391,12 @@
             "kind": "user_confirmation",
             "source": "visible conversation: every rank constant"
           },
-          "cooldown_by_rank": null,
+          "cooldown_by_rank": [
+            10.0,
+            10.0,
+            10.0,
+            10.0
+          ],
           "cast_time_seconds": null,
           "projectile_speed": 2150.0,
           "range": null,
@@ -7461,7 +7472,8 @@
             "ap_ratio": 0.075,
             "source": "User WR ability screenshots and explicit confirmation 2026-10-02",
             "scope": "Normal W, stationary target remaining in effect; empowered Arc of Ruin has no linger ticks"
-          }
+          },
+          "cooldown_source": "preserved user WR observations; Q uses Unleash gating, no independent cooldown"
         },
         "E": {
           "name": "Kanmei’s Steps",
@@ -7487,7 +7499,12 @@
             "kind": "user_confirmation",
             "source": "visible conversation: every rank constant"
           },
-          "cooldown_by_rank": null,
+          "cooldown_by_rank": [
+            9.0,
+            9.0,
+            9.0,
+            9.0
+          ],
           "cast_time_seconds": 0.0,
           "projectile_speed": null,
           "range": null,
@@ -7539,7 +7556,8 @@
             "speed_variants": [],
             "speed_status": "not_applicable"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Kanmei's_Steps"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Kanmei's_Steps",
+          "cooldown_source": "preserved user WR observations; Q uses Unleash gating, no independent cooldown"
         },
         "R": {
           "name": "Transcend One’s Self",
@@ -7564,7 +7582,11 @@
             "kind": "user_confirmation",
             "source": "visible conversation: every rank constant"
           },
-          "cooldown_by_rank": null,
+          "cooldown_by_rank": [
+            70.0,
+            60.0,
+            50.0
+          ],
           "cast_time_seconds": 0.0,
           "projectile_speed": null,
           "range": null,
@@ -7616,7 +7638,8 @@
             "speed_variants": [],
             "speed_status": "not_applicable"
           },
-          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Transcend_One's_Self"
+          "cast_time_source": "https://wiki.leagueoflegends.com/en-us/Template:Data_Yunara/Transcend_One's_Self",
+          "cooldown_source": "preserved user WR observations; Q uses Unleash gating, no independent cooldown"
         }
       },
       "fight_engine_supported": true,

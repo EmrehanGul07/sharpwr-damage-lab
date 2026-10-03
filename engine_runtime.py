@@ -6,7 +6,7 @@ import threading
 _lock = threading.RLock()
 _loaded_revision = None
 _MODULES = (
-    'champion_database', 'rune_database', 'champion_skill_data',
+    'combat_validation', 'champion_database', 'rune_database', 'rune_runtime', 'champion_skill_data',
     'marksman_ability_database', 'damage_classification', 'combat_timing',
     'marksman_state', 'marksman_damage_components', 'marksman_kits',
     'marksman_fight_engine', 'fight_engine', 'build_fight_optimizer',

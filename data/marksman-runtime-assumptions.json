@@ -1,228 +1,167 @@
 {
-  "version": "5.61.0",
+  "version": "5.87.0",
   "status": "integrated_provisional",
+  "purpose": "Current executable assumptions; software integrity is not WR parity. Historical reports retain their version dates.",
   "sample": {
-    "level": 15,
-    "ad": 200,
-    "ap": 50,
-    "crit_chance": 0.5,
-    "target_hp": 10000,
-    "duration": 30
+    "matrix_cases": 3312,
+    "matrix_fights": 6912,
+    "levels": [
+      1,
+      15
+    ],
+    "targets": [
+      "Squishy • Jinx",
+      "Bruiser • Darius",
+      "Tank • Ornn"
+    ],
+    "additional_sample": "1242 saved finalists, levels 5/7/9/11/13/15, exact retained policies"
   },
   "champions": {
     "Twitch": [
-      "Twitch E projectile timing unresolved: instant impact after cast",
-      "Twitch E range unresolved: conservative AA-range targeting",
-      "Twitch Q projectile timing unresolved: instant impact after cast",
-      "Twitch Q range unresolved: conservative AA-range targeting",
-      "Twitch R projectile timing unresolved: instant impact after cast",
-      "Twitch R range unresolved: conservative AA-range targeting",
-      "Twitch W cast time unresolved: instant cast mode",
-      "Twitch W projectile timing unresolved: instant impact after cast",
-      "Twitch W range unresolved: conservative AA-range targeting",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Twitch W range unresolved: conservative AA-range targeting"
     ],
     "Yunara": [
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback",
-      "Yunara Q cast time unresolved: instant cast mode",
-      "Yunara Q projectile timing unresolved: instant impact after cast",
-      "Yunara R cast time unresolved: instant cast mode",
-      "Yunara R projectile timing unresolved: instant impact after cast",
-      "Yunara W cast time unresolved: instant cast mode",
-      "Yunara W linger contact/total ticks unresolved: initial hit only",
-      "Yunara W projectile timing unresolved: instant impact after cast",
-      "Yunara core mana/MS/range await manual WR data; resource and spatial timing remain unresolved"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Yunara Phantom on-hit: WR damage tags unresolved",
+      "Yunara W hit: WR damage tags unresolved",
+      "Yunara W: WR damage tags unresolved",
+      "Yunara uses rounded WR stats at all 15 levels; HP regeneration units and AD/AS observation reconciliation remain pending"
     ],
     "Lucian": [
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Lucian Q cast time unresolved: instant cast mode",
-      "Lucian Q projectile timing unresolved: instant impact after cast",
       "Lucian R bullet rounding/cap uses floor of tooltip candidate",
-      "Lucian R projectile timing unresolved: instant impact after cast",
       "Lucian R range unresolved: conservative AA-range targeting",
-      "Lucian W range unresolved: conservative AA-range targeting",
       "Lucian second-shot level progression unresolved: confirmed 40% baseline",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges"
     ],
     "Varus": [
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback",
-      "Varus E projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Varus E range unresolved: conservative AA-range targeting",
-      "Varus Q projectile timing unresolved: instant impact after cast",
+      "Varus Phantom on-hit: WR damage tags unresolved",
       "Varus Q range unresolved: conservative AA-range targeting",
       "Varus Q rank 2–4 ratios sourced from WR wiki, retaining user bonus-AD basis; wiki total-AD wording conflicts",
-      "Varus R projectile timing unresolved: instant impact after cast",
       "Varus R range unresolved: conservative AA-range targeting",
-      "Varus W cost absent in WR wiki: provisional free activation; verify in-game",
-      "Varus W projectile timing unresolved: instant impact after cast",
-      "Varus W range unresolved: conservative AA-range targeting"
+      "Varus W cost absent in WR wiki: provisional free activation; verify in-game"
     ],
     "Ezreal": [
-      "Ezreal R projectile timing unresolved: instant impact after cast",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Ezreal Q Rageblade attack-speed stack gain is not independently verified",
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges"
     ],
     "Vayne": [
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback",
-      "Vayne E projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges",
       "Vayne E range unresolved: conservative AA-range targeting",
-      "Vayne Q dash speed/end-point unresolved: instant lateral tumble",
-      "Vayne Q projectile timing unresolved: instant impact after cast",
-      "Vayne Q range unresolved: conservative AA-range targeting",
-      "Vayne R projectile timing unresolved: instant impact after cast",
-      "Vayne R range unresolved: conservative AA-range targeting",
-      "Vayne W projectile timing unresolved: instant impact after cast",
-      "Vayne W range unresolved: conservative AA-range targeting"
+      "Vayne Phantom on-hit: WR damage tags unresolved",
+      "Vayne Q dash speed/end-point unresolved: instant lateral tumble"
     ],
     "Tristana": [
-      "Tristana E cast time unresolved: instant cast mode",
-      "Tristana E projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges",
       "Tristana E range unresolved: conservative AA-range targeting",
-      "Tristana Q projectile timing unresolved: instant impact after cast",
-      "Tristana Q range unresolved: conservative AA-range targeting",
-      "Tristana R projectile timing unresolved: instant impact after cast",
       "Tristana R range unresolved: conservative AA-range targeting",
-      "Tristana W projectile timing unresolved: instant impact after cast",
-      "Tristana W range unresolved: conservative AA-range targeting",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Tristana R: WR damage tags unresolved",
+      "Tristana W range unresolved: conservative AA-range targeting"
     ],
     "Ashe": [
-      "Ashe Q projectile timing unresolved: instant impact after cast",
-      "Ashe Q range unresolved: conservative AA-range targeting",
-      "Ashe R cast time unresolved: instant cast mode",
-      "Ashe R projectile timing unresolved: instant impact after cast",
-      "Ashe R range unresolved: conservative AA-range targeting",
-      "Ashe W cast time unresolved: instant cast mode",
-      "Ashe first-hit/Frost base modifier and Q flurry item-on-hit count need WR validation",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Ashe Q subsequent arrows: WR says default/proc; Hexoptics only first arrow, exact component split pending WR test",
+      "Ashe first-hit/Frost base modifier and Q flurry item-on-hit count need WR validation"
     ],
     "Kalista": [
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Kalista E projectile timing unresolved: instant impact after cast",
       "Kalista E range unresolved: conservative AA-range targeting",
-      "Kalista Q projectile timing unresolved: instant impact after cast",
       "Kalista Q range unresolved: conservative AA-range targeting",
-      "Kalista boot hop speed/distance unresolved: max-range walking kite",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Kalista boot hop speed/distance unresolved: max-range walking kite"
     ],
     "Draven": [
-      "Draven Q projectile timing unresolved: instant impact after cast",
-      "Draven Q range unresolved: conservative AA-range targeting",
-      "Draven W projectile timing unresolved: instant impact after cast",
-      "Draven W range unresolved: conservative AA-range targeting",
-      "Draven axe crit scope/catch timing provisional; explicit catch event after 1s",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Draven axe crit scope/catch timing provisional; explicit catch event after 1s"
     ],
     "Caitlyn": [
-      "Caitlyn E range unresolved: conservative AA-range targeting",
-      "Caitlyn Q range unresolved: conservative AA-range targeting",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Caitlyn R crit modifier unresolved: confirmed non-crit component only",
       "Caitlyn W projectile timing unresolved: instant impact after cast",
       "Caitlyn headshot level/crit progression unresolved: confirmed 60% baseline",
       "Caitlyn trap ammo/recharge pool provisional: one charge per recharge",
       "Caitlyn trap arming provisional 1s",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges"
     ],
     "Jinx": [
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Jinx E projectile timing unresolved: instant impact after cast",
       "Jinx R distance/flight curve unresolved: minimum flight-damage component",
-      "Jinx R projectile timing unresolved: instant impact after cast",
-      "Jinx W range unresolved: conservative AA-range targeting",
-      "Jinx trap arming provisional 1s",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Jinx trap arming provisional 1s"
     ],
     "Kai'Sa": [
-      "Kai'Sa E cast time unresolved: instant cast mode",
-      "Kai'Sa E projectile timing unresolved: instant impact after cast",
-      "Kai'Sa E range unresolved: conservative AA-range targeting",
-      "Kai'Sa Q projectile timing unresolved: instant impact after cast",
-      "Kai'Sa W cast time unresolved: instant cast mode",
-      "Kai’Sa E AS-dependent charge duration unresolved: provisional 1s charge",
-      "Kai’Sa passive level progression unresolved: level-one known base only",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Kai'Sa Phantom on-hit: WR damage tags unresolved",
+      "Kai’Sa E charge uses user-authorized PC AS-dependent timing",
+      "Kai’Sa passive level progression unresolved: level-one known base only"
     ],
     "Kog'Maw": [
-      "Kog'Maw E range unresolved: conservative AA-range targeting",
-      "Kog'Maw Q cast time unresolved: instant cast mode",
-      "Kog'Maw Q range unresolved: conservative AA-range targeting",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Kog'Maw Phantom on-hit: WR damage tags unresolved",
       "Kog'Maw R projectile timing unresolved: instant impact after cast",
       "Kog'Maw R range unresolved: conservative AA-range targeting",
-      "Kog'Maw W projectile timing unresolved: instant impact after cast",
-      "Kog'Maw W range unresolved: conservative AA-range targeting",
       "Kog’Maw R initial mana/ramp source conflict: provisional 40 + 50 per cast, capped at user 500",
-      "Kog’Maw R missing-health interpolation unresolved: non-amplified component above 40%",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Kog’Maw R missing-health interpolation unresolved: non-amplified component above 40%"
     ],
     "Miss Fortune": [
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Miss Fortune E projectile timing unresolved: instant impact after cast",
       "Miss Fortune Love Tap crit/level modifier unresolved: confirmed 60% base component only",
-      "Miss Fortune Q cast time unresolved: instant cast mode",
-      "Miss Fortune Q range unresolved: conservative AA-range targeting",
-      "Miss Fortune W projectile timing unresolved: instant impact after cast",
-      "Miss Fortune W range unresolved: conservative AA-range targeting",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional"
     ],
     "Xayah": [
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback",
-      "Xayah E projectile timing unresolved: instant impact after cast",
-      "Xayah E range unresolved: conservative AA-range targeting",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Xayah Q projectile timing unresolved: instant impact after cast",
-      "Xayah Q range unresolved: conservative AA-range targeting",
       "Xayah R 1.5s untargetable lock provisional WR timing",
-      "Xayah R projectile timing unresolved: instant impact after cast",
-      "Xayah R range unresolved: conservative AA-range targeting",
-      "Xayah W projectile timing unresolved: instant impact after cast",
-      "Xayah W range unresolved: conservative AA-range targeting",
       "Xayah benchmark uses aligned radial movement against a stationary target; lateral feather collision geometry unverified"
     ],
     "Sivir": [
-      "Sivir Morale cap/expiry unresolved",
-      "Sivir Q cast time unresolved: instant cast mode",
-      "Sivir Q projectile timing unresolved: instant impact after cast",
-      "Sivir Q return travel unresolved: provisional 0.25s return delay",
-      "Sivir R projectile timing unresolved: instant impact after cast",
-      "Sivir R range unresolved: conservative AA-range targeting",
-      "Sivir W projectile timing unresolved: instant impact after cast",
-      "Sivir W range unresolved: conservative AA-range targeting",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Sivir Morale cap/expiry unresolved"
     ],
     "Corki": [
-      "Corki E projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Corki E/W tick cadence uses provisional 0.25s integration",
       "Corki R range unresolved: conservative AA-range targeting",
-      "Corki W projectile timing unresolved: instant impact after cast",
       "Corki passive Spellblade/crit interaction order needs validation",
       "Corki recharge retains user 16s baseline; wiki 20s conflicts; AA refund candidate 2 + 3×crit",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges"
     ],
     "Senna": [
-      "Senna Q level modifier unresolved: 80% of sourced WR base AA windup",
-      "Senna Q projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Senna Q range unresolved: conservative AA-range targeting",
       "Senna WR base windup 0.5s with 60% AS scaling; level-dependent modifier unresolved",
       "Senna mist generation from champion siphon unresolved: initial supplied mist retained",
       "Senna passive bonus AA and two-hit level progression unresolved: confirmed base extra 10 physical",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
+      "Skill on-hit item stack eligibility/Phantom Hit interactions remain provisional"
     ],
     "Zeri": [
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
+      "Movement skill path uses provisional distance/end-point proxy; Ezreal E calibrated to observed 16 Energized charges",
       "Zeri Burst Fire flat level progression unresolved: confirmed 20 baseline",
       "Zeri E range unresolved: conservative AA-range targeting",
       "Zeri Q cast time unresolved: instant cast mode",
-      "Zeri Q projectile timing unresolved: instant impact after cast",
-      "Zeri Q range unresolved: conservative AA-range targeting",
-      "Zeri R projectile timing unresolved: instant impact after cast",
-      "Zeri W cast time unresolved: instant cast mode",
       "Zeri W range unresolved: conservative AA-range targeting"
     ],
     "Jhin": [
-      "Jhin E projectile timing unresolved: instant impact after cast",
+      "AA windup/projectile use user-authorized PC timing proxies with WR AS scaling",
       "Jhin E range unresolved: conservative AA-range targeting",
-      "Jhin Q projectile timing unresolved: instant impact after cast",
       "Jhin Q range unresolved: conservative AA-range targeting",
-      "Jhin R cast time unresolved: instant cast mode",
-      "Jhin R projectile timing unresolved: instant impact after cast",
+      "Jhin R hit: WR damage tags unresolved",
       "Jhin R range unresolved: conservative AA-range targeting",
+      "Jhin R: WR damage tags unresolved",
       "Jhin W projectile timing unresolved: instant impact after cast",
       "Jhin W range unresolved: conservative AA-range targeting",
-      "Unknown WR AA windup/projectile values use instant AA impacts; no PC fallback"
-    ]
+      "Jhin W: WR damage tags unresolved"
+    ],
+    "Samira": [],
+    "Smolder": []
   }
 }

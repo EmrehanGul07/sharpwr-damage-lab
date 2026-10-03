@@ -6,7 +6,7 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("5.86.3")
+ensure_engine_revision("5.87.0")
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -15,6 +15,7 @@ if not hasattr(_item_consensus, "progression_ranking"):
 from item_consensus import consensus, adopters, champion_items, progression_ranking
 from champion_database import CHAMPION_DATABASE, level_stats
 from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
+from rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
 from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
@@ -23,7 +24,7 @@ from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPE
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
     for key in list(st.session_state):
-        if key.startswith(("iv_","tier_","ability_","fight_","smolder_")) and not key.startswith(("ability_calculate","fight_calculate")) or key in {"build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
+        if key.startswith(("iv_","tier_","ability_","fight_","smolder_","evt_","rune_")) and not key.startswith(("ability_calculate","fight_calculate")) or key in {"build_immortal_above_half","dh_souls","eyeball_stacks","hubris_kills","hubris_active","alacrity_full","haste_full","bloodline_full","first_strike_ready","grasp_ready","aery_ready","comet_hits","fleet_ready","target_impaired","battle_zeal_seconds","absolute_focus_active","unshakeable_enemies","overgrowth_stacks","font_ally_near","gathering_storm_minute","build_champ","build_level","build_mist","build_target_profile","build_dist","build_mana","build_spell","build_energized","build_ult","build_execs","build_yt_crit","build_yt_flurry","db_item_search","db_category"}:
             st.session_state[key]=st.session_state[key]
 
 _preserve_widgets()
@@ -737,6 +738,8 @@ def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,ex
 def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True,initial_flurry=False):
     """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
     items=list(items)
+    from combat_validation import benchmark, finite
+    benchmark(n,l,hp0,arm,mr,mist=mist,bonus_hp=bonus_hp,distance=dist,reduction=target_aa_reduction,mana=base_mana,stacks=yuntal_start_stacks,executes=execs)
     from champion_database import champion_stat
     # Item melee/ranged class belongs to the champion, not distance to target.
     botrk_ratio=.085 if champion_stat(n,"attack_type")=="Melee" else .06
@@ -760,10 +763,19 @@ def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_
     ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
     spellblade_ready=0.
     fh=0  # Only an actual ultimate_cast_time event arms Opening Barrage.
-    fiend_until=8.; last_ult_cast=None; spell_pending=False; galeforce_ready=0.; duskblade_ready=0.
+    fiend_until=8.; last_ult_cast=None; spell_pending=bool(spell); galeforce_ready=0.; duskblade_ready=0.
     if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
     state=yield None
+    last_event_time=-1.
     while k<500 or (state.get("event_driven",False) and k<10000):
+        finite(state.get("hp",hp) if state.get("event_phase")=="attack_launch" else state.get("hp"),"live target HP",0)
+        event_time=finite(state.get("time",t) if state.get("event_phase")=="attack_launch" else state.get("time"),"event time",0)
+        if event_time<last_event_time:raise ValueError("Combat events must be monotonic")
+        last_event_time=event_time
+        for _field in ("movement_distance","distance","max_mana","bonus_as","spellblade_crit","crit","armor_override","mr_override","attack_physical","critical_attack_physical","nonbasic_attack_physical","primary_external_damage","on_hit_health_multiplier"):
+            if state.get(_field) is not None:
+                finite(state[_field],_field, None if _field in ("armor_override","mr_override") else 0,1 if _field in ("crit","spellblade_crit") else None)
+        if "bonus_ad" in state:finite(state["bonus_ad"],"bonus AD")
         # Charge consumption occurs at projectile launch, damage at impact.
         if energized_items and item_proc:
             travelled=max(energized_path,float(state.get("movement_distance",energized_path)))
@@ -1110,8 +1122,8 @@ with tabs[0]:
             tier_dragon=st.number_input("Dragon Practice stacks",0,10000,0,key="tier_dragon") if tier_champ=="Smolder" else 0
             tier_mana=None
     st.info("Public preview · Build search is temporarily unavailable while the combat engine is being validated.")
-    _tier_signature=("5.86.3",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
-    if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc",disabled=True):
+    _tier_signature=("5.87.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
+    if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc",disabled=True) and False:
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
         _progress=st.progress(0.,text="Simulating AA + abilities…")
@@ -1134,7 +1146,7 @@ with tabs[0]:
         except (ValueError,LookupError,StopIteration) as _err:
             st.error(f"Build search could not run: {_err}")
         finally:_progress.empty()
-    if st.button("Compare all 3 target profiles",key="compare_all_profiles",disabled=True):
+    if st.button("Compare all 3 target profiles",key="compare_all_profiles",disabled=True) and False:
         _history_key=(_tier_signature[0],tier_champ,tier_level,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
         _history=st.session_state.setdefault('combat_rank_history',{}).setdefault(_history_key,{})
         _progress=st.progress(0.,text="Comparing three target profiles…")
@@ -1249,7 +1261,7 @@ with tabs[1]:
         _flags=[("SPELLBLADE",spell),("ENERGIZED",energized),("ULTIMATE PRE-CAST",ult)]
         _flag_html="".join(f'<span class="{"active" if enabled else ""}">{name} · {"ON" if enabled else "OFF"}</span>' for name,enabled in _flags)
         st.markdown(f'<div class="combat-flags">{_flag_html}<span>{dist:g} ATTACK DISTANCE</span></div>',unsafe_allow_html=True)
-    if champ=="Jhin": st.warning("Jhin is excluded from V5 rankings until its 4-shot/reload model is added.")
+    if champ=="Jhin": st.info("Jhin uses the dedicated four-shot/reload model in Replay fight. The legacy AA-only calculator is unavailable for Jhin.")
 
     # Legal rune loadout: equip one slot at a time; completed pickers collapse.
     st.markdown("""<div class="rune-forge-head"><div class="gem"><b>✦</b></div><div><span>RUNE FORGE</span><strong>Configure Rune Loadout</strong></div></div>""",unsafe_allow_html=True)
@@ -1404,8 +1416,8 @@ with tabs[1]:
     if "Botanist" in selected_runes: _passive_notes.append("Botanist: plant +10g • Honeyfruit heal +20% • Scryer vision +20% • Blast Cone +40% MS for 2.5s")
     if "Ixtali Seedjar" in selected_runes: _passive_notes.append("Ixtali Seedjar: plant seed replaces trinket for 60s • unique plant 30s cooldown")
     if "Battle Zeal" in selected_runes: _passive_notes.append(f"Battle Zeal: +{1.4*min(3,int(battle_seconds)):.1f}% basic-ability damage only")
-    if "Demolish" in selected_runes: _passive_notes.append("Demolish: turret-only third-attack proc • Max-HP calculation pending champion HP data")
-    if "Font of Life" in selected_runes: _passive_notes.append("Font of Life: healing calculation pending champion Max HP data")
+    if "Demolish" in selected_runes: _passive_notes.append("Demolish: turret-only third-attack proc • excluded from champion target fights")
+    if "Font of Life" in selected_runes: _passive_notes.append("Font of Life: ally healing • excluded from this damage-only fight")
     if "Courage of the Colossus" in selected_runes: _passive_notes.append(f"Courage: "+("TRIGGERED • " if immobilize_event else "")+f"shield {lvl_scale(25,45,level):.1f} + 1% Max HP • 18s CD")
     if "Nullifying Orb" in selected_runes: _passive_notes.append(f"Nullifying Orb: shield {lvl_scale(60,180,level):.1f} at <35% HP • 60s CD")
     if "Bone Plating" in selected_runes: _passive_notes.append(f"Bone Plating: {lvl_scale(30,60,level):.1f} damage reduction on current + next 3 champion hits/abilities within 1.5s • 40s CD")
@@ -1530,17 +1542,19 @@ with tabs[1]:
             yt_bonus_crit=yc1.selectbox("Bonus Crit Chance",list(range(0,26)),index=25,format_func=lambda x:f"{x}%",key="build_yt_crit")/100
             yt_flurry=yc2.checkbox("Flurry Active (+35% AS)",value=False,key="build_yt_flurry")
 
+    _rune_settings=dict(eyeball_stacks=eyeball_stacks,hubris_kills=hubris_kills,hubris_active=hubris_active,absolute_focus_active=absolute_focus_active,game_minute=game_minute,alacrity_full=alacrity_full,haste_full=haste_full,bloodline_full=bloodline_full,overgrowth_stacks=overgrowth_stacks,nearby_enemies=nearby_enemies)
+    _persistent_runes=persistent_stats(int(level),selected_sub_runes,_rune_settings)
     with st.container(border=True):
         _setup_heading("06","CHAMPION ABILITIES","Skill Lab")
         _skill_qs=[dct(F[x]) for x in build]+[dct(B[boot])]
         _skill_total={k:sum(q[k] for q in _skill_qs) for k in K}
         _own_stats=level_stats(champ,int(level))
-        _fight_base_mana=_own_stats["mana"] if _own_stats["mana"] is not None else (mana if mana>0 else None)
-        _fight_max_mana=None if _fight_base_mana is None else _fight_base_mana+_skill_total["mana"]
-        _skill_awe=.02*((_fight_base_mana or 0)+_skill_total["mana"]) if any(x in build for x in ("Manamune","Muramana")) else 0.
-        _skill_ad=stats(champ,level,mist)["ad"]+_skill_total["ad"]+_skill_awe
-        _skill_cd=2.3 if "Infinity Edge" in build else 2.
-        _fight_haste=_skill_total["ah"]+(15. if "Legend: Haste" in selected_sub_runes and haste_full else 0.)+((10. if level>=5 else 5.) if "Transcendence" in selected_sub_runes else 0.)
+        _fight_base_mana=mana if mana>0 else _own_stats["mana"]
+        _fight_max_mana=None if _fight_base_mana is None else _fight_base_mana+_skill_total["mana"]+_persistent_runes["mana"]
+        _skill_awe=.02*(_fight_max_mana or 0) if any(x in build for x in ("Manamune","Muramana")) else 0.
+        _skill_ad=stats(champ,level,mist)["ad"]+_skill_total["ad"]+_skill_awe+_persistent_runes["ad"]
+        _skill_cd=(2.3 if "Infinity Edge" in build else 2.)*(.9 if champ=="Senna" else 1.)
+        _fight_haste=_skill_total["ah"]+_persistent_runes["ah"]
         _fight_amp=(1.05 if boot=="Immortal Treads" and immortal_above_half else 1.)*(1+min(.12,max(0,bonus_hp)/125*.01) if "Lord Dominik's Regards" in build else 1.)
         _ranks=champion_ranks(champ,int(level))
         _ability_data=SAMIRA_ABILITIES if champ=="Samira" else SMOLDER_ABILITIES if champ=="Smolder" else {k:{"cooldown":v["cooldown_by_rank"],"mana":tuple(v["mana_by_rank"]) if v["mana_by_rank"] is not None else None} for k,v in marksman_records()[champ]["abilities"].items() if k!="P"}
@@ -1549,24 +1563,26 @@ with tabs[1]:
         _dragon_start=int(st.number_input("Dragon Practice stacks",0,10000,0,key="smolder_fight_stacks")) if champ=="Smolder" else 0
         _qrank,_wrank,_erank,_rrank=(_ranks[k] for k in ('Q','W','E','R'))
         st.markdown("**Fight timeline · AA / Q / W / E / R**")
-        _supported_fight_runes={"Brutal","Cut Down","Coup de Grace","Battle Zeal","Legend: Alacrity","Legend: Haste","Transcendence"}
+        _supported_fight_runes=FIGHT_RUNES
         _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in {"Legend: Bloodline","Bone Plating","Second Wind","Perseverance","Overgrowth","Unshakeable"}]
-        _replay_crit=min(1.,_skill_total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
-        _fight_start_as=min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+((.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.)))
+        _replay_crit=min(1.,_skill_total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
+        _fight_start_as=min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+(.35 if yt_flurry else 0)+((.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.)))
         st.markdown(f"**Fight starting stats:** {_skill_ad:.1f} AD · {_skill_total['ap']:.0f} AP · {_fight_start_as:.3f} AS · {_replay_crit*100:.1f}% crit · {_skill_cd*100:.0f}% crit damage · {_fight_haste:.0f} AH · {_skill_total['pctpen']*100:.0f}% + {_skill_total['flatpen']:.0f} armor penetration · {_skill_total['pctmpen']*100:.0f}% + {_skill_total['flatmpen']:.0f} magic penetration")
+        _rune_own_stats=own_stats(_own_stats,_skill_total,_persistent_runes)
         def _known_stat(value,addition=0):return "Pending" if value is None else f"{value+addition:.1f}"
-        st.markdown(f"**Champion stats:** {_known_stat(_own_stats['hp'],_skill_total['hp'])} HP · {_known_stat(_fight_max_mana)} mana · {_known_stat(_own_stats['mana_regen_per_5s'])} mana / 5s · {_known_stat(_own_stats['armor'],_skill_total['armor'])} armor · {_known_stat(_own_stats['mr'],_skill_total['mr'])} MR · {_fight_ms:.0f} MS · {_known_stat(_own_stats['attack_range'])} range")
+        st.markdown(f"**Champion stats:** {_known_stat(_rune_own_stats['hp'])} HP · {_known_stat(_fight_max_mana)} mana · {_known_stat(_own_stats['mana_regen_per_5s'])} mana / 5s · {_known_stat(_rune_own_stats['armor'])} armor · {_known_stat(_rune_own_stats['mr'])} MR · {_fight_ms:.0f} MS · {_known_stat(_own_stats['attack_range'])} range")
         _fight_key=keystone if keystone!="None" else None
-        _fight_blocked=_fight_key not in (None,"Conqueror","Lethal Tempo") or bool(_offensive_unknown)
-        if _fight_blocked: st.info("Replay currently supports Conqueror / Lethal Tempo and the listed damage runes. Choose a supported loadout to run it.")
+        _fight_blocked=_fight_key not in FIGHT_KEYSTONES or bool(_offensive_unknown)
+        if _fight_blocked: st.info("Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest and the supported damage/stat runes. Choose a supported loadout to run it.")
         if st.button("Replay fight",key="fight_calculate",disabled=_fight_blocked):
             try:
+                if _fight_key=="First Strike":st.caption("First Strike applies to the explicitly ready initial 3-second engagement; rearming and gold are not simulated.")
                 def _run_candidate(_priority=("E","W","Q"),_use_e=True,_weapon="minigun"):
                     _events=[]
-                    _kernel=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,0,(_fight_base_mana or 0),False,energized,False,execs,False,boot)
+                    _kernel=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),(_fight_base_mana or 0)+_persistent_runes["mana"],spell,energized,False,execs,False,boot,initial_flurry=yt_flurry)
                     next(_kernel)
                     _alacrity=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.
-                    _fight_last_hit={}
+                    _fight_last_hit={"yuntal_until":6. if yt_flurry else -1.}
                     def _fight_aa_stats(state):
                         _dyn=(.08*state["items"].get("rage",0) if "Guinsoo's Rageblade" in build else 0.)+(.06*state["items"].get("phantom_dancer",0) if "Phantom Dancer" in build else 0.)
                         if "Yun Tal Wildarrows" in build and state["time"]<_fight_last_hit.get("yuntal_until",-1):_dyn+=.35
@@ -1576,14 +1592,14 @@ with tabs[1]:
                         _exp=[v for v in (_fight_last_hit.get("yuntal_until",-1),(_ult+8 if _fiend else -1)) if v>state["time"]]
                         return {"bonus_as_total":_bonus,"as":min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*_bonus),"buff_expiry":min(_exp) if _exp else -1}
                     def _fight_aa(state):
-                        state=dict(state);state["bonus_as"]+=_alacrity
+                        state=dict(state);state["bonus_as"]=state.get("bonus_as",0.)+_alacrity;state["bonus_ad"]=state.get("bonus_ad",0.)+_persistent_runes["ad"]
                         _hit=_kernel.send(state)
                         _fight_last_hit.update(_hit)
                         _fight_last_hit["ult_seen"]=state.get("ultimate_cast_time")
-                        if boot=="Immortal Treads" and not immortal_above_half: _hit["damage"]/=1.05
+                        if boot=="Immortal Treads" and not immortal_above_half and "damage" in _hit: _hit["damage"]/=1.05
                         return _hit
-                    _fight_base_crit=_replay_crit
-                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=0.,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon,galeforce="Galeforce" in build,hexoptics="Hexoptics C44" in build)
+                    _fight_base_crit=min(1.,_skill_total["crit"]+(mist//20*.10 if champ=="Senna" else 0))
+                    return replay_samira(_events,level=level,ad=_skill_ad,base_ad=stats(champ,level)["ad"],attack_speed=stats(champ,level)["baseas"],crit_chance=_fight_base_crit,crit_damage=_skill_cd,hp=hp,armor=armor,q_rank=_qrank,r_rank=_rrank,ability_haste=_fight_haste,pct_pen=_skill_total["pctpen"],flat_pen=_skill_total["flatpen"],mode="Expected",keystone=_fight_key,sub_runes=[x for x in selected_sub_runes if x in _supported_fight_runes],instant_skills=False,timed_combat=True,base_windup=None,champion=champ,ap=_skill_total["ap"],initial_stacks=_dragon_start,skill_priority=_priority,use_e=_use_e,aa_stats=_fight_aa_stats,movement_speed=_fight_ms,distance=dist if champ=="Samira" else _fight_range,attack_range=_fight_range,w_rank=_wrank,e_rank=_erank,mr=mr,pct_mpen=_skill_total["pctmpen"],flat_mpen=_skill_total["flatmpen"],navori="Navori Quickblades" in build,collector_threshold=min(1.,.05+.001*execs) if "The Collector" in build else 0.,skill_amp=_fight_amp,melee=False,transcendence="Transcendence" in selected_sub_runes,until_death=True,aa_hit=_fight_aa,yuntal="Yun Tal Wildarrows" in build,yuntal_initial=yt_bonus_crit,first_strike_ready=first_strike_ready,dark_harvest_souls=dark_harvest_souls,own_hp_pct=own_hp_pct,terminus="Terminus" in build,max_mana=_fight_max_mana,muramana="Muramana" in build,mana_refund=.15 if any(x in build for x in ("Manamune","Muramana")) else 0.,mana_regen_per_5s=_own_stats["mana_regen_per_5s"] or 0,mist=mist,as_ratio=stats(champ,level)["ratio"],natural_attack_speed=stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]),completed_items=len(build),item_as=_skill_total["as"],item_ad=_skill_total["ad"],weapon=_weapon,energized_items=bool(set(build)&{"Stormrazor","Rapid Firecannon","Statikk Shiv"}),galeforce="Galeforce" in build,hexoptics="Hexoptics C44" in build)
                 _candidates=[(_run_candidate(_p,_e,_weapon),_p,_e,_weapon) for _p in permutations(('Q','W','E')) for _e in (False,True) for _weapon in (("minigun","rockets") if champ=="Jinx" else ("minigun",))]
                 _fight_result,_best_priority,_best_e,_best_weapon=min(_candidates,key=lambda x:(x[0].killed_at is None,x[0].killed_at if x[0].killed_at is not None else x[0].hp_remaining))
                 _move_label='approach for melee passive' if champ=='Samira' else 'max-range kite'+(' · '+_best_weapon if champ=='Jinx' else '')
@@ -1606,7 +1622,7 @@ with tabs[1]:
             if _rank:
                 _base_cd=(_ability_data[_slot]["cooldown"][_rank-1] if _ability_data[_slot]["cooldown"] is not None else None)
                 _cd_rows.append([_slot,_base_cd,round(_base_cd/(1+_fight_haste/100),2) if _base_cd is not None else None,(_ability_data[_slot]["mana"][_rank-1] if isinstance(_ability_data[_slot]["mana"],tuple) else _ability_data[_slot]["mana"])])
-        if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with item haste","Mana cost"]))
+        if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with total haste","Mana cost"]))
     if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
     elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
@@ -1621,7 +1637,8 @@ with tabs[1]:
             rune_bonus_hp=overgrowth_stacks*3.0
             if overgrowth_stacks>=30:
                 overgrowth_health_mult=1.03
-        build_max_hp=(total["hp"]+rune_bonus_hp)*overgrowth_health_mult
+        _build_core=level_stats(champ,int(level))
+        build_max_hp=own_stats(_build_core,total,_persistent_runes)["hp"]
         overgrowth_bonus_from_pct=(total["hp"]+rune_bonus_hp)*(overgrowth_health_mult-1.0)
         rune_armor_mult=1.0
         rune_mr_mult=1.0
@@ -1641,7 +1658,8 @@ with tabs[1]:
             _gs=((6,2),(9,5),(12,9),(15,14),(18,20),(21,27))
             gathering_storm_ad=max((v for m,v in _gs if game_minute>=m),default=0)
             rune_bonus_ad+=gathering_storm_ad
-        maxmana=mana+total["mana"]+(300 if "Manaflow Band" in selected_sub_runes else 0)
+        _resolved_mana=mana if mana>0 else (_build_core["mana"] or 0.)
+        maxmana=_resolved_mana+total["mana"]+_persistent_runes["mana"]
         awe=.02*maxmana if ("Manamune" in build or "Muramana" in build) else 0
         ad=s0["ad"]+total["ad"]+awe+rune_bonus_ad
         rune_bonus_as=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.0
@@ -1655,7 +1673,7 @@ with tabs[1]:
         display_dyn=.35 if ("Yun Tal Wildarrows" in build and yt_flurry) else 0
         display_as=min(3,s0["baseas"]+s0["ratio"]*(s0["bba"]+s0["lvbas"]+total["as"]+display_dyn+rune_bonus_as))
         if "Overgrowth" in selected_sub_runes:
-            st.caption(f"Overgrowth applied to tracked build/rune HP: {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} flat rune HP → {build_max_hp:.1f} HP contribution after ×{overgrowth_health_mult:.2f}.")
+            st.caption(f"Overgrowth applied to full champion Health: base + {total['hp']:.0f} item HP + {rune_bonus_hp:.0f} rune HP → {build_max_hp:.1f} max HP after ×{overgrowth_health_mult:.2f}.")
         dealt_damage=0.
         hp2=float(hp); t=0.; attacks=0
         rune_trace=[]
@@ -1672,7 +1690,7 @@ with tabs[1]:
         chain_hits_left=2 if chain_marked else 0
         scorch_pending=(1.0 if ("Scorch" in selected_sub_runes and scorch_ability_hit) else None)
         scorch_ready_at=0.0
-        _engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),mana,spell,energized,ult,execs,False,boot,initial_flurry=yt_flurry)
+        _engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot,initial_flurry=yt_flurry)
         next(_engine)
         while hp2>0 and attacks<500:
             attacks+=1
@@ -1721,8 +1739,13 @@ with tabs[1]:
                 fleet_available=False
             elif keystone=="Grasp of the Undying" and t>=grasp_next_ready:
                 # Grasp scales from the USER'S max HP, never target HP.
-                # Champion max-HP data is not in the lab yet, so do not fabricate damage.
-                _rune_events.append("Grasp ready — own Max HP data required")
+                if build_max_hp is None:
+                    _rune_events.append("Grasp blocked: own Max HP unknown")
+                else:
+                    _grasp_raw=.033*build_max_hp*.40
+                    dmg+=_grasp_raw*rm(em)
+                    _rune_events.append(f"Grasp +{_grasp_raw*rm(em):.1f} magic; +4 permanent HP (ranged)")
+                    build_max_hp+=4.
                 grasp_next_ready=t+3.0
             elif keystone=="Lethal Tempo" and lt_stacks>=6:
                 # Tooltip range is treated as linear Lv1 -> Lv15: 6 at Lv1, 20 at Lv15.
@@ -1797,7 +1820,7 @@ with tabs[1]:
 
         # A fresh first-hit scenario uses the same item kernel, with a legal forced crit.
         maxcrit=crit>0
-        _max_engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),mana,spell,energized,ult,execs,False,boot)
+        _max_engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot)
         next(_max_engine)
         _max=_max_engine.send({"hp":hp,"time":0.,"bonus_ad":rune_bonus_ad,"crit":1. if maxcrit else 0.})
         max_ea=_max["armor"]; max_em=_max["mr"]; max_hit=_max["damage"]
@@ -2006,13 +2029,13 @@ with tabs[3]:
             st.info("No runes match this search. Try a different name or effect.")
         st.markdown("**Rune Engine Audit**")
         audit_rows=[
-            ["First Strike","Partial","Damage works; engagement/cooldown/gold lifecycle not fully simulated"],
+            ["First Strike","Partial","Initial ready 3s engagement works in AA and skill fights; cooldown rearming/gold excluded"],
             ["Ice Overlord","Pending","Needs immobilize + own bonus HP/defense state"],
             ["Phase Rush","Partial","No direct AA damage; 3-hit mobility/basic-AH state not simulated"],
             ["Arcane Comet","Trigger Lite","Shared Ability Hit event launches the modeled comet proc"],
             ["Aery","Scenario","One explicitly-ready damage proc modeled; return cadence not supplied"],
             ["Guardian","Pending","Needs ally/incoming-damage + own bonus HP state"],
-            ["Grasp of the Undying","Blocked: HP","Correctly disabled until own champion Max HP exists"],
+            ["Grasp of the Undying","Partial","AA-only damage uses full own Max HP; ranged growth modeled; healing/incoming fight state excluded"],
             ["Conqueror","Combat","0→6 AD stacks modeled; omnivamp is non-damage"],
             ["Fleet Footwork","Partial","Proc consumption modeled; 40% AS duration/heal/resource need duration/HP-resource engine"],
             ["Lethal Tempo","Combat","0→6 AS stacks + max-stack adaptive physical bullet modeled"],
@@ -2042,7 +2065,7 @@ with tabs[3]:
             ["Perseverance","Utility","Tenacity displayed; immobilize defense needs incoming/CC engine"],
             ["Revitalize","Utility","Heal/shield amp stored as rule; needs heal/shield engine"],
             ["Nullifying Orb","Defense-only","Shield value displayed; needs own HP/incoming-damage engine"],
-            ["Unshakeable","Partial","Nearby-enemy % state modeled/displayed; own Armor/MR database pending"],
+            ["Unshakeable","Stat","Supplied nearby-enemy % applied to champion + item Armor/MR; no incoming damage"],
             ["Courage of the Colossus","Blocked: HP","Flat shield portion known; full shield needs own Max HP + immobilize event"],
             ["Font of Life","Blocked: HP","Needs own Max HP/heal state"],
             ["Demolish","Blocked: HP","Needs own Max HP + turret scenario"],
@@ -2189,4 +2212,4 @@ with tabs[4]:
     st.components.v1.html(_live_html,height=1100,scrolling=True)
 
 st.divider()
-st.caption("Web V5.86.3 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption("Web V5.87.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")

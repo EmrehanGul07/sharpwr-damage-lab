@@ -7,6 +7,7 @@ The target never attacks. Timing follows sourced casts/channels when available.
 import heapq
 import itertools
 import math
+from rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
 from damage_classification import event_profile,ability_magnification,component_profile,magnification
 from champion_skill_data import resistance_multiplier,effective_resistance
 from marksman_kits import Kit,default_ranks
@@ -43,7 +44,13 @@ def replay_marksman(events,**p):
     conq=lt=0;conq_until=lt_until=-1.;combat_start=None;ultimate=None;spell_pending=False;spell_cast_times=[]
     items={'yuntal_crit':min(.25,p.get('yuntal_initial',0.))};kite_arc=0.;movement_distance=0.;dark=0;transcend_ready=0.;amp=p.get('skill_amp',1.)
     runes=set(p.get('sub_runes',()));keystone=p.get('keystone');aa_hit=p.get('aa_hit');aa_stats=p.get('aa_stats')
-    if keystone not in (None,'Conqueror','Lethal Tempo'):raise ValueError('Unsupported offensive keystone')
+    if keystone not in FIGHT_KEYSTONES:raise ValueError('Unsupported offensive keystone')
+    if runes-FIGHT_RUNES:raise ValueError('Unsupported offensive rune in replay')
+    damage_procs=DamageProcs(level,keystone,runes,p.get('dark_harvest_souls',0))
+    if keystone=='Dark Harvest' or runes&{'Tyrant','Empowered Attack'}:kit.unresolved.add('Adaptive rune procs use the existing ADC physical model; WR classification/ordering remains unverified')
+    first_contact=FirstContact(keystone=='First Strike',p.get('first_strike_ready',True))
+    own_health_amp=last_stand_multiplier(p.get('own_hp_pct',100.)) if 'Last Stand' in runes else 1.
+    if keystone=='First Strike':kit.unresolved.add('First Strike: initial ready engagement only; cooldown rearming/gold not simulated')
     if not 0<=p.get('mana_refund',0.)<=1 or not 0<=p.get('collector_threshold',0.)<=1 or amp<=0:raise ValueError('Invalid modifiers')
     for key in ('pct_pen','pct_mpen'):
         if not 0<=p.get(key,0.)<=1:raise ValueError('Invalid percentage penetration')
@@ -120,6 +127,19 @@ def replay_marksman(events,**p):
             damage+=.03*(maxmana or 0.)*resistance_multiplier(ea)*multiplier(action);shock_casts.add(cid)
             components=list(components) if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else []
             components.append({'damage_type':'physical','raw_amount':.03*(maxmana or 0.),'tags':['Item'],'status':'unknown_WR','component':'Muramana skill Shock'})
+        effects=list(effects)
+        if damage>0:
+            proc_damage,proc_notes,proc_parts=damage_procs.apply(t,action,prior/maxhp,max(0.,applied_ad-base_ad),ap,ea,multiplier(action))
+            damage+=proc_damage;effects.extend(proc_notes)
+            if proc_parts:
+                components=list(components) if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':kind,'raw_amount':amount,'tags':classification['tags'],'status':classification['status']} for kind,amount in (('physical',value.physical),('magic',value.magic),('true',value.true)) if amount]
+                components.extend(proc_parts)
+        if action.startswith('AA'):damage*=own_health_amp
+        before_first=damage
+        damage,first_notes=first_contact.apply(t,damage);effects.extend(first_notes)
+        if first_notes:
+            components=list(components) if components is not None else value.instances(name,action[0]) if action and action[0] in 'QWER' else [{'damage_type':kind,'raw_amount':amount,'tags':classification['tags'],'status':classification['status']} for kind,amount in (('physical',value.physical),('magic',value.magic),('true',value.true)) if amount]
+            components.append({'damage_type':'true','raw_amount':damage-before_first,'tags':[],'status':'unknown_WR','component':'First Strike rune bonus','origin':'Rune'})
         if not math.isfinite(damage) or damage<0:raise ValueError('Invalid event damage')
         health=max(0.,health-damage);executed=False
         threshold=p.get('collector_threshold',0.)

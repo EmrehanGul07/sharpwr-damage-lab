@@ -23,7 +23,7 @@ class InterfaceTests(unittest.TestCase):
         self.assertTrue(all(b.disabled for b in a.button if b.key and b.key.startswith('native_item_')))
         next(b for b in a.button if b.label=='Calculate build').click().run()
         self.assertFalse(a.exception)
-        a.button(key='tiercalc').click().run(timeout=300);self.assertFalse(a.exception)
+        self.assertTrue(a.button(key='tiercalc').disabled)
     def test_samira_skill_panel(self):
         a=self.app
         a.selectbox(key='build_champ').set_value('Samira').run()

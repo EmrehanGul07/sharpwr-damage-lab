@@ -22,7 +22,7 @@ CHANNELS={'Miss Fortune':('R',3.,False),'Lucian':('R',3.,True)}
 def records():return catalogue()
 
 def default_ranks(champion,level):
-    if champion not in PRIORITIES or not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion/level')
+    if champion not in PRIORITIES or isinstance(level,bool) or not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion/level')
     if champion in ('Samira','Smolder'):
         order=('QEWQRQQEREEWRWW' if champion=='Samira' else 'QWEQRQQWRWWEREE')
         return {s:order[:level].count(s) for s in 'QWER'}

@@ -6,6 +6,7 @@ mechanics are surfaced by the caller; this is not a complete Wild Rift engine.
 from dataclasses import dataclass, field
 import math
 import random
+from rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
 from champion_skill_data import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
 
 @dataclass(frozen=True)
@@ -30,7 +31,7 @@ class FightResult:
 SAMIRA_SKILL_ORDER=('Q','E','W','Q','R','Q','Q','E','R','E','E','W','R','W','W')
 
 def samira_ranks(level):
-    if not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
+    if isinstance(level,bool) or not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid champion level.')
     return {slot:SAMIRA_SKILL_ORDER[:level].count(slot) for slot in ('Q','W','E','R')}
 
 SMOLDER_SKILL_ORDER=('Q','W','E','Q','R','Q','Q','W','R','W','W','E','R','E','E')
@@ -58,16 +59,16 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         from marksman_fight_engine import replay_marksman
         return replay_marksman(events,level=level,ad=ad,attack_speed=attack_speed,crit_chance=crit_chance,crit_damage=crit_damage,hp=hp,armor=armor,q_rank=q_rank,r_rank=r_rank,ability_haste=ability_haste,pct_pen=pct_pen,flat_pen=flat_pen,mode=mode,seed=seed,keystone=keystone,sub_runes=sub_runes,r_duration=r_duration,aa_hit=aa_hit,yuntal_initial=yuntal_initial,yuntal=yuntal,base_ad=base_ad,terminus=terminus,w_rank=w_rank,e_rank=e_rank,mr=mr,pct_mpen=pct_mpen,flat_mpen=flat_mpen,navori=navori,collector_threshold=collector_threshold,skill_amp=skill_amp,transcendence=transcendence,automatic_until=automatic_until,until_death=until_death,max_mana=max_mana,mana_regen_per_5s=mana_regen_per_5s,timed_combat=timed_combat,distance=distance,attack_range=attack_range,aa_windup=aa_windup,movement_speed=movement_speed,base_windup=base_windup,starting_bonus_as=starting_bonus_as,aa_stats=aa_stats,mana_refund=mana_refund,muramana=muramana,champion=champion,ap=ap,initial_stacks=initial_stacks,skill_priority=skill_priority,use_e=use_e,**kit_options)
     abilities=SAMIRA_ABILITIES if champion=='Samira' else SMOLDER_ABILITIES
-    if not isinstance(initial_stacks,int) or initial_stacks<0 or not math.isfinite(ap) or ap<0:raise ValueError('Invalid stack/AP stats.')
+    if isinstance(initial_stacks,bool) or not isinstance(initial_stacks,int) or initial_stacks<0 or not math.isfinite(ap) or ap<0:raise ValueError('Invalid stack/AP stats.')
     dragon=initial_stacks;dragon_casts=set();burn_id=0;burn_until=-1.;flying_until=-1.;kite_arc=0.;movement_distance=0.
     def mana_cost(slot):
         value=abilities[slot]['mana'];return value[ranks[slot]-1] if isinstance(value,tuple) else value
     values=(ad,attack_speed,crit_chance,crit_damage,hp,armor,ability_haste,pct_pen,flat_pen,mr,pct_mpen,flat_mpen,skill_amp,collector_threshold)
     if not all(math.isfinite(x) for x in values) or hp<=0 or ad<0 or attack_speed<=0 or ability_haste<0 or not 0<=pct_pen<=1 or flat_pen<0 or not 0<=pct_mpen<=1 or flat_mpen<0 or skill_amp<=0 or not 0<=collector_threshold<=1:raise ValueError('Invalid combat stats.')
-    if not 1<=level<=15 or not 0<=crit_chance<=1 or crit_damage<1:raise ValueError('Invalid champion stats.')
+    if isinstance(level,bool) or not isinstance(level,int) or not 1<=level<=15 or not 0<=crit_chance<=1 or crit_damage<1:raise ValueError('Invalid champion stats.')
     if mode not in ('Expected','Seeded critical rolls'):raise ValueError('Unknown critical mode.')
-    if keystone not in (None,'Conqueror','Lethal Tempo'):raise ValueError('This replay supports Conqueror or Lethal Tempo only.')
-    if any(x not in ('Brutal','Cut Down','Coup de Grace','Battle Zeal','Legend: Alacrity','Legend: Haste','Transcendence') for x in sub_runes):raise ValueError('Unsupported offensive rune in replay.')
+    if keystone not in FIGHT_KEYSTONES:raise ValueError('Unsupported offensive keystone')
+    if any(x not in FIGHT_RUNES for x in sub_runes):raise ValueError('Unsupported offensive rune in replay.')
     if not 0<=q_rank<=4 or not 0<=w_rank<=4 or not 0<=e_rank<=4 or not 0<=r_rank<=3:raise ValueError('Invalid skill rank.')
     if r_duration is not None and (not math.isfinite(r_duration) or r_duration<=0):raise ValueError('Invalid R duration.')
     if any(not math.isfinite(e.time) or e.time<0 or e.action not in ('AA','Q','W','E','R') for e in events):raise ValueError('Invalid impact timeline.')
@@ -87,6 +88,9 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     dark=0; ultimate_cast_time=None;item_stacks={}
     ranks={'Q':q_rank,'W':w_rank,'E':e_rank,'R':r_rank}; ready={k:0. for k in ranks}; e_until=-1.; transcend_ready=0.
     conq=lt=style=aa=casts=0; last_style=None; conq_expiry=lt_expiry=-1.; next_aa=next_q=next_r=0.; channel_until=-1.; combat_start=None; spell_pending=False;spell_cast_times=[]
+    damage_procs=DamageProcs(level,keystone,sub_runes,kit_options.get('dark_harvest_souls',0))
+    first_contact=FirstContact(keystone=='First Strike',kit_options.get('first_strike_ready',True))
+    own_health_amp=last_stand_multiplier(kit_options.get('own_hp_pct',100.)) if 'Last Stand' in sub_runes else 1.
     health=float(hp); motion=[]; log=[]; rejected=[]; total=0.; killed=None; r_cast_id=0
     def reject(t,action,reason):rejected.append({'time':t,'action':action,'reason':reason})
     def attack_stats(t):
@@ -214,12 +218,13 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             raw=40+(level-1)/14*80+.45*max(0.,item_ad-base_ad)
             pen=min(.40,pct_pen+.1*dark) if terminus else pct_pen
             dmg=raw*resistance_multiplier(effective_resistance(armor,pen,flat_pen))*skill_amp
+            dmg,_first_notes=first_contact.apply(t,dmg)
             before_hp=health;health=max(0.,health-dmg)
             executed=bool(collector_threshold and 0<health<=hp*collector_threshold)
             if executed:health=0.
             dealt=before_hp-health;total+=dealt
             state={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
-            log.append({'order':len(log)+len(timeline),'time':t,'action':action,'damage_classification':classification,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; dash up to 325; target range 600; 50s cooldown'],'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
+            log.append({'order':len(log)+len(timeline),'time':t,'action':action,'damage_classification':classification,'mana':mana,'AD':item_ad,'crit_chance':crit_chance,'critical':False,'damage':dealt,'raw_damage':dmg,'hp_before':before_hp,'hp_after':health,'before':state,'after':dict(state),'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'effects':['Cloudburst active; dash up to 325; target range 600; 50s cooldown']+_first_notes,'melee':melee,'executed':executed,'dragon_stacks':dragon,'kite_arc':kite_arc,'distance':abs(target_position-position),'windup':None})
             if health<=0:killed=t
             if t+50<=(automatic_until or 120):queue.append((t+50,order,action,None));queue.sort(key=lambda x:(x[0],x[1]))
             continue
@@ -411,6 +416,13 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         if action in ('Q','W','E','Burn tick') and 'Battle Zeal' in sub_runes and combat_start is not None:damage*=1+.014*min(3,int(t-combat_start))
         if 'Cut Down' in sub_runes and before_hp/hp>.60:damage*=1.065
         if 'Coup de Grace' in sub_runes and before_hp/hp<.40:damage*=1.08
+        if damage>0:
+            proc_damage,proc_notes,proc_parts=damage_procs.apply(t,action,before_hp/hp,max(0.,current_ad-base_ad),ap,ea,skill_amp*(1.065 if 'Cut Down' in sub_runes and before_hp/hp>.6 else 1.)*(1.08 if 'Coup de Grace' in sub_runes and before_hp/hp<.4 else 1.))
+            damage+=proc_damage;effects.extend(proc_notes);components.extend(proc_parts)
+        if action=='AA':damage*=own_health_amp
+        _before_first=damage
+        damage,_first_notes=first_contact.apply(t,damage);effects.extend(_first_notes)
+        if _first_notes:components.append({'damage_type':'true','raw_amount':damage-_before_first,'tags':[],'status':'unknown_WR','component':'First Strike rune bonus','origin':'Rune'})
         health=max(0.,health-damage);executed=False
         if champion=='Smolder' and t<=burn_until and 0<health<hp*.065:
             health=0.;executed=True;effects.append('Smolder burn execute')
@@ -435,4 +447,6 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         after={'items':dict(item_stacks),'style':style,'conqueror':conq,'lethal_tempo':lt,'AA':aa,'skills':casts}
         log.append({'order':len(log)+len(timeline),'time':t,'action':action,'attack_id':cast_id[0] if timed_combat and action=='AA' else None,'damage_classification':classification,'damage_components':components,'mana':mana,'max_mana':max_mana,'AD':current_ad,'crit_chance':current_crit,'critical':rolled,'executed':executed,'effects':effects,'melee':melee,'cast_distance':cast_id[2] if timed_combat and champion=='Smolder' and impact and action in ('Q','W','R') and len(cast_id)>2 else None,'windup':cast_id[4] if timed_combat and action=='AA' else None,'distance':abs(target_position-position) if timed_combat else None,'ability_haste':ability_haste,'cooldowns':{k:max(0.,v-t) for k,v in ready.items()},'E_buff':t<e_until,'damage':damage,'raw_damage':raw_damage,'hp_before':before_hp,'hp_after':health,'before':before,'after':after,'dragon_stacks':dragon,'kite_arc':kite_arc,'movement_policy':'approach' if champion=='Samira' else kit_options.get('movement_policy','max_range_kite'),'kite_angle':(math.asin(math.sin(kite_arc/max(1.,attack_range)*3))*1/3) if champion!='Samira' else 0.})
         if health<=0:killed=t
-    return FightResult(log,rejected,health,aa,casts,total,killed,timeline=timeline,motion=motion)
+    assumptions=['First Strike: initial ready engagement only; cooldown rearming/gold not simulated'] if keystone=='First Strike' else []
+    if keystone=='Dark Harvest' or set(sub_runes)&{'Tyrant','Empowered Attack'}:assumptions.append('Adaptive rune procs use the existing ADC physical model; WR classification/ordering remains unverified')
+    return FightResult(log,rejected,health,aa,casts,total,killed,assumptions=assumptions,timeline=timeline,motion=motion)
