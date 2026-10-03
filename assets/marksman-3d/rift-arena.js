@@ -4,10 +4,10 @@ function createArena(T,scene,{software=false,quality='high'}={}){
  const root=new T.Group();root.name='SharpWR_Rift_Lane';scene.add(root);const geometries=new Map(),materials=new Map(),water=[],lights=[];
  const hash=n=>{const v=Math.sin(n*127.1+19.7)*43758.54;return v-Math.floor(v);};
  function mat(color,roughness=.9){const key=color+roughness;if(!materials.has(key))materials.set(key,new T.MeshStandardMaterial({color,roughness,metalness:roughness<.6?.35:0}));return materials.get(key);}
- function geom(kind){if(!geometries.has(kind))geometries.set(kind,kind==='plane'?new T.PlaneGeometry(1,1):kind==='rock'?new T.IcosahedronGeometry(1,0):kind==='leaf'?new T.IcosahedronGeometry(1,1):kind==='cone'?new T.ConeGeometry(1,1,7):kind==='trunk'?new T.CylinderGeometry(.75,1,1,7):kind==='ring'?new T.TorusGeometry(1,.025,5,36):new T.BoxGeometry(1,1,1));return geometries.get(kind);}
+ function geom(kind){if(!geometries.has(kind))geometries.set(kind,kind==='plane'?new T.PlaneGeometry(1,1,software?24:1,software?20:1):kind==='rock'?new T.IcosahedronGeometry(1,0):kind==='leaf'?new T.IcosahedronGeometry(1,1):kind==='cone'?new T.ConeGeometry(1,1,7):kind==='trunk'?new T.CylinderGeometry(.75,1,1,7):kind==='ring'?new T.TorusGeometry(1,.025,5,36):new T.BoxGeometry(1,1,1));return geometries.get(kind);}
  function mesh(kind,color,pos,scale,rough=.9){const m=new T.Mesh(geom(kind),mat(color,rough));m.position.set(...pos);m.scale.set(...scale);m.castShadow=!software&&kind!=='plane';m.receiveShadow=true;root.add(m);return m;}
  mesh('plane','#274d36',[0,-.09,0],[26,20,1]).rotation.x=-Math.PI/2;
- mesh('box','#183f31',[0,-.25,0],[26,.3,20]);
+ if(!software)mesh('box','#183f31',[0,-.25,0],[26,.3,20]);
  // Worn central lane: broken edges, warm stone, patches of grass between slabs.
  const tiles=[],limit=software?12:22;for(let x=-limit;x<=limit;x++)for(let z=-3;z<=3;z++){const seed=(x+50)*31+z+4,a=x*.58,b=z*.57;if(Math.abs(a)>11.8)continue;tiles.push({x:a,z:b,h:hash(seed),seed});}
  const tileGeo=new T.BoxGeometry(.54,.08,.53);geometries.set('tiles',tileGeo);const tileMat=mat('#838677');
