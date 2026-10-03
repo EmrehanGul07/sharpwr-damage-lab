@@ -24,3 +24,16 @@ const html=fs.readFileSync(require('node:path').join(__dirname,'../assets/marksm
 assert.ok(html.includes('__FIGHT_SCRIPT__'));assert.ok(html.includes('id="fight"'));assert.ok(html.includes('MarksmanFight.frame'));
 for(const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)){const code=match[1];if(!code.trim()||code.includes('__')||code.trim().startsWith('{'))continue;new Function(code);}
 console.log('PASS: 23 matchups / '+frames+' deterministic fight frames / complete AA-P-Q-W-E-R exchanges');
+
+for(const [name,moves]of Object.entries(Fight.MOVEMENT))for(const [slot,move]of Object.entries(moves)){
+ const event=Fight.SCHEDULE.find(e=>e[1]===slot),start=event[0],duration=slot==='AA'?profiles[name].attack.study_duration:profiles[name].skills[slot].study_duration;
+ const begin=Fight.worldPosition(profiles,name,start,1),land=Fight.worldPosition(profiles,name,start+duration*.68,1);
+ assert.ok(Math.hypot(land[0]-begin[0],land[2]-begin[2])>move.distance*.85,name+' '+slot+' must move the model');
+ const end=start+duration+2.1,near=Fight.worldPosition(profiles,name,end-1e-5,1),after=Fight.worldPosition(profiles,name,end+1e-5,1);assert.ok(Math.hypot(...near.map((v,i)=>v-after[i]))<.001,'continuous recovery '+name);
+}
+const e=profiles.Ezreal.skills.E.study_duration;
+const before=Fight.worldPosition(profiles,'Ezreal',7.8+e*.37,1),after=Fight.worldPosition(profiles,'Ezreal',7.8+e*.39,1);
+assert.ok(Math.hypot(...before.map((v,i)=>v-after[i]))>1.5,'blink must teleport at release');
+const grounded=Fight.worldPosition(profiles,'Ashe',2.3,1),firing=Fight.worldPosition(profiles,'Ashe',2.6,1);
+assert.deepEqual(grounded,firing,'planted casts must not slide');
+console.log('PASS: 9 champion movement profiles / physical displacement / blink release / grounded casting');

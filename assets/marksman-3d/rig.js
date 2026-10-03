@@ -242,7 +242,7 @@ function animateRig(rig,state={}){
  const action=state.action||'Idle',slot=action==='AA'?'attack':action==='P'?'passive':action;
  const spec=p.skills[slot]||p[slot],u=clamp(state.progress||0),weight=state.weight??(spec?pulse(u,.25,.68):0),pose=spec?.pose;
  if(spec&&weight>0){
-  const w=weight,release=smooth((u-.25)/.2),follow=smooth((u-.5)/.5),osc=wave(23)*.04;
+  const w=weight,release=smooth((u-.25)/.2),follow=smooth((u-.5)/.5),shot=spec.pose?.includes('channel')?((u-.27)*7)%1:(u-.32)/.28,recoil=shot>=0&&shot<1?Math.sin(shot*Math.PI)*Math.exp(-shot*3):0,osc=recoil*.085;
   const blend=(n,x,y=0,z=0)=>{if(j[n]){j[n].rotation.x=j[n].rotation.x*(1-w)+x*w;j[n].rotation.y=j[n].rotation.y*(1-w)+y*w;j[n].rotation.z=j[n].rotation.z*(1-w)+z*w;}};
   // Every pose includes balance through hips/spine/head, not only weapon arms.
   add('hips',0,-.06*w,0);add('spine',-.045*w,.065*w,0);add('head',.02*w,-.04*w,0);
@@ -280,6 +280,12 @@ function animateRig(rig,state={}){
   }else if(pose==='fly'){
    j.hips.position.y+=.45*w;for(const[s,side]of[[-1,'L'],[1,'R']]){add('wing_'+side,0,-s*.25,s*wave(12)*.55*w);add('front_'+side,-.2*w);add('rear_'+side,.25*w);}add('spine',-.12*w);
   }else if(pose==='barrage')add('hips',wave(22)*.012*w,0,0);
+  // Grounded firing stance: bent knees, counter-rotating torso and release recoil.
+  if(['human','yordle'].includes(p.rig)&&['pistol','gauntlet','rifle','heavy_rifle','two_hand','heavy_two_hand','dual_cast','dual_channel','crossbow','crossbow_channel','bow','bow_charge','bow_high','rocket','rocket_heavy'].includes(pose)){
+   const heavy=['heavy_rifle','heavy_two_hand','rocket_heavy'].includes(pose),crouch=heavy?.07:.035;
+   j.hips.position.y-=crouch*w;add('thigh_L',-.12*w);add('shin_L',.22*w);add('foot_L',-.1*w);add('thigh_R',-.08*w);add('shin_R',.15*w);add('foot_R',-.07*w);
+   add('hips',0,-.08*w,0);add('chest',0,.08*w,0);add('spine',recoil*(heavy?.16:.07)*w);add('head',-recoil*.04*w);
+  }
   if(p.rig==='creature'&&pose==='artillery'){add('neck',-.35*w);add('head',-.27*w);add('jaw',.5*w);add('spine',-.12*w);}
   if(p.rig==='vehicle'){add('hips',pose==='dash'?.18*w:pose==='bomb'?-.1*w:0,0,pose==='dash'?.13*w:0);add('head',-.05*w);}
  }
