@@ -5,3 +5,8 @@ venv/
 .DS_Store
 node_modules/
 art-review/
+
+*.blend1
+
+!docs/art-review/
+!docs/art-review/*.png

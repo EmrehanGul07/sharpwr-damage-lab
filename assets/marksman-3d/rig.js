@@ -208,6 +208,7 @@ function createRig(T,profile,options={}){
  return {root,joints,rest,secondary,sockets,details,profile,materials,three:T,helpers:{mesh,ring,tube},metrics(){let meshes=0,vertices=0,triangles=0;root.traverse(o=>{if(o.isMesh){meshes++;vertices+=o.geometry.attributes.position.count;triangles+=(o.geometry.index?o.geometry.index.count:o.geometry.attributes.position.count)/3;}});return{meshes,vertices,triangles,joints:Object.keys(joints).length};}};
 }
 function animateRig(rig,state={}){
+ if(rig.study)return rig.animate(state);
  const {joints:j,rest,profile:p}=rig,t=state.time||0,speed=clamp(state.speed||0,0,2),walking=speed>.015;
  for(const[name,b]of Object.entries(j)){b.position.copy(rest[name].p);b.rotation.copy(rest[name].r);}
  const add=(n,x=0,y=0,z=0)=>{if(j[n]){j[n].rotation.x+=x;j[n].rotation.y+=y;j[n].rotation.z+=z;}};
