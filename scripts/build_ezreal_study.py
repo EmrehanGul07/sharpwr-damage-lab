@@ -169,9 +169,9 @@ def performance(name,u,t):
  if name=='Walk':
   phase=u*math.pi*2
   for s,side in [(-1,'L'),(1,'R')]:
-   a=phase+(math.pi if s<0 else 0);hip=math.sin(a)*.34;knee=max(0,-math.sin(a))*.58
-   rot(side+'_thigh',hip);rot(side+'_shin',-knee);rot(side+'_foot',-hip+knee);rot(side+'_arm',-math.sin(a)*.17,0,s*.09);rot(side+'_forearm',-.16)
-  rig.pose.bones['hips'].location.y=abs(math.sin(phase))*.018;rot('spine',.035,math.sin(phase)*.035,0)
+   a=phase+(math.pi if s<0 else 0);forward=math.cos(a)*.18;lift=max(0,math.sin(a))*.075;l1=.4701;l2=.4601;reach=.90+abs(math.sin(phase))*.008-lift;d=min(l1+l2-.001,math.hypot(reach,forward));knee=math.pi-math.acos(max(-1,min(1,(l1*l1+l2*l2-d*d)/(2*l1*l2))));hip=math.atan2(forward,reach)+math.acos(max(-1,min(1,(l1*l1+d*d-l2*l2)/(2*l1*d))))
+   rot(side+'_thigh',-hip);rot(side+'_shin',knee);rot(side+'_foot',hip-knee);rot(side+'_arm',-math.sin(a)*.17,0,s*.09);rot(side+'_forearm',-.16)
+  rig.pose.bones['hips'].location.y=-.03+abs(math.sin(phase))*.008;rot('spine',.035,math.sin(phase)*.035,0)
  elif name not in ['Idle','Walk']:
   w=smooth(u/.22)*(1-smooth((u-.68)/.32));release=smooth((u-.30)/.16);recoil=math.sin(max(0,min(1,(u-.45)/.25))*math.pi)*.075
   rot('L_thigh',.10*w);rot('L_shin',-.18*w);rot('L_foot',.08*w);rot('R_thigh',.06*w);rot('R_shin',-.11*w);rot('R_foot',.05*w);rig.pose.bones['hips'].location.y=-.022*w
