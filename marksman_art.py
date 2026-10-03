@@ -13,6 +13,7 @@ def art_scripts():
 def studio_html():
     root=ROOT/'assets/marksman-3d'
     html=(root/'studio.html').read_text()
-    replacements={'__ART_DATA__':_safe_json(art_catalogue()),'__RIG_SCRIPT__':(root/'rig.js').read_text(),'__FX_SCRIPT__':(root/'effects.js').read_text(),'__SCENE_SCRIPT__':(root/'scene.js').read_text()}
+    replacements={'__ART_DATA__':_safe_json(art_catalogue()),'__RIG_SCRIPT__':(root/'rig.js').read_text(),'__FX_SCRIPT__':(root/'effects.js').read_text(),'__SCENE_SCRIPT__':(root/'scene.js').read_text(),'__FIGHT_SCRIPT__':(root/'fight.js').read_text()}
     for key,value in replacements.items():html=html.replace(key,value)
     return html
+

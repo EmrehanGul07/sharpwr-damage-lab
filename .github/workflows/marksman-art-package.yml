@@ -30,6 +30,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run export:art
       - run: npm run test:art
+      - run: node tests/test_marksman_fight.cjs
       - run: node tests/test_replay_state.cjs
       - run: pip install -r requirements.txt
       - run: python -m unittest discover -s tests -q
