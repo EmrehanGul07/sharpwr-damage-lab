@@ -291,6 +291,8 @@ function animateRig(rig,state={}){
   if(p.rig==='vehicle'){add('hips',pose==='dash'?.18*w:pose==='bomb'?-.1*w:0,0,pose==='dash'?.13*w:0);add('head',-.05*w);}
  }
  if(p.name==='Ezreal'&&spec&&weight>0&&['cast','gauntlet'].includes(pose)){for(const pair of [['arm_L','arm_R'],['forearm_L','forearm_R']]){const a=j[pair[0]].rotation.clone(),b=j[pair[1]].rotation.clone();j[pair[0]].rotation.set(b.x,b.y,-b.z);j[pair[1]].rotation.set(a.x,a.y,-a.z);}}
+ if(p.name==='Ezreal'&&action==='AA'&&weight>0){const k=weight;j.arm_L.rotation.x=-1.12*k;j.forearm_L.rotation.x=-.38*k;j.arm_R.rotation.x=-.22*k;j.chest.rotation.y=-.055*k;j.spine.rotation.x=.015*k;}
+ if(p.name==='Ezreal'&&action==='Q'&&weight>0){j.chest.rotation.y-=.17*weight;j.spine.rotation.x-=.07*weight;j.arm_R.rotation.x=-.48*weight;}
  for(const item of rig.secondary){item.chain.forEach((b,index)=>{const lag=t*3.6-index*.64,amount=item.strength*(.25+speed*.8+weight*.65),axis=item.kind==='tail'?'y':'x';b.rotation[axis]+=wave(3.6,-index*.64)*amount;b.rotation.z+=wave(2.34,-index*.416)*amount*.35;});}
  for(const d of rig.details){if(d.kind==='orb'){const a=d.angle+(loopDuration?t/loopDuration*Math.PI*2:t*.65);d.object.position.set(Math.sin(a)*.72,1.3+Math.cos(a)*.14,Math.cos(a)*.65);}else if(d.kind==='halo')d.object.rotation.z=loopDuration?t/loopDuration*Math.PI*2:t*.15;}
  rig.root.updateMatrixWorld(true);if(pose==='roll'&&weight>0){const bounds=new rig.three.Box3().setFromObject(rig.root),lift=rig.root.position.y+.025-bounds.min.y;if(lift>0){j.hips.position.y+=lift/rig.root.scale.y;rig.root.updateMatrixWorld(true);}}

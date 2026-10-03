@@ -392,7 +392,23 @@
         "cloth",
         "weapon_followthrough",
         "ears_tail_wings_when_present"
-      ]
+      ],
+      "presentation": {
+        "release": {
+          "AA": 0.23,
+          "Q": 0.35,
+          "W": 0.35,
+          "E": 0.38,
+          "R": 0.55
+        },
+        "impact": {
+          "AA": 0.57,
+          "Q": 0.8,
+          "W": 0.8,
+          "E": 0.38,
+          "R": 0.92
+        }
+      }
     },
     "Jhin": {
       "id": "jhin",

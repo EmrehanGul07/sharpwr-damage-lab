@@ -9,7 +9,7 @@ def package():
             archive.write(model,'models/'+model.name)
         for item in ('data/marksman-3d-assets.json','data/marksman-art-direction.json','docs/marksman-art-v1.md'):
             source=ROOT/item;archive.write(source,source.name)
-        for item in ('rig.js','effects.js','scene.js'):
+        for item in ('rig.js','effects.js','rift-arena.js','scene.js','practice.js','combat-hud.js'):
             archive.write(ROOT/'assets/marksman-3d'/item,'runtime/'+item)
     return path
 if __name__=='__main__':print(package())

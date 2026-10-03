@@ -175,7 +175,9 @@ def performance(name,u,t):
  elif name not in ['Idle','Walk']:
   w=smooth(u/.22)*(1-smooth((u-.68)/.32));release=smooth((u-.30)/.16);recoil=math.sin(max(0,min(1,(u-.45)/.25))*math.pi)*.075
   rot('L_thigh',.10*w);rot('L_shin',-.18*w);rot('L_foot',.08*w);rot('R_thigh',.06*w);rot('R_shin',-.11*w);rot('R_foot',.05*w);rig.pose.bones['hips'].location.y=-.022*w
-  if name in ['Q','AA','W']:
+  if name=='AA':
+   quick=smooth(u/.14)*(1-smooth((u-.43)/.57));rot('L_arm',-.70*quick,-.025*quick,-.11*quick);rot('L_forearm',-.75*quick);rot('R_arm',-.14*quick,0,.07*quick);rot('chest',0,-.065*quick,0);rig.pose.bones['hips'].location.y=-.01*quick
+  elif name in ['Q','W']:
    rot('L_arm',(-1.15-.30*release+recoil)*w,-.07*w,-.16*w);rot('L_forearm',(-.45+.37*release)*w);rot('L_hand',-.10*w)
    rot('R_arm',-.35*w,0,.12*w);rot('R_forearm',-.25*w);rot('chest',-.035*w,-.18*w,0);rot('hips',0,.07*w,0);rot('head',0,.1*w,0)
    if name=='W':rot('L_hand',-.1*w,.32*w,0);rot('L_arm',-1.30*w,-.2*w,-.12*w)
@@ -202,6 +204,13 @@ for o,b in parts:
 socket.select_set(True)
 bpy.context.view_layer.objects.active=rig
 bpy.ops.export_scene.gltf(filepath=str(OUT/'ezreal-v2.glb'),export_format='GLB',use_selection=True,export_animation_mode='NLA_TRACKS',export_force_sampling=True,export_yup=True,export_materials='EXPORT')
+# Geometry budget for browsers without WebGL; authored skin weights remain intact.
+preview=skin.copy();preview.data=skin.data.copy();bpy.context.collection.objects.link(preview);preview.name='Ezreal CPU preview';bpy.ops.object.select_all(action='DESELECT');preview.select_set(True);bpy.context.view_layer.objects.active=preview
+rig.data.pose_position='REST';dec=preview.modifiers.new('Preview geometry budget','DECIMATE');dec.ratio=.12
+while preview.modifiers.find(dec.name)>0:bpy.ops.object.modifier_move_up(modifier=dec.name)
+bpy.ops.object.modifier_apply(modifier=dec.name);rig.data.pose_position='POSE';rig.select_set(True);socket.select_set(True)
+bpy.ops.export_scene.gltf(filepath=str(OUT/'ezreal-v2-preview.glb'),export_format='GLB',use_selection=True,export_animation_mode='NLA_TRACKS',export_force_sampling=True,export_yup=True,export_materials='EXPORT')
+bpy.data.objects.remove(preview,do_unlink=True)
 # Save editable source and review scene. Assets exported above contain no lights/camera.
 scene=bpy.context.scene;scene.render.engine='CYCLES';scene.cycles.samples=24;scene.cycles.use_denoising=True;scene.render.resolution_x=900;scene.render.resolution_y=900;scene.render.resolution_percentage=100;scene.world.color=(.07,.07,.07)
 ground=material('Review floor',(.025,.043,.048),rough=.82);bpy.ops.mesh.primitive_plane_add(size=200);bpy.context.object.data.materials.append(ground)
@@ -215,5 +224,5 @@ for name,u in [('Idle',0),('Q',.5),('R',.45),('Walk',.2)]:
 meta={'schema':1,'champion':'Ezreal','tool':'Blender 4.5.14 LTS','source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'bones':len(defs),'animations':clips,'status':'original stylized production study; not final Wild Rift fidelity'}
 (OUT/'manifest.json').write_text(json.dumps(meta,indent=2)+'\n')
 with zipfile.ZipFile(OUT/'ezreal-v2-source.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
- for file in [OUT/'ezreal-v2.blend',OUT/'ezreal-v2.glb',OUT/'manifest.json',Path(__file__)]:z.write(file,file.name)
+ for file in [OUT/'ezreal-v2.blend',OUT/'ezreal-v2.glb',OUT/'ezreal-v2-preview.glb',OUT/'manifest.json',Path(__file__)]:z.write(file,file.name)
 print('EZREAL_V2_COMPLETE',str(OUT))
