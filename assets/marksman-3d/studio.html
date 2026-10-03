@@ -16,7 +16,7 @@
   // Orbit inputs are intentionally sampled even while playback is paused.
   const u=time/duration(),isSkill=['AA','P','Q','W','E','R'].includes(clip),fx=$('particles').checked&&isSkill?[{slot:clip,progress:u,age:time,seed:clip.charCodeAt(0),release:.35}]:[];
   if(scene.software&&playing&&ts-frameTime<50)return;frameTime=ts;
-  const metrics=scene.render({champion,time,action:clip,progress:u,speed:clip==='Walk'?1:0,gaitPhase:u*Math.PI*2,hero:[-1.8,0,0],target:[2.1,0,0],showTarget:$('target').checked,showRange:$('range').checked,effects:fx});
+  const metrics=scene.render({champion,time,loopDuration:['Idle','Walk'].includes(clip)?duration():0,action:clip,progress:u,speed:clip==='Walk'?1:0,gaitPhase:u*Math.PI*2,hero:[-1.8,0,0],target:[2.1,0,0],showTarget:$('target').checked,showRange:$('range').checked,effects:fx});
   $('clock').textContent=time.toFixed(2)+' / '+duration().toFixed(2)+'s';$('seek').value=time;$('phase').textContent=clip==='Idle'?'IDLE':clip==='Walk'?'LOCOMOTION':u<.28?'ANTICIPATION':u<.7?'RELEASE / HOLD':'RECOVERY';
  }
  update();raf=requestAnimationFrame(frame);document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();$('play').click();}if(e.code==='ArrowRight'){time=Math.min(duration(),time+1/30);playing=false;update();}if(e.code==='ArrowLeft'){time=Math.max(0,time-1/30);playing=false;update();}});window.addEventListener('pagehide',()=>{cancelAnimationFrame(raf);scene?.dispose();},{once:true});

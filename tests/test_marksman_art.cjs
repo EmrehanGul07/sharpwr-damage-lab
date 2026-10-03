@@ -11,6 +11,8 @@ for(const[name,p]of Object.entries(data.champions)){
  const rig=Rig.createRig(T,{...p,name}),clips=Rig.animationClips(T,rig);
  assert.deepEqual(clips.map(c=>c.name),['Idle','Walk','AA','P','Q','W','E','R']);
  for(const clip of clips){assert.ok(clip.tracks.length>0,name+' '+clip.name);for(const track of clip.tracks){assert.ok([...track.values].every(Number.isFinite));if(['Idle','Walk'].includes(clip.name)){const size=track.getValueSize();assert.deepEqual([...track.values.slice(0,size)],[...track.values.slice(-size)]);}}}
+ if(name==='Ezreal'){Rig.animateRig(rig,{action:'Q',time:.4,progress:.45});assert.ok(rig.joints.arm_L.rotation.x<rig.joints.arm_R.rotation.x,'Q must raise the gauntlet arm');assert.equal(rig.sockets.muzzle.parent.parent,rig.joints.hand_L);}
+ for(const action of ['Idle','Walk']){const duration=action==='Idle'?3:1.2;Rig.animateRig(rig,{action,time:0,progress:0,speed:action==='Walk'?1:0,gaitPhase:0,loopDuration:duration});const first=Object.values(rig.joints).flatMap(b=>[...b.position.toArray(),...b.quaternion.toArray()]);Rig.animateRig(rig,{action,time:duration,progress:1,speed:action==='Walk'?1:0,gaitPhase:Math.PI*2,loopDuration:duration});const end=Object.values(rig.joints).flatMap(b=>[...b.position.toArray(),...b.quaternion.toArray()]);assert.ok(first.every((v,i)=>Math.abs(v-end[i])<1e-8),'live loop seam '+name+' '+action);}
  signature.add(JSON.stringify([p.weapon,p.rig,p.hair,p.headgear,rig.metrics()]));
  for(const action of clips.map(c=>c.name))for(const progress of [0,.08,.25,.45,.7,.9,1]){
   const state={action,progress,time:progress*2.7,speed:action==='Walk'?1:0};Rig.animateRig(rig,state);const before=snapshot(rig);
@@ -25,6 +27,7 @@ for(const[name,p]of Object.entries(data.champions)){
   assert.ok(fx.metrics().particles<=600);effects++;
  }
  fx.dispose();
+ if(name==='Vayne'){for(const progress of [.2,.35,.5,.65,.8]){Rig.animateRig(rig,{action:'Q',progress,time:progress});const floor=new T.Box3().setFromObject(rig.root).min.y;assert.ok(floor>=.024,'roll must clear floor');}}
  const asset=manifest.champions[name],file=fs.readFileSync(path.join(__dirname,'../assets/marksman-3d/models',asset.file));
  assert.equal(file.readUInt32LE(0),0x46546c67);assert.equal(file.readUInt32LE(4),2);assert.equal(file.length,asset.bytes);
  assert.equal(asset.clips.length,8);assert.ok(asset.joints>=10);

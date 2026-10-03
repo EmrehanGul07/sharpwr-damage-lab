@@ -117,7 +117,7 @@ function createRig(T,profile,options={}){
  }
  function humanoid(){
   const small=profile.rig==='yordle',bodyScale=profile.body==='broad'?1.24:profile.body==='slender'?.86:1.;
-  const hip=bone('hips',root,0,small?.87:1.23,0),spine=bone('spine',hip,0,.21,0),chest=bone('chest',spine,0,small?.28:.36,0),neck=bone('neck',chest,0,.19,0),head=bone('head',neck,0,small?.25:.23,0);
+  const hip=bone('hips',root,0,small?.87:1.19,0),spine=bone('spine',hip,0,.21,0),chest=bone('chest',spine,0,small?.28:.36,0),neck=bone('neck',chest,0,.19,0),head=bone('head',neck,0,small?.25:.23,0);
   const rings=[new T.Vector2(.2,0),new T.Vector2(.21,.11),new T.Vector2(.18,.24),new T.Vector2(.25,.43),new T.Vector2(.31,.58),new T.Vector2(.19,.69)];
   const torso=mesh(new T.LatheGeometry(rings,low?12:28),'cloth',hip,0,0,0);torso.scale.set(bodyScale,small?.78:1,.64);ellipsoid(hip,'secondary',.24,0,-.015,0,bodyScale,.7,.69);
   const breast=ellipsoid(chest,'cloth',.25,0,-.105,.025,bodyScale,1.1,.69);
@@ -141,7 +141,7 @@ function createRig(T,profile,options={}){
   else if(weapon==='void_cannons')for(const side of ['L','R']){const pod=ornateWeapon(joints['arm_'+side],weapon,side==='R'?1:-1);pod.position.set(side==='L'?-.1:.1,.2,-.05);pod.rotation.x=0;}
   else if(['pistols','axes','crossbows','feathers'].includes(weapon)){for(const side of ['L','R'])ornateWeapon(joints['hand_'+side],weapon==='pistols'?'pistol':weapon,side==='R'?1:-1);}
   else if(weapon==='blade_pistol'){gun(joints.hand_R,'pistol');const w=ornateWeapon(joints.hand_L,'spear',-1);w.scale.set(.7,.65,.7);}
-  else ornateWeapon(joints.hand_R,weapon);
+  else ornateWeapon(joints[profile.name==='Ezreal'?'hand_L':'hand_R'],weapon);
   if(weapon==='launcher'){const minigun=gun(chest,'rifle',-1);minigun.position.set(-.3,-.15,-.3);minigun.rotation.set(.2,0,-.3);for(let i=0;i<5;i++){const g=taper(minigun,'metal',.035,.035,.7,Math.sin(i*1.26)*.12,Math.cos(i*1.26)*.12,.6);g.rotation.x=Math.PI/2;}}
   if(['Vayne','Xayah','Ashe','Senna','Lucian','Jhin','Samira','Yunara','Kalista'].includes(profile.name)){
    const coat=bone('cape',chest,0,.11,-.17);ribbon('cape_center',coat,profile.name==='Senna'||profile.name==='Jhin'?'light':profile.name==='Vayne'?'secondary':'cloth',profile.name==='Xayah'?.62:.4,profile.name==='Yunara'?1.25:.95);
@@ -205,14 +205,15 @@ function createRig(T,profile,options={}){
   const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('skinIndex',new T.Uint16BufferAttribute(skinI,4));geometry.setAttribute('skinWeight',new T.Float32BufferAttribute(skinW,4));geometry.setIndex(indices);geometry.computeVertexNormals();const skin=new T.SkinnedMesh(geometry,mat('cloth'));skin.name='deforming_back_panel';skin.castShadow=true;skin.receiveShadow=true;root.add(skin);skin.bind(skeleton);skeleton.calculateInverses();
  }
  root.updateMatrixWorld(true);for(const[name,b]of Object.entries(joints))rest[name]={p:b.position.clone(),r:b.rotation.clone()};
- return {root,joints,rest,secondary,sockets,details,profile,materials,helpers:{mesh,ring,tube},metrics(){let meshes=0,vertices=0,triangles=0;root.traverse(o=>{if(o.isMesh){meshes++;vertices+=o.geometry.attributes.position.count;triangles+=(o.geometry.index?o.geometry.index.count:o.geometry.attributes.position.count)/3;}});return{meshes,vertices,triangles,joints:Object.keys(joints).length};}};
+ return {root,joints,rest,secondary,sockets,details,profile,materials,three:T,helpers:{mesh,ring,tube},metrics(){let meshes=0,vertices=0,triangles=0;root.traverse(o=>{if(o.isMesh){meshes++;vertices+=o.geometry.attributes.position.count;triangles+=(o.geometry.index?o.geometry.index.count:o.geometry.attributes.position.count)/3;}});return{meshes,vertices,triangles,joints:Object.keys(joints).length};}};
 }
 function animateRig(rig,state={}){
  const {joints:j,rest,profile:p}=rig,t=state.time||0,speed=clamp(state.speed||0,0,2),walking=speed>.015;
  for(const[name,b]of Object.entries(j)){b.position.copy(rest[name].p);b.rotation.copy(rest[name].r);}
  const add=(n,x=0,y=0,z=0)=>{if(j[n]){j[n].rotation.x+=x;j[n].rotation.y+=y;j[n].rotation.z+=z;}};
  const set=(n,x=0,y=0,z=0)=>{if(j[n])j[n].rotation.set(x,y,z);};
- const phase=state.gaitPhase??t*(p.locomotion==='hop'?8:6.6),stride=Math.min(.34,speed*.24),breath=Math.sin(t*2.05)*.008;
+ const loopDuration=state.loopDuration||0,wave=(frequency,offset=0)=>Math.sin(loopDuration?t/loopDuration*Math.PI*2*Math.max(1,Math.round(frequency*loopDuration/(Math.PI*2)))+offset:t*frequency+offset);
+ const phase=state.gaitPhase??t*(p.locomotion==='hop'?8:6.6),stride=Math.min(.34,speed*.24),breath=wave(2.05)*.008;
  if(j.chest){j.chest.scale.set(1,1+breath,1+breath*.35);}if(j.hips)j.hips.position.y+=breath*.3;
  if(p.rig==='human'||p.rig==='yordle'){
   if(['rifle','electric_rifle','relic_cannon','cannon','launcher'].includes(p.weapon)){set('arm_R',-1.17,0,.13);set('forearm_R',-.23,0,.04);set('arm_L',-1.04,.2,-.13);set('forearm_L',-.45,-.2,0);}
@@ -229,19 +230,19 @@ function animateRig(rig,state={}){
    j.hips.position.y-=Math.abs(Math.sin(phase))*.025*speed;
    if(p.locomotion==='hop'){j.hips.position.y+=Math.max(0,Math.sin(phase))*.17;add('thigh_L',-.22);add('thigh_R',-.22);}
    if(p.locomotion==='agile')add('spine',.09*speed);if(p.locomotion==='heavy')add('spine',.05*speed);
-   if(p.locomotion==='float'){j.hips.position.y+=.11+Math.sin(t*3)*.035;set('thigh_L',-.17);set('thigh_R',-.14);set('shin_L',.35);set('shin_R',.25);}
-  }else {add('head',Math.sin(t*1.3)*.015,Math.sin(t*.7)*.015);add('forearm_L',Math.sin(t*1.8)*.008);}
+   if(p.locomotion==='float'){j.hips.position.y+=.11+wave(3)*.035;set('thigh_L',-.17);set('thigh_R',-.14);set('shin_L',.35);set('shin_R',.25);}
+  }else {add('head',wave(1.3)*.015,wave(.7)*.015);add('forearm_L',wave(1.8)*.008);}
  }else if(p.rig==='dragon'||p.rig==='creature'){
   for(const [index,name]of ['front','rear','middle'].entries())for(const[s,side]of[[-1,'L'],[1,'R']]){const a=phase+(s<0?Math.PI:0)+index*Math.PI;add(name+'_'+side,Math.sin(a)*.42*speed);add(name+'_knee_'+side,Math.max(0,Math.cos(a))*.4*speed);add(name+'_foot_'+side,-Math.sin(a)*.2*speed);}
-  j.hips.position.y+=Math.sin(phase*2)*.021*speed;add('head',Math.sin(t*1.7)*.025,Math.sin(t*.8)*.025);
-  for(const[s,side]of[[-1,'L'],[1,'R']])add('wing_'+side,Math.sin(t*1.5)*.035,s*Math.sin(t*1.9)*.05,s*Math.sin(t*1.5)*.015);
+  j.hips.position.y+=Math.sin(phase*2)*.021*speed;add('head',wave(1.7)*.025,wave(.8)*.025);
+  for(const[s,side]of[[-1,'L'],[1,'R']])add('wing_'+side,wave(1.5)*.035,s*wave(1.9)*.05,s*wave(1.5)*.015);
  }else if(p.rig==='vehicle'){
-  j.hips.position.y+=Math.sin(t*2.4)*.06;add('hips',Math.sin(t*2)*.02,0,Math.sin(t*1.3)*.025);add('head',0,Math.sin(t*.9)*.045);if(j.rotor)j.rotor.rotation.z=t*34;
+  j.hips.position.y+=wave(2.4)*.06;add('hips',wave(2)*.02,0,wave(1.3)*.025);add('head',0,wave(.9)*.045);if(j.rotor)j.rotor.rotation.z=loopDuration?t/loopDuration*Math.PI*2*Math.max(1,Math.round(34*loopDuration/(Math.PI*2))):t*34;
  }
  const action=state.action||'Idle',slot=action==='AA'?'attack':action==='P'?'passive':action;
  const spec=p.skills[slot]||p[slot],u=clamp(state.progress||0),weight=state.weight??(spec?pulse(u,.25,.68):0),pose=spec?.pose;
  if(spec&&weight>0){
-  const w=weight,release=smooth((u-.25)/.2),follow=smooth((u-.5)/.5),osc=Math.sin(t*23)*.04;
+  const w=weight,release=smooth((u-.25)/.2),follow=smooth((u-.5)/.5),osc=wave(23)*.04;
   const blend=(n,x,y=0,z=0)=>{if(j[n]){j[n].rotation.x=j[n].rotation.x*(1-w)+x*w;j[n].rotation.y=j[n].rotation.y*(1-w)+y*w;j[n].rotation.z=j[n].rotation.z*(1-w)+z*w;}};
   // Every pose includes balance through hips/spine/head, not only weapon arms.
   add('hips',0,-.06*w,0);add('spine',-.045*w,.065*w,0);add('head',.02*w,-.04*w,0);
@@ -250,13 +251,13 @@ function animateRig(rig,state={}){
    if(release>.8)blend('forearm_R',-.65+follow*.25,-.2,0);
   }else if(['rifle','heavy_rifle','kneel','kneel_channel','cannon','crossbow','crossbow_channel'].includes(pose)){
    blend('arm_R',-1.38,0,.12);blend('forearm_R',-.2);blend('arm_L',-1.12,.32,-.13);blend('forearm_L',-.53,-.35);add('chest',-.055*w,0,0);
-   if(release>.5){add('spine',osc*w);add('arm_R',Math.sin(t*29)*.025*w);}
+   if(release>.5){add('spine',osc*w);add('arm_R',wave(29)*.025*w);}
    if(pose.startsWith('kneel')){j.hips.position.y-=.23*w;blend('thigh_L',-.65);blend('shin_L',1.04);blend('thigh_R',-.98);blend('shin_R',1.3);blend('foot_L',-.39);blend('foot_R',-.32);}
   }else if(['pistol','gauntlet','cast','point'].includes(pose)){
    blend('arm_R',-1.54,.04,.06);blend('forearm_R',-.04);blend('arm_L',-.28,0,-.15);add('chest',0,-.12*w);add('spine',(release>.5?.045:-.02)*w);if(release>.5)blend('forearm_R',-.13-follow*.2);
   }else if(['dual_cast','dual_channel','spread','two_hand','heavy_two_hand'].includes(pose)){
    for(const[s,side]of[[-1,'L'],[1,'R']]){blend('arm_'+side,-1.45+(pose==='spread'?.18:0),-s*.1,s*(pose==='spread'?.65:.18));blend('forearm_'+side,pose==='two_hand'?-.33:-.06);}
-   if(pose.includes('channel')){add('spine',osc*w);add('arm_L',Math.sin(t*35)*.026*w);add('arm_R',-Math.sin(t*35)*.026*w);}
+   if(pose.includes('channel')){add('spine',osc*w);add('arm_L',wave(35)*.026*w);add('arm_R',-wave(35)*.026*w);}
    if(pose==='heavy_two_hand'){blend('arm_L',-1.22,.3,-.1);blend('forearm_L',-.55,-.27);add('spine',-.09*w);}
   }else if(['throw','spear_throw','dual_throw','throw_heavy','disc_throw','axe','brandish','rocket','rocket_heavy','switch'].includes(pose)){
    const swing=-.55-(1-release)*1.75+follow*.5;blend('arm_R',swing,-.2+release*.35,.16);blend('forearm_R',-.7*(1-release));blend('arm_L',pose==='dual_throw'?swing:-.3,.1,-.22);if(pose==='dual_throw')blend('forearm_L',-.7*(1-release));
@@ -265,31 +266,34 @@ function animateRig(rig,state={}){
   }else if(['buff','passive','orbit','rally','summon','summon_wide','ascend','guard','dash_guard'].includes(pose)){
    const wide=['summon_wide','ascend','rally','orbit'].includes(pose);for(const[s,side]of[[-1,'L'],[1,'R']]){blend('arm_'+side,wide?-.8:-1.02,s*.12,s*(wide?.95:.36));blend('forearm_'+side,wide?-.4:-.9);}
    add('head',-.1*w);if(pose==='ascend'){j.hips.position.y+=.37*w;blend('thigh_L',-.1);blend('thigh_R',-.15);blend('shin_L',.28);blend('shin_R',.25);}
-  }else if(['pull','place','bomb','artillery'].includes(pose)){
+  }else if(['pull','place','bomb','artillery','release'].includes(pose)){
    blend('arm_R',pose==='place'?-.65:-1.4,.12,.16);blend('forearm_R',-.35-release*.65);blend('arm_L',pose==='pull'?-1.15:-.45,-.1,-.22);add('spine',pose==='place'?.38*w:-.07*w);if(pose==='place'){blend('thigh_L',-.23);blend('shin_L',.45);j.hips.position.y-=.12*w;}
+  }else if(pose==='burst'){for(const[s,side]of[[-1,'L'],[1,'R']]){blend('arm_'+side,-.35,-s*.12,s*.78);blend('forearm_'+side,-.65);}add('chest',-.12*w);add('head',-.12*w);blend('thigh_L',-.18);blend('thigh_R',-.18);blend('shin_L',.34);blend('shin_R',.34);j.hips.position.y-=.08*w;
   }else if(['spin','spin_channel','dash_slash'].includes(pose)){
    add('hips',0,u*Math.PI*2*(pose==='spin_channel'?2:1)*w);for(const[s,side]of[[-1,'L'],[1,'R']]){blend('arm_'+side,-.6,0,s*1.05);blend('forearm_'+side,-.12);}add('spine',.08*w);blend('thigh_L',-.15);blend('thigh_R',.16);
   }else if(['dash','recoil_dash','blink','glide','slide','sprint','fade','roll','jump','leap_fan'].includes(pose)){
    const lean=pose==='recoil_dash'?-.23:.28;add('spine',lean*w);blend('arm_R',-.65,0,.35);blend('arm_L',-.4,0,-.28);blend('thigh_L',-.6);blend('shin_L',.9);blend('thigh_R',.4);blend('shin_R',.5);
-   if(pose==='roll')add('hips',u*Math.PI*2*w,0,0);
+   if(pose==='roll'){add('hips',u*Math.PI*2*w,0,0);j.hips.position.y+=Math.sin(u*Math.PI)*.32*w;}
    if(pose==='jump'||pose==='leap_fan'){j.hips.position.y+=Math.sin(u*Math.PI)*.65*w;blend('thigh_R',-.5);blend('shin_R',1.0);if(pose==='leap_fan'){blend('arm_L',-.8,0,-1.1);blend('arm_R',-.8,0,1.1);}}
   }else if(['breath','spit','spit_low','sneeze','call'].includes(pose)){
    add('neck',(-.12+release*.22)*w);add('head',pose==='call'?-.4*w:pose==='spit_low'?.25*w:-.08*w);add('jaw',(.2+release*.3)*w);add('spine',Math.sin(u*Math.PI*2)*.06*w);if(pose==='sneeze'){add('head',Math.sin(u*Math.PI*2)*.22*w);j.hips.position.z-=Math.sin(u*Math.PI)*.1*w;}
   }else if(pose==='fly'){
-   j.hips.position.y+=.45*w;for(const[s,side]of[[-1,'L'],[1,'R']]){add('wing_'+side,0,-s*.25,s*Math.sin(t*12)*.55*w);add('front_'+side,-.2*w);add('rear_'+side,.25*w);}add('spine',-.12*w);
-  }else if(pose==='barrage')add('hips',Math.sin(t*22)*.012*w,0,0);
+   j.hips.position.y+=.45*w;for(const[s,side]of[[-1,'L'],[1,'R']]){add('wing_'+side,0,-s*.25,s*wave(12)*.55*w);add('front_'+side,-.2*w);add('rear_'+side,.25*w);}add('spine',-.12*w);
+  }else if(pose==='barrage')add('hips',wave(22)*.012*w,0,0);
   if(p.rig==='creature'&&pose==='artillery'){add('neck',-.35*w);add('head',-.27*w);add('jaw',.5*w);add('spine',-.12*w);}
   if(p.rig==='vehicle'){add('hips',pose==='dash'?.18*w:pose==='bomb'?-.1*w:0,0,pose==='dash'?.13*w:0);add('head',-.05*w);}
  }
- for(const item of rig.secondary){item.chain.forEach((b,index)=>{const lag=t*3.6-index*.64,amount=item.strength*(.25+speed*.8+weight*.65),axis=item.kind==='tail'?'y':'x';b.rotation[axis]+=Math.sin(lag)*amount;b.rotation.z+=Math.sin(lag*.65)*amount*.35;});}
- for(const d of rig.details){if(d.kind==='orb'){const a=d.angle+t*.65;d.object.position.set(Math.sin(a)*.72,1.3+Math.cos(a)*.14,Math.cos(a)*.65);}else if(d.kind==='halo')d.object.rotation.z=t*.15;}
- rig.root.updateMatrixWorld(true);return {action,pose,weight,release:spec?.anticipation||.28};
+ if(p.name==='Ezreal'&&spec&&weight>0&&['cast','gauntlet'].includes(pose)){for(const pair of [['arm_L','arm_R'],['forearm_L','forearm_R']]){const a=j[pair[0]].rotation.clone(),b=j[pair[1]].rotation.clone();j[pair[0]].rotation.set(b.x,b.y,-b.z);j[pair[1]].rotation.set(a.x,a.y,-a.z);}}
+ for(const item of rig.secondary){item.chain.forEach((b,index)=>{const lag=t*3.6-index*.64,amount=item.strength*(.25+speed*.8+weight*.65),axis=item.kind==='tail'?'y':'x';b.rotation[axis]+=wave(3.6,-index*.64)*amount;b.rotation.z+=wave(2.34,-index*.416)*amount*.35;});}
+ for(const d of rig.details){if(d.kind==='orb'){const a=d.angle+(loopDuration?t/loopDuration*Math.PI*2:t*.65);d.object.position.set(Math.sin(a)*.72,1.3+Math.cos(a)*.14,Math.cos(a)*.65);}else if(d.kind==='halo')d.object.rotation.z=loopDuration?t/loopDuration*Math.PI*2:t*.15;}
+ rig.root.updateMatrixWorld(true);if(pose==='roll'&&weight>0){const bounds=new rig.three.Box3().setFromObject(rig.root),lift=rig.root.position.y+.025-bounds.min.y;if(lift>0){j.hips.position.y+=lift/rig.root.scale.y;rig.root.updateMatrixWorld(true);}}
+ return {action,pose,weight,release:spec?.anticipation||.28};
 }
 function animationClips(T,rig){
  const clips=[],names=['Idle','Walk','AA','P','Q','W','E','R'];
  for(const name of names){const spec=name==='AA'?rig.profile.attack:name==='P'?rig.profile.passive:rig.profile.skills[name],duration=name==='Idle'?3:name==='Walk'?1.2:spec.study_duration;
   const tracks=[],times=[],poses={};for(const joint of Object.keys(rig.joints))poses[joint]={rotation:[],position:[]};const count=Math.ceil(duration*30);
-  for(let frame=0;frame<=count;frame++){const t=frame/count*duration;times.push(t);animateRig(rig,{time:t,action:name,progress:t/duration,speed:name==='Walk'?1:0,gaitPhase:t/duration*Math.PI*2});for(const [joint,b]of Object.entries(rig.joints)){poses[joint].rotation.push(...b.quaternion.toArray());poses[joint].position.push(...b.position.toArray());}}
+  for(let frame=0;frame<=count;frame++){const t=frame/count*duration;times.push(t);animateRig(rig,{time:t,action:name,progress:t/duration,speed:name==='Walk'?1:0,loopDuration:['Idle','Walk'].includes(name)?duration:0,gaitPhase:t/duration*Math.PI*2});for(const [joint,b]of Object.entries(rig.joints)){poses[joint].rotation.push(...b.quaternion.toArray());poses[joint].position.push(...b.position.toArray());}}
   if(name==='Idle'||name==='Walk'){for(const values of Object.values(poses)){values.rotation.splice(-4,4,...values.rotation.slice(0,4));values.position.splice(-3,3,...values.position.slice(0,3));}}
   for(const [joint,values]of Object.entries(poses)){if(values.rotation.some((v,i)=>Math.abs(v-values.rotation[i%4])>1e-7))tracks.push(new T.QuaternionKeyframeTrack(joint+'.quaternion',times,values.rotation));if(values.position.some((v,i)=>Math.abs(v-values.position[i%3])>1e-7))tracks.push(new T.VectorKeyframeTrack(joint+'.position',times,values.position));}
   const clip=new T.AnimationClip(name,duration,tracks);clip.userData={timing:'authored visual study; not a game timing measurement'};clips.push(clip);

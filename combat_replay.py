@@ -26,6 +26,7 @@ def replay_payload(result,*,champion,level,target,hp,build):
         sample=samples[index] if index>=0 else {}
         end=command.get('windup_end',command.get('cast_end',max(command['time'],sample.get('cast_until',command['time']))))
         channel_end=sample.get('channel_until',command['time'])
+        if channel_end<=command.get('channel_before',command['time'])+1e-8:channel_end=command['time']
         animation_windows.append(dict(time=command['time'],order=command.get('order',0),end=end,channel_end=max(command['time'],channel_end)))
     visual_flights=[]
     for command in result.timeline:

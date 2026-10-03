@@ -1,0 +1,6 @@
+# Marksman art checkpoint — 2026-10-03
+The first complete roster package and studio were published in 28b5910; 9e645b6 fixed SVG fallback imports. Build Lab and the published tier board remain unchanged.
+Local refinements subsequently passed 256 Python tests and the 23-rig / 184-clip / 1,288-pose / 828-FX checks. All 92 QWER midpoints were rendered offline for visual inspection. The cloud browser has WebGL disabled; actual WebGL shader appearance remains unverified.
+The execution environment disconnected before the final upload. This commit recovers the refined rig, effects, loop motion and orbit handling from the authored source. CI must regenerate/reimport the 23 GLBs and rebuild the download archive before the refinement package is considered current.
+Original stylized procedural art; not extracted Riot assets or game-production/AAA sculpts. Passive identity demonstrations are not complete stack-dependent gameplay presentations. Exact Wild Rift animation/geometry equivalence remains unvalidated.
+Pending work after recovery: hardware-browser shader review; final live snapshot; complete hit/death/reload and sustained-status transitions; further sculpting, retopology and textures before a game-production quality claim.

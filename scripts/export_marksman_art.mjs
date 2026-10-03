@@ -1,5 +1,6 @@
 /** Export original geometry + eight authored animation clips for all champions. */
 import fs from 'node:fs';
+import {spawnSync} from 'node:child_process';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -25,3 +26,5 @@ for(const[name,p]of Object.entries(direction.champions)){
 }
 fs.writeFileSync(path.join(root,'data/marksman-3d-assets.json'),JSON.stringify(index,null,2)+'\n');
 console.log('Exported and reimported all 23 GLBs / 184 clips.');
+
+const packed=spawnSync(process.env.PYTHON||"python3",[path.join(root,"scripts/package_marksman_art.py")],{encoding:"utf8"});if(packed.status!==0)throw Error(packed.stderr||"Asset packaging failed");console.log(packed.stdout.trim());

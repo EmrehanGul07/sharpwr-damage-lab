@@ -1,4 +1,4 @@
-import json,unittest
+import json,unittest,zipfile
 from pathlib import Path
 from html.parser import HTMLParser
 from marksman_art import art_catalogue,studio_html
@@ -12,6 +12,12 @@ class MarksmanArt(unittest.TestCase):
    self.assertEqual(set(p['skills']),set('QWER'))
    asset=manifest['champions'][name];self.assertEqual((ROOT/'assets/marksman-3d/models'/asset['file']).stat().st_size,asset['bytes'])
    self.assertEqual([x['name'] for x in asset['clips']],['Idle','Walk','AA','P','Q','W','E','R'])
+ def test_download_bundle_matches_current_assets(self):
+  with zipfile.ZipFile(ROOT/'assets/marksman-3d/sharpwr-marksman-art-v1.zip') as archive:
+   for model in (ROOT/'assets/marksman-3d/models').glob('*.glb'):
+    self.assertEqual(archive.read('models/'+model.name),model.read_bytes())
+   for name in ['rig.js','effects.js','scene.js']:
+    self.assertEqual(archive.read('runtime/'+name),(ROOT/'assets/marksman-3d'/name).read_bytes())
  def test_studio_is_complete_and_separate(self):
   html=studio_html();self.assertNotIn('__ART_DATA__',html);self.assertNotIn('__RIG_SCRIPT__',html)
   self.assertIn('Animation studies use authored demonstration durations',html)

@@ -41,7 +41,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Volley F",
+          "label": "Volley",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -61,7 +61,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Enchanted Crystal Arrow M",
+          "label": "Enchanted Crystal Arrow",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -109,7 +109,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Piltover Peacemaker F",
+          "label": "Piltover Peacemaker",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -129,7 +129,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "90 Caliber Net M",
+          "label": "90 Caliber Net",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -139,7 +139,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Ace in the Hole F",
+          "label": "Ace in the Hole",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -187,7 +187,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Phosphorus Bomb M",
+          "label": "Phosphorus Bomb",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -217,7 +217,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Missile Barrage F",
+          "label": "Missile Barrage",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -265,7 +265,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Spinning Axe ek F",
+          "label": "Spinning Axe ek",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -285,7 +285,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Stand Aside F",
+          "label": "Stand Aside",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -295,7 +295,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Whirling Death F",
+          "label": "Whirling Death",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -343,7 +343,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Mystic Shot F",
+          "label": "Mystic Shot",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -353,7 +353,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Essence Flux M",
+          "label": "Essence Flux",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -363,7 +363,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Arcane Shift M",
+          "label": "Arcane Shift",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -373,7 +373,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Trueshot Barrage M",
+          "label": "Trueshot Barrage",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -421,7 +421,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Dancing Grenade F",
+          "label": "Dancing Grenade",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -431,7 +431,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Deadly Flourish F",
+          "label": "Deadly Flourish",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -441,7 +441,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Captive Audience M",
+          "label": "Captive Audience",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -509,7 +509,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Zap F",
+          "label": "Zap",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -519,7 +519,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Flame Chompers M",
+          "label": "Flame Chompers",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -529,7 +529,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Super Mega Death Rocket F",
+          "label": "Super Mega Death Rocket",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -587,7 +587,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Void Seeker M",
+          "label": "Void Seeker",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -655,7 +655,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Pierce F",
+          "label": "Pierce",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -675,7 +675,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Rend F",
+          "label": "Rend",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -733,7 +733,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Caustic Spittle M",
+          "label": "Caustic Spittle",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -743,7 +743,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Bio-Arcane Barrage ek M",
+          "label": "Bio-Arcane Barrage ek",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -753,7 +753,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Void Ooze M",
+          "label": "Void Ooze",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -811,7 +811,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Piercing Light F",
+          "label": "Piercing Light",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -821,7 +821,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Ardent Blaze M",
+          "label": "Ardent Blaze",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -889,7 +889,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Double Up F",
+          "label": "Double Up",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -1045,7 +1045,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Piercing Darkness F",
+          "label": "Piercing Darkness",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -1055,7 +1055,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Last Embrace F",
+          "label": "Last Embrace",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -1123,7 +1123,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Boomerang Blade F",
+          "label": "Boomerang Blade",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -1289,7 +1289,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Rocket Jump M",
+          "label": "Rocket Jump",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -1309,7 +1309,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Buster Shot M",
+          "label": "Buster Shot",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -1513,7 +1513,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Tumble ek F",
+          "label": "Tumble ek",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -1533,7 +1533,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Condemn F",
+          "label": "Condemn",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "R": {
@@ -1621,7 +1621,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Featherstorm F",
+          "label": "Featherstorm",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
@@ -1747,7 +1747,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Electrocute M",
+          "label": "Electrocute",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "W": {
@@ -1757,7 +1757,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Ultrashock Laser F",
+          "label": "Ultrashock Laser",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         },
         "E": {
@@ -1777,7 +1777,7 @@
           "anticipation": 0.28,
           "release": 0.46,
           "recovery": 0.26,
-          "label": "Lightning Crash M",
+          "label": "Lightning Crash",
           "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
         }
       },
