@@ -25,6 +25,10 @@ const STYLE={
  cultivate:['beads',1,8,'spirit'],spirit_arc:['spirit_arc',1.3,1,'spirit'],kanmei:['glide',1.15,1,'spirit'],transcend:['ascend',1.7,1,'spirit'],
  spark:['spark_bolt',1,5,'electric'],laser:['lightning_beam',1.35,1,'electric'],surge:['rail',1.2,1,'electric'],lightning:['lightning_storm',1.7,8,'electric']
 };
+// Base-skin color direction, with separate spell colors instead of one model-wide tint.
+const SPELL_COLORS={
+ Ashe:['#68c9ff','#70bfff','#9bddff','#63bcff','#84ddff'],Caitlyn:['#e8c790','#efcf91','#b99768','#76dce9','#f5c49a'],Corki:['#ffbd56','#ff9541','#ef6a2b','#ffd577','#ff9c40'],Draven:['#d9dbe4','#ded8c5','#e6965f','#dbd9d1','#e19c58'],Ezreal:['#ffd95a','#71e6ff','#ffd948','#ffe56c','#ffc33e'],Jhin:['#eab4d6','#b473d2','#da96d5','#a84bcf','#f4b97d'],Jinx:['#f2b3df','#ebc77c','#67d1ff','#ec9869','#ff8e42'],"Kai'Sa":['#b46aff','#cf83ff','#ca8eff','#a473ec','#cba0ff'],Kalista:['#69d8d2','#67ddda','#8acacb','#61ddd8','#7cdfdb'],"Kog'Maw":['#b7e954','#a0dc49','#a5df66','#90d94c','#a7e845'],Lucian:['#f6e9b8','#ffe39b','#98d8ff','#dceaff','#ffe6aa'],"Miss Fortune":['#ffbe68','#ffc073','#eda071','#ffa950','#ffc280'],Samira:['#f6cf7b','#dedbe8','#dde3ef','#eaae88','#efc49a'],Senna:['#73dcd1','#a9f0df','#70d3cf','#73d5ce','#ffeeaf'],Sivir:['#c9cf8a','#f0d789','#d6eab5','#ffe28d','#9fdcd5'],Smolder:['#ffae42','#ff9e36','#ffd46c','#ffac58','#ff8535'],Tristana:['#ffbf70','#ffd184','#ffb65c','#edb678','#ffc568'],Twitch:['#8fde58','#81c762','#91dc4a','#a4e961','#a2d97a'],Varus:['#b47aff','#b482ef','#b673eb','#af83d7','#b476eb'],Vayne:['#b8caff','#b7caff','#eef5ff','#d1d9ff','#aaa5f7'],Xayah:['#d587e9','#edb5fa','#d67cdb','#e897f4','#e9a1ed'],Yunara:['#a295ff','#aea5ff','#a8e4ea','#b9a0ff','#d09fff'],Zeri:['#d0f77c','#defa8b','#dcf57c','#b5ee83','#cef885']};
+function effectColor(profile,slot){return SPELL_COLORS[profile.name]?.[{P:0,Q:1,W:2,E:3,R:4,AA:1}[slot]]||profile.palette.energy;}
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),hash=(i)=>{const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 function createEffects(T,scene,{software=false,budget=1400}={}){
  const group=new T.Group();group.name='Deterministic_Visual_Effects';scene.add(group);const pool=[],materials=new Map();let used=0,particleCount=0;
@@ -53,7 +57,7 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
  function draw(profile,slot,frame={}){
   const spec=slot==='AA'?profile.attack:slot==='P'?profile.passive:profile.skills[slot];if(!spec)return;
   const effect=slot==='AA'?({bow:'arrow',rifle:'pierce',pistols:'barrage',axes:'axe',spear:'spear',cannon:'cannon_ball',maw:'acid',breath:'flame',aircraft:'barrage',relic_cannon:'dark_beam',void_cannons:'swarm',crossbows:'heavy_bolt',crossblade:'disc',feathers:'feather',spirit_orbs:'spirit_arc',electric_rifle:'spark_bolt',launcher:'pierce',blade_pistol:'barrage',crossbow:'heavy_bolt'}[profile.weapon]||'arcane_arrow'):slot==='P'?'passive':spec.effect;
-  const style=STYLE[effect]||[effect,1,1,profile.theme],kind=style[0],scale=style[1],count=style[2],u=clamp(frame.progress??0),age=frame.age??u*(spec.study_duration||1),active=frame.active??true,source=frame.source||new T.Vector3(-3,1.5,0),target=frame.target||new T.Vector3(0,1.2,0),hero=frame.hero||source.clone().setY(0),color=profile.palette.energy,accent=profile.palette.metal;
+  const style=STYLE[effect]||[effect,1,1,profile.theme],kind=style[0],scale=style[1],count=style[2],u=clamp(frame.progress??0),age=frame.age??u*(spec.study_duration||1),active=frame.active??true,source=frame.source||new T.Vector3(-3,1.5,0),target=frame.target||new T.Vector3(0,1.2,0),hero=frame.hero||source.clone().setY(0),color=effectColor(profile,slot),accent=['W','E','R'].includes(slot)&&profile.name==='Ezreal'?'#fff0a6':profile.palette.metal;
   const direction=target.clone().sub(source).normalize(),side=new T.Vector3(-direction.z,0,direction.x),ground=target.clone().setY(.06),release=frame.release??.35,travel=clamp((u-release)/Math.max(.01,.74-release)),impact=frame.impact??u>=.74,origin=source.clone(),head=origin.clone().lerp(target,travel),fade=1-clamp((u-.74)/.26),seed=(frame.seed||1)*83;
   const trails=(v,dir,c,n=7,r=.065)=>{for(let i=1;i<=n;i++)sphere(v.clone().addScaledVector(dir,-i*.09),r*(1-i/(n+1)),c,(1-i/(n+1))*.8);};
   // Anticipation: socket charge tracks the articulated hand or muzzle.
@@ -115,7 +119,7 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
     const offset=(i-(n-1)/2),end=target.clone().addScaledVector(side,spread?offset*.35:kind==='recall_feathers'?offset*.28:0),start=origin.clone();
     let f=travel;if(returning)f=u<.64?clamp((u-release)/(.64-release)):1-clamp((u-.64)/.36);if(kind==='recall_feathers'){start.copy(end);end.copy(origin);f=travel;}
     if(kind==='swarm'){start.addScaledVector(side,offset*.065);start.y+=.2;}
-    const v=start.clone().lerp(end,f),dir=end.clone().sub(start).normalize();if(['bomb','grenade','cask'].includes(kind))v.y+=Math.sin(f*Math.PI)*.7;
+    const v=start.clone().lerp(end,f),dir=end.clone().sub(start).normalize();// Released projectiles stay on the frozen firing line; no ballistic offset.
     if(kind==='crescent'){const wave=object('crescent',color,.66);wave.position.copy(v);wave.quaternion.setFromRotationMatrix(new T.Matrix4().makeBasis(side.clone().normalize(),dir,side.clone().cross(dir).normalize()));wave.scale.set(1.18,1.18,1);for(let j=0;j<16;j++){const x=j/15*2-1,tip=v.clone().addScaledVector(side,x*1.25).addScaledVector(dir,-x*x*.35);sphere(tip,.075,color);if(j>0)segment(tip,v.clone().addScaledVector(side,(x-2/15)*1.25).addScaledVector(dir,-((x-2/15)**2)*.35),.04,accent);}}
     else if(kind==='net'){for(let j=-2;j<=2;j++){segment(v.clone().addScaledVector(side,j*.08).add(new T.Vector3(0,-.2,0)),v.clone().addScaledVector(side,j*.08).add(new T.Vector3(0,.2,0)),.012,color);segment(v.clone().addScaledVector(side,-.2).add(new T.Vector3(0,j*.08,0)),v.clone().addScaledVector(side,.2).add(new T.Vector3(0,j*.08,0)),.012,color);}}
     else if(kind==='flame'||kind==='sneeze'){for(let j=0;j<8;j++){const f0=Math.max(0,f-j*.028),tip=start.clone().lerp(end,f0);sphere(tip,(.1+j*.012)*scale,j%2?color:accent,.28);emit(tip,3,color,seed+j,age%.5,{radius:.07,speed:.4,up:.2,lifetime:.5,gravity:0});}}
@@ -123,7 +127,7 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
     else if(kind==='star'){for(let j=0;j<4;j++){const a=j*Math.PI/2,ray=v.clone().add(new T.Vector3(0,Math.sin(a)*.2,Math.cos(a)*.2));segment(v,ray,.023,color);}trails(v,dir,color);}
     else if(kind==='axe'||effect==='axe_return'){const o=projectile(v,dir,.30*scale,accent,'axe');o.scale.setScalar(.45*scale);o.rotateZ(age*17+i);trails(v,dir,color,5,.05);}
     else if(kind==='feather'||kind==='feather_fan'||kind==='recall_feathers'){const o=projectile(v,dir,.16*scale,color,'feather');o.scale.setScalar(.36*scale);trails(v,dir,color,6,.035);}
-    else if(kind==='bomb'||kind==='grenade'){const arc=Math.sin(f*Math.PI)*.7,bomb=v.clone().add(new T.Vector3(0,arc,0));sphere(bomb,.11*scale,accent,.9);ring(bomb,.12*scale,color,.6,dir);emit(bomb,8,color,seed+i,age%.45,{radius:.05,speed:.25,up:.4,lifetime:.5,size:.05});}
+    else if(kind==='bomb'||kind==='grenade'){const bomb=v.clone();sphere(bomb,.11*scale,accent,.9);ring(bomb,.12*scale,color,.6,dir);emit(bomb,8,color,seed+i,age%.45,{radius:.05,speed:.25,up:0,gravity:0,lifetime:.5,size:.05});}
     else if(kind==='disc'||kind==='boomerang'){const o=projectile(v,dir,.16*scale,color,'disc');o.rotateX(age*13);for(let j=0;j<4;j++){const a=age*12+j*Math.PI/2,blade=v.clone().add(new T.Vector3(0,Math.sin(a)*.19,Math.cos(a)*.19));segment(v,blade,.04,accent);}}
     else if(kind==='flux'){ring(v,.24,color,.9,dir);ring(v,.15,accent,.9,dir);sphere(v,.04,'#ffffff');}
     else {projectile(v,dir,(kind==='acid'||kind==='cannon_ball'?.105:.06)*scale,color,kind==='acid'||kind==='cannon_ball'?'ball':kind==='spirit_arc'?'gem':'arrow');trails(v,dir,color,kind==='charged_arrow'?10:6,.065*scale);}
@@ -131,9 +135,9 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
   }
   if(impact&&fade>0){ring(target,.12+(1-fade)*.6*scale,color,fade,new T.Vector3(1,0,0));emit(target,kind==='rocket'?70:kind==='cannon_ball'?45:22,color,seed,(1-fade)*.8,{radius:.13,speed:1.2*scale,lifetime:.85,up:1,gravity:1.4,size:.09});}
  }
- function impact(profile,action,age,point,seed=1){if(age<0||age>.7)return;const c=profile.palette.energy;ring(point,.1+age*1.1,c,(1-age/.7)*.65,new T.Vector3(1,0,0));emit(point,action.startsWith('R')?40:16,c,seed*67,age,{radius:.1,speed:1.3,up:1,gravity:1.8,lifetime:.7,size:.09});}
+ function impact(profile,action,age,point,seed=1){if(age<0||age>.7)return;const c=effectColor(profile,action.startsWith('AA')?'AA':action[0]);ring(point,.1+age*1.1,c,(1-age/.7)*.65,new T.Vector3(1,0,0));emit(point,action.startsWith('R')?40:16,c,seed*67,age,{radius:.1,speed:1.3,up:1,gravity:1.8,lifetime:.7,size:.09});}
  function dispose(){scene.remove(group);for(const g of Object.values(geometries))g.dispose();for(const m of materials.values())m.dispose();shader.dispose();buffer.dispose();}
  return {group,begin,finish,draw,impact,dispose,metrics:()=>({meshPool:pool.length,liveMeshes:used,particles:particleCount,budget})};
 }
-const API={STYLE,createEffects,hash};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanEffects=API;
+const API={STYLE,SPELL_COLORS,effectColor,createEffects,hash};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanEffects=API;
 })(typeof globalThis!=='undefined'?globalThis:this);

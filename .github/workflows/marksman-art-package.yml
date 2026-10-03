@@ -5,6 +5,10 @@ on:
     paths:
       - "assets/marksman-3d/*.js"
       - "data/marksman-art-direction.json"
+      - "data/marksman-skill-icons.json"
+      - "assets/marksman-3d/studio.html"
+      - "marksman_art.py"
+      - "tests/test_combat_hud.cjs"
       - "scripts/export_marksman_art.mjs"
       - "scripts/package_marksman_art.py"
       - "scripts/build_ezreal_study.py"
@@ -40,6 +44,7 @@ jobs:
       - run: node tests/test_blender_study.cjs
       - run: npm run test:art
       - run: node tests/test_marksman_fight.cjs
+      - run: node tests/test_combat_hud.cjs
       - run: node tests/test_replay_state.cjs
       - run: pip install -r requirements.txt
       - run: python -m unittest discover -s tests -q

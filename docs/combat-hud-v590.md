@@ -1,0 +1,13 @@
+# Animation Studio combat controls — v5.90.0
+
+AA has a circular attack cursor button and a world-space target marker. Q/W/E/R surround AA in an ascending arc; passive is a smaller inspection button. Idle and Walk remain separate. Skill buttons display actual ability art, accessible ability names, a radial cooldown mask and a numeric countdown.
+
+115 icons: 100 cropped from the user's twenty Wild Rift champion screenshots (source keys in `data/marksman-skill-icons.json`); Varus, Smolder and Yunara use Riot Data Dragon 16.18.1 presentation assets. Those three sets are explicitly identified as icon fallbacks, not verified WR crops. No Data Dragon balance/timing data is imported. Existing screenshots remain private; only cropped ability art is included.
+
+Cooldowns use the existing WR catalogue, first ability rank, zero haste. Unknown values remain null. Ashe Q's unresolved/stack-gated timing is not replaced with a fabricated numeric cooldown. Passive has no cast cooldown. AA displays authored animation recovery, not a calculated attack-speed interval. Manual casts cannot recast while their timer is active. Pause and playback speed affect the animation and cooldown clock together. Champion changes and fight restart reset the preview state; timeline seeking in a fight reconstructs timers from deterministic cast events. The staged fight skips recasts that would violate the available base cooldown. Resources, ammo/charge availability, passive requirements and conditional cooldown reductions are outside this art preview.
+
+Base-skin color direction is specified per champion and slot instead of tinting every spell with the model's one energy color. Ezreal Q is cyan; passive/W/E/R are gold. Colors are artistic approximations, not pixel-matched recordings.
+
+At launch, both actors sample their exact release pose, root position and target position. The muzzle, endpoint and direction are frozen for the rest of the flight. Launch sampling restores the current rendered skeleton, so neither playback nor arbitrary seeking relies on cached frame history. Released projectiles use a constant height, straight interpolation and fixed orientation. The artificial bomb/grenade arc (previously applied twice) is removed. Impact sparks may still fall; ground rain/artillery and intentional return/recall effects retain their own authored behavior.
+
+Validation: `node tests/test_combat_hud.cjs` covers 115 embedded assets, manual recast lock, 23 cooldown-aware schedules, seek reconstruction, moving-target launch stability, pose restoration, cyan/gold Ezreal and flat Q/bomb trajectories. Existing art/fight/replay and Python suites also run in CI. Build Lab behavior and frozen Tier List are unchanged.

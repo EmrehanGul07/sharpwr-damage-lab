@@ -24,6 +24,7 @@ async function createScene(container,profiles,{quality='high',studio=false,study
  targetPart(new T.CylinderGeometry(.21,.27,1.15,12),wood,0,.87,0);targetPart(new T.SphereGeometry(.19,16,12),targetMetal,0,1.65,0);targetPart(new T.CylinderGeometry(.045,.045,1.12,10),targetMetal,0,1.38,0).rotation.z=Math.PI/2;targetPart(new T.CylinderGeometry(.09,.12,.48,10),targetMetal,-.15,.28,0);targetPart(new T.CylinderGeometry(.09,.12,.48,10),targetMetal,.15,.28,0);const bull=targetPart(new T.TorusGeometry(.16,.023,8,32),goldMat,0,1.07,.235);targetPart(new T.SphereGeometry(.05,12,8),wood,0,1.07,.24);
  const range=new T.Mesh(new T.TorusGeometry(1,.006,5,100),new T.MeshBasicMaterial({color:'#86bcb5',transparent:true,opacity:.3}));range.rotation.x=Math.PI/2;range.position.y=.025;scene.add(range);
  const trailGeometry=new T.BufferGeometry();trailGeometry.setAttribute('position',new T.BufferAttribute(new Float32Array(17*3),3));const trailMaterial=new T.LineBasicMaterial({color:'#b59dec',transparent:true,opacity:.48}),trail=new T.Line(trailGeometry,trailMaterial);trail.frustumCulled=false;scene.add(trail);
+ const attackCursor=new T.Group();attackCursor.name='Basic_Attack_Target_Cursor';scene.add(attackCursor);const cursorMat=new T.MeshBasicMaterial({color:'#ffd67c',transparent:true,opacity:.9,depthTest:false});const cursorRing=new T.Mesh(new T.TorusGeometry(.35,.014,5,40),cursorMat);cursorRing.rotation.x=Math.PI/2;attackCursor.add(cursorRing);for(let i=0;i<4;i++){const a=i*Math.PI/2,m=new T.Mesh(new T.ConeGeometry(.05,.14,3),cursorMat);m.rotation.x=-Math.PI/2;m.rotation.z=a;m.position.set(Math.sin(a)*.44,0,Math.cos(a)*.44);attackCursor.add(m);}
  const effects=MarksmanEffects.createEffects(T,scene,{software,budget:quality==='low'?600:1400});
  const label=document.createElement('div');label.className='model-name';container.append(label);const status=document.createElement('div');status.className='render-status';status.textContent=software?'SOFTWARE 3D':'PBR • WEBGL';container.append(status);const heroHud=document.createElement('div');heroHud.className='art-hero-hud';container.append(heroHud);const targetHud=document.createElement('div');targetHud.className='art-target-hud';container.append(targetHud);const numbers=document.createElement('div');numbers.className='art-hit-numbers';container.append(numbers);
  let opponentRig=null,opponentName=null,rig=null,name=null,yaw=.8,pitch=.39,zoom=8.7,mode=studio?'portrait':'duel',dragging=false,lastX=0,lastY=0,lost=false,disposed=false,revision=0,lastSignature='',lastMetrics=null,anchor=studio?'hero':'duel',view={radius:5.3,angle:1.25,elevation:.24};
@@ -50,10 +51,11 @@ async function createScene(container,profiles,{quality='high',studio=false,study
   view={radius,angle,elevation};camera.position.set(focus.x+Math.sin(angle)*Math.cos(elevation)*radius,focus.y+Math.sin(elevation)*radius,focus.z+Math.cos(angle)*Math.cos(elevation)*radius);camera.lookAt(focus);camera.updateMatrixWorld();
   trail.visible=!!frame.trail?.length;if(trail.visible){const vertices=trailGeometry.attributes.position;frame.trail.slice(-17).forEach((v,i)=>vertices.setXYZ(i,...v));trailGeometry.setDrawRange(0,Math.min(17,frame.trail.length));vertices.needsUpdate=true;}
   range.position.copy(hero).setY(.025);range.scale.setScalar((frame.range||550)/100);range.visible=!!frame.showRange;
-  effects.begin();const source=rig.sockets.muzzle?rig.sockets.muzzle.getWorldPosition(new T.Vector3()):hero.clone().add(new T.Vector3(0,1.2,0)),hitPoint=target.clone().setY(1.12);
-  for(const f of (frame.effects||[]).slice(-16))effects.draw(rig.profile,f.slot,{...f,hero,source:f.source?new T.Vector3(...f.source):source,target:f.target?new T.Vector3(...f.target):hitPoint,start:f.start?new T.Vector3(...f.start):undefined,end:f.end?new T.Vector3(...f.end):undefined});
+  attackCursor.position.copy(target).setY(.075);attackCursor.visible=!!frame.attackCursor||!!frame.demo;
+  effects.begin();const hitPoint=target.clone().setY(1.12);
+  for(const f of (frame.effects||[]).slice(-16))effects.draw(rig.profile,f.slot,prepareEffectFrame(T,rig,f,hero,target,{time:frame.time||0,action:frame.action||'Idle',progress:frame.progress||0,speed:frame.speed||0,gaitPhase:frame.gaitPhase,loopDuration:frame.loopDuration}));
   for(const hit of(frame.impacts||[]).slice(-8))effects.impact(rig.profile,hit.action,hit.age,hitPoint,hit.seed||1);
-  if(opponentRig){const enemySource=opponentRig.sockets.muzzle?opponentRig.sockets.muzzle.getWorldPosition(new T.Vector3()):target.clone().setY(1.2),heroHit=hero.clone().setY(1.12);for(const f of(frame.opponent.effects||[]).slice(-16))effects.draw(opponentRig.profile,f.slot,{...f,hero:target,source:enemySource,target:heroHit});for(const hit of(frame.opponent.impacts||[]).slice(-8))effects.impact(opponentRig.profile,hit.action,hit.age,heroHit,hit.seed||1);}
+  if(opponentRig){const enemySource=opponentRig.sockets.muzzle?opponentRig.sockets.muzzle.getWorldPosition(new T.Vector3()):target.clone().setY(1.2),heroHit=hero.clone().setY(1.12);for(const f of(frame.opponent.effects||[]).slice(-16))effects.draw(opponentRig.profile,f.slot,prepareEffectFrame(T,opponentRig,f,target,hero,{time:frame.time||0,action:frame.opponent.action,progress:frame.opponent.progress,speed:frame.opponent.speed,gaitPhase:frame.opponent.gaitPhase,loopDuration:frame.opponent.loopDuration}));for(const hit of(frame.opponent.impacts||[]).slice(-8))effects.impact(opponentRig.profile,hit.action,hit.age,heroHit,hit.seed||1);}
   effects.finish();
   if(frame.stats){const hp=frame.stats.hp,max=frame.stats.max_hp,q=project(target.clone().setY(2.12)),heroQ=project(hero.clone().setY(rig.profile.rig==='human'?2.9:2.1));targetHud.style.cssText='left:'+q.x+'px;top:'+q.y+'px;display:block';targetHud.textContent=(frame.stats.target||'TARGET')+' · '+Math.ceil(hp)+' / '+Math.ceil(max)+' HP';heroHud.style.cssText='left:'+heroQ.x+'px;top:'+heroQ.y+'px;display:block';heroHud.textContent=frame.stats.mana==null?'':Math.floor(frame.stats.mana)+' MANA';targetRoot.rotation.z=hp<=0?-.85:0;}
   else{targetHud.style.display='none';heroHud.style.display='none';targetRoot.rotation.z=0;}
@@ -65,6 +67,18 @@ async function createScene(container,profiles,{quality='high',studio=false,study
  function dispose(){if(disposed)return;disposed=true;disposeRig();disposeOpponent();effects.dispose();trailGeometry.dispose();trailMaterial.dispose();const gs=new Set(),ms=new Set();scene.traverse(o=>{if(o.isMesh){gs.add(o.geometry);ms.add(o.material);}});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());renderer.dispose?.();renderer.domElement.remove();for(const e of[label,status,heroHud,targetHud,numbers])e.remove();}
  return{render,setCamera,resetCamera,dispose,useModel,renderer,software,get rig(){return rig;}};
 }
-const API={createScene};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanScene=API;
+ // Re-sample the launch pose deterministically. Playback/seek never depend on prior frames.
+ function prepareEffectFrame(T,model,f,pos,destination,animation){
+  let source=f.source?new T.Vector3(...f.source):model.sockets.muzzle?.getWorldPosition(new T.Vector3())||pos.clone().setY(1.2),target=f.target?new T.Vector3(...f.target):destination.clone().setY(1.12);
+  if(!f.source&&f.progress>=(f.release??.35)&&Number.isFinite(f.launchTime)){
+   const savedPosition=model.root.position.clone(),savedQuaternion=model.root.quaternion.clone(),launch=new T.Vector3(...f.launchHero),aim=new T.Vector3(...f.launchTarget).sub(launch);model.root.position.copy(launch);model.root.rotation.y=Math.atan2(aim.x,aim.z);
+   MarksmanRig.animateRig(model,{time:f.launchTime,action:f.slot,progress:f.release??.35,speed:0});model.root.updateMatrixWorld(true);source=model.sockets.muzzle?.getWorldPosition(new T.Vector3())||launch.clone().setY(1.2);
+   model.root.position.copy(savedPosition);model.root.quaternion.copy(savedQuaternion);MarksmanRig.animateRig(model,animation);model.root.updateMatrixWorld(true);
+   target=new T.Vector3(...f.launchTarget);target.y=source.y;
+  }
+  return {...f,hero:pos,source,target,start:f.start?new T.Vector3(...f.start):undefined,end:f.end?new T.Vector3(...f.end):undefined};
+ }
+
+const API={createScene,prepareEffectFrame};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanScene=API;
 })(typeof globalThis!=='undefined'?globalThis:this);
 
