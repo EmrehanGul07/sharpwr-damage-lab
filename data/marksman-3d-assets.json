@@ -7,7 +7,7 @@
   "champions": {
     "Ashe": {
       "file": "ashe.glb",
-      "bytes": 1759316,
+      "bytes": 1779764,
       "meshes": 118,
       "vertices": 45153,
       "triangles": 47984,
@@ -28,7 +28,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 54
+          "tracks": 60
         },
         {
           "name": "P",
@@ -43,7 +43,7 @@
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 54
+          "tracks": 60
         },
         {
           "name": "E",
@@ -53,7 +53,7 @@
         {
           "name": "R",
           "duration": 1.4500000476837158,
-          "tracks": 54
+          "tracks": 60
         }
       ],
       "skills": {
@@ -77,7 +77,7 @@
     },
     "Caitlyn": {
       "file": "caitlyn.glb",
-      "bytes": 1879948,
+      "bytes": 1892460,
       "meshes": 121,
       "vertices": 48847,
       "triangles": 47928,
@@ -98,7 +98,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 49
+          "tracks": 55
         },
         {
           "name": "P",
@@ -108,7 +108,7 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 49
+          "tracks": 55
         },
         {
           "name": "W",
@@ -287,7 +287,7 @@
     },
     "Ezreal": {
       "file": "ezreal.glb",
-      "bytes": 884852,
+      "bytes": 906320,
       "meshes": 83,
       "vertices": 34191,
       "triangles": 38888,
@@ -308,7 +308,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 14
+          "tracks": 20
         },
         {
           "name": "P",
@@ -318,7 +318,7 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 14
+          "tracks": 20
         },
         {
           "name": "W",
@@ -333,7 +333,7 @@
         {
           "name": "R",
           "duration": 1.399999976158142,
-          "tracks": 13
+          "tracks": 20
         }
       ],
       "skills": {
@@ -357,7 +357,7 @@
     },
     "Jhin": {
       "file": "jhin.glb",
-      "bytes": 1688952,
+      "bytes": 1701408,
       "meshes": 88,
       "vertices": 52025,
       "triangles": 39876,
@@ -378,7 +378,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 24
+          "tracks": 30
         },
         {
           "name": "P",
@@ -393,7 +393,7 @@
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 24
+          "tracks": 30
         },
         {
           "name": "E",
@@ -427,7 +427,7 @@
     },
     "Jinx": {
       "file": "jinx.glb",
-      "bytes": 1201884,
+      "bytes": 1222168,
       "meshes": 124,
       "vertices": 46166,
       "triangles": 50580,
@@ -448,7 +448,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 19
+          "tracks": 25
         },
         {
           "name": "P",
@@ -463,7 +463,7 @@
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 19
+          "tracks": 25
         },
         {
           "name": "E",
@@ -473,7 +473,7 @@
         {
           "name": "R",
           "duration": 1.399999976158142,
-          "tracks": 19
+          "tracks": 25
         }
       ],
       "skills": {
@@ -497,7 +497,7 @@
     },
     "Kai'Sa": {
       "file": "kaisa.glb",
-      "bytes": 461192,
+      "bytes": 468480,
       "meshes": 76,
       "vertices": 24330,
       "triangles": 35724,
@@ -533,7 +533,7 @@
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 8
+          "tracks": 15
         },
         {
           "name": "E",
@@ -707,7 +707,7 @@
     },
     "Lucian": {
       "file": "lucian.glb",
-      "bytes": 1668732,
+      "bytes": 1702120,
       "meshes": 99,
       "vertices": 53822,
       "triangles": 44056,
@@ -728,7 +728,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 24
+          "tracks": 30
         },
         {
           "name": "P",
@@ -738,12 +738,12 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 24
+          "tracks": 30
         },
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 23
+          "tracks": 30
         },
         {
           "name": "E",
@@ -753,7 +753,7 @@
         {
           "name": "R",
           "duration": 2.5,
-          "tracks": 23
+          "tracks": 30
         }
       ],
       "skills": {
@@ -777,7 +777,7 @@
     },
     "Miss Fortune": {
       "file": "miss-fortune.glb",
-      "bytes": 2045280,
+      "bytes": 2071436,
       "meshes": 126,
       "vertices": 53758,
       "triangles": 50080,
@@ -798,7 +798,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 49
+          "tracks": 55
         },
         {
           "name": "P",
@@ -808,7 +808,7 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 49
+          "tracks": 55
         },
         {
           "name": "W",
@@ -823,7 +823,7 @@
         {
           "name": "R",
           "duration": 2.5,
-          "tracks": 48
+          "tracks": 55
         }
       ],
       "skills": {
@@ -847,7 +847,7 @@
     },
     "Samira": {
       "file": "samira.glb",
-      "bytes": 2300836,
+      "bytes": 2313264,
       "meshes": 131,
       "vertices": 58184,
       "triangles": 53080,
@@ -868,7 +868,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 59
+          "tracks": 65
         },
         {
           "name": "P",
@@ -878,7 +878,7 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 59
+          "tracks": 65
         },
         {
           "name": "W",
@@ -917,7 +917,7 @@
     },
     "Senna": {
       "file": "senna.glb",
-      "bytes": 2473336,
+      "bytes": 2495004,
       "meshes": 138,
       "vertices": 61651,
       "triangles": 54488,
@@ -938,7 +938,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 64
+          "tracks": 70
         },
         {
           "name": "P",
@@ -948,7 +948,7 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 64
+          "tracks": 70
         },
         {
           "name": "W",
@@ -963,7 +963,7 @@
         {
           "name": "R",
           "duration": 1.399999976158142,
-          "tracks": 63
+          "tracks": 70
         }
       ],
       "skills": {
@@ -1127,7 +1127,7 @@
     },
     "Tristana": {
       "file": "tristana.glb",
-      "bytes": 918668,
+      "bytes": 918664,
       "meshes": 90,
       "vertices": 39383,
       "triangles": 43100,
@@ -1197,7 +1197,7 @@
     },
     "Twitch": {
       "file": "twitch.glb",
-      "bytes": 926088,
+      "bytes": 942884,
       "meshes": 86,
       "vertices": 34072,
       "triangles": 42252,
@@ -1218,7 +1218,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 15
+          "tracks": 21
         },
         {
           "name": "P",
@@ -1243,7 +1243,7 @@
         {
           "name": "R",
           "duration": 2.200000047683716,
-          "tracks": 15
+          "tracks": 21
         }
       ],
       "skills": {
@@ -1267,7 +1267,7 @@
     },
     "Varus": {
       "file": "varus.glb",
-      "bytes": 1056588,
+      "bytes": 1084988,
       "meshes": 106,
       "vertices": 27912,
       "triangles": 41420,
@@ -1288,7 +1288,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 39
+          "tracks": 45
         },
         {
           "name": "P",
@@ -1298,7 +1298,7 @@
         {
           "name": "Q",
           "duration": 1.4500000476837158,
-          "tracks": 39
+          "tracks": 45
         },
         {
           "name": "W",
@@ -1308,12 +1308,12 @@
         {
           "name": "E",
           "duration": 0.949999988079071,
-          "tracks": 39
+          "tracks": 45
         },
         {
           "name": "R",
           "duration": 1.4500000476837158,
-          "tracks": 39
+          "tracks": 45
         }
       ],
       "skills": {
@@ -1337,7 +1337,7 @@
     },
     "Vayne": {
       "file": "vayne.glb",
-      "bytes": 1369312,
+      "bytes": 1381776,
       "meshes": 94,
       "vertices": 43218,
       "triangles": 42088,
@@ -1358,7 +1358,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 28
+          "tracks": 34
         },
         {
           "name": "P",
@@ -1378,7 +1378,7 @@
         {
           "name": "E",
           "duration": 0.949999988079071,
-          "tracks": 28
+          "tracks": 34
         },
         {
           "name": "R",
@@ -1547,7 +1547,7 @@
     },
     "Zeri": {
       "file": "zeri.glb",
-      "bytes": 958148,
+      "bytes": 977880,
       "meshes": 87,
       "vertices": 35359,
       "triangles": 39196,
@@ -1568,7 +1568,7 @@
         {
           "name": "AA",
           "duration": 0.8999999761581421,
-          "tracks": 14
+          "tracks": 20
         },
         {
           "name": "P",
@@ -1578,12 +1578,12 @@
         {
           "name": "Q",
           "duration": 0.949999988079071,
-          "tracks": 14
+          "tracks": 20
         },
         {
           "name": "W",
           "duration": 0.949999988079071,
-          "tracks": 13
+          "tracks": 20
         },
         {
           "name": "E",
