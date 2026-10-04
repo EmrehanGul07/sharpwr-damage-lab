@@ -1,0 +1,22 @@
+{
+  "champion": "Kai'Sa",
+  "id": "kaisa",
+  "bones": 21,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 24888,
+  "preview_triangles": 6968,
+  "materials": 11,
+  "silhouette": "Sculpted violet void carapace, dark hair, glowing eyes and articulated shoulder missile pods",
+  "weapon": "void_cannons",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

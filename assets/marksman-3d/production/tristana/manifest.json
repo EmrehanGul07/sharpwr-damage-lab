@@ -1,0 +1,22 @@
+{
+  "champion": "Tristana",
+  "id": "tristana",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 1.25,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 24612,
+  "preview_triangles": 6891,
+  "materials": 10,
+  "silhouette": "Blue-skinned yordle, oversized ears, silver hair, pilot goggles and oversized brass cannon",
+  "weapon": "cannon",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

@@ -1,0 +1,22 @@
+{
+  "champion": "Draven",
+  "id": "draven",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 25296,
+  "preview_triangles": 7081,
+  "materials": 10,
+  "silhouette": "Broad bare arms, angular moustache, high black crest, fur collar and two crescent axes",
+  "weapon": "axes",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

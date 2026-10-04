@@ -1,0 +1,22 @@
+{
+  "champion": "Samira",
+  "id": "samira",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 2.3
+  },
+  "full_triangles": 28652,
+  "preview_triangles": 8022,
+  "materials": 10,
+  "silhouette": "Dark swept hair, eyepatch, red scarf, armored leather suit, curved blade and compact pistol",
+  "weapon": "blade_pistol",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

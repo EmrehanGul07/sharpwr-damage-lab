@@ -1,0 +1,22 @@
+{
+  "champion": "Senna",
+  "id": "senna",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 27112,
+  "preview_triangles": 7591,
+  "materials": 11,
+  "silhouette": "Dark skin, white long coat, flowing dark locks and oversized spectral relic cannon",
+  "weapon": "relic_cannon",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

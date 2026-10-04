@@ -1,0 +1,22 @@
+{
+  "champion": "Zeri",
+  "id": "zeri",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.95,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 24600,
+  "preview_triangles": 6887,
+  "materials": 11,
+  "silhouette": "Bright green twin hair knots, yellow jacket, teal shirt, articulated electric rifle and battery pack",
+  "weapon": "electric_rifle",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}

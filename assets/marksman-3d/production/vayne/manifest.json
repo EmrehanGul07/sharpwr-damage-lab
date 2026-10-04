@@ -1,0 +1,22 @@
+{
+  "champion": "Vayne",
+  "id": "vayne",
+  "bones": 19,
+  "animations": {
+    "Idle": 3,
+    "Walk": 1.2,
+    "AA": 0.9,
+    "P": 2.0,
+    "Q": 0.72,
+    "W": 0.95,
+    "E": 0.95,
+    "R": 1.4
+  },
+  "full_triangles": 26608,
+  "preview_triangles": 7449,
+  "materials": 11,
+  "silhouette": "Dark ponytail, red-lensed goggles, navy armor, crimson cape and wrist-mounted crossbows",
+  "weapon": "crossbows",
+  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "status": "original authored stylized asset; not extracted Wild Rift game art"
+}
