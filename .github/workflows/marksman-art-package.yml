@@ -13,6 +13,10 @@ on:
       - "scripts/export_marksman_art.mjs"
       - "scripts/package_marksman_art.py"
       - "scripts/build_ezreal_study.py"
+      - "scripts/build_marksman_roster.py"
+      - "scripts/build_skill_geometry.py"
+      - "data/marksman-skill-geometry.json"
+      - "tests/test_roster_v7.cjs"
       - "tests/test_blender_study.cjs"
       - "tests/test_marksman_art*"
       - ".github/workflows/marksman-art-package.yml"
@@ -22,7 +26,7 @@ permissions:
 jobs:
   art:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
     permissions:
       contents: write
     steps:
@@ -42,7 +46,16 @@ jobs:
           curl -L --fail --retry 2 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.14-linux-x64.tar.xz
           tar -xf /tmp/blender.tar.xz -C /tmp
           /tmp/blender-4.5.14-linux-x64/blender --background --threads 2 --python scripts/build_ezreal_study.py
+      - name: Build complete skinned roster when source changes
+        run: |
+          if python -c "import hashlib,json,pathlib; p=pathlib.Path('assets/marksman-3d/production/manifest.json'); assert p.exists() and json.loads(p.read_text()).get('source_sha256') == hashlib.sha256(pathlib.Path('scripts/build_marksman_roster.py').read_bytes()+pathlib.Path('data/marksman-art-direction.json').read_bytes()).hexdigest()"; then exit 0; fi
+          if [ ! -f /tmp/blender-4.5.14-linux-x64/blender ]; then
+            curl -L --fail --retry 2 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.14-linux-x64.tar.xz
+            tar -xf /tmp/blender.tar.xz -C /tmp
+          fi
+          /tmp/blender-4.5.14-linux-x64/blender --background --threads 2 --python scripts/build_marksman_roster.py
       - run: node tests/test_blender_study.cjs
+      - run: node tests/test_roster_v7.cjs
       - run: npm run test:art
       - run: node tests/test_marksman_fight.cjs
       - run: node tests/test_combat_hud.cjs
@@ -58,7 +71,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/marksman-3d/models data/marksman-3d-assets.json assets/marksman-3d/sharpwr-marksman-art-v1.zip assets/marksman-3d/studies/ezreal-v2 docs/art-review
+          git add assets/marksman-3d/models data/marksman-3d-assets.json assets/marksman-3d/sharpwr-marksman-art-v1.zip assets/marksman-3d/studies/ezreal-v2 assets/marksman-3d/production docs/art-review
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Regenerate verified marksman GLBs and download package"
           git push

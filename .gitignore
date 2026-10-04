@@ -10,3 +10,6 @@ art-review/
 
 !docs/art-review/
 !docs/art-review/*.png
+
+!docs/art-review/roster-v7/
+!docs/art-review/roster-v7/*.png

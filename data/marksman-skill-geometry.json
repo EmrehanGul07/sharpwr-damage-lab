@@ -1,0 +1,2667 @@
+{
+  "schema": 1,
+  "units_per_world_unit": 100,
+  "policy": "Existing WR database geometry only. Rank 1 / level 1 defaults; global ranges remain unbounded. Unknown values are labeled, never replaced by PC ranges. Authoring fallback movement distances are explicitly previews.",
+  "champions": {
+    "Ashe": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            625
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Frost_Shot",
+          "status": "unresolved",
+          "label": "Frost Shot",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Ranger%27s_Focus",
+          "status": "unresolved",
+          "label": "Ranger’s Focus",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "cone",
+          "range": [
+            1200.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            1200.0
+          ],
+          "width": [
+            20.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Volley",
+          "status": "database",
+          "label": "Volley F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "1200",
+            "width": "20"
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            1000.0
+          ],
+          "width": null,
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Hawkshot",
+          "status": "database",
+          "label": "Hawkshot",
+          "raw": {
+            "range": "",
+            "target range": "Global",
+            "effect radius": "1000",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            400.0,
+            350.0
+          ],
+          "width": [
+            260.0
+          ],
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe/Enchanted_Crystal_Arrow",
+          "status": "database",
+          "label": "Enchanted Crystal Arrow M",
+          "raw": {
+            "range": "Global",
+            "target range": "",
+            "effect radius": "400 / 350",
+            "width": "260"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Caitlyn": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            675
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Headshot",
+          "status": "unresolved",
+          "label": "Headshot",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1150.0
+          ],
+          "travel_range": [
+            1150.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            120.0,
+            180.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Piltover_Peacemaker",
+          "status": "database",
+          "label": "Piltover Peacemaker F",
+          "raw": {
+            "range": "1150",
+            "target range": "",
+            "effect radius": "",
+            "width": "120 / 180"
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            675.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Yordle_Snap_Trap",
+          "status": "database",
+          "label": "Yordle Snap Trap",
+          "raw": {
+            "range": "",
+            "target range": "675",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "recoil",
+          "range": [
+            725.0
+          ],
+          "travel_range": [
+            725.0
+          ],
+          "movement_range": null,
+          "radius": [
+            140.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/90_Caliber_Net",
+          "status": "database",
+          "label": "90 Caliber Net M",
+          "raw": {
+            "range": "725",
+            "target range": "",
+            "effect radius": "140",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": [
+            1750.0,
+            2250.0,
+            2750.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            80.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn/Ace_in_the_Hole",
+          "status": "database",
+          "label": "Ace in the Hole F",
+          "raw": {
+            "range": "",
+            "target range": "1750 / 2250 / 2750",
+            "effect radius": "",
+            "width": "80"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Corki": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Hextech_Munitions",
+          "status": "unresolved",
+          "label": "Hextech Munitions",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "area",
+          "range": [
+            750.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            225.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Phosphorus_Bomb",
+          "status": "database",
+          "label": "Phosphorus Bomb M",
+          "raw": {
+            "range": "",
+            "target range": "750",
+            "effect radius": "225",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "dash",
+          "range": [
+            550.0
+          ],
+          "travel_range": null,
+          "movement_range": [
+            550.0
+          ],
+          "radius": [
+            125.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Valkyrie",
+          "status": "database",
+          "label": "Valkyrie M/s",
+          "raw": {
+            "range": "",
+            "target range": "550",
+            "effect radius": "125",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "cone",
+          "range": [
+            600.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            600.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Gatling_Gun",
+          "status": "database",
+          "label": "Gatling Gun F/s",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "600",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            80.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki/Missile_Barrage",
+          "status": "unresolved",
+          "label": "Missile Barrage F",
+          "raw": {
+            "range": "",
+            "target range": "1100 \\ 1175",
+            "effect radius": "150 \\ 300",
+            "width": "80"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Draven": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/League_of_Draven",
+          "status": "unresolved",
+          "label": "League of Draven",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Spinning_Axe",
+          "status": "unresolved",
+          "label": "Spinning Axe ek F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Blood_Rush",
+          "status": "unresolved",
+          "label": "Blood Rush",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": [
+            1100.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            260.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Stand_Aside",
+          "status": "database",
+          "label": "Stand Aside F",
+          "raw": {
+            "range": "",
+            "target range": "1100",
+            "effect radius": "",
+            "width": "260"
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            320.0
+          ],
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven/Whirling_Death",
+          "status": "database",
+          "label": "Whirling Death F",
+          "raw": {
+            "range": "",
+            "target range": "Global",
+            "effect radius": "",
+            "width": "320"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Ezreal": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Rising_Spell_Force",
+          "status": "unresolved",
+          "label": "Rising Spell Force",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1200.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            120.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Mystic_Shot",
+          "status": "database",
+          "label": "Mystic Shot F",
+          "raw": {
+            "range": "",
+            "target range": "1200",
+            "effect radius": "",
+            "width": "120"
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            1200.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            160.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Essence_Flux",
+          "status": "database",
+          "label": "Essence Flux M",
+          "raw": {
+            "range": "",
+            "target range": "1200",
+            "effect radius": "",
+            "width": "160"
+          }
+        },
+        "E": {
+          "shape": "blink",
+          "range": [
+            475.0
+          ],
+          "travel_range": null,
+          "movement_range": [
+            475.0
+          ],
+          "radius": [
+            750.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Arcane_Shift",
+          "status": "database",
+          "label": "Arcane Shift M",
+          "raw": {
+            "range": "",
+            "target range": "475",
+            "effect radius": "750",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            320.0
+          ],
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal/Trueshot_Barrage",
+          "status": "database",
+          "label": "Trueshot Barrage M",
+          "raw": {
+            "range": "",
+            "target range": "Global",
+            "effect radius": "",
+            "width": "320"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Jhin": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Whisper",
+          "status": "unresolved",
+          "label": "Whisper",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Dancing_Grenade",
+          "status": "unresolved",
+          "label": "Dancing Grenade F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Deadly_Flourish",
+          "status": "unresolved",
+          "label": "Deadly Flourish F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Captive_Audience",
+          "status": "unresolved",
+          "label": "Captive Audience M",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "cone",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin/Curtain_Call",
+          "status": "unresolved",
+          "label": "Curtain Call F/shot",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Jinx": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Get_Excited%21",
+          "status": "unresolved",
+          "label": "Get Excited",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": [
+            250.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            250.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Switcheroo%21",
+          "status": "database",
+          "label": "Switcheroo",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "250",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            1500.0
+          ],
+          "travel_range": [
+            1500.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            120.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Zap%21",
+          "status": "database",
+          "label": "Zap F",
+          "raw": {
+            "range": "1500",
+            "target range": "",
+            "effect radius": "",
+            "width": "120"
+          }
+        },
+        "E": {
+          "shape": "area",
+          "range": [
+            925.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            225.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Flame_Chompers%21",
+          "status": "database",
+          "label": "Flame Chompers M",
+          "raw": {
+            "range": "",
+            "target range": "925",
+            "effect radius": "225",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            400.0,
+            1000.0,
+            1000.0
+          ],
+          "width": [
+            280.0
+          ],
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx/Super_Mega_Death_Rocket%21",
+          "status": "database",
+          "label": "Super Mega Death Rocket F",
+          "raw": {
+            "range": "",
+            "target range": "Global",
+            "effect radius": "400 / 1000 / 1000",
+            "width": "280"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Kai'Sa": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": [
+            2750.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            2750.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Second_Skin",
+          "status": "database",
+          "label": "Second Skin",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "2750",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": [
+            600.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Icathian_Rain",
+          "status": "database",
+          "label": "Icathian Rain F/missile",
+          "raw": {
+            "range": "",
+            "target range": "600",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            3000.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            200.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Void_Seeker",
+          "status": "database",
+          "label": "Void Seeker M",
+          "raw": {
+            "range": "",
+            "target range": "3000",
+            "effect radius": "",
+            "width": "200"
+          }
+        },
+        "E": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Supercharge",
+          "status": "unresolved",
+          "label": "Supercharge",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "target-dash",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            400.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai%27Sa/Killer_Instinct",
+          "status": "unresolved",
+          "label": "Killer Instinct shield",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "400",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Kalista": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            550
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Martial_Poise",
+          "status": "unresolved",
+          "label": "Martial Poise",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Pierce",
+          "status": "unresolved",
+          "label": "Pierce F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Sentinel",
+          "status": "unresolved",
+          "label": "Sentinel",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Rend",
+          "status": "unresolved",
+          "label": "Rend F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista/Fate%27s_Call",
+          "status": "unresolved",
+          "label": "Fate’s Call",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Kog'Maw": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            500
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": [
+            400.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            400.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Icathian_Surprise",
+          "status": "database",
+          "label": "Icathian Surprise T",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "400",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1200.0
+          ],
+          "travel_range": [
+            1200.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            140.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Caustic_Spittle",
+          "status": "database",
+          "label": "Caustic Spittle M",
+          "raw": {
+            "range": "1200",
+            "target range": "",
+            "effect radius": "",
+            "width": "140"
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Bio-Arcane_Barrage",
+          "status": "unresolved",
+          "label": "Bio-Arcane Barrage ek M",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": [
+            1360.0
+          ],
+          "travel_range": [
+            1360.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            240.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Void_Ooze",
+          "status": "database",
+          "label": "Void Ooze M",
+          "raw": {
+            "range": "1360",
+            "target range": "",
+            "effect radius": "",
+            "width": "240"
+          }
+        },
+        "R": {
+          "shape": "area",
+          "range": [
+            1300.0,
+            1425.0,
+            1550.0,
+            1675.0,
+            1800.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            240.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog%27Maw/Living_Artillery",
+          "status": "database",
+          "label": "Living Artillery",
+          "raw": {
+            "range": "",
+            "target range": "1300 / 1425 / 1550 / 1675 / 1800",
+            "effect radius": "240",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Lucian": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            525
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Lightslinger",
+          "status": "unresolved",
+          "label": "Lightslinger",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            500.0
+          ],
+          "travel_range": [
+            1000.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            120.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Piercing_Light",
+          "status": "database",
+          "label": "Piercing Light F",
+          "raw": {
+            "range": "1000",
+            "target range": "500",
+            "effect radius": "",
+            "width": "120"
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            800.0
+          ],
+          "travel_range": [
+            800.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            110.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Ardent_Blaze",
+          "status": "database",
+          "label": "Ardent Blaze M",
+          "raw": {
+            "range": "800",
+            "target range": "",
+            "effect radius": "",
+            "width": "110"
+          }
+        },
+        "E": {
+          "shape": "dash",
+          "range": [
+            425.0
+          ],
+          "travel_range": null,
+          "movement_range": [
+            425.0
+          ],
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/Relentless_Pursuit",
+          "status": "database",
+          "label": "Relentless Pursuit",
+          "raw": {
+            "range": "",
+            "target range": "425",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian/The_Culling",
+          "status": "unresolved",
+          "label": "The Culling F/shot",
+          "raw": {
+            "range": "1200 / 1140 (plus offset)",
+            "target range": "",
+            "effect radius": "",
+            "width": "220 (plus offset)"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Miss Fortune": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Love_Tap",
+          "status": "unresolved",
+          "label": "Love Tap",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            500.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Double_Up",
+          "status": "unresolved",
+          "label": "Double Up F",
+          "raw": {
+            "range": "",
+            "target range": "Miss Fortune's attack range",
+            "effect radius": "500",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Strut",
+          "status": "unresolved",
+          "label": "Strut",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "area",
+          "range": [
+            1000.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            200.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Make_It_Rain",
+          "status": "database",
+          "label": "Make It Rain M/tick",
+          "raw": {
+            "range": "",
+            "target range": "1000",
+            "effect radius": "200",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "cone",
+          "range": [
+            1450.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            1450.0
+          ],
+          "width": [
+            40.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune/Bullet_Time",
+          "status": "database",
+          "label": "Bullet Time F/wave",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "1450",
+            "width": "40"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Samira": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            525
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Daredevil_Impulse",
+          "status": "unresolved",
+          "label": "Daredevil Impulse",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            950
+          ],
+          "travel_range": [
+            950.0,
+            400.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            120.0,
+            130.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair",
+          "status": "database",
+          "label": "Flair",
+          "raw": {
+            "range": "950 / 400",
+            "target range": "340",
+            "effect radius": "",
+            "width": "120 / 130"
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            325.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl",
+          "status": "unresolved",
+          "label": "Blade Whirl",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "325",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "target-dash",
+          "range": [
+            600.0
+          ],
+          "travel_range": null,
+          "movement_range": [
+            650
+          ],
+          "radius": null,
+          "width": [
+            300.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush",
+          "status": "database",
+          "label": "Wild Rush",
+          "raw": {
+            "range": "650 / 800 / -150",
+            "target range": "600",
+            "effect radius": "",
+            "width": "300"
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            600.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger",
+          "status": "unresolved",
+          "label": "Inferno Trigger",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "600",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Senna": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            625
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Absolution",
+          "status": "unresolved",
+          "label": "Absolution",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "2000 \\ 750",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1300.0
+          ],
+          "travel_range": [
+            1300.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            100.0,
+            280.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Piercing_Darkness",
+          "status": "database",
+          "label": "Piercing Darkness F",
+          "raw": {
+            "range": "1300",
+            "target range": "600 - 1100",
+            "effect radius": "",
+            "width": "100 / 280"
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            1300.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            280.0
+          ],
+          "width": [
+            140.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Last_Embrace",
+          "status": "database",
+          "label": "Last Embrace F",
+          "raw": {
+            "range": "",
+            "target range": "1300",
+            "effect radius": "280",
+            "width": "140"
+          }
+        },
+        "E": {
+          "shape": "self",
+          "range": [
+            400.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            400.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Curse_of_the_Black_Mist",
+          "status": "database",
+          "label": "Curse of the Black Mist",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "400",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            320.0,
+            2400.0
+          ],
+          "global": true,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna/Dawning_Shadow",
+          "status": "database",
+          "label": "Dawning Shadow",
+          "raw": {
+            "range": "",
+            "target range": "Global",
+            "effect radius": "",
+            "width": "320 / 2400"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Sivir": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            525
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Fleet_of_Foot",
+          "status": "unresolved",
+          "label": "Fleet of Foot",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1250.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": [
+            180.0,
+            200.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Boomerang_Blade",
+          "status": "database",
+          "label": "Boomerang Blade F",
+          "raw": {
+            "range": "",
+            "target range": "1250",
+            "effect radius": "",
+            "width": "180 / 200"
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": [
+            500.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            500.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Ricochet",
+          "status": "database",
+          "label": "Ricochet F/bounce",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "500",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/Spell_Shield",
+          "status": "unresolved",
+          "label": "Spell Shield",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "self",
+          "range": [
+            1000.0
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            1000.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir/On_the_Hunt",
+          "status": "database",
+          "label": "On the Hunt",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "1000",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Smolder": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Dragon_Practice",
+          "status": "unresolved",
+          "label": "Dragon Practice",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "target",
+          "range": [
+            500.0
+          ],
+          "travel_range": [
+            500.0
+          ],
+          "movement_range": null,
+          "radius": [
+            285.0,
+            150.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Super_Scorcher_Breath",
+          "status": "database",
+          "label": "Super Scorcher Breath",
+          "raw": {
+            "range": "500",
+            "target range": "100% attack range",
+            "effect radius": "285 / 150",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "cone",
+          "range": [
+            1250.0
+          ],
+          "travel_range": [
+            1250.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Achooo%21",
+          "status": "database",
+          "label": "Achooo!",
+          "raw": {
+            "range": "1250",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": [
+            700.0
+          ],
+          "travel_range": [
+            700.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/Flap%2C_Flap%2C_Flap",
+          "status": "database",
+          "label": "Flap Flap Flap",
+          "raw": {
+            "range": "700",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": [
+            3300
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            1000.0
+          ],
+          "width": [
+            300.0
+          ],
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder/MMOOOMMMM%21",
+          "status": "database",
+          "label": "MOOOMMM!",
+          "raw": {
+            "range": "3300 / -500",
+            "target range": "",
+            "effect radius": "1000",
+            "width": "300"
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Tristana": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            545
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Draw_a_Bead",
+          "status": "unresolved",
+          "label": "Draw a Bead",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rapid_Fire",
+          "status": "unresolved",
+          "label": "Rapid Fire",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "jump",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Rocket_Jump",
+          "status": "unresolved",
+          "label": "Rocket Jump M",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "target",
+          "range": [
+            545
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Explosive_Charge",
+          "status": "database_level_scaled",
+          "label": "Explosive Charge",
+          "raw": {
+            "range": "",
+            "target range": "545 – 685 (based on level)",
+            "effect radius": "",
+            "width": ""
+          },
+          "level_range": {
+            "base": 545,
+            "per_level": 10,
+            "max_level": 15
+          }
+        },
+        "R": {
+          "shape": "target",
+          "range": [
+            545
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana/Buster_Shot",
+          "status": "database_level_scaled",
+          "label": "Buster Shot M",
+          "raw": {
+            "range": "",
+            "target range": "545 – 685 (based on level)",
+            "effect radius": "",
+            "width": ""
+          },
+          "level_range": {
+            "base": 545,
+            "per_level": 10,
+            "max_level": 15
+          }
+        }
+      },
+      "attack_level_range": {
+        "base": 545,
+        "per_level": 10,
+        "max_level": 15
+      }
+    },
+    "Twitch": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Deadly_Venom",
+          "status": "unresolved",
+          "label": "Deadly Venom T",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Ambush",
+          "status": "unresolved",
+          "label": "Ambush",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Venom_Cask",
+          "status": "unresolved",
+          "label": "Venom Cask",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Contaminate",
+          "status": "unresolved",
+          "label": "Contaminate",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "global",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch/Spray_and_Pray",
+          "status": "unresolved",
+          "label": "Spray and Pray",
+          "raw": {
+            "range": "",
+            "target range": "Twitch's attack range",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Varus": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Living_Vengeance",
+          "status": "unresolved",
+          "label": "Living Vengeance",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Piercing_Arrow",
+          "status": "unresolved",
+          "label": "Piercing Arrow",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Blighted_Quiver",
+          "status": "unresolved",
+          "label": "Blighted Quiver on-hit büyü",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Hail_of_Arrows",
+          "status": "unresolved",
+          "label": "Hail of Arrows",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus/Chain_of_Corruption",
+          "status": "unresolved",
+          "label": "Chain of Corruption",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Vayne": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Night_Hunter",
+          "status": "unresolved",
+          "label": "Night Hunter",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "roll",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Tumble",
+          "status": "unresolved",
+          "label": "Tumble ek F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Silver_Bolts",
+          "status": "unresolved",
+          "label": "Silver Bolts",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Condemn",
+          "status": "unresolved",
+          "label": "Condemn F",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne/Final_Hour",
+          "status": "unresolved",
+          "label": "Final Hour",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Xayah": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Clean_Cuts",
+          "status": "unresolved",
+          "label": "Clean Cuts",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            1000.0
+          ],
+          "travel_range": [
+            1000.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Double_Daggers",
+          "status": "database",
+          "label": "Double Daggers",
+          "raw": {
+            "range": "1000",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Deadly_Plumage",
+          "status": "unresolved",
+          "label": "Deadly Plumage",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Bladecaller",
+          "status": "unresolved",
+          "label": "Bladecaller",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "Global",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": [
+            1000.0
+          ],
+          "travel_range": [
+            1000.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah/Featherstorm",
+          "status": "database",
+          "label": "Featherstorm F",
+          "raw": {
+            "range": "1000",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Yunara": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            575
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": null,
+          "status": "unresolved",
+          "label": "Vow of the First Lands",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": null,
+          "status": "unresolved",
+          "label": "Cultivation of Spirit",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": null,
+          "status": "unresolved",
+          "label": "Arc of Judgment",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "E": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": null,
+          "status": "unresolved",
+          "label": "Kanmei’s Steps",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": null,
+          "status": "unresolved",
+          "label": "Transcend One’s Self",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    },
+    "Zeri": {
+      "slots": {
+        "AA": {
+          "shape": "target",
+          "range": [
+            700
+          ],
+          "source": "data/marksman_champion_stats.json",
+          "status": "database",
+          "label": "Basic attack"
+        },
+        "P": {
+          "shape": "self",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Living_Battery",
+          "status": "unresolved",
+          "label": "Living Battery",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "Q": {
+          "shape": "line",
+          "range": [
+            700.0
+          ],
+          "travel_range": [
+            700.0
+          ],
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Electrocute%21",
+          "status": "database",
+          "label": "Electrocute M",
+          "raw": {
+            "range": "700",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "W": {
+          "shape": "line",
+          "range": [
+            1200
+          ],
+          "travel_range": null,
+          "movement_range": null,
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Ultrashock_Laser",
+          "status": "database",
+          "label": "Ultrashock Laser F",
+          "raw": {
+            "range": "1200 \\ 1500",
+            "target range": "",
+            "effect radius": "",
+            "width": "80 \\ 200"
+          }
+        },
+        "E": {
+          "shape": "slide",
+          "range": [
+            300.0
+          ],
+          "travel_range": [
+            300.0
+          ],
+          "movement_range": [
+            300.0
+          ],
+          "radius": null,
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Spark_Surge",
+          "status": "database",
+          "label": "Spark Surge",
+          "raw": {
+            "range": "300",
+            "target range": "",
+            "effect radius": "",
+            "width": ""
+          }
+        },
+        "R": {
+          "shape": "line",
+          "range": null,
+          "travel_range": null,
+          "movement_range": null,
+          "radius": [
+            640.0
+          ],
+          "width": null,
+          "global": false,
+          "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri/Lightning_Crash",
+          "status": "unresolved",
+          "label": "Lightning Crash M",
+          "raw": {
+            "range": "",
+            "target range": "",
+            "effect radius": "640",
+            "width": ""
+          }
+        }
+      },
+      "attack_level_range": null
+    }
+  }
+}
