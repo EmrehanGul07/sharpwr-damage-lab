@@ -13,6 +13,8 @@ from .rune_runtime import (
     FIGHT_RUNES,
     FirstContact,
     DamageProcs,
+    FleetFootwork,
+    PhaseRush,
     last_stand_multiplier,
 )
 from .damage_classification import (
@@ -147,9 +149,23 @@ def replay_marksman(events, **p):
     if runes - FIGHT_RUNES:
         raise ValueError("Unsupported offensive rune in replay")
     damage_procs = DamageProcs(level, keystone, runes, p.get("dark_harvest_souls", 0))
+    phase_rush = PhaseRush(keystone == "Phase Rush", level)
+    fleet = FleetFootwork(keystone == "Fleet Footwork", p.get("fleet_ready", False))
+    if keystone == "Fleet Footwork":
+        kit.unresolved.add(
+            "Fleet Footwork energy follows the Energized item rule (9 per attack, 26 per 700 units); WR charge rate unverified"
+        )
     if keystone == "Dark Harvest" or runes & {"Tyrant", "Empowered Attack"}:
         kit.unresolved.add(
             "Adaptive rune procs use the existing ADC physical model; WR classification/ordering remains unverified"
+        )
+    if keystone == "Empowerment":
+        kit.unresolved.add(
+            "Empowerment: every damaging attack/ability hit counts toward its 3 hits (WR rules unverified)"
+        )
+    if "Sudden Impact" in runes and name not in ("Lucian", "Zeri"):
+        kit.unresolved.add(
+            f"Sudden Impact: {name}'s dashes and blinks are not modeled; it never fires"
         )
     first_contact = FirstContact(keystone == "First Strike", p.get("first_strike_ready", True))
     own_health_amp = (
@@ -204,8 +220,10 @@ def replay_marksman(events, **p):
             kit.state[key + "_until"] = t + duration
 
     def total_as():
-        bonus = kit.bonus_as(t) + (
-            0.048 * lt if keystone == "Lethal Tempo" and t < lt_until else 0.0
+        bonus = (
+            kit.bonus_as(t)
+            + (0.048 * lt if keystone == "Lethal Tempo" and t < lt_until else 0.0)
+            + fleet.bonus_as()
         )
         if aa_stats:
             value = aa_stats(
@@ -352,6 +370,7 @@ def replay_marksman(events, **p):
             if raw_override is None
             else raw_override
         )
+        damage *= damage_procs.amplification()
         if (
             p.get("muramana")
             and eligible
@@ -376,6 +395,10 @@ def replay_marksman(events, **p):
             )
         effects = list(effects)
         if damage > 0:
+            if phase_rush.hit(t):
+                for basic in "QWE":
+                    reduce(basic, fraction=0.2)
+                effects.append("Phase Rush: +10 basic ability haste for 3s, basic cooldowns -20%")
             proc_damage, proc_notes, proc_parts = damage_procs.apply(
                 t, action, prior / maxhp, max(0.0, applied_ad - base_ad), ap, ea, multiplier(action)
             )
@@ -1102,7 +1125,8 @@ def replay_marksman(events, **p):
                     "max_mana": maxmana,
                     "bonus_ad": bonus,
                     "bonus_as": kit.bonus_as(t)
-                    + (0.048 * lt if keystone == "Lethal Tempo" else 0.0),
+                    + (0.048 * lt if keystone == "Lethal Tempo" else 0.0)
+                    + fleet.bonus_as(),
                     "crit": prob,
                     "melee": gap <= 200,
                     "event_driven": True,
@@ -1285,17 +1309,21 @@ def replay_marksman(events, **p):
         if mana is not None:
             mana = max(0.0, mana - cost + cost * p.get("mana_refund", 0.0))
         cd = kit.cd(slot)
-        cooldown_value = cd / (1 + haste / 100)
+        cooldown_value = cd / (1 + (haste + (phase_rush.haste(t) if slot in "QWE" else 0)) / 100)
         if name == "Sivir" and slot in "QWE" and kit.active("morale", t):
             cooldown_value *= 1 - (0.2, 0.25, 0.3)[ranks["R"] - 1]
         ready[slot] = t + cooldown_value
         if name == "Caitlyn" and slot == "W":
-            ready[slot] = t + (25, 20, 15, 10)[ranks["W"] - 1] / (1 + haste / 100)
+            ready[slot] = t + (25, 20, 15, 10)[ranks["W"] - 1] / (
+                1 + (haste + phase_rush.haste(t)) / 100
+            )
             kit.unresolved.add(
                 "Caitlyn trap ammo/recharge pool provisional: one charge per recharge"
             )
         if name == "Jhin" and slot == "E":
-            ready[slot] = t + (20, 18, 16, 14)[ranks["E"] - 1] / (1 + haste / 100)
+            ready[slot] = t + (20, 18, 16, 14)[ranks["E"] - 1] / (
+                1 + (haste + phase_rush.haste(t)) / 100
+            )
         timeline[-1]["cooldowns"] = {s: max(0.0, v - t) for s, v in ready.items()}
         skill_count += 1
         cast_id += 1
@@ -1426,6 +1454,7 @@ def replay_marksman(events, **p):
                 aa_clock = 0.0
                 dash_until = t + 425 / 1350
                 aa_lock = dash_until
+                damage_procs.dashed(dash_until)
                 return True
             if slot == "R":
                 channel = t + 3
@@ -1507,6 +1536,7 @@ def replay_marksman(events, **p):
                 aa_clock = 0.0
                 dash_until = t + 300 / (600 + ms)
                 aa_lock = dash_until
+                damage_procs.dashed(dash_until)
                 return True
             if slot == "R":
                 buff("zeri_ultimate_as", 5, 0.3)
@@ -1557,6 +1587,7 @@ def replay_marksman(events, **p):
 
     def start_attack():
         nonlocal aa_clock, aa_lock, attack_sequence, mana
+        fleet.start_attack(movement_distance)
         bonus = total_as()[1].get("bonus_as_total", 0.0)
         windup = (
             attack_windup(name, bonus) if p.get("aa_windup") is None else p["aa_windup"]

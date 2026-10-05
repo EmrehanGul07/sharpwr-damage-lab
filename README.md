@@ -8,7 +8,8 @@ The model covers a stationary target that does not attack back. Authorized PC ti
 
 - Published 7.3a tier board is read-only. Public build searches remain disabled, including synthetic clicks.
 - Build Lab supports 5 distinct completed items and one boots slot. Replay uses champion skills and persistent rune stats; the separate “Calculate build” action is the legacy AA-only calculation.
-- Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest and the supported damage/stat runes. Unsupported offensive loadouts block replay instead of silently dropping their effects.
+- Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest, Empowerment, Phase Rush, Fleet Footwork and the supported damage/stat runes (Sudden Impact included). Defensive and utility runes (Bone Plating, Second Wind, …) have no effect on the stationary benchmark. Unsupported offensive loadouts block replay instead of silently dropping their effects.
+- Each champion has a default rune page chosen by the SharpWR editor (`data/default-rune-pages.json`, `sharpwr/rune_pages.py`): stacking runes fill with level (empty to 5, full from 9) and Dark Harvest has one soul per level. The build search accepts it (`BuildFightEvaluator(runes=...)`); the saved core-item results switch to it at their next recalculation.
 - First Strike models only the explicitly ready initial three-second engagement; rearming and gold are excluded. Adaptive damage procs retain the existing ADC physical assumption.
 - Yun Tal starting crit/Flurry, Energized launch consumption, Spellblade readiness, manual base mana and persistent rune settings reach replay.
 - Recorded core items use a bounded search, not exhaustive/global optimization. Source fingerprints guard saved results.

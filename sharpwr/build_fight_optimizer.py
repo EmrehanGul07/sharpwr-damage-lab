@@ -139,7 +139,9 @@ class BuildFightEvaluator:
         dragon_stacks=0,
         retain_traces=False,
         simulation_overrides=None,
+        runes=None,
     ):
+        """runes: a sharpwr.rune_pages.RuneLoadout for this level, or None for the no-rune model."""
         benchmark(
             champion,
             level,
@@ -173,6 +175,9 @@ class BuildFightEvaluator:
         self.retain_traces = retain_traces
         self.traces = {}
         self.simulation_overrides = dict(simulation_overrides or {})
+        if runes is not None and runes.unmodeled:
+            raise ValueError("Runes without a modeled damage effect: " + ", ".join(runes.unmodeled))
+        self.runes = runes
 
     def evaluate(self, items, boot=None, refine=False):
         items = tuple(sorted(items))
@@ -197,6 +202,7 @@ class BuildFightEvaluator:
             mist=self.mist,
             yuntal_stacks=self.yuntal_stacks,
             base_mana=self.base_mana,
+            runes=self.runes,
         )
         maxmana = summary["mana"]
         awe = awe_bonus(items, maxmana)
@@ -241,7 +247,7 @@ class BuildFightEvaluator:
                         radius,
                         self.aa_reduction,
                         self.yuntal_stacks,
-                        base_mana or 0,
+                        (base_mana or 0) + (self.runes.persistent["mana"] if self.runes else 0),
                         False,
                         self.energized,
                         False,
@@ -276,6 +282,8 @@ class BuildFightEvaluator:
                         bonus = (
                             s["bba"] + s["lvbas"] + total["as"] + dyn + state["bonus_as"] + fiend
                         )
+                        if self.runes:
+                            bonus += self.runes.bonus_as
                         expiry = [
                             v
                             for v in (last.get("yuntal_until", -1), ult + 8 if fiend else -1)
@@ -288,6 +296,12 @@ class BuildFightEvaluator:
                         }
 
                     def aa(state):
+                        if self.runes:
+                            state = dict(state)
+                            state["bonus_as"] = state.get("bonus_as", 0.0) + self.runes.bonus_as
+                            state["bonus_ad"] = (
+                                state.get("bonus_ad", 0.0) + self.runes.persistent["ad"]
+                            )
                         hit = kernel.send(state)
                         last.update(hit)
                         last["ult_seen"] = state.get("ultimate_cast_time")
@@ -296,7 +310,10 @@ class BuildFightEvaluator:
                     fight_args = dict(
                         champion=n,
                         level=l,
-                        ad=s["ad"] + total["ad"] + awe,
+                        ad=s["ad"]
+                        + total["ad"]
+                        + awe
+                        + (self.runes.persistent["ad"] if self.runes else 0),
                         base_ad=s["ad"],
                         ap=total["ap"],
                         attack_speed=s["baseas"],
@@ -310,7 +327,8 @@ class BuildFightEvaluator:
                         armor=self.armor,
                         mr=self.mr,
                         **{k.lower() + "_rank": v for k, v in champion_ranks(n, l).items()},
-                        ability_haste=total["ah"],
+                        ability_haste=total["ah"]
+                        + (self.runes.persistent["ah"] if self.runes else 0),
                         pct_pen=total["pctpen"],
                         flat_pen=total["flatpen"],
                         pct_mpen=total["pctmpen"],
@@ -362,6 +380,13 @@ class BuildFightEvaluator:
                             else 1
                         ),
                     )
+                    if self.runes:
+                        fight_args.update(
+                            keystone=self.runes.keystone,
+                            sub_runes=self.runes.runes,
+                            transcendence=self.runes.transcendence,
+                            dark_harvest_souls=self.runes.dark_harvest_souls,
+                        )
                     fight_args.update(self.simulation_overrides)
                     r = replay_samira([], **fight_args)
                     self.simulations += 1
@@ -436,6 +461,7 @@ class BuildFightEvaluator:
             dragon_stacks=self.dragon_stacks,
             retain_traces=True,
             simulation_overrides=override,
+            runes=self.runes,
         )
         result = ev.evaluate(row["Items"], row["Boots"])
         trace = ev.traces[(tuple(sorted(row["Items"])), row["Boots"], False)]

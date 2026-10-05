@@ -22,7 +22,37 @@ STAT_RUNES = frozenset(
         "Unshakeable",
     }
 )
-FIGHT_KEYSTONES = (None, "Conqueror", "Lethal Tempo", "First Strike", "Dark Harvest")
+FIGHT_KEYSTONES = (
+    None,
+    "Conqueror",
+    "Lethal Tempo",
+    "First Strike",
+    "Dark Harvest",
+    "Empowerment",
+    "Phase Rush",
+    "Fleet Footwork",
+)
+# No effect on damage against the benchmark: a stationary target that deals no damage, with no
+# allies, turrets, plants or summoner spells in the fight. Pages may hold them; fights ignore them.
+NO_FIGHT_EFFECT = frozenset(
+    {
+        "Guardian",
+        "Triumph",
+        "Relentless Hunter",
+        "Bone Plating",
+        "Second Wind",
+        "Perseverance",
+        "Revitalize",
+        "Nullifying Orb",
+        "Courage of the Colossus",
+        "Font of Life",
+        "Demolish",
+        "Nimbus Cloak",
+        "Hexflash",
+        "Ixtali Seedjar",
+        "Botanist",
+    }
+)
 FIGHT_RUNES = STAT_RUNES | {
     "Brutal",
     "Cut Down",
@@ -31,6 +61,7 @@ FIGHT_RUNES = STAT_RUNES | {
     "Last Stand",
     "Tyrant",
     "Empowered Attack",
+    "Sudden Impact",
 }
 
 
@@ -77,7 +108,11 @@ def persistent_stats(level, selected, settings=None):
     if "Manaflow Band" in runes:
         out["mana"] = 300.0
     if "Legend: Alacrity" in runes:
-        out["bonus_as"] = 0.21 if s.get("alacrity_full", False) else 0.03
+        if "alacrity_progress" in s:
+            # Share of the 18% takedown attack speed, on top of the base 3%.
+            out["bonus_as"] = 0.03 + 0.18 * number("alacrity_progress", 0, 0, 1)
+        else:
+            out["bonus_as"] = 0.21 if s.get("alacrity_full", False) else 0.03
     if "Legend: Haste" in runes and s.get("haste_full", False):
         out["ah"] += 15
     if "Transcendence" in runes:
@@ -136,7 +171,13 @@ class FirstContact:
 
 
 class DamageProcs:
-    """Recorded ADC physical-adaptive proc model; no new flight times inferred."""
+    """Recorded ADC physical-adaptive proc model; no new flight times inferred.
+
+    Empowerment: every damaging attack or ability hit counts; three hits with no gap over 4s
+    deal its adaptive damage (cooldown 4s) and from then on amplify all damage by 8% for the
+    rest of the fight. Sudden Impact: the first attack or ability hit within 4s after a dash
+    ends deals true damage (cooldown 15s); engines report dashes through dashed().
+    """
 
     def __init__(self, level, keystone, runes, souls=0):
         if isinstance(souls, bool) or not isinstance(souls, int) or souls < 0:
@@ -145,7 +186,28 @@ class DamageProcs:
         self.keystone = keystone
         self.runes = set(runes)
         self.souls = souls
-        self.ready = {name: 0.0 for name in ("Dark Harvest", "Tyrant", "Empowered Attack")}
+        self.ready = {
+            name: 0.0
+            for name in (
+                "Dark Harvest",
+                "Tyrant",
+                "Empowered Attack",
+                "Empowerment",
+                "Sudden Impact",
+            )
+        }
+        self.hits = 0
+        self.last_hit = None
+        self.empowered = False
+        self.dash_end = None
+
+    def dashed(self, end_time):
+        """A dash, leap or blink of the attacker ended at end_time."""
+        self.dash_end = end_time
+
+    def amplification(self):
+        """Damage multiplier from Empowerment once it has fired."""
+        return 1.08 if self.empowered else 1.0
 
     def apply(
         self, time, action, hp_fraction, bonus_ad, ap, physical_multiplier, damage_multiplier=1.0
@@ -171,16 +233,36 @@ class DamageProcs:
             and time >= self.ready["Empowered Attack"]
         ):
             candidates.append(("Empowered Attack", scale(20, 60) * 0.8, 8.0))
+        amplification = self.amplification()
+        if self.keystone == "Empowerment":
+            if self.last_hit is not None and time - self.last_hit > 4.0:
+                self.hits = 0
+            self.last_hit = time
+            self.hits += 1
+            if self.hits >= 3 and time >= self.ready["Empowerment"]:
+                candidates.append(("Empowerment", scale(40, 165), 4.0))
+                self.hits = 0
+                self.empowered = True
+        if (
+            "Sudden Impact" in self.runes
+            and self.dash_end is not None
+            and self.dash_end <= time <= self.dash_end + 4.0
+            and time >= self.ready["Sudden Impact"]
+        ):
+            candidates.append(("Sudden Impact", scale(10, 65), 15.0, "true"))
+            self.dash_end = None
         parts = []
         notes = []
         damage = 0.0
-        for name, raw, cooldown in candidates:
-            amount = raw * resistance_multiplier(physical_multiplier) * damage_multiplier
+        for name, raw, cooldown, *kind in candidates:
+            kind = kind[0] if kind else "physical"
+            resist = 1.0 if kind == "true" else resistance_multiplier(physical_multiplier)
+            amount = raw * resist * damage_multiplier * amplification
             damage += amount
             self.ready[name] = time + cooldown
             parts.append(
                 {
-                    "damage_type": "physical",
+                    "damage_type": kind,
                     "raw_amount": raw,
                     "tags": [],
                     "status": "unknown_WR",
@@ -188,5 +270,64 @@ class DamageProcs:
                     "origin": "Rune",
                 }
             )
-            notes.append(f"{name} +{amount:.3f} physical (ADC adaptive model)")
+            label = "true" if kind == "true" else "physical (ADC adaptive model)"
+            notes.append(f"{name} +{amount:.3f} {label}")
         return damage, notes, parts
+
+
+class PhaseRush:
+    """Phase Rush: 3 champion hits within 4s grant +10 basic ability haste for 3s and cut the
+    remaining basic ability cooldowns by 20% (cooldown 21-7s by level). Its movement speed has
+    no effect on the stationary benchmark."""
+
+    def __init__(self, enabled, level):
+        self.enabled = enabled
+        self.cooldown = 21 + (7 - 21) * (level - 1) / 14
+        self.hits = []
+        self.ready = 0.0
+        self.active_until = -1.0
+
+    def hit(self, time):
+        """Record a damaging hit; True when Phase Rush fires on it."""
+        if not self.enabled:
+            return False
+        self.hits = [h for h in self.hits if time - h <= 4.0] + [time]
+        if len(self.hits) >= 3 and time >= self.ready:
+            self.hits = []
+            self.ready = time + self.cooldown
+            self.active_until = time + 3.0
+            return True
+        return False
+
+    def haste(self, time):
+        """Extra basic ability haste at a time."""
+        return 10.0 if self.enabled and time < self.active_until else 0.0
+
+
+class FleetFootwork:
+    """Fleet Footwork: at 100 energy the next attack gains 40% attack speed for its attack
+    cycle. Energy follows the engine's Energized item rule (9 per attack, 26 per 700 units
+    moved): WR's own charge rate is not recorded. Its heal and movement speed have no effect
+    on the stationary benchmark."""
+
+    def __init__(self, enabled, ready=False):
+        self.enabled = enabled
+        self.energy = 100.0 if ready else 0.0
+        self.distance = 0.0
+        self.empowered = False
+
+    def bonus_as(self):
+        return 0.40 if self.empowered else 0.0
+
+    def start_attack(self, movement_distance):
+        """Call when an attack starts, before its timing is read."""
+        if not self.enabled:
+            return
+        self.energy = min(100.0, self.energy + (movement_distance - self.distance) * 26.0 / 700.0)
+        self.distance = movement_distance
+        if self.energy >= 100.0 - 1e-9:
+            self.empowered = True
+            self.energy = 0.0
+        else:
+            self.empowered = False
+            self.energy = min(100.0, self.energy + 9.0)

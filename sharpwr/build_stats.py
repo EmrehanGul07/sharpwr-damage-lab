@@ -24,12 +24,16 @@ def awe_bonus(items, max_mana):
     return 0.02 * (max_mana or 0) if any(x in items for x in MANA_ITEMS) else 0
 
 
-def build_stats(champion, level, items, boot=None, mist=0, yuntal_stacks=0, base_mana=None):
+def build_stats(
+    champion, level, items, boot=None, mist=0, yuntal_stacks=0, base_mana=None, runes=None
+):
     """Stats at the start of a fight, before stacks, procs and ability effects.
 
     Items are summed in sorted order, as the build search does, so results match its saved
     rows exactly. base_mana is used only when the champion has no recorded mana. Health,
-    mana, armor and MR are None where the champion's value is unknown.
+    mana, armor and MR are None where the champion's value is unknown. runes is a
+    sharpwr.rune_pages.RuneLoadout; its persistent AD, attack speed, ability haste and mana
+    are added (without runes the results are unchanged).
     """
     n, l = champion, level
     items = tuple(sorted(items))
@@ -38,9 +42,14 @@ def build_stats(champion, level, items, boot=None, mist=0, yuntal_stacks=0, base
     total = build_totals(items, boot)
     base_mana = core["mana"] if core["mana"] is not None else base_mana
     max_mana = None if base_mana is None else base_mana + total["mana"]
+    if runes and max_mana is not None:
+        max_mana += runes.persistent["mana"]
     yuntal_crit = min(0.25, yuntal_stacks * 0.002) if "Yun Tal Wildarrows" in items else 0.0
     starting_ad = s["ad"] + total["ad"] + awe_bonus(items, max_mana)
     bonus_as = s["bba"] + s["lvbas"] + total["as"]
+    if runes:
+        starting_ad += runes.persistent["ad"]
+        bonus_as += runes.bonus_as
     if n == "Jhin":
         # Whisper converts attack speed and crit into AD; Jhin's attack speed does not grow.
         starting_ad = jhin_attack_damage(
@@ -72,7 +81,7 @@ def build_stats(champion, level, items, boot=None, mist=0, yuntal_stacks=0, base
         ),
         # Basic attacks; abilities that crit use their own rules.
         "crit_damage": crit_damage,
-        "ability_haste": total["ah"],
+        "ability_haste": total["ah"] + (runes.persistent["ah"] if runes else 0),
         "armor_pen_pct": total["pctpen"],
         "armor_pen_flat": total["flatpen"],
         "magic_pen_pct": total["pctmpen"],

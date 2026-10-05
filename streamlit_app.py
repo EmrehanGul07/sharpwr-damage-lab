@@ -20,7 +20,7 @@ from sharpwr.champion_database import CHAMPION_DATABASE, level_stats
 from sharpwr.app_data import champion_level_stats
 from sharpwr.icons import icon_file, icon_source
 from sharpwr.rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
-from sharpwr.rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
+from sharpwr.rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES, NO_FIGHT_EFFECT
 from sharpwr.champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from sharpwr.fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from sharpwr.marksman_kits import Kit, records as marksman_records
@@ -1136,7 +1136,7 @@ with tabs[1]:
         _qrank,_wrank,_erank,_rrank=(_ranks[k] for k in ('Q','W','E','R'))
         st.markdown("**Fight timeline · AA / Q / W / E / R**")
         _supported_fight_runes=FIGHT_RUNES
-        _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in {"Legend: Bloodline","Bone Plating","Second Wind","Perseverance","Overgrowth","Unshakeable"}]
+        _offensive_unknown=[x for x in selected_sub_runes if x and x not in _supported_fight_runes and x not in NO_FIGHT_EFFECT]
         _replay_crit=min(1.,_skill_total["crit"]+(mist//20*.10 if champ=="Senna" else 0)+yt_bonus_crit)
         _fight_start_as=min(3.,stats(champ,level)["baseas"]+stats(champ,level)["ratio"]*(stats(champ,level)["bba"]+stats(champ,level)["lvbas"]+_skill_total["as"]+(.35 if yt_flurry else 0)+((.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.)))
         st.markdown(f"**Fight starting stats:** {_skill_ad:.1f} AD · {_skill_total['ap']:.0f} AP · {_fight_start_as:.3f} AS · {_replay_crit*100:.1f}% crit · {_skill_cd*100:.0f}% crit damage · {_fight_haste:.0f} AH · {_skill_total['pctpen']*100:.0f}% + {_skill_total['flatpen']:.0f} armor penetration · {_skill_total['pctmpen']*100:.0f}% + {_skill_total['flatmpen']:.0f} magic penetration")
@@ -1145,7 +1145,7 @@ with tabs[1]:
         st.markdown(f"**Champion stats:** {_known_stat(_rune_own_stats['hp'])} HP · {_known_stat(_fight_max_mana)} mana · {_known_stat(_own_stats['mana_regen_per_5s'])} mana / 5s · {_known_stat(_rune_own_stats['armor'])} armor · {_known_stat(_rune_own_stats['mr'])} MR · {_fight_ms:.0f} MS · {_known_stat(_own_stats['attack_range'])} range")
         _fight_key=keystone if keystone!="None" else None
         _fight_blocked=_fight_key not in FIGHT_KEYSTONES or bool(_offensive_unknown)
-        if _fight_blocked: st.info("Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest and the supported damage/stat runes. Choose a supported loadout to run it.")
+        if _fight_blocked: st.info("Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest, Empowerment, Phase Rush, Fleet Footwork and the supported damage/stat runes; defensive and utility runes have no effect on this benchmark. Choose a supported loadout to run it.")
         if st.button("Replay fight",key="fight_calculate",disabled=_fight_blocked):
             try:
                 if _fight_key=="First Strike":st.caption("First Strike applies to the explicitly ready initial 3-second engagement; rearming and gold are not simulated.")

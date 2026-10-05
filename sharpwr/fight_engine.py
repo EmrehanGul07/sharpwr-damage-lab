@@ -12,6 +12,8 @@ from .rune_runtime import (
     FIGHT_RUNES,
     FirstContact,
     DamageProcs,
+    FleetFootwork,
+    PhaseRush,
     last_stand_multiplier,
 )
 from .champion_skill_data import (
@@ -117,7 +119,7 @@ def replay_samira(
     initial_stacks=0,
     skill_priority=("E", "W", "Q"),
     use_e=True,
-    **kit_options
+    **kit_options,
 ):
     """Replay AA/Q impacts and an explicitly timed R channel against one champion.
 
@@ -193,7 +195,7 @@ def replay_samira(
             initial_stacks=initial_stacks,
             skill_priority=skill_priority,
             use_e=use_e,
-            **kit_options
+            **kit_options,
         )
     abilities = SAMIRA_ABILITIES if champion == "Samira" else SMOLDER_ABILITIES
     if (
@@ -335,6 +337,7 @@ def replay_samira(
     spell_pending = False
     spell_cast_times = []
     damage_procs = DamageProcs(level, keystone, sub_runes, kit_options.get("dark_harvest_souls", 0))
+    phase_rush = PhaseRush(keystone == "Phase Rush", level)
     first_contact = FirstContact(
         keystone == "First Strike", kit_options.get("first_strike_ready", True)
     )
@@ -671,6 +674,7 @@ def replay_samira(
             dmg = (
                 raw * resistance_multiplier(effective_resistance(armor, pen, flat_pen)) * skill_amp
             )
+            dmg *= damage_procs.amplification()
             dmg, _first_notes = first_contact.apply(t, dmg)
             before_hp = health
             health = max(0.0, health - dmg)
@@ -785,8 +789,9 @@ def replay_samira(
                         continue
                     if mana is not None:
                         mana = max(0.0, mana - cost + cost * mana_refund)
+                    basic_haste = phase_rush.haste(t) if action in ("Q", "W", "E") else 0.0
                     ready[action] = t + abilities[action]["cooldown"][ranks[action] - 1] / (
-                        1 + ability_haste / 100
+                        1 + (ability_haste + basic_haste) / 100
                     )
                     if action == "R":
                         next_r = ready["R"]
@@ -848,6 +853,7 @@ def replay_samira(
                     elif action == "E":
                         dash_start = t
                         dash_end = t + 650 / 1600
+                        damage_procs.dashed(dash_end)
                         dash_origin = position
                         dash_destination = position + (650 if target_position >= position else -650)
                         arrival = t + gap / 1600
@@ -1219,7 +1225,7 @@ def replay_samira(
                 )
             if not timed_combat and action in ("Q", "W", "E"):
                 ready[action] = t + abilities[action]["cooldown"][rank - 1] / (
-                    1 + ability_haste / 100
+                    1 + (ability_haste + phase_rush.haste(t)) / 100
                 )
                 casts += 1
                 spell_pending = True
@@ -1367,7 +1373,13 @@ def replay_samira(
             damage *= 1.065
         if "Coup de Grace" in sub_runes and before_hp / hp < 0.40:
             damage *= 1.08
+        damage *= damage_procs.amplification()
         if damage > 0:
+            if phase_rush.hit(t):
+                for basic in ("Q", "W", "E"):
+                    if ready[basic] > t:
+                        ready[basic] = t + (ready[basic] - t) * 0.8
+                effects.append("Phase Rush: +10 basic ability haste for 3s, basic cooldowns -20%")
             proc_damage, proc_notes, proc_parts = damage_procs.apply(
                 t,
                 action,
@@ -1506,6 +1518,16 @@ def replay_samira(
     if keystone == "Dark Harvest" or set(sub_runes) & {"Tyrant", "Empowered Attack"}:
         assumptions.append(
             "Adaptive rune procs use the existing ADC physical model; WR classification/ordering remains unverified"
+        )
+    if keystone == "Fleet Footwork":
+        assumptions.append(f"Fleet Footwork attack speed is not modeled for {champion}")
+    if keystone == "Empowerment":
+        assumptions.append(
+            "Empowerment: every damaging attack/ability hit counts toward its 3 hits (WR rules unverified)"
+        )
+    if "Sudden Impact" in sub_runes and champion != "Samira":
+        assumptions.append(
+            f"Sudden Impact: {champion}'s dashes and blinks are not modeled; it never fires"
         )
     return FightResult(
         log,
