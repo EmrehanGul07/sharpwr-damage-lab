@@ -3,12 +3,12 @@
 </style></head><body><div class="wrap"><header><div><small>SHARPWR · PATCH 7.3a</small><h1 contenteditable="true" aria-label="Tier list title">ADC ITEM TIER LIST</h1></div><button class="restore" id="restore">Edit mode</button></header><div class="controls"><button id="record">Recording view</button><button id="undo">Undo</button><button id="export">Save JSON</button><button id="reset">Reset board</button><input id="search" placeholder="Search items" aria-label="Search items"></div><p class="note" id="status">Drag items to a tier, or select an item then click a tier. Double-click an item to return it to the pool. Your board saves automatically in this browser.</p><div id="board"></div><div class="pool"><h2>UNRANKED ITEMS</h2><div class="drop" data-tier="pool" id="pool"></div></div></div><script>
 const items=__ITEMS__,tiers=['S','A','B','C','D','F'],colors=['#f48c89','#f7b083','#f3d184','#91cdab','#86b9df','#ad9ed7'],all=items.map(i=>i.name);
 const published=__RANKING__;let state=published.tiers;
-document.querySelector('h1').textContent=published.title;
+document.querySelector('h1').textContent=published.title;document.querySelector('header small').textContent='SHARPWR · PATCH '+published.patch;
 const seen=new Set;for(const t of [...tiers,'pool'])state[t]=(Array.isArray(state[t])?state[t]:[]).filter(n=>all.includes(n)&&!seen.has(n)&&seen.add(n));state.pool.push(...all.filter(n=>!seen.has(n)));
 document.querySelector('h1').removeAttribute('contenteditable');
 document.getElementById('restore').remove();
 for(const id of ['record','undo','reset','search'])document.getElementById(id).remove();
-document.getElementById('status').textContent='SharpWR’s published tier list · Patch 7.3a · Read-only';
+document.getElementById('status').textContent='SharpWR’s published tier list · Patch '+published.patch+' · Read-only';
 function fill(zone,t){for(const name of state[t]){const item=items.find(i=>i.name===name),b=document.createElement('div');b.className='item';b.style.cursor='default';b.title=name;b.setAttribute('aria-label',name);const img=document.createElement('img');img.src=item.icon;img.alt=name;b.append(img);zone.append(b);}}
 for(const [i,t]of tiers.entries()){const row=document.createElement('div');row.className='row';const label=document.createElement('div');label.className='label';label.textContent=t;label.style.background=colors[i];const zone=document.createElement('div');zone.className='drop';zone.dataset.tier=t;row.append(label,zone);document.getElementById('board').append(row);fill(zone,t);}
 fill(document.getElementById('pool'),'pool');

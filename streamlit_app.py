@@ -560,12 +560,11 @@ def _champion_profile(name,lvl,mist_count=0):
     profile=champion_level_stats(name,lvl,mist_count)
     portrait=_icon_url("champions",name)
     attack_speed=profile["attack_speed"]
-    from sharpwr.core_items import core_record
-    _core=core_record(name)
+    from sharpwr.core_items import core_leaders, core_record
+    _leaders=core_leaders(core_record(name))
     _core_card=''
-    if _core and _core.get('complete') and _core.get('ranking'):
-        _leaders=[r for r in _core['ranking'] if abs(r['Score']-_core['ranking'][0]['Score'])<1e-6][:2]
-        _icons=''.join(f'<img src="{html.escape(item_icon(r["Item"]))}" alt="{html.escape(r["Item"])}" title="{html.escape(r["Item"])}">' for r in _leaders)
+    if _leaders:
+        _icons=''.join(f'<img src="{html.escape(item_icon(x))}" alt="{html.escape(x)}" title="{html.escape(x)}">' for x in _leaders)
         _core_card=f'<div class="champion-core"><span>CORE ITEM</span><div class="core-icons">{_icons}</div></div>'
     st.markdown(f'<div class="champion-profile"><img class="champion-portrait" src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["attack_damage"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div>{_core_card}</div>',unsafe_allow_html=True)
     if not _core_card:

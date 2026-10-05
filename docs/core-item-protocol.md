@@ -10,7 +10,7 @@ For each eligible stage/target cell, take the final Top3 builds and weight their
 
 Highest score selects the core candidate. Exact score ties display at most two icons. Winner coverage breaks ordering ties. The data retains Top3 commonality, winner coverage and actual build/policy details for review. An item does not need to occur in literally every build to be shown; the label identifies the most consistent constrained-search candidate, not a mandatory purchase.
 
-The shared champion profile displays CORE ITEM, icon and name in Tier List, Build Lab and Item Value. Saved results are checked against a source fingerprint; stale or incomplete results are not displayed as confirmed core items. Champion changes read saved results and do not start a new fight search.
+The shared champion profile displays CORE ITEM, icon and name in Tier List, Build Lab and Item Value. The mobile app shows the same core item, the item ranking and every cell's Top 3 builds from `app-data/database.json` ([app-data.md](app-data.md)); both use `core_leaders` in `sharpwr/core_items.py`. Saved results are checked against a source fingerprint; stale or incomplete results are not displayed as confirmed core items. Champion changes read saved results and do not start a new fight search.
 
 Cache identity covers engine rules, champion/item/ability/timing datasets, target profiles and core-search protocol. Pure UI styling changes do not invalidate numerical results.
 

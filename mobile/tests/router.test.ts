@@ -14,4 +14,11 @@ describe("router", () => {
     expect(parseRoute("").section).toBe("champions");
     expect(parseRoute("#/unknown").section).toBe("champions");
   });
+
+  it("opens the tier list and champion tabs", () => {
+    expect(parseRoute(href("tiers")).section).toBe("tiers");
+    const route = parseRoute(href("champions", ["Kai'Sa"], { tab: "stats" }));
+    expect(route.parts).toEqual(["Kai'Sa"]);
+    expect(route.params.get("tab")).toBe("stats");
+  });
 });

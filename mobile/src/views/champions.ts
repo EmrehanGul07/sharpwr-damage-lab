@@ -1,11 +1,28 @@
-import type { Champion, Database } from "../data";
+import { BUILD_LEVELS, TARGETS, championCore, findItem, stageFor } from "../builds";
+import type { Champion, ChampionCore, CoreBuild, Database, Target } from "../data";
 import { h, icon } from "../dom";
-import { LEVEL_STATS, formatNumber, trimNumber } from "../format";
+import { LEVEL_STATS, formatGold, formatNumber, trimNumber } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
-import { type View, currentQuery, emptyState, listFooter, listRow, notFound, searchField, statTable } from "./shared";
+import {
+  type View,
+  choiceChips,
+  currentQuery,
+  emptyState,
+  itemIcon,
+  itemTile,
+  listFooter,
+  listRow,
+  notFound,
+  searchField,
+  segments,
+  statTable,
+} from "./shared";
 
+// Kept while the user moves between champions.
 let selectedLevel = 1;
+let buildLevel = 15;
+let buildTarget: Target = "squishy";
 
 // [label, base field, growth field, growth shown as a percentage, base decimals]
 const BASE_STATS: ReadonlyArray<[string, string, string | null, boolean, number]> = [
@@ -78,9 +95,112 @@ function source(champion: Champion): HTMLElement {
   );
 }
 
-export function championDetail(db: Database, name: string): View {
-  const champion = db.champions.find((record) => record.name === name);
-  if (!champion) return notFound(name);
+function coreCard(db: Database, champion: Champion, core: ChampionCore): HTMLElement {
+  return h(
+    "div",
+    { class: "core-card" },
+    h("p", { class: "eyebrow" }, core.core.length > 1 ? "Core items" : "Core item"),
+    h("div", { class: "core-items" }, ...core.core.map((name) => itemTile(db, name, 56))),
+    h("p", { class: "muted small" }, `The item that appears most consistently in ${champion.name}'s top builds from level 5 to 15, against all three targets.`),
+  );
+}
+
+function buildCard(db: Database, build: CoreBuild, rank: number): HTMLElement {
+  const names = [...build.items, build.boots];
+  const ttk = build.ttk === null ? "Target survived" : `TTK ${trimNumber(build.ttk)} s`;
+  return h(
+    "div",
+    { class: rank === 1 ? "build best" : "build" },
+    h("div", { class: "build-head" }, h("strong", {}, `#${rank}`), h("span", {}, `${ttk} · ${Math.round(build.dps)} DPS · ${formatGold(build.gold)}`)),
+    h("div", { class: "build-icons" }, ...names.map((name) => itemIcon(db, name, 44))),
+    h("p", { class: "build-names" }, names.join(" · ")),
+    build.note ? h("p", { class: "build-note" }, build.note) : null,
+  );
+}
+
+function stageView(db: Database, core: ChampionCore): HTMLElement {
+  const stage = stageFor(core, buildLevel, buildTarget);
+  if (!stage) return emptyState("No saved builds for this level and target.");
+  const target = TARGETS.find((option) => option.key === buildTarget);
+  const items = stage.items_allowed === 1 ? "1 item" : `${stage.items_allowed} items`;
+  return h(
+    "div",
+    {},
+    h("p", { class: "muted small" }, `Level ${stage.level} · ${items} + boots · vs ${target?.label.toLowerCase()} (${target?.example})`),
+    ...stage.builds.map((build, index) => buildCard(db, build, index + 1)),
+  );
+}
+
+function rankingList(db: Database, core: ChampionCore): HTMLElement {
+  return h(
+    "div",
+    { class: "list" },
+    ...core.ranking.map((row, index) => {
+      const item = findItem(db, row.item);
+      const subtitle = `Score ${trimNumber(row.score, 1)} · #1 build in ${row.winner_cells} of ${row.eligible_cells} matchups`;
+      const target = item ? href("items", [item.category, item.name]) : href("items");
+      return listRow(target, item?.icon ?? null, `${index + 1}. ${row.item}`, subtitle);
+    }),
+  );
+}
+
+function method(db: Database, core: ChampionCore): HTMLElement {
+  const excluded = db.core_items?.excluded ?? [];
+  return h(
+    "div",
+    {},
+    h("h3", {}, "How these are calculated"),
+    h(
+      "p",
+      { class: "note" },
+      "SharpWR's damage model fights a training target that does not hit back. A matchup is one level and target type; the target is a champion of that type at the same level. Scores weight each matchup's top 3 builds 1, 1/2 and 1/3. TTK is the time to defeat the target. This is a bounded search, not match statistics.",
+    ),
+    excluded.length ? h("p", { class: "note" }, `Left out of this search: ${excluded.join(", ")}.`) : null,
+    core.notes.length
+      ? h("details", { class: "notes" }, h("summary", {}, `Unverified mechanics (${core.notes.length})`), h("ul", {}, ...core.notes.map((note) => h("li", {}, note))))
+      : null,
+  );
+}
+
+function buildsTab(db: Database, champion: Champion): Array<HTMLElement | null> {
+  const core = championCore(db, champion.name);
+  if (!core) {
+    const text = db.core_items
+      ? `Build results for ${champion.name} are being recalculated.`
+      : "Build results arrive with the next data update. Connect to the internet and reopen the app.";
+    return [emptyState(text)];
+  }
+  const stage = h("div", {}, stageView(db, core));
+  const redraw = () => stage.replaceChildren(stageView(db, core));
+  return [
+    coreCard(db, champion, core),
+    h("h3", {}, "Top builds"),
+    choiceChips(
+      "Level",
+      BUILD_LEVELS.map((level) => ({ value: level, label: String(level) })),
+      buildLevel,
+      (level) => {
+        buildLevel = level;
+        redraw();
+      },
+    ),
+    choiceChips(
+      "Target",
+      TARGETS.map((target) => ({ value: target.key, label: target.label })),
+      buildTarget,
+      (target) => {
+        buildTarget = target;
+        redraw();
+      },
+    ),
+    stage,
+    h("h3", {}, "Item ranking"),
+    rankingList(db, core),
+    method(db, core),
+  ];
+}
+
+function statsTab(champion: Champion): HTMLElement[] {
   const levelLabel = h("output", { class: "level-value" }, `Level ${selectedLevel}`);
   const slider = h("input", { type: "range", min: 1, max: 15, step: 1, class: "level", "aria-label": "Champion level" });
   slider.value = String(selectedLevel);
@@ -90,7 +210,29 @@ export function championDetail(db: Database, name: string): View {
     levelLabel.textContent = `Level ${selectedLevel}`;
     table.replaceChildren(levelTable(champion, selectedLevel));
   });
+  return [
+    h("h3", {}, "Stats by level"),
+    h("p", { class: "muted small" }, "Before items and runes."),
+    h("div", { class: "level-row" }, slider, levelLabel),
+    table,
+    h("h3", {}, "Base values"),
+    baseTable(champion),
+    source(champion),
+  ];
+}
+
+export function championDetail(db: Database, name: string, params: URLSearchParams): View {
+  const champion = db.champions.find((record) => record.name === name);
+  if (!champion) return notFound(name);
+  const showStats = params.get("tab") === "stats";
   const meta = [champion.attack_type, champion.resource_type].filter(Boolean).join(" · ");
+  const tabs = segments(
+    [
+      { label: "Builds", target: href("champions", [champion.name]), active: !showStats },
+      { label: "Stats", target: href("champions", [champion.name], { tab: "stats" }), active: showStats },
+    ],
+    true,
+  );
   return {
     title: champion.name,
     back: true,
@@ -98,13 +240,8 @@ export function championDetail(db: Database, name: string): View {
       "section",
       { class: "detail" },
       h("div", { class: "hero" }, icon(champion.icon, champion.name, 88, "portrait"), h("div", {}, h("h2", {}, champion.name), meta ? h("p", { class: "muted" }, meta) : null)),
-      h("h3", {}, "Stats by level"),
-      h("p", { class: "muted small" }, "Before items and runes."),
-      h("div", { class: "level-row" }, slider, levelLabel),
-      table,
-      h("h3", {}, "Base values"),
-      baseTable(champion),
-      source(champion),
+      tabs,
+      ...(showStats ? statsTab(champion) : buildsTab(db, champion)),
     ),
   };
 }

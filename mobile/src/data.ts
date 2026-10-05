@@ -69,6 +69,57 @@ export interface RuneTree {
   icon: string | null;
 }
 
+/** SharpWR's published item tier list, best tier first. */
+export interface TierList {
+  title: string;
+  patch: string;
+  tiers: Array<{ tier: string; items: string[] }>;
+}
+
+export type Target = "squishy" | "bruiser" | "tank";
+
+export interface CoreBuild {
+  items: string[];
+  boots: string;
+  /** Seconds to defeat the target; null when it survived. */
+  ttk: number | null;
+  dps: number;
+  gold: number;
+  /** Tie explanation, e.g. "Equal TTK · lower-cost option". */
+  note: string | null;
+}
+
+export interface CoreStage {
+  level: number;
+  target: Target;
+  items_allowed: number;
+  builds: CoreBuild[];
+}
+
+export interface CoreRanking {
+  item: string;
+  /** 0-100: Top-3 build presence weighted 1, 1/2, 1/3, averaged over eligible cells. */
+  score: number;
+  winner_cells: number;
+  top3_cells: number;
+  appearance_cells: number;
+  eligible_cells: number;
+}
+
+/** Saved core-item search for one champion (docs/app-data.md). */
+export interface ChampionCore {
+  core: string[];
+  ranking: CoreRanking[];
+  stages: CoreStage[];
+  notes: string[];
+}
+
+export interface CoreItems {
+  excluded: string[];
+  /** null while the saved result is being recalculated. */
+  champions: Record<string, ChampionCore | null>;
+}
+
 export interface Database {
   schema: number;
   champions: Champion[];
@@ -77,6 +128,9 @@ export interface Database {
   boots: Item[];
   runes: Rune[];
   rune_trees: RuneTree[];
+  /** Optional: data exported before app version 0.3.0 has neither. */
+  tier_list?: TierList;
+  core_items?: CoreItems;
 }
 
 /** The Database on screen, and when it was downloaded (null: the copy bundled with the app). */

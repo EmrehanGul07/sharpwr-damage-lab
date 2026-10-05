@@ -1,9 +1,10 @@
+import { coreChampions, tierOf } from "../builds";
 import { type Database, type ItemCategory, itemsOfCategory } from "../data";
 import { h, icon } from "../dom";
 import { formatGold, itemStatLines } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
-import { type View, currentQuery, emptyState, listFooter, listRow, notFound, searchField, segments, statTable } from "./shared";
+import { type View, currentQuery, emptyState, listFooter, listRow, notFound, searchField, segments, statTable, tierBadge } from "./shared";
 
 const CATEGORIES: ReadonlyArray<[ItemCategory, string]> = [
   ["completed", "Items"],
@@ -25,7 +26,8 @@ export function itemList(db: Database, params: URLSearchParams): View {
         const stats = itemStatLines(item)
           .slice(0, 2)
           .map((line) => `${line.value} ${line.label}`);
-        return listRow(href("items", [active, item.name]), item.icon, item.name, [formatGold(item.gold), ...stats].join(" · "));
+        const badge = active === "completed" ? tierBadge(tierOf(db, item.name)) : null;
+        return listRow(href("items", [active, item.name]), item.icon, item.name, [formatGold(item.gold), ...stats].join(" · "), badge);
       });
     list.replaceChildren(...(rows.length ? rows : [emptyState("No item matches this search.")]));
   };
@@ -49,15 +51,36 @@ export function itemDetail(db: Database, categoryName: string, name: string): Vi
   if (!item) return notFound(name);
   const lines = itemStatLines(item);
   const label = { completed: "Item", component: "Component", boots: "Boots" }[item.category];
+  const tier = item.category === "completed" ? tierOf(db, item.name) : null;
+  const champions = coreChampions(db, item.name);
   return {
     title: item.name,
     back: true,
     body: h(
       "section",
       { class: "detail" },
-      h("div", { class: "hero" }, icon(item.icon, item.name, 72), h("div", {}, h("h2", {}, item.name), h("p", { class: "muted" }, `${label} · ${formatGold(item.gold)}`))),
+      h(
+        "div",
+        { class: "hero" },
+        icon(item.icon, item.name, 72),
+        h(
+          "div",
+          {},
+          h("h2", {}, item.name),
+          h("p", { class: "muted" }, `${label} · ${formatGold(item.gold)}`),
+          tier ? h("p", { class: "tier-line" }, tierBadge(tier), h("a", { href: href("tiers") }, `Tier ${tier} on the tier list`)) : null,
+        ),
+      ),
       h("h3", {}, "Stats"),
       lines.length ? statTable(lines.map((line) => [line.label, line.value])) : emptyState("No stats."),
+      champions.length ? h("h3", {}, "Core item for") : null,
+      champions.length
+        ? h(
+            "div",
+            { class: "chips" },
+            ...champions.map((champion) => h("a", { class: "chip", href: href("champions", [champion.name]) }, icon(champion.icon, "", 32), champion.name)),
+          )
+        : null,
     ),
   };
 }
