@@ -8,6 +8,8 @@ from pathlib import Path
 from engine_runtime import ensure_engine_revision
 APP_VERSION=(Path(__file__).resolve().parent/"VERSION").read_text().strip()
 ensure_engine_revision(APP_VERSION)
+# Riot Games' fan-project notice; shown in the footer and kept identical to the README.
+RIOT_NOTICE="SharpWR isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc."
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -171,20 +173,20 @@ ITEM_ICON_FILE={
 "Yun Tal Wildarrows":"3032_yuntalwildarrows.png"
 }
 LOCAL_ITEM_ICON={
-"Stormrazor":"assets/items/Stormrazor_WR_item.webp",
-"The Collector":"assets/items/The_Collector_WR_item.webp",
-"Galeforce":"assets/items/128px-Galeforce_WR_item.png",
-"Serylda's Grudge":"assets/items/128px-Serylda's_Grudge_WR_item.webp",
-"Blade of the Ruined King":"assets/items/Blade_of_the_Ruined_King_WR_item.webp",
-"Death's Dance":"assets/items/Death's_Dance_WR_item.webp",
-"Duskblade of Draktharr":"assets/items/Duskblade_of_Draktharr_WR_item.webp",
-"Fiendhunter Bolts":"assets/items/Fiendhunter_Bolts_item.webp",
-"Hexoptics C44":"assets/items/Hexoptics_C44_item.webp",
-"Iceborn Gauntlet":"assets/items/Iceborn_Gauntlet_WR_item.webp",
-"Immortal Shieldbow":"assets/items/Immortal_Shieldbow_item.webp",
-"Kraken Slayer":"assets/items/Kraken_Slayer_WR_item.webp",
-"Navori Quickblades":"assets/items/Navori_Quickblades_WR_item.png",
-"Serpent's Fang":"assets/items/Serpent's_Fang_WR_item.png",
+"Stormrazor":"assets/riot/items/Stormrazor_WR_item.webp",
+"The Collector":"assets/riot/items/The_Collector_WR_item.webp",
+"Galeforce":"assets/riot/items/128px-Galeforce_WR_item.png",
+"Serylda's Grudge":"assets/riot/items/128px-Serylda's_Grudge_WR_item.webp",
+"Blade of the Ruined King":"assets/riot/items/Blade_of_the_Ruined_King_WR_item.webp",
+"Death's Dance":"assets/riot/items/Death's_Dance_WR_item.webp",
+"Duskblade of Draktharr":"assets/riot/items/Duskblade_of_Draktharr_WR_item.webp",
+"Fiendhunter Bolts":"assets/riot/items/Fiendhunter_Bolts_item.webp",
+"Hexoptics C44":"assets/riot/items/Hexoptics_C44_item.webp",
+"Iceborn Gauntlet":"assets/riot/items/Iceborn_Gauntlet_WR_item.webp",
+"Immortal Shieldbow":"assets/riot/items/Immortal_Shieldbow_item.webp",
+"Kraken Slayer":"assets/riot/items/Kraken_Slayer_WR_item.webp",
+"Navori Quickblades":"assets/riot/items/Navori_Quickblades_WR_item.png",
+"Serpent's Fang":"assets/riot/items/Serpent's_Fang_WR_item.png",
 }
 @st.cache_data
 def _local_icon_data(path):
@@ -212,7 +214,7 @@ BOOT_ICON_FILE={
 }
 def boot_icon(name):
     fn=BOOT_ICON_FILE.get(name)
-    return _local_icon_data("assets/items/"+fn) if fn else ""
+    return _local_icon_data("assets/riot/items/"+fn) if fn else ""
 
 def item_icon(name):
     local=LOCAL_ITEM_ICON.get(name)
@@ -2225,3 +2227,4 @@ with tabs[5]:
     st.link_button("Download editable Blender study",release_asset_url("sharpwr-ezreal-v2-source.zip"))
 
 st.caption(f"Web V{APP_VERSION} | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption(RIOT_NOTICE)

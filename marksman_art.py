@@ -15,7 +15,7 @@ STUDIO_ROOT=ROOT/'assets/marksman-3d'
 ART_DIRECTION=ROOT/'data/marksman-art-direction.json'
 ABILITY_CATALOGUE=ROOT/'data/marksman-ability-catalogue.json'
 SKILL_GEOMETRY=ROOT/'data/marksman-skill-geometry.json'
-SKILL_ICONS=ROOT/'data/marksman-skill-icons.json'
+SKILL_ICONS=ROOT/'data/riot/marksman-skill-icons.json'
 # Skinned GLBs live in static/ and are served by Streamlit (server.enableStaticServing).
 MODEL_BASE='app/static/marksman-3d/'
 # Editable Blender sources and download packages are published by CI as release assets, not tracked in git.
