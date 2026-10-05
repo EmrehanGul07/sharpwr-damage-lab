@@ -1,0 +1,34 @@
+name: Fetch bundled Riot icons
+# Downloads icons listed in data/riot/icons.json that are missing under assets/riot/ and
+# commits them to the pushed branch. Runs when the list changes, or by hand.
+on:
+  push:
+    paths:
+      - "data/riot/icons.json"
+      - "scripts/fetch_riot_icons.py"
+      - ".github/workflows/fetch-riot-icons.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download missing icons
+        run: python scripts/fetch_riot_icons.py
+      - name: Save fetched icons
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/riot
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Fetch bundled Riot icons"
+          git push
