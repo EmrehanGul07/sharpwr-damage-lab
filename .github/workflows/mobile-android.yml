@@ -46,6 +46,14 @@ jobs:
           VERSION_CODE: ${{ github.run_number }}
         run: ./gradlew --no-daemon assembleDebug
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk "$APK"
+      - name: Check the APK contents
+        run: |
+          unzip -l "$APK" > apk-contents.txt
+          grep -q "assets/public/index.html" apk-contents.txt
+          grep -q "assets/public/data/database.json" apk-contents.txt
+          icons=$(grep -c "assets/public/assets/riot/.*\.\(png\|webp\|jpg\)$" apk-contents.txt)
+          echo "APK size: $(du -h "$APK" | cut -f1), bundled icons: $icons"
+          test "$icons" -ge 128
       - uses: actions/upload-artifact@v4
         with:
           name: sharpwr-android-preview
