@@ -2,7 +2,7 @@
   "schema": 1,
   "champion": "Ezreal",
   "tool": "Blender 4.5.14 LTS",
-  "source_sha256": "942dd7c6d0d2be26d18003c3287797c58f9c8fbd51fdf9c8842588846d3c83e2",
+  "source_sha256": "6fbb47fc23fc6eb394e2a86f82585d0738e7f57709e3a4143f7dcc1d72c6b772",
   "bones": 17,
   "animations": {
     "Idle": 3,
