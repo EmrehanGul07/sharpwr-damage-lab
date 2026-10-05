@@ -11,6 +11,7 @@ An English Wild Rift marksman Database for Android: champions with stats at ever
 | `mobile/tests/` | Vitest unit tests, including checks against the real `app-data/database.json` and the golden outputs |
 | `mobile/scripts/sync-data.mjs` | Copies `app-data/database.json` and `assets/riot/` into `mobile/public/` before every build |
 | `mobile/android/` | Capacitor Android project |
+| `scripts/make_app_icons.py` | Draws the app icon (gold arrow through a crosshair ring on navy) and the splash screens into `mobile/android/.../res/`, plus `mobile/resources/icon-512.png` for store listings. Android 12+ shows the launcher icon on `values/colors.xml` `splash_background` |
 | `mobile/native.json` | Oldest APK that can run the current screens, and the fingerprint of the Android shell |
 | `.github/workflows/mobile-android.yml` | Tests, builds and packs the preview APK and the live update |
 
