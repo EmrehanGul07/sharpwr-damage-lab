@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#070b11" />
+    <meta name="color-scheme" content="dark" />
+    <title>SharpWR</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <button id="back" class="back" type="button" aria-label="Back" hidden>‹</button>
+      <h1 id="title">SharpWR</h1>
+    </header>
+    <main id="view" class="view"><p class="status">Loading…</p></main>
+    <nav class="tabbar" aria-label="Sections">
+      <a data-section="champions" href="#/champions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></svg>
+        <span>Champions</span>
+      </a>
+      <a data-section="items" href="#/items">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l-1 12H7z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+        <span>Items</span>
+      </a>
+      <a data-section="runes" href="#/runes">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 9-7 9-7-9z" /><path d="M12 8v8" /></svg>
+        <span>Runes</span>
+      </a>
+      <a data-section="about" href="#/about">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7.5v.5" /></svg>
+        <span>About</span>
+      </a>
+    </nav>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

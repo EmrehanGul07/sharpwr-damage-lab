@@ -43,6 +43,7 @@ The integrity audit writes `data/combat-audit-current.json` and `data/combat-aud
 - [Architecture and roadmap](docs/architecture.md)
 - [Third-party assets and external hosts](docs/third-party-assets.md)
 - [Mobile app data (`app-data/database.json`)](docs/app-data.md)
+- [Android app (`mobile/`)](docs/mobile.md)
 - [Offline completion report](docs/offline-completion-20261003.md)
 - [Active WR evidence TODO](docs/ingame-test-todo.md)
 - [Per-champion queue](docs/marksman-task-queue.md)

@@ -1,0 +1,26 @@
+{
+  "name": "sharpwr-mobile",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SharpWR Android app: offline Wild Rift marksman Database (free fan project)",
+  "type": "module",
+  "scripts": {
+    "sync-data": "node scripts/sync-data.mjs",
+    "dev": "npm run sync-data && vite",
+    "build": "npm run sync-data && tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "@types/node": "^22.20.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}

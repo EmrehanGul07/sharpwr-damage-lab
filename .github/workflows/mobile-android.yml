@@ -1,0 +1,61 @@
+name: Build Android preview
+# Tests and builds the mobile Database app, then packs the Android preview APK.
+# Every run uploads the APK as an artifact; runs on main also publish it to the
+# mobile-preview release, whose download link stays the same.
+on:
+  push:
+    paths:
+      - "mobile/**"
+      - "app-data/**"
+      - "assets/riot/**"
+      - ".github/workflows/mobile-android.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: mobile
+    env:
+      APK: sharpwr-database-preview.apk
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npx cap sync android
+      - name: Build preview APK
+        working-directory: mobile/android
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: ./gradlew --no-daemon assembleDebug
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk "$APK"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sharpwr-android-preview
+          path: mobile/${{ env.APK }}
+      - name: Publish to the mobile-preview release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          if ! gh release view mobile-preview >/dev/null 2>&1; then
+            gh release create mobile-preview --target main --prerelease \
+              --title "SharpWR Android preview" \
+              --notes "Preview build of the SharpWR Database app for testing on Android. Each new build installs over the previous one. Free fan project, not endorsed by Riot Games."
+          fi
+          gh release upload mobile-preview "$APK" --clobber
