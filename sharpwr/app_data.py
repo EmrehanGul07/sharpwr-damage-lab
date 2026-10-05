@@ -1,15 +1,18 @@
 """Read-only Database export for the mobile app.
 
 Builds the same records the web app's Database tab shows: champions (with level 1-15
-stats), completed items, components, boots and runes. The result is plain JSON data;
+stats), completed items, components, boots and runes, plus SharpWR's published item tier
+list and the saved core-item search results. The result is plain JSON data;
 scripts/export_app_data.py writes it to app-data/database.json.
 """
 
 import json
+from pathlib import Path
 
 from .aa_engine import stats
 from .catalog import B, F, K, P, dct
 from .champion_database import CHAMPION_DATABASE, level_stats
+from .core_items import BUDGETS, EXCLUDED, core_leaders, core_record
 from .icons import icon_entry
 from .rune_database import RUNE_DATABASE, RUNE_SLOTS
 
@@ -20,6 +23,9 @@ FRACTION_FIELDS = ("as", "crit", "ls", "pctpen", "pctmpen")
 # Components whose movement speed is a flat value; every other item's MS is a fraction of base MS.
 FLAT_MS_COMPONENTS = {"Boots of Speed"}
 DECIMALS = 4
+TIER_LIST = Path(__file__).resolve().parents[1] / "data" / "published-tier-list.json"
+# Benchmark targets in display order, as keyed in data/champion-core-items.json.
+TARGETS = ("squishy", "bruiser", "tank")
 
 
 def _icon(kind, name):
@@ -101,6 +107,79 @@ def _rune(name, record):
     }
 
 
+def _tier_list():
+    """Published tier list, best tier first, without the unranked pool."""
+    published = json.loads(TIER_LIST.read_text())
+    return {
+        "title": published["title"],
+        "patch": published["patch"],
+        "tiers": [
+            {"tier": tier, "items": names}
+            for tier, names in published["tiers"].items()
+            if tier != "pool"
+        ],
+    }
+
+
+def _build(row):
+    return {
+        "items": row["Items"],
+        "boots": row["Boots"],
+        "ttk": None if row["TTK"] is None else round(row["TTK"], 3),
+        "dps": round(row["DPS"], 1),
+        "gold": row["Gold"],
+        "note": row.get("Rank explanation"),
+    }
+
+
+def _core_builds(name):
+    """Saved core-item search for one champion; None while it is stale or incomplete."""
+    record = core_record(name)
+    core = core_leaders(record)
+    if not core:
+        return None
+    cells = record["cells"]
+    return {
+        "core": core,
+        "ranking": [
+            {
+                "item": row["Item"],
+                "score": round(row["Score"], 1),
+                "winner_cells": row["Winner cells"],
+                "top3_cells": row["Common Top-3 cells"],
+                "appearance_cells": row["Appearance cells"],
+                "eligible_cells": row["Eligible cells"],
+            }
+            for row in record["ranking"]
+        ],
+        "stages": [
+            {
+                "level": level,
+                "target": target,
+                "items_allowed": budget,
+                "builds": [_build(row) for row in cells[f"{level}:{target}"]["search"]["full"]],
+            }
+            for level, budget in BUDGETS.items()
+            for target in TARGETS
+        ],
+        "notes": sorted(
+            {
+                note
+                for cell in cells.values()
+                for row in cell["search"]["full"]
+                for note in row["Assumptions"]
+            }
+        ),
+    }
+
+
+def _core_items():
+    return {
+        "excluded": sorted(EXCLUDED),
+        "champions": {name: _core_builds(name) for name in CHAMPION_DATABASE},
+    }
+
+
 def build_database():
     """Every Database record as JSON-ready data, in the web app's display order."""
     return {
@@ -117,6 +196,8 @@ def build_database():
         "boots": [_item(name, values, "boots") for name, values in B.items()],
         "runes": [_rune(name, record) for name, record in RUNE_DATABASE.items()],
         "rune_trees": [{"name": tree, "icon": _icon("rune_trees", tree)} for tree in RUNE_SLOTS],
+        "tier_list": _tier_list(),
+        "core_items": _core_items(),
     }
 
 

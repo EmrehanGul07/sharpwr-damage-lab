@@ -1,6 +1,6 @@
-/** Hash routes: #/champions, #/champions/Ezreal, #/items?type=boots, #/items/boots/Mercury's Treads, … */
+/** Hash routes: #/champions, #/champions/Ezreal?tab=stats, #/tiers, #/items?type=boots, #/items/boots/Mercury's Treads, … */
 
-export type Section = "champions" | "items" | "runes" | "about";
+export type Section = "champions" | "tiers" | "items" | "runes" | "about";
 
 export interface Route {
   section: Section;
@@ -9,7 +9,7 @@ export interface Route {
   params: URLSearchParams;
 }
 
-const SECTIONS: Section[] = ["champions", "items", "runes", "about"];
+const SECTIONS: Section[] = ["champions", "tiers", "items", "runes", "about"];
 
 export function parseRoute(hash: string): Route {
   const [path, query = ""] = hash.replace(/^#\/?/, "").split("?");

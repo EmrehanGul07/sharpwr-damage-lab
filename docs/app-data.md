@@ -20,6 +20,8 @@ python scripts/export_app_data.py
 | `boots` | Boots. |
 | `runes` | 51 runes. |
 | `rune_trees` | The four minor rune trees with their icons. |
+| `tier_list` | SharpWR's published item tier list (`data/published-tier-list.json`). |
+| `core_items` | Saved core-item search results per champion (`data/champion-core-items.json`). |
 
 ## Champion
 
@@ -51,6 +53,31 @@ python scripts/export_app_data.py
 | `slot` | Row 1–3 inside a minor tree; `null` for key runes. |
 | `tooltip` | Verified effect text. |
 | `data` | Numeric values behind the tooltip, as stored in `sharpwr/rune_database.py`. |
+
+## Tier list
+
+| Field | Meaning |
+|---|---|
+| `title`, `patch` | Board title and the patch it was published for. |
+| `tiers` | Best tier first: `{tier, items}`, `tier` `S`, `A`, `B`, `C`, `D` or `F`; `items` are completed item names. The board's unranked pool is left out. |
+
+## Core items
+
+The saved results of the core-item search ([core-item-protocol.md](core-item-protocol.md)): a bounded search against a stationary training target that does not attack back, not match statistics.
+
+| Field | Meaning |
+|---|---|
+| `excluded` | Items left out of this search: Infinity Edge, Lord Dominik's Regards, Mortal Reminder, Serylda's Grudge, Terminus. |
+| `champions` | Champion name → result, or `null` while the saved result is stale (source fingerprint changed) or incomplete. Then the web app shows "calculation pending" too. |
+
+Per champion:
+
+| Field | Meaning |
+|---|---|
+| `core` | The core item the web champion card shows: top score, at most two on an exact tie (`core_leaders` in `sharpwr/core_items.py`). |
+| `ranking` | Every scored item, best first: `item`, `score` (0–100; Top-3 presence weighted 1, 1/2, 1/3, averaged over eligible cells), `winner_cells` (in the #1 build), `top3_cells` (in all three Top builds), `appearance_cells`, `eligible_cells`. |
+| `stages` | 18 cells, levels 5, 7, 9, 11, 13, 15 × targets `squishy`, `bruiser`, `tank`: `items_allowed` (1, 1, 2, 3, 4, 5) and `builds`, the Top 3 with `items`, `boots`, `ttk` (seconds to defeat the target; `null` if it survived), `dps`, `gold` and `note` (tie explanation or `null`). |
+| `notes` | Unverified mechanics behind this champion's results. |
 
 ## Icons
 

@@ -120,6 +120,17 @@ def _read(path, mtime):
     return json.loads(Path(path).read_text())
 
 
+def core_leaders(record):
+    """Core item names to show: the top score, at most two on an exact tie.
+
+    Empty when the saved record is missing (stale fingerprint), incomplete or unranked.
+    """
+    if not record or not record.get("complete") or not record.get("ranking"):
+        return []
+    best = record["ranking"][0]["Score"]
+    return [row["Item"] for row in record["ranking"] if abs(row["Score"] - best) < 1e-6][:2]
+
+
 def core_record(champion):
     path = ROOT / "data/champion-core-items.json"
     if not path.exists():

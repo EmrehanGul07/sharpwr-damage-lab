@@ -1,11 +1,14 @@
 """The mobile app's Database export stays current, complete and consistent with the web app."""
 
+import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from sharpwr import B, F, P
 from sharpwr.app_data import build_database, champion_level_stats, render_database_json
 from sharpwr.champion_database import CHAMPION_DATABASE
+from sharpwr.core_items import BUDGETS, EXCLUDED, core_leaders, core_record
 from sharpwr.rune_database import RUNE_DATABASE
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,6 +53,44 @@ class AppDataTests(unittest.TestCase):
                 else:
                     self.assertEqual(record["ms_unit"], "fraction")
                     self.assertLess(ms, 1, record["name"])
+
+    def test_tier_list_is_the_published_board(self):
+        published = json.loads((ROOT / "data" / "published-tier-list.json").read_text())
+        tier_list = self.data["tier_list"]
+        self.assertEqual((tier_list["title"], tier_list["patch"]), (published["title"], "7.3a"))
+        self.assertEqual([t["tier"] for t in tier_list["tiers"]], ["S", "A", "B", "C", "D", "F"])
+        names = [name for tier in tier_list["tiers"] for name in tier["items"]]
+        self.assertEqual(len(names), len(set(names)))
+        for tier in tier_list["tiers"]:
+            self.assertEqual(tier["items"], published["tiers"][tier["tier"]])
+        self.assertLessEqual(set(names), set(F))
+
+    def test_core_items_match_the_saved_search(self):
+        core_items = self.data["core_items"]
+        self.assertEqual(core_items["excluded"], sorted(EXCLUDED))
+        self.assertEqual(list(core_items["champions"]), list(CHAMPION_DATABASE))
+        for name, exported in core_items["champions"].items():
+            record = core_record(name)
+            self.assertIsNotNone(exported, name)
+            self.assertEqual(exported["core"], core_leaders(record), name)
+            self.assertEqual([row["item"] for row in exported["ranking"]], [row["Item"] for row in record["ranking"]])
+            self.assertTrue(set(exported["core"]) <= {row["item"] for row in exported["ranking"]})
+            stages = [(stage["level"], stage["target"], stage["items_allowed"]) for stage in exported["stages"]]
+            expected = [(level, target, budget) for level, budget in BUDGETS.items() for target in ("squishy", "bruiser", "tank")]
+            self.assertEqual(stages, expected, name)
+            for stage in exported["stages"]:
+                saved = record["cells"][f'{stage["level"]}:{stage["target"]}']["search"]["full"]
+                self.assertEqual([b["items"] for b in stage["builds"]], [row["Items"] for row in saved])
+                for build in stage["builds"]:
+                    self.assertEqual(len(build["items"]), stage["items_allowed"], (name, stage["level"]))
+                    self.assertTrue(set(build["items"]) <= set(F) - EXCLUDED, build["items"])
+                    self.assertIn(build["boots"], B)
+            self.assertTrue(all(isinstance(note, str) and note for note in exported["notes"]), name)
+
+    def test_stale_core_results_are_left_out(self):
+        with patch("sharpwr.app_data.core_record", return_value=None):
+            data = build_database()
+        self.assertEqual(set(data["core_items"]["champions"].values()), {None})
 
     def test_level_stats_match_the_champion_card(self):
         # Live champion card: Kalista level 9 shows 92.0 AD and 1.020 attack speed.

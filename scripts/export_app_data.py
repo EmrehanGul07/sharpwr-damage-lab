@@ -1,7 +1,8 @@
 """Write app-data/database.json, the read-only Database the mobile app ships with.
 
-Run after changing champion, item, boots or rune data; tests/test_app_data.py fails while
-the committed file is out of date.
+Run after changing champion, item, boots or rune data, the published tier list or the saved
+core-item results, and after engine changes (stale core results are exported as null);
+tests/test_app_data.py fails while the committed file is out of date.
 """
 import sys
 from pathlib import Path

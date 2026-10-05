@@ -9,6 +9,7 @@ import { about } from "./views/about";
 import { championDetail, championList } from "./views/champions";
 import { itemDetail, itemList } from "./views/items";
 import { runeDetail, runeList } from "./views/runes";
+import { tierList } from "./views/tiers";
 import type { View } from "./views/shared";
 
 const title = document.getElementById("title") as HTMLElement;
@@ -22,7 +23,9 @@ function resolve(state: DataState, route: Route): View {
   const [first, second] = route.parts;
   switch (route.section) {
     case "champions":
-      return first ? championDetail(db, first) : championList(db);
+      return first ? championDetail(db, first, route.params) : championList(db);
+    case "tiers":
+      return tierList(db);
     case "items":
       return first && second ? itemDetail(db, first, second) : itemList(db, route.params);
     case "runes":
