@@ -1,7 +1,9 @@
 import "./styles.css";
 import { App } from "@capacitor/app";
-import { type Database, loadDatabase } from "./data";
+import { version } from "../package.json";
+import { type DataState, loadDatabase } from "./data";
 import { h } from "./dom";
+import { APK_URL, type KeyValueStore, downloadDatabase, isNewerVersion, latestAppVersion, readSaved, save } from "./online";
 import { type Route, href, parseRoute } from "./router";
 import { about } from "./views/about";
 import { championDetail, championList } from "./views/champions";
@@ -12,9 +14,11 @@ import type { View } from "./views/shared";
 const title = document.getElementById("title") as HTMLElement;
 const back = document.getElementById("back") as HTMLButtonElement;
 const viewRoot = document.getElementById("view") as HTMLElement;
+const notice = document.getElementById("notice") as HTMLElement;
 const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>(".tabbar a"));
 
-function resolve(db: Database, route: Route): View {
+function resolve(state: DataState, route: Route): View {
+  const { db } = state;
   const [first, second] = route.parts;
   switch (route.section) {
     case "champions":
@@ -24,13 +28,13 @@ function resolve(db: Database, route: Route): View {
     case "runes":
       return first ? runeDetail(db, first) : runeList(db, route.params);
     case "about":
-      return about(db);
+      return about(state);
   }
 }
 
-function render(db: Database): void {
+function render(state: DataState): void {
   const route = parseRoute(location.hash);
-  const view = resolve(db, route);
+  const view = resolve(state, route);
   title.textContent = view.title;
   back.hidden = !view.back;
   viewRoot.replaceChildren(view.body);
@@ -55,13 +59,49 @@ async function start(): Promise<void> {
     if (canGoBack) history.back();
     else void App.exitApp();
   });
+  const storage = localStore();
+  let state: DataState;
   try {
-    const db = await loadDatabase();
-    window.addEventListener("hashchange", () => render(db));
-    render(db);
+    state = (storage && readSaved(storage, __APP_BUILD__)) ?? { db: await loadDatabase(), downloadedAt: null };
   } catch (error) {
     viewRoot.replaceChildren(h("p", { class: "status" }, `Could not load the database: ${(error as Error).message}`));
+    return;
+  }
+  window.addEventListener("hashchange", () => render(state));
+  render(state);
+
+  const db = await downloadDatabase();
+  if (db) {
+    // Shown from the next screen on, so the page being read does not jump.
+    state = { db, downloadedAt: new Date().toISOString() };
+    if (storage) save(storage, __APP_BUILD__, state);
   }
 }
 
+function localStore(): KeyValueStore | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+/** Preview builds only: Play Store builds are updated by Google Play. */
+async function showUpdateNotice(): Promise<void> {
+  const latest = await latestAppVersion();
+  if (!latest || !isNewerVersion(latest, version)) return;
+  notice.replaceChildren(
+    h("p", {}, h("strong", {}, `SharpWR ${latest} is available.`), ` You have ${version}.`),
+    h(
+      "div",
+      { class: "notice-actions" },
+      // External links open in the phone's browser, which downloads the new APK.
+      h("a", { class: "button primary", href: APK_URL }, "Download"),
+      h("button", { class: "button", type: "button", onclick: () => (notice.hidden = true) }, "Later"),
+    ),
+  );
+  notice.hidden = false;
+}
+
 void start();
+if (import.meta.env.VITE_PREVIEW_BUILD === "1") void showUpdateNotice();

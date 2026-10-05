@@ -1,12 +1,12 @@
 # SharpWR Android app
 
-An offline, English Wild Rift marksman Database for Android: champions with stats at every level, items, components, boots and runes. It reads the same data as the web app's Database tab and needs no network. Free fan project; the Riot Games notice is on the About screen and under every list.
+An English Wild Rift marksman Database for Android: champions with stats at every level, items, components, boots and runes. It reads the same data as the web app's Database tab, works offline and downloads data updates when the phone is online. Free fan project; the Riot Games notice is on the About screen and under every list.
 
 ## Layout
 
 | Path | Content |
 |---|---|
-| `mobile/src/` | TypeScript UI (no framework): data loader, formatting, search, hash router, views |
+| `mobile/src/` | TypeScript UI (no framework): data loader, online updates (`online.ts`), formatting, search, hash router, views |
 | `mobile/tests/` | Vitest unit tests, including checks against the real `app-data/database.json` |
 | `mobile/scripts/sync-data.mjs` | Copies `app-data/database.json` and `assets/riot/` into `mobile/public/` before every build |
 | `mobile/android/` | Capacitor Android project |
@@ -25,6 +25,14 @@ cd android && ./gradlew assembleDebug   # needs JDK 21 and the Android SDK
 ```
 
 When champion, item or rune data changes, run `python scripts/export_app_data.py` at the repository root first; the next build picks the new file up.
+
+## Online updates
+
+All addresses are in `mobile/src/online.ts`; [third-party-assets.md](third-party-assets.md) lists them too.
+
+- **Data:** at every launch the app downloads `app-data/database.json` from the `main` branch (`raw.githubusercontent.com`). A copy that passes the check in `isUsableDatabase` (same `schema`, every section present) is saved on the phone and shown from the next screen on. Offline, the app shows the last saved copy, or the copy bundled with it. A newly installed build ignores copies saved by the previous build until it is online again. So data changes on `main` reach installed apps without a new APK; a change old apps cannot read must raise `schema` ([app-data.md](app-data.md)), and old apps then keep their data until they are updated.
+- **Icons:** an icon that a data update adds but the APK does not bundle loads from the same branch; offline it shows an empty placeholder.
+- **New app version (preview builds only):** builds made with `VITE_PREVIEW_BUILD=1` (the workflow sets it) compare their version with `mobile/package.json` on `main` and offer the APK download when it is higher. Raise `version` for every change users should install; until the workflow finishes publishing that build (a few minutes), the link still serves the previous APK. Google Play builds must not set this flag: Play updates the app, and its policy forbids apps that update themselves from elsewhere.
 
 ## Preview builds
 

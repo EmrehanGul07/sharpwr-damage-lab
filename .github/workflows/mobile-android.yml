@@ -38,7 +38,12 @@ jobs:
           cache: gradle
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - name: Build the web app
+        env:
+          # GitHub preview builds tell the user when a newer version is published.
+          # A Google Play build must not set this: Play updates the app itself.
+          VITE_PREVIEW_BUILD: "1"
+        run: npm run build
       - run: npx cap sync android
       - name: Build preview APK
         working-directory: mobile/android

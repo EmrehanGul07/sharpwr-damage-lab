@@ -1,4 +1,5 @@
 /** Minimal DOM builder. Text is always set as text, never parsed as HTML. */
+import { remoteAsset } from "./online";
 
 type Child = Node | string | number | null | undefined | false;
 type Props = Record<string, string | number | boolean | EventListener | undefined>;
@@ -23,9 +24,20 @@ export function h<K extends keyof HTMLElementTagNameMap>(
   return element;
 }
 
-/** Bundled icon, or an empty placeholder of the same size when a record has none. */
+/**
+ * Bundled icon, or an empty placeholder of the same size when a record has none. An icon the app
+ * does not bundle (added by an online data update) loads from GitHub, or shows the placeholder offline.
+ */
 export function icon(src: string | null, alt: string, size: number, extraClass = ""): HTMLElement {
   const className = `icon ${extraClass}`.trim();
-  if (!src) return h("span", { class: `${className} icon-empty`, style: `width:${size}px;height:${size}px` });
-  return h("img", { class: className, src, alt, width: size, height: size, loading: "lazy" });
+  const placeholder = () => h("span", { class: `${className} icon-empty`, style: `width:${size}px;height:${size}px` });
+  if (!src) return placeholder();
+  const image = h("img", { class: className, src, alt, width: size, height: size, loading: "lazy" });
+  let triedOnline = false;
+  image.addEventListener("error", () => {
+    if (triedOnline) return image.replaceWith(placeholder());
+    triedOnline = true;
+    image.src = remoteAsset(src);
+  });
+  return image;
 }

@@ -27,6 +27,17 @@ Hepsi `riot/` adlı klasörlerde tutulur. Uygulamanın gösterdiği her ikon, do
 
 İkonlar için dış adresler yalnız yedek olarak kalır: bir ikon dosyası projede yoksa site, `icons.json`'daki kaynak adresi kullanır.
 
+## Mobil uygulamanın internetten aldıkları
+
+Uygulama internetsiz çalışır; bu adresler yalnız güncelleme içindir. Hepsi bu projenindir ve `mobile/src/online.ts` dosyasındadır. Telefondan GitHub'a kişisel veri gönderilmez; GitHub yalnız her sitenin gördüğü bağlantı bilgilerini (IP adresi gibi) görür.
+
+| Adres | Ne için | Ne zaman |
+|---|---|---|
+| `raw.githubusercontent.com/.../main/app-data/database.json` | Güncel Database verisi | Her açılışta |
+| `raw.githubusercontent.com/.../main/assets/riot/...` | Yeni eklenen, uygulamada olmayan bir ikon | Yalnız böyle bir ikon gösterilirken |
+| `raw.githubusercontent.com/.../main/mobile/package.json` | Yeni uygulama sürümü var mı | Her açılışta, yalnız önizleme (GitHub) sürümünde |
+| `github.com/.../releases/download/mobile-preview` | Yeni APK'yı indirmek | Kullanıcı "Download"a dokununca, telefonun tarayıcısında |
+
 ## Orijinal içerik
 
 - `static/marksman-3d/` ve `assets/marksman-3d/models/` altındaki 3D modeller ve animasyonlar bu proje için çizildi; oyundan çıkarılmış dosya değildir. Ancak Riot karakterlerini tasvir ettikleri için fan çalışmasıdır.

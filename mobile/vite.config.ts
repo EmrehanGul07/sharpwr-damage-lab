@@ -4,4 +4,5 @@ import { defineConfig } from "vite";
 export default defineConfig({
   base: "./",
   build: { outDir: "dist", emptyOutDir: true },
+  define: { __APP_BUILD__: JSON.stringify(new Date().toISOString()) },
 });
