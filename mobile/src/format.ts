@@ -58,6 +58,11 @@ export function formatGold(gold: number): string {
   return `${gold.toLocaleString("en-US")} gold`;
 }
 
+/** ISO time as a short day, e.g. "5 Oct 2026". */
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
 /** Non-zero item stats as label/value pairs, e.g. Attack Speed "+40%". */
 export function itemStatLines(item: Item): Array<{ label: string; value: string }> {
   const lines: Array<{ label: string; value: string }> = [];

@@ -1,9 +1,10 @@
 import { version } from "../../package.json";
-import type { Database } from "../data";
+import type { DataState } from "../data";
 import { h } from "../dom";
+import { formatDate } from "../format";
 import { RIOT_NOTICE, type View, statTable } from "./shared";
 
-export function about(db: Database): View {
+export function about({ db, downloadedAt }: DataState): View {
   return {
     title: "About",
     back: false,
@@ -11,9 +12,10 @@ export function about(db: Database): View {
       "section",
       { class: "detail" },
       h("h2", {}, "SharpWR"),
-      h("p", {}, "An offline database of the Wild Rift marksmen: champion stats at every level, items, boots and runes. A free fan project for players."),
+      h("p", {}, "A database of the Wild Rift marksmen: champion stats at every level, items, boots and runes. It works offline and downloads data updates when your phone is online. A free fan project for players."),
       statTable([
         ["App version", version],
+        ["Data", downloadedAt ? `Downloaded ${formatDate(downloadedAt)}` : "Built into the app"],
         ["Data format", `Schema ${db.schema}`],
         ["Champions", String(db.champions.length)],
         ["Items", String(db.items.length)],

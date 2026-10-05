@@ -1,8 +1,8 @@
 {
   "name": "sharpwr-mobile",
   "private": true,
-  "version": "0.1.0",
-  "description": "SharpWR Android app: offline Wild Rift marksman Database (free fan project)",
+  "version": "0.2.0",
+  "description": "SharpWR Android app: Wild Rift marksman Database that works offline and updates online (free fan project)",
   "type": "module",
   "scripts": {
     "sync-data": "node scripts/sync-data.mjs",

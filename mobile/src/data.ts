@@ -79,6 +79,22 @@ export interface Database {
   rune_trees: RuneTree[];
 }
 
+/** The Database on screen, and when it was downloaded (null: the copy bundled with the app). */
+export interface DataState {
+  db: Database;
+  downloadedAt: string | null;
+}
+
+/** Checks a downloaded or saved Database before the app shows it. */
+export function isUsableDatabase(value: unknown): value is Database {
+  if (typeof value !== "object" || value === null) return false;
+  const data = value as Partial<Record<keyof Database, unknown>>;
+  const lists = [data.champions, data.items, data.components, data.boots, data.runes, data.rune_trees];
+  const named = (list: unknown) =>
+    Array.isArray(list) && list.every((record) => typeof (record as { name?: unknown } | null)?.name === "string");
+  return data.schema === SUPPORTED_SCHEMA && lists.every(named) && (data.champions as unknown[]).length > 0;
+}
+
 export async function loadDatabase(url = "data/database.json"): Promise<Database> {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Database not found (HTTP ${response.status})`);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Item } from "../src/data";
-import { formatGold, formatNumber, humanize, itemStatLines, trimNumber } from "../src/format";
+import { formatDate, formatGold, formatNumber, humanize, itemStatLines, trimNumber } from "../src/format";
 
 function item(stats: Partial<Item["stats"]>, extra: Partial<Item> = {}): Item {
   const zero = { ad: 0, as: 0, crit: 0, ap: 0, hp: 0, mana: 0, armor: 0, mr: 0, ah: 0, ls: 0, flatpen: 0, pctpen: 0, ms: 0, flatmpen: 0, pctmpen: 0 };
@@ -8,6 +8,10 @@ function item(stats: Partial<Item["stats"]>, extra: Partial<Item> = {}): Item {
 }
 
 describe("format", () => {
+  it("shows a download time as a short day", () => {
+    expect(formatDate("2026-10-05T11:48:51.000Z")).toBe("5 Oct 2026");
+  });
+
   it("trims numbers to at most two decimals", () => {
     expect(trimNumber(0.4 * 100)).toBe("40");
     expect(trimNumber(4.5)).toBe("4.5");
