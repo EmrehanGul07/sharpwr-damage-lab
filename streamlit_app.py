@@ -18,6 +18,7 @@ if not hasattr(_item_consensus, "progression_ranking"):
 from sharpwr.item_consensus import consensus, adopters, champion_items, progression_ranking
 from sharpwr.champion_database import CHAMPION_DATABASE, level_stats
 from sharpwr.app_data import champion_level_stats
+from sharpwr.icons import icon_file, icon_source
 from sharpwr.rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from sharpwr.rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
 from sharpwr.champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -37,12 +38,6 @@ def _preserve_widgets():
 
 _preserve_widgets()
 
-CD_ITEM_ICON_BASE="https://raw.communitydragon.org/latest/game/assets/items/icons2d/"
-# Wild Rift rune icons served directly by RiftPatchNotes.
-# Their rune pages expose images at /runes/<slug>.png (e.g. Ice Overlord).
-RUNE_ICON_SLUG={
-    "Hexflash":"hexflash",
-}
 def _last_stand_amp(own_hp_pct):
     missing=100-own_hp_pct
     if missing<30: return 0.0
@@ -86,10 +81,7 @@ def _rune_self_tests():
 
 def rune_icon(name):
     if not name or name=="None": return ""
-    slug=RUNE_ICON_SLUG.get(name)
-    if not slug:
-        slug=name.lower().replace("&","and").replace("'","").replace(":","").replace(" ","-")
-    return f"https://www.riftpatchnotes.com/runes/{slug}.png"
+    return _icon_image("runes",name)
 
 def _equipped_rune_slot(label, state_key):
     name=st.session_state.get(state_key)
@@ -107,12 +99,6 @@ def _equipped_rune_slot(label, state_key):
             st.session_state[state_key]=None
             st.rerun()
 
-TREE_ICON_URL={
-    "Domination":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7200_domination.png",
-    "Precision":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7201_precision.png",
-    "Sorcery":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7202_sorcery.png",
-    "Resolve":"https://raw.communitydragon.org/latest/game/assets/perks/styles/7204_resolve.png",
-}
 def _tree_icon_picker(label, options, state_key, cols=4):
     current=st.session_state.get(state_key,options[0] if options else None)
     if current not in options and options:
@@ -123,7 +109,7 @@ def _tree_icon_picker(label, options, state_key, cols=4):
         chosen=name==current
         with row[i]:
             st.markdown('<div class="wr-tree-marker '+('wr-tree-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
-            st.image(TREE_ICON_URL[name],width=72)
+            st.image(_icon_image("rune_trees",name),width=72)
             st.markdown(f'<div class="wr-tree-name">{html.escape(name)}</div>',unsafe_allow_html=True)
             if st.button("Selected" if chosen else "Choose",key=f"{state_key}_tree_{i}",help=None,width="content"):
                 st.session_state[state_key]=name
@@ -152,82 +138,29 @@ def _rune_icon_grid(label, options, state_key, cols=6):
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     return st.session_state.get(state_key,current)
 
-ITEM_ICON_FILE={
-"Rapid Firecannon":"3094_marksman_t3_rapidfirehandcannon.png",
-"Runaan's Hurricane":"3085_marksman_t3_runaans.png",
-"Phantom Dancer":"3046_marksman_t3_phantomdancer.png",
-"Wit's End":"3091_fighter_t3_witsend.png",
-"Nashor's Tooth":"3115_mage_t3_nashorstooth.png",
-"Manamune":"3004_marksman_t3_manamune.png",
-"Muramana":"3042_marksman_t3_muramana.png",
-"Statikk Shiv":"3087_statikk_shiv.png",
-"Guinsoo's Rageblade":"3124_marksman_t3_guinsoosrageblade.png",
-"Mortal Reminder":"3033_marksman_t3_mortalreminder.png",
-"Maw of Malmortius":"3156_fighter_t3_mawofmalmortius.png",
-"Essence Reaver":"3508_marksman_t3_essencereaver.png",
-"Terminus":"3302_terminus.png",
-"Mercurial Scimitar":"3139_marksman_t3_mercurialscimitar.png",
-"Blade of the Ruined King":"3153_fighter_t3_bladeoftheruinedking.png",
-"Guardian Angel":"3026_fighter_t3_guardianangel.png",
-"Bloodthirster":"3072_fighter_t3_bloodthirster.png",
-"Lord Dominik's Regards":"3036_marksman_t3_dominikregards.png",
-"Trinity Force":"3078_fighter_t4_trinityforce.png",
-"Infinity Edge":"3031_marksman_t3_infinityedge.png",
-"Youmuu's Ghostblade":"3142_assassin_t3_youmuusghostblade.png",
-"Edge of Night":"3814_assassin_t3_edgeofnight.png",
-"Yun Tal Wildarrows":"3032_yuntalwildarrows.png"
-}
-LOCAL_ITEM_ICON={
-"Stormrazor":"assets/riot/items/Stormrazor_WR_item.webp",
-"The Collector":"assets/riot/items/The_Collector_WR_item.webp",
-"Galeforce":"assets/riot/items/128px-Galeforce_WR_item.png",
-"Serylda's Grudge":"assets/riot/items/128px-Serylda's_Grudge_WR_item.webp",
-"Blade of the Ruined King":"assets/riot/items/Blade_of_the_Ruined_King_WR_item.webp",
-"Death's Dance":"assets/riot/items/Death's_Dance_WR_item.webp",
-"Duskblade of Draktharr":"assets/riot/items/Duskblade_of_Draktharr_WR_item.webp",
-"Fiendhunter Bolts":"assets/riot/items/Fiendhunter_Bolts_item.webp",
-"Hexoptics C44":"assets/riot/items/Hexoptics_C44_item.webp",
-"Iceborn Gauntlet":"assets/riot/items/Iceborn_Gauntlet_WR_item.webp",
-"Immortal Shieldbow":"assets/riot/items/Immortal_Shieldbow_item.webp",
-"Kraken Slayer":"assets/riot/items/Kraken_Slayer_WR_item.webp",
-"Navori Quickblades":"assets/riot/items/Navori_Quickblades_WR_item.png",
-"Serpent's Fang":"assets/riot/items/Serpent's_Fang_WR_item.png",
-}
 @st.cache_data
 def _local_icon_data(path):
     p=Path(path)
     if not p.exists(): return ""
     ext=p.suffix.lower()
-    mime="image/webp" if ext==".webp" else "image/png"
+    mime={".webp":"image/webp",".jpg":"image/jpeg",".jpeg":"image/jpeg"}.get(ext,"image/png")
     return f"data:{mime};base64,{base64.b64encode(p.read_bytes()).decode()}"
 
-BOOT_ICON_FILE={
-"Gluttonous Greaves":"Gluttonous_Greaves_WR_item.png",
-"Immortal Treads":"immortal_treads_wr_item.webp",
-"Ionian Boots of Lucidity":"Ionian_Boots_of_Lucidity_WR_item.png",
-"Crimson Lucidity":"item-crimson-lucidity-icon.png",
-"Berserker's Greaves":"Berserker's_Greaves_WR_item.png",
-"Gunmetal Greaves":"item-gunmetal-greaves-icon.png",
-"Mercury's Treads":"Mercury's_Treads_WR_item.png",
-"Chainlaced Crushers":"item-chainlaced-crushers-icon.png",
-"Plated Steelcaps":"Plated_Steelcaps_WR_item.png",
-"Armored Advance":"item-armored-advance-icon.png",
-"Boots of Mana":"Boots_of_Mana_WR_item.png",
-"Spellslinger's Shoes":"item-spellslingers-shoes-icon.png",
-"Boots of Dynamism":"Boots_of_Dynamism_WR_item.png",
-"Armorcrusher Boots":"item-armorcrusher-boots-icon.png",
-}
+# Riot icons are bundled under assets/riot/ (data/riot/icons.json); until a file is
+# downloaded the original URL is used, so the page never loses an icon.
+def _icon_url(kind,name):
+    path=icon_file(kind,name)
+    return _local_icon_data(str(path)) if path else (icon_source(kind,name) or "")
+
+def _icon_image(kind,name):
+    path=icon_file(kind,name)
+    return str(path) if path else (icon_source(kind,name) or "")
+
 def boot_icon(name):
-    fn=BOOT_ICON_FILE.get(name)
-    return _local_icon_data("assets/riot/items/"+fn) if fn else ""
+    return _icon_url("boots",name)
 
 def item_icon(name):
-    local=LOCAL_ITEM_ICON.get(name)
-    if local:
-        data=_local_icon_data(local)
-        if data: return data
-    fn=ITEM_ICON_FILE.get(name)
-    return CD_ITEM_ICON_BASE+fn if fn else ""
+    return _icon_url("items",name)
 
 STAT_LABELS=[("ad","AD"),("as","AS"),("crit","Crit"),("ap","AP"),("hp","HP"),("mana","Mana"),("armor","Armor"),("mr","MR"),("ah","AH"),("lifesteal","Lifesteal"),("flatpen","Armor Pen"),("pctpen","% Armor Pen"),("ms","MS")]
 def _item_stat_lines(name):
@@ -625,8 +558,7 @@ def _setup_heading(step,kicker,title):
 
 def _champion_profile(name,lvl,mist_count=0):
     profile=champion_level_stats(name,lvl,mist_count)
-    slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(name,name)
-    portrait=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{slug}.png"
+    portrait=_icon_url("champions",name)
     attack_speed=profile["attack_speed"]
     from sharpwr.core_items import core_record
     _core=core_record(name)

@@ -1,0 +1,526 @@
+{
+ "schema": 1,
+ "note": "Riot Games artwork bundled for offline use. path: file in this repository; source: where it was or can be fetched (null: collected from community wikis, origin not recorded). scripts/fetch_riot_icons.py downloads missing files.",
+ "items": {
+  "Fiendhunter Bolts": {
+   "path": "assets/riot/items/Fiendhunter_Bolts_item.webp",
+   "source": null
+  },
+  "Rapid Firecannon": {
+   "path": "assets/riot/items/3094_marksman_t3_rapidfirehandcannon.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3094_marksman_t3_rapidfirehandcannon.png"
+  },
+  "Runaan's Hurricane": {
+   "path": "assets/riot/items/3085_marksman_t3_runaans.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3085_marksman_t3_runaans.png"
+  },
+  "Phantom Dancer": {
+   "path": "assets/riot/items/3046_marksman_t3_phantomdancer.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3046_marksman_t3_phantomdancer.png"
+  },
+  "Navori Quickblades": {
+   "path": "assets/riot/items/Navori_Quickblades_WR_item.png",
+   "source": null
+  },
+  "Wit's End": {
+   "path": "assets/riot/items/3091_fighter_t3_witsend.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3091_fighter_t3_witsend.png"
+  },
+  "Hexoptics C44": {
+   "path": "assets/riot/items/Hexoptics_C44_item.webp",
+   "source": null
+  },
+  "Kraken Slayer": {
+   "path": "assets/riot/items/Kraken_Slayer_WR_item.webp",
+   "source": null
+  },
+  "Nashor's Tooth": {
+   "path": "assets/riot/items/3115_mage_t3_nashorstooth.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3115_mage_t3_nashorstooth.png"
+  },
+  "Manamune": {
+   "path": "assets/riot/items/3004_marksman_t3_manamune.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3004_marksman_t3_manamune.png"
+  },
+  "Muramana": {
+   "path": "assets/riot/items/3042_marksman_t3_muramana.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3042_marksman_t3_muramana.png"
+  },
+  "Statikk Shiv": {
+   "path": "assets/riot/items/3087_statikk_shiv.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3087_statikk_shiv.png"
+  },
+  "Guinsoo's Rageblade": {
+   "path": "assets/riot/items/3124_marksman_t3_guinsoosrageblade.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3124_marksman_t3_guinsoosrageblade.png"
+  },
+  "Mortal Reminder": {
+   "path": "assets/riot/items/3033_marksman_t3_mortalreminder.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3033_marksman_t3_mortalreminder.png"
+  },
+  "Maw of Malmortius": {
+   "path": "assets/riot/items/3156_fighter_t3_mawofmalmortius.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3156_fighter_t3_mawofmalmortius.png"
+  },
+  "Essence Reaver": {
+   "path": "assets/riot/items/3508_marksman_t3_essencereaver.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3508_marksman_t3_essencereaver.png"
+  },
+  "Immortal Shieldbow": {
+   "path": "assets/riot/items/Immortal_Shieldbow_item.webp",
+   "source": null
+  },
+  "The Collector": {
+   "path": "assets/riot/items/The_Collector_WR_item.webp",
+   "source": null
+  },
+  "Terminus": {
+   "path": "assets/riot/items/3302_terminus.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3302_terminus.png"
+  },
+  "Stormrazor": {
+   "path": "assets/riot/items/Stormrazor_WR_item.webp",
+   "source": null
+  },
+  "Yun Tal Wildarrows": {
+   "path": "assets/riot/items/3032_yuntalwildarrows.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3032_yuntalwildarrows.png"
+  },
+  "Galeforce": {
+   "path": "assets/riot/items/128px-Galeforce_WR_item.png",
+   "source": null
+  },
+  "Mercurial Scimitar": {
+   "path": "assets/riot/items/3139_marksman_t3_mercurialscimitar.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3139_marksman_t3_mercurialscimitar.png"
+  },
+  "Blade of the Ruined King": {
+   "path": "assets/riot/items/Blade_of_the_Ruined_King_WR_item.webp",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3153_fighter_t3_bladeoftheruinedking.png"
+  },
+  "Guardian Angel": {
+   "path": "assets/riot/items/3026_fighter_t3_guardianangel.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3026_fighter_t3_guardianangel.png"
+  },
+  "Bloodthirster": {
+   "path": "assets/riot/items/3072_fighter_t3_bloodthirster.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3072_fighter_t3_bloodthirster.png"
+  },
+  "Lord Dominik's Regards": {
+   "path": "assets/riot/items/3036_marksman_t3_dominikregards.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3036_marksman_t3_dominikregards.png"
+  },
+  "Trinity Force": {
+   "path": "assets/riot/items/3078_fighter_t4_trinityforce.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3078_fighter_t4_trinityforce.png"
+  },
+  "Infinity Edge": {
+   "path": "assets/riot/items/3031_marksman_t3_infinityedge.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3031_marksman_t3_infinityedge.png"
+  },
+  "Serylda's Grudge": {
+   "path": "assets/riot/items/128px-Serylda's_Grudge_WR_item.webp",
+   "source": null
+  },
+  "Serpent's Fang": {
+   "path": "assets/riot/items/Serpent's_Fang_WR_item.png",
+   "source": null
+  },
+  "Youmuu's Ghostblade": {
+   "path": "assets/riot/items/3142_assassin_t3_youmuusghostblade.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3142_assassin_t3_youmuusghostblade.png"
+  },
+  "Duskblade of Draktharr": {
+   "path": "assets/riot/items/Duskblade_of_Draktharr_WR_item.webp",
+   "source": null
+  },
+  "Edge of Night": {
+   "path": "assets/riot/items/3814_assassin_t3_edgeofnight.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/items/icons2d/3814_assassin_t3_edgeofnight.png"
+  },
+  "Iceborn Gauntlet": {
+   "path": "assets/riot/items/Iceborn_Gauntlet_WR_item.webp",
+   "source": null
+  },
+  "Death's Dance": {
+   "path": "assets/riot/items/Death's_Dance_WR_item.webp",
+   "source": null
+  }
+ },
+ "boots": {
+  "Gluttonous Greaves": {
+   "path": "assets/riot/items/Gluttonous_Greaves_WR_item.png",
+   "source": null
+  },
+  "Immortal Treads": {
+   "path": "assets/riot/items/immortal_treads_wr_item.webp",
+   "source": null
+  },
+  "Ionian Boots of Lucidity": {
+   "path": "assets/riot/items/Ionian_Boots_of_Lucidity_WR_item.png",
+   "source": null
+  },
+  "Crimson Lucidity": {
+   "path": "assets/riot/items/item-crimson-lucidity-icon.png",
+   "source": null
+  },
+  "Berserker's Greaves": {
+   "path": "assets/riot/items/Berserker's_Greaves_WR_item.png",
+   "source": null
+  },
+  "Gunmetal Greaves": {
+   "path": "assets/riot/items/item-gunmetal-greaves-icon.png",
+   "source": null
+  },
+  "Mercury's Treads": {
+   "path": "assets/riot/items/Mercury's_Treads_WR_item.png",
+   "source": null
+  },
+  "Chainlaced Crushers": {
+   "path": "assets/riot/items/item-chainlaced-crushers-icon.png",
+   "source": null
+  },
+  "Plated Steelcaps": {
+   "path": "assets/riot/items/Plated_Steelcaps_WR_item.png",
+   "source": null
+  },
+  "Armored Advance": {
+   "path": "assets/riot/items/item-armored-advance-icon.png",
+   "source": null
+  },
+  "Boots of Mana": {
+   "path": "assets/riot/items/Boots_of_Mana_WR_item.png",
+   "source": null
+  },
+  "Spellslinger's Shoes": {
+   "path": "assets/riot/items/item-spellslingers-shoes-icon.png",
+   "source": null
+  },
+  "Boots of Dynamism": {
+   "path": "assets/riot/items/Boots_of_Dynamism_WR_item.png",
+   "source": null
+  },
+  "Armorcrusher Boots": {
+   "path": "assets/riot/items/item-armorcrusher-boots-icon.png",
+   "source": null
+  }
+ },
+ "runes": {
+  "First Strike": {
+   "path": "assets/riot/runes/first-strike.png",
+   "source": "https://www.riftpatchnotes.com/runes/first-strike.png"
+  },
+  "Ice Overlord": {
+   "path": "assets/riot/runes/ice-overlord.png",
+   "source": "https://www.riftpatchnotes.com/runes/ice-overlord.png"
+  },
+  "Phase Rush": {
+   "path": "assets/riot/runes/phase-rush.png",
+   "source": "https://www.riftpatchnotes.com/runes/phase-rush.png"
+  },
+  "Arcane Comet": {
+   "path": "assets/riot/runes/arcane-comet.png",
+   "source": "https://www.riftpatchnotes.com/runes/arcane-comet.png"
+  },
+  "Aery": {
+   "path": "assets/riot/runes/aery.png",
+   "source": "https://www.riftpatchnotes.com/runes/aery.png"
+  },
+  "Guardian": {
+   "path": "assets/riot/runes/guardian.png",
+   "source": "https://www.riftpatchnotes.com/runes/guardian.png"
+  },
+  "Grasp of the Undying": {
+   "path": "assets/riot/runes/grasp-of-the-undying.png",
+   "source": "https://www.riftpatchnotes.com/runes/grasp-of-the-undying.png"
+  },
+  "Conqueror": {
+   "path": "assets/riot/runes/conqueror.png",
+   "source": "https://www.riftpatchnotes.com/runes/conqueror.png"
+  },
+  "Fleet Footwork": {
+   "path": "assets/riot/runes/fleet-footwork.png",
+   "source": "https://www.riftpatchnotes.com/runes/fleet-footwork.png"
+  },
+  "Lethal Tempo": {
+   "path": "assets/riot/runes/lethal-tempo.png",
+   "source": "https://www.riftpatchnotes.com/runes/lethal-tempo.png"
+  },
+  "Empowerment": {
+   "path": "assets/riot/runes/empowerment.png",
+   "source": "https://www.riftpatchnotes.com/runes/empowerment.png"
+  },
+  "Dark Harvest": {
+   "path": "assets/riot/runes/dark-harvest.png",
+   "source": "https://www.riftpatchnotes.com/runes/dark-harvest.png"
+  },
+  "Brutal": {
+   "path": "assets/riot/runes/brutal.png",
+   "source": "https://www.riftpatchnotes.com/runes/brutal.png"
+  },
+  "Triumph": {
+   "path": "assets/riot/runes/triumph.png",
+   "source": "https://www.riftpatchnotes.com/runes/triumph.png"
+  },
+  "Battle Zeal": {
+   "path": "assets/riot/runes/battle-zeal.png",
+   "source": "https://www.riftpatchnotes.com/runes/battle-zeal.png"
+  },
+  "Last Stand": {
+   "path": "assets/riot/runes/last-stand.png",
+   "source": "https://www.riftpatchnotes.com/runes/last-stand.png"
+  },
+  "Cut Down": {
+   "path": "assets/riot/runes/cut-down.png",
+   "source": "https://www.riftpatchnotes.com/runes/cut-down.png"
+  },
+  "Coup de Grace": {
+   "path": "assets/riot/runes/coup-de-grace.png",
+   "source": "https://www.riftpatchnotes.com/runes/coup-de-grace.png"
+  },
+  "Legend: Alacrity": {
+   "path": "assets/riot/runes/legend-alacrity.png",
+   "source": "https://www.riftpatchnotes.com/runes/legend-alacrity.png"
+  },
+  "Legend: Haste": {
+   "path": "assets/riot/runes/legend-haste.png",
+   "source": "https://www.riftpatchnotes.com/runes/legend-haste.png"
+  },
+  "Legend: Bloodline": {
+   "path": "assets/riot/runes/legend-bloodline.png",
+   "source": "https://www.riftpatchnotes.com/runes/legend-bloodline.png"
+  },
+  "Eyeball Collection": {
+   "path": "assets/riot/runes/eyeball-collection.png",
+   "source": "https://www.riftpatchnotes.com/runes/eyeball-collection.png"
+  },
+  "Hubris": {
+   "path": "assets/riot/runes/hubris.png",
+   "source": "https://www.riftpatchnotes.com/runes/hubris.png"
+  },
+  "Tyrant": {
+   "path": "assets/riot/runes/tyrant.png",
+   "source": "https://www.riftpatchnotes.com/runes/tyrant.png"
+  },
+  "Chain Assault": {
+   "path": "assets/riot/runes/chain-assault.png",
+   "source": "https://www.riftpatchnotes.com/runes/chain-assault.png"
+  },
+  "Sudden Impact": {
+   "path": "assets/riot/runes/sudden-impact.png",
+   "source": "https://www.riftpatchnotes.com/runes/sudden-impact.png"
+  },
+  "Cheap Shot": {
+   "path": "assets/riot/runes/cheap-shot.png",
+   "source": "https://www.riftpatchnotes.com/runes/cheap-shot.png"
+  },
+  "Zombie Ward": {
+   "path": "assets/riot/runes/zombie-ward.png",
+   "source": "https://www.riftpatchnotes.com/runes/zombie-ward.png"
+  },
+  "Empowered Attack": {
+   "path": "assets/riot/runes/empowered-attack.png",
+   "source": "https://www.riftpatchnotes.com/runes/empowered-attack.png"
+  },
+  "Relentless Hunter": {
+   "path": "assets/riot/runes/relentless-hunter.png",
+   "source": "https://www.riftpatchnotes.com/runes/relentless-hunter.png"
+  },
+  "Overgrowth": {
+   "path": "assets/riot/runes/overgrowth.png",
+   "source": "https://www.riftpatchnotes.com/runes/overgrowth.png"
+  },
+  "Bone Plating": {
+   "path": "assets/riot/runes/bone-plating.png",
+   "source": "https://www.riftpatchnotes.com/runes/bone-plating.png"
+  },
+  "Second Wind": {
+   "path": "assets/riot/runes/second-wind.png",
+   "source": "https://www.riftpatchnotes.com/runes/second-wind.png"
+  },
+  "Perseverance": {
+   "path": "assets/riot/runes/perseverance.png",
+   "source": "https://www.riftpatchnotes.com/runes/perseverance.png"
+  },
+  "Revitalize": {
+   "path": "assets/riot/runes/revitalize.png",
+   "source": "https://www.riftpatchnotes.com/runes/revitalize.png"
+  },
+  "Nullifying Orb": {
+   "path": "assets/riot/runes/nullifying-orb.png",
+   "source": "https://www.riftpatchnotes.com/runes/nullifying-orb.png"
+  },
+  "Unshakeable": {
+   "path": "assets/riot/runes/unshakeable.png",
+   "source": "https://www.riftpatchnotes.com/runes/unshakeable.png"
+  },
+  "Courage of the Colossus": {
+   "path": "assets/riot/runes/courage-of-the-colossus.png",
+   "source": "https://www.riftpatchnotes.com/runes/courage-of-the-colossus.png"
+  },
+  "Font of Life": {
+   "path": "assets/riot/runes/font-of-life.png",
+   "source": "https://www.riftpatchnotes.com/runes/font-of-life.png"
+  },
+  "Demolish": {
+   "path": "assets/riot/runes/demolish.png",
+   "source": "https://www.riftpatchnotes.com/runes/demolish.png"
+  },
+  "Gathering Storm": {
+   "path": "assets/riot/runes/gathering-storm.png",
+   "source": "https://www.riftpatchnotes.com/runes/gathering-storm.png"
+  },
+  "Absolute Focus": {
+   "path": "assets/riot/runes/absolute-focus.png",
+   "source": "https://www.riftpatchnotes.com/runes/absolute-focus.png"
+  },
+  "Scorch": {
+   "path": "assets/riot/runes/scorch.png",
+   "source": "https://www.riftpatchnotes.com/runes/scorch.png"
+  },
+  "Axiom Arcanist": {
+   "path": "assets/riot/runes/axiom-arcanist.png",
+   "source": "https://www.riftpatchnotes.com/runes/axiom-arcanist.png"
+  },
+  "Manaflow Band": {
+   "path": "assets/riot/runes/manaflow-band.png",
+   "source": "https://www.riftpatchnotes.com/runes/manaflow-band.png"
+  },
+  "Transcendence": {
+   "path": "assets/riot/runes/transcendence.png",
+   "source": "https://www.riftpatchnotes.com/runes/transcendence.png"
+  },
+  "Celerity": {
+   "path": "assets/riot/runes/celerity.png",
+   "source": "https://www.riftpatchnotes.com/runes/celerity.png"
+  },
+  "Nimbus Cloak": {
+   "path": "assets/riot/runes/nimbus-cloak.png",
+   "source": "https://www.riftpatchnotes.com/runes/nimbus-cloak.png"
+  },
+  "Ixtali Seedjar": {
+   "path": "assets/riot/runes/ixtali-seedjar.png",
+   "source": "https://www.riftpatchnotes.com/runes/ixtali-seedjar.png"
+  },
+  "Hexflash": {
+   "path": "assets/riot/runes/hexflash.png",
+   "source": "https://www.riftpatchnotes.com/runes/hexflash.png"
+  },
+  "Botanist": {
+   "path": "assets/riot/runes/botanist.png",
+   "source": "https://www.riftpatchnotes.com/runes/botanist.png"
+  }
+ },
+ "rune_trees": {
+  "Domination": {
+   "path": "assets/riot/rune-trees/7200_domination.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/perks/styles/7200_domination.png"
+  },
+  "Precision": {
+   "path": "assets/riot/rune-trees/7201_precision.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/perks/styles/7201_precision.png"
+  },
+  "Sorcery": {
+   "path": "assets/riot/rune-trees/7202_sorcery.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/perks/styles/7202_sorcery.png"
+  },
+  "Resolve": {
+   "path": "assets/riot/rune-trees/7204_resolve.png",
+   "source": "https://raw.communitydragon.org/latest/game/assets/perks/styles/7204_resolve.png"
+  }
+ },
+ "champions": {
+  "Kalista": {
+   "path": "assets/riot/champions/Kalista.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Kalista.png"
+  },
+  "Tristana": {
+   "path": "assets/riot/champions/Tristana.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Tristana.png"
+  },
+  "Twitch": {
+   "path": "assets/riot/champions/Twitch.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Twitch.png"
+  },
+  "Draven": {
+   "path": "assets/riot/champions/Draven.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Draven.png"
+  },
+  "Kog'Maw": {
+   "path": "assets/riot/champions/KogMaw.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/KogMaw.png"
+  },
+  "Vayne": {
+   "path": "assets/riot/champions/Vayne.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Vayne.png"
+  },
+  "Ashe": {
+   "path": "assets/riot/champions/Ashe.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Ashe.png"
+  },
+  "Varus": {
+   "path": "assets/riot/champions/Varus.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Varus.png"
+  },
+  "Xayah": {
+   "path": "assets/riot/champions/Xayah.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Xayah.png"
+  },
+  "Samira": {
+   "path": "assets/riot/champions/Samira.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Samira.png"
+  },
+  "Miss Fortune": {
+   "path": "assets/riot/champions/MissFortune.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/MissFortune.png"
+  },
+  "Yunara": {
+   "path": "assets/riot/champions/Yunara.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Yunara.png"
+  },
+  "Kai'Sa": {
+   "path": "assets/riot/champions/Kaisa.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Kaisa.png"
+  },
+  "Corki": {
+   "path": "assets/riot/champions/Corki.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Corki.png"
+  },
+  "Lucian": {
+   "path": "assets/riot/champions/Lucian.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Lucian.png"
+  },
+  "Smolder": {
+   "path": "assets/riot/champions/Smolder.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Smolder.png"
+  },
+  "Caitlyn": {
+   "path": "assets/riot/champions/Caitlyn.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Caitlyn.png"
+  },
+  "Jinx": {
+   "path": "assets/riot/champions/Jinx.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Jinx.png"
+  },
+  "Ezreal": {
+   "path": "assets/riot/champions/Ezreal.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Ezreal.png"
+  },
+  "Zeri": {
+   "path": "assets/riot/champions/Zeri.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Zeri.png"
+  },
+  "Jhin": {
+   "path": "assets/riot/champions/Jhin.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Jhin.png"
+  },
+  "Sivir": {
+   "path": "assets/riot/champions/Sivir.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Sivir.png"
+  },
+  "Senna": {
+   "path": "assets/riot/champions/Senna.png",
+   "source": "https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/Senna.png"
+  }
+ }
+}

@@ -1,23 +1,44 @@
-import ast
+"""Every Riot icon the app shows is listed in data/riot/icons.json and bundled under assets/riot/."""
+
 import unittest
 from pathlib import Path
 
-ROOT=Path(__file__).resolve().parents[1]
+from sharpwr import B, F
+from sharpwr.champion_database import CHAMPION_DATABASE
+from sharpwr.icons import KINDS, manifest
+from sharpwr.rune_database import RUNE_DATABASE, RUNE_SLOTS
 
-def _app_dict(name):
-    for node in ast.parse((ROOT/'streamlit_app.py').read_text()).body:
-        if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in node.targets):
-            return ast.literal_eval(node.value)
-    raise KeyError(name)
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _is_image(data):
+    return (
+        data.startswith(b"\x89PNG\r\n\x1a\n")
+        or (data[:4] == b"RIFF" and data[8:12] == b"WEBP")
+        or data.startswith(b"\xff\xd8\xff")
+    )
+
 
 class LocalIconTests(unittest.TestCase):
-    def test_every_local_icon_file_exists(self):
-        # A missing file silently renders an empty icon, so check every mapped path.
-        paths=list(_app_dict('LOCAL_ITEM_ICON').values())+['assets/riot/items/'+name for name in _app_dict('BOOT_ICON_FILE').values()]
-        self.assertTrue(paths)
-        for path in paths:
-            self.assertTrue(path.startswith('assets/riot/'),path)
-            self.assertTrue((ROOT/path).is_file(),path)
+    def test_every_record_has_an_icon_entry(self):
+        icons = manifest()
+        self.assertEqual(set(icons["items"]), set(F))
+        self.assertEqual(set(icons["boots"]), set(B))
+        self.assertEqual(set(icons["runes"]), set(RUNE_DATABASE))
+        self.assertEqual(set(icons["rune_trees"]), set(RUNE_SLOTS))
+        self.assertEqual(set(icons["champions"]), set(CHAMPION_DATABASE))
 
-if __name__=='__main__':
+    def test_icons_live_in_the_riot_folder_and_are_images(self):
+        for kind in KINDS:
+            for name, entry in manifest()[kind].items():
+                self.assertTrue(entry["path"].startswith("assets/riot/"), (kind, name))
+                path = ROOT / entry["path"]
+                if entry["source"] is None:
+                    # No URL to fetch from: the file itself is the only copy.
+                    self.assertTrue(path.is_file(), (kind, name))
+                if path.is_file():
+                    self.assertTrue(_is_image(path.read_bytes()[:16]), (kind, name))
+
+
+if __name__ == "__main__":
     unittest.main()
