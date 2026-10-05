@@ -1,6 +1,5 @@
 """Original 23-champion art studio; independent of combat and Build Lab controls."""
 import json
-import base64
 from pathlib import Path
 from functools import lru_cache
 ROOT=Path(__file__).resolve().parent
@@ -13,12 +12,14 @@ def art_scripts():
     return '\n'.join((ROOT/'assets/marksman-3d'/name).read_text() for name in ('baked-avatar.js','geometry.js','rig.js','effects.js','rift-arena.js','scene.js'))
 # Studio inputs. The rendered page is rebuilt only when one of these files changes.
 STUDIO_ROOT=ROOT/'assets/marksman-3d'
-STUDY_ROOT=STUDIO_ROOT/'studies/ezreal-v2'
 ART_DIRECTION=ROOT/'data/marksman-art-direction.json'
 ABILITY_CATALOGUE=ROOT/'data/marksman-ability-catalogue.json'
 SKILL_GEOMETRY=ROOT/'data/marksman-skill-geometry.json'
 SKILL_ICONS=ROOT/'data/marksman-skill-icons.json'
-PRODUCTION_URL='https://raw.githubusercontent.com/EmrehanGul07/sharpwr-damage-lab/main/assets/marksman-3d/production/'
+# Skinned GLBs live in static/ and are served by Streamlit (server.enableStaticServing).
+MODEL_BASE='app/static/marksman-3d/'
+# Editable Blender sources and download packages are published by CI as release assets, not tracked in git.
+RELEASE_URL='https://github.com/EmrehanGul07/sharpwr-damage-lab/releases/download/art-sources/'
 # studio.html placeholder -> inlined script file.
 STUDIO_SCRIPTS=(
     ('__GEOMETRY_SCRIPT__','geometry.js'),
@@ -34,8 +35,7 @@ STUDIO_SCRIPTS=(
 
 def _studio_inputs():
     scripts=[STUDIO_ROOT/name for _,name in STUDIO_SCRIPTS]
-    studies=[STUDY_ROOT/'ezreal-v2.glb',STUDY_ROOT/'ezreal-v2-preview.glb']
-    return [STUDIO_ROOT/'studio.html',*scripts,ART_DIRECTION,ABILITY_CATALOGUE,SKILL_GEOMETRY,SKILL_ICONS,*studies]
+    return [STUDIO_ROOT/'studio.html',*scripts,ART_DIRECTION,ABILITY_CATALOGUE,SKILL_GEOMETRY,SKILL_ICONS]
 
 def _input_stamp():
     stamp=[]
@@ -55,17 +55,8 @@ def _hud_profile(name,geometry,icons,abilities):
         'abilities':{slot:{'name':entry['name'],'cooldowns':entry.get('cooldown_by_rank')} for slot,entry in abilities[name]['abilities'].items()},
     }
 
-def _study_data(catalogue):
-    data={}
-    study=STUDY_ROOT/'ezreal-v2.glb'
-    if study.is_file():data['ezreal']=base64.b64encode(study.read_bytes()).decode('ascii')
-    preview=STUDY_ROOT/'ezreal-v2-preview.glb'
-    if preview.is_file():data['ezreal_preview']=base64.b64encode(preview.read_bytes()).decode('ascii')
-    data['production']={
-        profile['id']:{'full':PRODUCTION_URL+profile['id']+'/character.glb','preview':PRODUCTION_URL+profile['id']+'/preview.glb'}
-        for profile in catalogue['champions'].values()
-    }
-    return data
+def release_asset_url(name):
+    return RELEASE_URL+name
 
 @lru_cache(maxsize=1)
 def _render_studio(stamp):
@@ -76,7 +67,7 @@ def _render_studio(stamp):
     for name,profile in catalogue['champions'].items():
         profile['hud']=_hud_profile(name,geometry,icons,abilities)
     html=(STUDIO_ROOT/'studio.html').read_text()
-    html=html.replace('__STUDY_DATA__',_safe_json(_study_data(catalogue)))
+    html=html.replace('__STUDY_DATA__',_safe_json({'modelBase':MODEL_BASE}))
     html=html.replace('__ART_DATA__',_safe_json(catalogue))
     for placeholder,name in STUDIO_SCRIPTS:html=html.replace(placeholder,(STUDIO_ROOT/name).read_text())
     return html

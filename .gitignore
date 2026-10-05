@@ -6,6 +6,9 @@ venv/
 node_modules/
 art-review/
 
+# Build outputs (Blender sources, download packages) are published as GitHub release assets.
+build/
+*.blend
 *.blend1
 
 !docs/art-review/

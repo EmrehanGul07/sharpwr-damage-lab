@@ -5,7 +5,10 @@ import bpy, math, json, hashlib, zipfile, shutil, sys
 from pathlib import Path
 from mathutils import Vector, Matrix
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'assets/marksman-3d/production';OUT.mkdir(parents=True,exist_ok=True)
+OUT=ROOT/'static/marksman-3d';OUT.mkdir(parents=True,exist_ok=True)  # runtime GLBs + manifests, served by the app
+SOURCES=ROOT/'build/roster'  # editable .blend sources, published as a release asset
+STUDY=ROOT/'build/ezreal-v2';STUDY_MANIFEST=ROOT/'assets/marksman-3d/studies/ezreal-v2/manifest.json'
+RELEASE=ROOT/'build/release'
 CAT=json.loads((ROOT/'data/marksman-art-direction.json').read_text())['champions']
 SIGN=hashlib.sha256(Path(__file__).read_bytes()+(ROOT/'data/marksman-art-direction.json').read_bytes()).hexdigest()
 SELECT=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else list(CAT)
@@ -279,7 +282,7 @@ def build(name,p):
  export(directory/'character.glb',[rig,skin,socket]);preview=skin.copy();preview.data=skin.data.copy();bpy.context.collection.objects.link(preview);preview.name=name+' CPU budget';bpy.context.view_layer.objects.active=preview;bpy.ops.object.select_all(action='DESELECT');preview.select_set(True);rig.data.pose_position='REST';dec=preview.modifiers.new('CPU budget','DECIMATE');dec.ratio=.16 if len(skin.data.polygons)>18000 else .28
  while preview.modifiers.find(dec.name)>0:bpy.ops.object.modifier_move_up(modifier=dec.name)
  bpy.ops.object.modifier_apply(modifier=dec.name);rig.data.pose_position='POSE';export(directory/'preview.glb',[rig,preview,socket]);triangles=sum(len(f.vertices)-2 for f in preview.data.polygons);bpy.data.objects.remove(preview,do_unlink=True)
- bpy.ops.wm.save_as_mainfile(filepath=str(directory/'source.blend'))
+ source=SOURCES/p['id'];source.mkdir(parents=True,exist_ok=True);bpy.ops.wm.save_as_mainfile(filepath=str(source/'source.blend'))
  # Reproducible review render, outside the exported character.
  scene=bpy.context.scene;scene.render.engine='CYCLES';scene.cycles.samples=8;scene.cycles.use_denoising=True;scene.render.resolution_x=420;scene.render.resolution_y=500;scene.render.resolution_percentage=100;scene.world.color=(.13,.13,.13)
  bpy.ops.mesh.primitive_plane_add(size=100);floor=bpy.context.object;floor.data.materials.append(M['dark'])
@@ -295,17 +298,18 @@ records={}
 for name in SELECT:
  p=CAT[name]
  if name=='Ezreal':
-  old=ROOT/'assets/marksman-3d/studies/ezreal-v2';target=OUT/p['id'];target.mkdir(exist_ok=True)
-  for a,b in [('ezreal-v2.glb','character.glb'),('ezreal-v2-preview.glb','preview.glb'),('ezreal-v2.blend','source.blend')]:shutil.copy2(old/a,target/b)
-  record={'champion':name,'id':p['id'],'bones':17,'animations':json.loads((old/'manifest.json').read_text())['animations'],'source_sha256':SIGN,'status':'existing Blender Ezreal v2 retained'};(target/'manifest.json').write_text(json.dumps(record,indent=2)+'\n');records[name]=record
+  target=OUT/p['id'];target.mkdir(exist_ok=True);source=SOURCES/p['id'];source.mkdir(parents=True,exist_ok=True)
+  for a,b in [('ezreal-v2.glb',target/'character.glb'),('ezreal-v2-preview.glb',target/'preview.glb'),('ezreal-v2.blend',source/'source.blend')]:shutil.copy2(STUDY/a,b)
+  record={'champion':name,'id':p['id'],'bones':17,'animations':json.loads(STUDY_MANIFEST.read_text())['animations'],'source_sha256':SIGN,'status':'existing Blender Ezreal v2 retained'};(target/'manifest.json').write_text(json.dumps(record,indent=2)+'\n');records[name]=record
  else:records[name]=build(name,p)
 # A full invocation creates the reusable source package and roster index.
 if set(SELECT)==set(CAT):
  (OUT/'manifest.json').write_text(json.dumps({'schema':1,'source_sha256':SIGN,'champions':records},indent=2)+'\n')
- with zipfile.ZipFile(OUT/'sharpwr-skinned-roster.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6)as archive:
+ RELEASE.mkdir(parents=True,exist_ok=True)
+ with zipfile.ZipFile(RELEASE/'sharpwr-skinned-roster.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6)as archive:
   archive.write(Path(__file__),'build_marksman_roster.py')
-  for folder in OUT.iterdir():
+  for folder in sorted(OUT.iterdir()):
    if folder.is_dir():
-    for file in folder.iterdir():
+    for file in [*sorted(folder.iterdir()),SOURCES/folder.name/'source.blend']:
      if file.suffix in['.glb','.blend','.json']:archive.write(file,folder.name+'/'+file.name)
  print('SKINNED_ROSTER_COMPLETE',len(records),flush=True)

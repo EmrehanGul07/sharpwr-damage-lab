@@ -1,4 +1,4 @@
-# SharpWR Damage Lab — V7.0.1
+# SharpWR Damage Lab — V7.0.2
 
 Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
@@ -26,6 +26,11 @@ python scripts/audit_combat_matrix.py
 ```
 
 The integrity audit writes `data/combat-audit-current.json` and `data/combat-audit-traces-current.json`; historical audits remain unchanged. It exits with failure when any scenario fails.
+
+## 3D assets
+
+- Runtime models live in `static/marksman-3d/<champion>/`: `character.glb` for WebGL and `preview.glb` for the software renderer. Streamlit serves them at `app/static/` (`server.enableStaticServing` in `.streamlit/config.toml`); the studio falls back to the GitHub copy if that path is unreachable.
+- Editable Blender sources and download packages are not tracked. The art workflow (`.github/workflows/marksman-art-package.yml`) rebuilds them with Blender when a build script or the art direction changes (`scripts/check_art_sources.py`) and publishes them to the [`art-sources` release](https://github.com/EmrehanGul07/sharpwr-damage-lab/releases/tag/art-sources). Local builds write to `build/`, which git ignores.
 
 ## Versioning
 

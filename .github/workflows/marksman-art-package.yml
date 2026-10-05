@@ -15,6 +15,7 @@ on:
       - "scripts/build_ezreal_study.py"
       - "scripts/build_marksman_roster.py"
       - "scripts/build_skill_geometry.py"
+      - "scripts/check_art_sources.py"
       - "data/marksman-skill-geometry.json"
       - "tests/test_roster_v7.cjs"
       - "tests/test_blender_study.cjs"
@@ -23,12 +24,18 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+env:
+  # Editable Blender sources and download packages are release assets, not tracked files.
+  RELEASE_TAG: art-sources
+  BLENDER_URL: https://download.blender.org/release/Blender4.5/blender-4.5.14-linux-x64.tar.xz
 jobs:
   art:
     runs-on: ubuntu-latest
     timeout-minutes: 35
     permissions:
       contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,20 +47,28 @@ jobs:
           python-version: "3.12"
       - run: npm ci --ignore-scripts
       - run: npm run export:art
-      - name: Build Blender study when source changes
+      - name: Decide whether the Blender sources must be rebuilt
+        id: blender
         run: |
-          if python -c "import hashlib,json,pathlib; p=pathlib.Path('assets/marksman-3d/studies/ezreal-v2/manifest.json'); assert p.exists() and json.loads(p.read_text()).get('source_sha256') == hashlib.sha256(pathlib.Path('scripts/build_ezreal_study.py').read_bytes()).hexdigest()"; then exit 0; fi
-          curl -L --fail --retry 2 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.14-linux-x64.tar.xz
+          rebuild=false
+          python scripts/check_art_sources.py || rebuild=true
+          published=$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name' 2>/dev/null || true)
+          for asset in sharpwr-skinned-roster.zip sharpwr-ezreal-v2-source.zip; do
+            if ! grep -qx "$asset" <<<"$published"; then
+              echo "Release asset missing: $asset"
+              rebuild=true
+            fi
+          done
+          echo "rebuild=$rebuild" >> "$GITHUB_OUTPUT"
+      - name: Build Ezreal study and skinned roster
+        if: steps.blender.outputs.rebuild == 'true'
+        run: |
+          curl -L --fail --retry 2 -o /tmp/blender.tar.xz "$BLENDER_URL"
           tar -xf /tmp/blender.tar.xz -C /tmp
-          /tmp/blender-4.5.14-linux-x64/blender --background --threads 2 --python scripts/build_ezreal_study.py
-      - name: Build complete skinned roster when source changes
-        run: |
-          if python -c "import hashlib,json,pathlib; p=pathlib.Path('assets/marksman-3d/production/manifest.json'); assert p.exists() and json.loads(p.read_text()).get('source_sha256') == hashlib.sha256(pathlib.Path('scripts/build_marksman_roster.py').read_bytes()+pathlib.Path('data/marksman-art-direction.json').read_bytes()).hexdigest()"; then exit 0; fi
-          if [ ! -f /tmp/blender-4.5.14-linux-x64/blender ]; then
-            curl -L --fail --retry 2 -o /tmp/blender.tar.xz https://download.blender.org/release/Blender4.5/blender-4.5.14-linux-x64.tar.xz
-            tar -xf /tmp/blender.tar.xz -C /tmp
-          fi
-          /tmp/blender-4.5.14-linux-x64/blender --background --threads 2 --python scripts/build_marksman_roster.py
+          blender=/tmp/blender-4.5.14-linux-x64/blender
+          "$blender" --background --threads 2 --python scripts/build_ezreal_study.py
+          "$blender" --background --threads 2 --python scripts/build_marksman_roster.py
+          python scripts/check_art_sources.py
       - run: node tests/test_blender_study.cjs
       - run: node tests/test_roster_v7.cjs
       - run: npm run test:art
@@ -63,15 +78,19 @@ jobs:
       - run: node tests/test_replay_state.cjs
       - run: pip install -r requirements.txt
       - run: python -m unittest discover -s tests -q
-      - uses: actions/upload-artifact@v4
-        with:
-          name: sharpwr-marksman-art-v1
-          path: assets/marksman-3d/sharpwr-marksman-art-v1.zip
+      - name: Publish download packages to the release
+        run: |
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --target "${{ github.event.repository.default_branch }}" --latest=false \
+              --title "SharpWR 3D sources" \
+              --notes "Editable Blender sources and download packages for the SharpWR Animation Studio, rebuilt by the art workflow. Original stylized artwork; not extracted game assets."
+          fi
+          gh release upload "$RELEASE_TAG" build/release/*.zip --clobber
       - name: Save verified generated assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/marksman-3d/models data/marksman-3d-assets.json assets/marksman-3d/sharpwr-marksman-art-v1.zip assets/marksman-3d/studies/ezreal-v2 assets/marksman-3d/production docs/art-review
+          git add assets/marksman-3d/models data/marksman-3d-assets.json static/marksman-3d assets/marksman-3d/studies/ezreal-v2 docs/art-review
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Regenerate verified marksman GLBs and download package"
+          git commit -m "Regenerate verified marksman GLBs"
           git push

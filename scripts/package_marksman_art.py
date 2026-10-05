@@ -2,8 +2,9 @@
 from pathlib import Path
 import zipfile
 ROOT=Path(__file__).resolve().parents[1]
-def package():
-    path=ROOT/'assets/marksman-3d/sharpwr-marksman-art-v1.zip'
+DEFAULT_OUTPUT=ROOT/'build/release/sharpwr-marksman-art-v1.zip'
+def package(path=DEFAULT_OUTPUT):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
     with zipfile.ZipFile(path,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
         for model in sorted((ROOT/'assets/marksman-3d/models').glob('*.glb')):
             archive.write(model,'models/'+model.name)

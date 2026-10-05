@@ -28,7 +28,7 @@ data/ (JSON, sayıların tek kaynağı)
 | Veri | `data/*.json`, `*_database.py` | Aynı. Sayılar yalnız JSON/veri modüllerinde durur, arayüz kodunda kopyası olmaz. |
 | Motor | `fight_engine.py`, `marksman_fight_engine.py`, `build_fight_optimizer.py` vb. Streamlit import etmez. Ancak `sim`, `sim_build`, `_combat_hits`, `stats`, `rm`, `lvl_scale`, hedef profilleri ve item tabloları `streamlit_app.py` içinde. 17 test dosyası ve 8 script bunları o dosyadan AST + `exec` ile çıkarıyor. | `sharpwr/` paketi. Tek, belgelenmiş bir giriş noktası: girdi (şampiyon, seviye, item, rün, hedef) → olay kaydı + özet. Testler ve scriptler normal `import` kullanır. |
 | Arayüz | `streamlit_app.py`: tek dosyada 6 sekme | Sekme başına modül; yalnız motoru çağırır, hesap yapmaz. |
-| 3D stüdyo | `assets/marksman-3d/*.js`; `marksman_art.studio_html()` dosyaları tek HTML'e metin olarak birleştirir. Ezreal GLB'si base64 gömülü; production GLB'leri `raw.githubusercontent.com/.../main` adresinden yüklenir. | Kendi başına açılan bir sayfa; veriyi JSON'dan, modelleri uygulamanın kendi dosyalarından yükler. |
+| 3D stüdyo | `assets/marksman-3d/*.js`; `marksman_art.studio_html()` dosyaları tek HTML'e metin olarak birleştirir. GLB'ler `static/marksman-3d/` klasöründen uygulamanın kendisi tarafından sunulur (`app/static/`); GitHub kopyası yalnız yedektir. | Kendi başına açılan bir sayfa; veriyi JSON'dan, modelleri uygulamanın kendi dosyalarından yükler. |
 | Mobil | Yok | Capacitor ile paketlenmiş web uygulaması (aşağıya bakın). |
 
 ## Mobil uygulama yaklaşımı (öneri; 6. adımda kesinleşir)
@@ -43,7 +43,7 @@ data/ (JSON, sayıların tek kaynağı)
 1. **Bağımlılık tek yönlüdür:** arayüz → motor → veri. Motor Streamlit'i veya arayüz modüllerini import etmez.
 2. **Yeniden düzenleme davranışı değiştirmez.** Her adımda Python ve JS testleri çalışır. Motora dokunan adımlarda entegrasyon matrisinin çıktıları önce/sonra birebir karşılaştırılır.
 3. **Yeni ve taşınan kod okunabilir yazılır:** açıklayıcı isimler, makul satır uzunluğu, motor API'sinde tip bilgisi.
-4. **Model kaynakları depoya girmez.** `.blend` dosyaları ve indirme paketleri GitHub Releases'te tutulur. Depoda yalnız uygulamanın çalışırken kullandığı GLB'ler kalır.
+4. **Model kaynakları depoya girmez.** `.blend` dosyaları ve indirme paketleri `art-sources` GitHub Release'inde tutulur; CI yalnız kaynak değiştiğinde Blender ile yeniden üretir. Depoda yalnız uygulamanın çalışırken kullandığı GLB'ler (`static/marksman-3d/`) kalır.
 5. **Riot kaynaklı görseller ayrı tutulur.** Item ikonları (`assets/items/`, wiki) ve skill ikonları (`data/marksman-skill-icons.json`: 20 set oyun ekran görüntülerinden, 3 set Data Dragon'dan) kaynak etiketiyle tek yerde durur; gerektiğinde değiştirilebilir veya çıkarılabilir. 3D modeller orijinal çizimdir ama Riot karakterlerini tasvir eder.
 6. **Sürüm tek kaynaktan gelir:** `VERSION`. Python kodu değişen her yayında artırılır. Canlı sunucu motor modüllerini yalnız sürüm değiştiğinde yeniden yükler (`engine_runtime.py`).
 
@@ -60,7 +60,8 @@ Riot'un standart feragat metni README'de bulunur. Uygulamanın içinde de görü
 | # | Adım | Durum |
 |---|---|---|
 | 1 | Hızlı temizlik: stüdyo önbelleği, `use_container_width` → `width`, tek kaynaklı sürüm, bu doküman | Tamamlandı (7.0.1) |
-| 2 | Model dosyaları: `.blend`/zip → Releases; GLB'leri uygulamanın kendisinden sunmak; mobil boyut optimizasyonu; Riot kaynaklı görselleri ayırmak, feragat metnini arayüze eklemek | Sırada |
+| 2a | Model dosyaları: `.blend`/zip → `art-sources` Release; GLB'leri uygulamanın kendisinden sunmak; Ezreal'i sayfaya gömmeyi bırakmak (sayfa 4,4 MB → 0,75 MB) | Tamamlandı (7.0.2) |
+| 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Sırada |
 | 3 | Çekirdek motor: `streamlit_app.py` içindeki hesapları `sharpwr/` paketine taşımak, JSON API, referans (golden) çıktılar; ardından arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
