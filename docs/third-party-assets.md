@@ -29,14 +29,17 @@ Hepsi `riot/` adlı klasörlerde tutulur. Uygulamanın gösterdiği her ikon, do
 
 ## Mobil uygulamanın internetten aldıkları
 
-Uygulama internetsiz çalışır; bu adresler yalnız güncelleme içindir. Hepsi bu projenindir ve `mobile/src/online.ts` dosyasındadır. Telefondan GitHub'a kişisel veri gönderilmez; GitHub yalnız her sitenin gördüğü bağlantı bilgilerini (IP adresi gibi) görür.
+Uygulama internetsiz çalışır; bu adresler yalnız güncelleme içindir. Hepsi bu projenindir ve `mobile/src/online.ts` ile `mobile/src/live-update.ts` dosyalarındadır. Telefondan GitHub'a kişisel veri gönderilmez; GitHub yalnız her sitenin gördüğü bağlantı bilgilerini (IP adresi gibi) görür.
 
 | Adres | Ne için | Ne zaman |
 |---|---|---|
 | `raw.githubusercontent.com/.../main/app-data/database.json` | Güncel Database verisi | Her açılışta |
 | `raw.githubusercontent.com/.../main/assets/riot/...` | Yeni eklenen, uygulamada olmayan bir ikon | Yalnız böyle bir ikon gösterilirken |
-| `raw.githubusercontent.com/.../main/mobile/package.json` | Yeni uygulama sürümü var mı | Her açılışta, yalnız önizleme (GitHub) sürümünde |
-| `github.com/.../releases/download/mobile-preview` | Yeni APK'yı indirmek | Kullanıcı "Download"a dokununca, telefonun tarayıcısında |
+| `github.com/.../releases/download/mobile-preview/sharpwr-web.json` | Yeni ekranlar (canlı güncelleme) var mı | Her açılışta, yalnız önizleme (GitHub) sürümünde |
+| `github.com/.../releases/download/mobile-preview/sharpwr-web-<sürüm>.zip` | Yeni ekranları indirmek (SHA-256 ile doğrulanır) | Yeni sürüm olduğunda, arka planda |
+| `github.com/.../releases/download/mobile-preview/sharpwr-database-preview.apk` | Yeni APK'yı indirmek (yalnız Android kabuğu değiştiğinde) | Kullanıcı "Download"a dokununca, telefonun tarayıcısında |
+
+Canlı güncellemeyi `@capgo/capacitor-updater` eklentisi yapar. Eklentinin kendi sunucularına (`plugin.capgo.app`: güncelleme, istatistik, kanal) bağlanması kapalıdır (`mobile/capacitor.config.json`).
 
 ## Orijinal içerik
 

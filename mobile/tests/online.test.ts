@@ -6,7 +6,6 @@ import {
   type KeyValueStore,
   downloadDatabase,
   isNewerVersion,
-  latestAppVersion,
   readSaved,
   remoteAsset,
   save,
@@ -56,13 +55,6 @@ describe("download", () => {
     await expect(downloadDatabase()).resolves.toBeNull();
     vi.stubGlobal("fetch", vi.fn(async () => Promise.reject(new TypeError("Failed to fetch"))));
     await expect(downloadDatabase()).resolves.toBeNull();
-  });
-
-  it("reads the published app version", async () => {
-    serve({ name: "sharpwr-mobile", version: "0.3.1" });
-    await expect(latestAppVersion()).resolves.toBe("0.3.1");
-    serve({ name: "sharpwr-mobile" });
-    await expect(latestAppVersion()).resolves.toBeNull();
   });
 
   it("points icons the app does not bundle at the repository", () => {
