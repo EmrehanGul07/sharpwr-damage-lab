@@ -1,4 +1,5 @@
-import json,unittest,zipfile
+import json,tempfile,unittest,zipfile
+from unittest.mock import patch
 from pathlib import Path
 from html.parser import HTMLParser
 from marksman_art import art_catalogue,studio_html
@@ -23,6 +24,14 @@ class MarksmanArt(unittest.TestCase):
   self.assertIn('Animation studies use authored demonstration durations',html)
   self.assertNotIn('BuildFightEvaluator',html)
   for name in PRIORITIES:self.assertIn(name,html)
+ def test_studio_render_is_cached_until_an_input_changes(self):
+  import marksman_art
+  self.assertIs(studio_html(),studio_html())
+  with tempfile.TemporaryDirectory() as folder:
+   probe=Path(folder)/'probe.js';probe.write_text('a')
+   with patch.object(marksman_art,'_studio_inputs',return_value=[probe,Path(folder)/'missing.js']):
+    before=marksman_art._input_stamp();probe.write_text('changed')
+    self.assertNotEqual(before,marksman_art._input_stamp())
  def test_channel_windows_come_from_captured_trace(self):
   from test_combat_engine import engine_namespace
   from build_fight_optimizer import BuildFightEvaluator
