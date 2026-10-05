@@ -1,7 +1,7 @@
 import unittest
 from core_items import EXCLUDED,available,rank_core
 from build_fight_optimizer import BuildFightEvaluator,search_builds,legal
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 class CoreItems(unittest.TestCase):
  def test_five_exclusions_and_muramana_unlock(self):
   self.assertEqual(EXCLUDED,{'Infinity Edge',"Lord Dominik's Regards","Serylda's Grudge",'Mortal Reminder','Terminus'})

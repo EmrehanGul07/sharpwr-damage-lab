@@ -1,16 +1,13 @@
 """Same Tier List search, constrained pool and progressive budgets; resumable."""
-import sys,ast,json,argparse
+import sys,json,argparse
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace,profiles_by_target
 from build_fight_optimizer import BuildFightEvaluator,search_builds,TIER3
 from core_items import BUDGETS,EXCLUDED,available,rank_core,fingerprint
 p=argparse.ArgumentParser();p.add_argument('--champion',action='append');p.add_argument('--output',default=str(root/'data/champion-core-items.json'));args=p.parse_args()
-ns=engine_namespace();profiles={}
-for node in ast.parse((root/'streamlit_app.py').read_text()).body:
- if isinstance(node,ast.Assign):
-  for var in node.targets:
-   if isinstance(var,ast.Name) and var.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):profiles[var.id.split('_')[0].lower()]=ast.literal_eval(node.value)
+ns=engine_namespace()
+profiles=profiles_by_target()
 def target_at(profile,level):
  if level in profile:return profile[level]
  lo=max(l for l in profile if l<level);hi=min(l for l in profile if l>level);u=(level-lo)/(hi-lo)

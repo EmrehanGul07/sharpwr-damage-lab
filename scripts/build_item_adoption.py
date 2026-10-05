@@ -1,8 +1,8 @@
 """Progressive item-budget screen across six equally weighted game stages."""
-import sys,json,ast,hashlib,argparse
+import sys,json,hashlib,argparse
 from pathlib import Path
 sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'tests')]
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace,profiles_by_target
 from build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortlist
 from item_consensus import progression_ranking
 parser=argparse.ArgumentParser()
@@ -11,11 +11,8 @@ parser.add_argument('--checkpoint', help='Separate checkpoint path for an isolat
 parser.add_argument('--output', help='Separate output path for an isolated worker')
 parser.add_argument('--refresh', action='store_true', help='Discard selected completed cells before recomputing')
 args=parser.parse_args()
-root=Path(__file__).resolve().parents[1];ns=engine_namespace();targets={}
-for node in ast.parse((root/'streamlit_app.py').read_text()).body:
- if isinstance(node,ast.Assign):
-  for x in node.targets:
-   if isinstance(x,ast.Name) and x.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):targets[x.id.split('_')[0].lower()]=ast.literal_eval(node.value)
+root=Path(__file__).resolve().parents[1];ns=engine_namespace()
+targets=profiles_by_target()
 def target_at(profile,level):
  if level in profile:return profile[level]
  lo=max(l for l in profile if l<level);hi=min(l for l in profile if l>level);u=(level-lo)/(hi-lo)

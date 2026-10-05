@@ -58,7 +58,7 @@ class BuildFightEvaluator:
     def evaluate(self,items,boot=None,refine=False):
         items=tuple(sorted(items));key=(items,boot,refine)
         if key in self.cache:return self.cache[key]
-        self.ns['_validate_build'](items,self.ns['F'],boot)
+        self.ns['validate_build'](items,self.ns['F'],boot)
         if not legal(items):raise ValueError('Illegal build')
         ns=self.ns;n=self.champion;l=self.level;core=level_stats(n,l);s=ns['stats'](n,l,self.mist)
         stats=[ns['dct'](ns['F'][x]) for x in items]+[ns['dct'](ns['B'][boot]) if boot else ns['dct'](())]
@@ -76,7 +76,7 @@ class BuildFightEvaluator:
         for (priority,movement,ultimate_policy,action_policy),recall_count in product(sorted(configurations),recall_counts):
             for use_e in (False,True):
                 for weapon in (('minigun','rockets') if n=='Jinx' else ('minigun',)):
-                    kernel=ns['_combat_hits'](n,l,self.hp,self.armor,self.mr,items,ns['F'],self.mist,self.bonus_hp,radius,self.aa_reduction,self.yuntal_stacks,base_mana or 0,False,self.energized,False,self.execs,False,boot)
+                    kernel=ns['combat_hits'](n,l,self.hp,self.armor,self.mr,items,ns['F'],self.mist,self.bonus_hp,radius,self.aa_reduction,self.yuntal_stacks,base_mana or 0,False,self.energized,False,self.execs,False,boot)
                     next(kernel);last={}
                     def aa_stats(state):
                         dyn=(.08*state['items'].get('rage',0) if "Guinsoo's Rageblade" in items else 0)+(.06*state['items'].get('phantom_dancer',0) if 'Phantom Dancer' in items else 0)

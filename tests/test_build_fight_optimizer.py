@@ -1,5 +1,5 @@
 import unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from build_fight_optimizer import BuildFightEvaluator,search_builds,legal,score,TIER3
 
 class AbilityBuildRanking(unittest.TestCase):
@@ -40,7 +40,7 @@ class AbilityBuildRanking(unittest.TestCase):
         self.assertEqual(len(r['marginal']),6)
         self.assertEqual(r['full'],sorted(r['full'],key=score))
     def test_offensive_active_obeys_fifty_second_cooldown(self):
-        ns=self.ns;kernel=ns['_combat_hits']('Ezreal',15,10000,100,100,['Galeforce'],ns['F'],active_ready=True)
+        ns=self.ns;kernel=ns['combat_hits']('Ezreal',15,10000,100,100,['Galeforce'],ns['F'],active_ready=True)
         next(kernel)
         hits=[kernel.send({'hp':10000,'time':t}) for t in (0,1,49,50)]
         self.assertEqual(['Cloudburst' in x['notes'] for x in hits],[True,False,False,True])

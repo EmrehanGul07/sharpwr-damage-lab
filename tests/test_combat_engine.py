@@ -1,18 +1,7 @@
-"""Regression tests load pure engine definitions without executing Streamlit UI."""
-import ast
+"""Regression tests for the UI-independent AA engine in the sharpwr package."""
 import math
-from pathlib import Path
 import unittest
-
-APP=Path(__file__).resolve().parents[1]/'streamlit_app.py'
-FUNCTIONS={'stats','gu','dct','rm','lvl_scale','_combat_hits','_validate_build','_effective_resistance','sim','sim_build'}
-DATA={'C','F','B','P','K'}
-def engine_namespace():
-    ns={}
-    for node in ast.parse(APP.read_text()).body:
-        if isinstance(node,ast.FunctionDef) and node.name in FUNCTIONS or isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id in DATA for t in node.targets):
-            exec(compile(ast.Module(body=[node],type_ignores=[]),str(APP),'exec'),ns)
-    return ns
+from sharpwr import engine_namespace
 
 class CombatTests(unittest.TestCase):
     @classmethod
@@ -39,7 +28,7 @@ class CombatTests(unittest.TestCase):
         _,plain=self.run_build(['Fiendhunter Bolts'])
         _,legacy=self.run_build(['Fiendhunter Bolts'],ult=True)
         self.assertEqual(plain,legacy)
-        kernel=self.n['_combat_hits']('Yunara',15,10000,100,100,['Fiendhunter Bolts'],self.n['F'])
+        kernel=self.n['combat_hits']('Yunara',15,10000,100,100,['Fiendhunter Bolts'],self.n['F'])
         next(kernel)
         hits=[kernel.send({'time':t,'hp':10000,'event_driven':True,'ultimate_cast_time':0}) for t in (0,1,2,3)]
         self.assertTrue(all('Opening Barrage' in x['notes'] for x in hits[:3]))
@@ -54,8 +43,8 @@ class CombatTests(unittest.TestCase):
     def test_resistance(self):
         self.assertEqual(self.n['rm'](100),.5)
         self.assertGreater(self.n['rm'](-100),1)
-        self.assertEqual(self.n['_effective_resistance'](100,.3,1000),0)
-        self.assertEqual(self.n['_effective_resistance'](-20,.3,10),-20)
+        self.assertEqual(self.n['effective_resistance'](100,.3,1000),0)
+        self.assertEqual(self.n['effective_resistance'](-20,.3,10),-20)
     def test_smoke(self):
         for champion in self.n['C']:
             for item in self.n['F']:

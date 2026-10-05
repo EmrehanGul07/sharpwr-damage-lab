@@ -23,6 +23,10 @@ from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
 from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
 from marksman_kits import Kit, records as marksman_records
 from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPELLBLADE
+from sharpwr import (
+    B, C, F, K, P, TARGET_PROFILES, benchmark_target, combat_hits, dct, engine_namespace,
+    gu, lvl_scale, rm, sim, sim_build, stats, target_profile_at_level,
+)
 
 def _preserve_widgets():
     # Keep later-tab controls alive if an item/rune button requests an early rerun.
@@ -543,59 +547,7 @@ st.markdown("""
 </div>
 """,unsafe_allow_html=True)
 
-# base AD, AD/lvl, AS ratio, base AS, base bonus AS, AS/lvl
-C={
-"Kalista":(57,5.2,.694,.694,.16,.046),"Tristana":(60,5,.694,.694,.17,.020),
-"Twitch":(58,4,.679,.679,.18,.030),"Draven":(66,3.8,.679,.679,.11,.030),
-"Kog'Maw":(58,3.5,.665,.665,.20,.030),"Vayne":(60,3,.658,.658,.23,.030),
-"Ashe":(60,4,.658,.658,.23,.030),"Varus":(58,4,.658,.658,.22,.030),
-"Xayah":(60,4.2,.658,.658,.22,.034),"Samira":(60,3.5,.658,.658,.14,.030),
-"Miss Fortune":(58,4,.656,.656,.22,.032),"Yunara":(58,3,.650,.650,.23,.032),
-"Kai'Sa":(59,3.5,.644,.644,.17,.022),"Corki":(54,2.5,.644,.644,.17,.032),
-"Lucian":(60,3.5,.638,.638,.25,.028),"Smolder":(54,3.5,.638,.638,.25,.031),
-"Caitlyn":(60,4.2,.625,.625,.28,.025),"Jinx":(58,4,.625,.625,.30,.020),
-"Ezreal":(60,4.5,.625,.625,.28,.022),"Zeri":(58,4,.625,.625,.28,.024),
-"Jhin":(60,5,.625,.625,.06,.032),"Sivir":(60,4,.625,.625,.30,.010),
-"Senna":(50,0,.300,.300,1.10,.025)}
 
-# gold, AD, AS, crit, AP, HP, mana, armor, MR, AH, lifesteal, flat armor pen, % armor pen, MS
-F={
-"Fiendhunter Bolts":(2650,0,.45,.25,0,0,0,0,0,20,0,0,0,0),
-"Rapid Firecannon":(2650,0,.40,.25,0,0,0,0,0,0,0,0,0,.04),
-"Runaan's Hurricane":(2650,0,.40,.25,0,0,0,0,0,0,0,0,0,.04),
-"Phantom Dancer":(2650,0,.40,.25,0,0,0,0,0,0,0,0,0,.07),
-"Navori Quickblades":(2650,0,.40,.25,0,0,0,0,0,0,0,0,0,.04),
-"Wit's End":(2800,0,.50,0,0,0,0,0,45,0,0,0,0,0),
-"Hexoptics C44":(2900,55,0,.25,0,0,0,0,0,0,0,0,0,0),
-"Kraken Slayer":(2900,45,.35,0,0,0,0,0,0,0,0,0,0,.04),
-"Nashor's Tooth":(2900,0,.50,0,80,0,0,0,0,15,0,0,0,0),
-"Manamune":(2900,40,0,0,0,0,500,0,0,15,0,0,0,0),
-"Muramana":(2900,40,0,0,0,0,1200,0,0,15,0,0,0,0),
-"Statikk Shiv":(3000,40,.30,0,40,0,0,0,0,0,0,0,0,.04),
-"Guinsoo's Rageblade":(3000,35,.30,0,30,0,0,0,0,0,0,0,0,0),
-"Mortal Reminder":(3000,35,0,.25,0,0,0,0,0,0,0,0,.30,0),
-"Maw of Malmortius":(3000,55,0,0,0,0,0,0,45,10,0,0,0,0),
-"Essence Reaver":(3000,50,0,.25,0,0,0,0,0,20,0,0,0,0),
-"Immortal Shieldbow":(3000,55,0,.25,0,0,0,0,0,0,0,0,0,0),
-"The Collector":(3000,50,0,.25,0,0,0,0,0,0,0,10,0,0),
-"Terminus":(3000,35,.35,0,0,0,0,0,0,0,0,0,0,0),
-"Stormrazor":(3000,50,.20,.25,0,0,0,0,0,0,0,0,0,0),
-"Yun Tal Wildarrows":(3100,50,.35,0,0,0,0,0,0,0,0,0,0,0),
-"Galeforce":(3100,60,0,.25,0,0,0,0,0,0,0,0,0,.04),
-"Mercurial Scimitar":(3100,45,0,0,0,0,0,0,40,0,.12,0,0,0),
-"Blade of the Ruined King":(3100,40,.30,0,0,0,0,0,0,0,.12,0,0,0),
-"Guardian Angel":(3200,45,0,0,0,0,0,40,0,0,0,0,0,0),
-"Bloodthirster":(3200,75,0,0,0,0,0,0,0,0,.15,0,0,0),
-"Lord Dominik's Regards":(3300,35,0,.25,0,0,0,0,0,0,0,0,.35,0),
-"Trinity Force":(3333,36,.30,0,0,333,0,0,0,15,0,0,0,0),
-"Infinity Edge":(3400,75,0,.25,0,0,0,0,0,0,0,0,0,0),
-"Serylda's Grudge":(3100,50,0,0,0,0,0,0,0,15,0,0,.35,0),
-"Serpent's Fang":(2800,50,0,0,0,0,0,0,0,10,0,15,0,0),
-"Youmuu's Ghostblade":(3000,55,0,0,0,0,0,0,0,15,0,15,0,.04),
-"Duskblade of Draktharr":(3000,55,0,0,0,0,0,0,0,10,0,18,0,0),
-"Edge of Night":(3000,50,0,0,0,250,0,0,0,0,0,12,0,0),
-"Iceborn Gauntlet":(3000,0,0,0,0,300,250,50,0,30,0,0,0,0),
-"Death's Dance":(3200,50,0,0,0,0,0,45,0,15,0,0,0,0)}
 
 # Tier List combat-mechanic audit: CURRENT simulator coverage.
 ITEM_SCENARIO_AUDIT={
@@ -637,327 +589,17 @@ ITEM_SCENARIO_AUDIT={
 "Death's Dance":("defensive","not modeled","Damage delay/survival excluded."),
 }
 
-P={
-"Pickaxe":(800,20,0,0,0,0,0,0,0,0,0,0,0,0),
-"Sheen":(800,0,0,0,0,0,0,0,0,10,0,0,0,0),
-"Kircheis Shard":(800,0,.20,0,0,0,0,0,0,0,0,0,0,0),
-"Executioner's Calling":(800,15,0,0,0,0,0,0,0,0,0,0,0,0),
-"Recurve Bow":(900,0,.20,0,0,0,0,0,0,0,0,0,0,0),
-"Quicksilver Sash":(1100,0,0,0,0,0,0,0,30,0,0,0,0,0),
-"Hearthbound Axe":(1200,20,.15,0,0,0,0,0,0,0,0,0,0,0),
-"Vampiric Scepter":(1200,20,0,0,0,0,0,0,0,0,.08,0,0,0),
-"Last Whisper":(1200,15,0,0,0,0,0,0,0,0,0,0,.15,0),
-"Caulfield's Warhammer":(1200,25,0,0,0,0,0,0,0,10,0,0,0,0),
-"Noonquiver":(1300,20,0,.15,0,0,0,0,0,0,0,0,0,0),
-"Zeal":(1400,0,.15,.15,0,0,0,0,0,0,0,0,0,.04),
-"B.F. Sword":(1500,40,0,0,0,0,0,0,0,0,0,0,0,0),
-"Tear of the Goddess":(400,0,0,0,0,0,200,0,0,0,0,0,0,0),
-"Dagger":(400,0,.12,0,0,0,0,0,0,0,0,0,0,0),
-"Long Sword":(500,12,0,0,0,0,0,0,0,0,0,0,0,0),
-"Brawler's Gloves":(500,0,0,.10,0,0,0,0,0,0,0,0,0,0),
-"Cloth Armor":(500,0,0,0,0,0,0,20,0,0,0,0,0,0),
-"Null-Magic Mantle":(500,0,0,0,0,0,0,0,20,0,0,0,0,0),
-"Ruby Crystal":(500,0,0,0,0,150,0,0,0,0,0,0,0,0),
-"Amplifying Tome":(500,0,0,0,20,0,0,0,0,0,0,0,0,0),
-"Ring of Revelation":(300,0,0,0,0,0,0,0,0,5,0,0,0,0),
-"Boots of Speed":(400,0,0,0,0,0,0,0,0,0,0,0,0,25)}
-
-B={
-"Gluttonous Greaves":(1000,12,0,0,0,0,0,0,0,0,0,0,0,45),
-"Immortal Treads":(2000,12,0,0,0,0,0,0,0,0,0,0,0,45),
-"Ionian Boots of Lucidity":(1000,0,0,0,0,0,0,0,0,15,0,0,0,45),
-"Crimson Lucidity":(2000,0,0,0,0,0,0,0,0,25,0,0,0,45),
-"Berserker's Greaves":(1200,0,.35,0,0,0,0,0,0,0,0,0,0,45),
-"Gunmetal Greaves":(2200,0,.50,0,0,0,0,0,0,0,.05,0,0,45),
-"Mercury's Treads":(1200,0,0,0,0,150,0,0,25,0,0,0,0,45),
-"Chainlaced Crushers":(2200,0,0,0,0,150,0,0,30,0,0,0,0,45),
-"Plated Steelcaps":(1200,0,0,0,0,150,0,25,0,0,0,0,0,45),
-"Armored Advance":(2200,0,0,0,0,150,0,30,0,0,0,0,0,45),
-"Boots of Mana":(1200,0,0,0,25,0,0,0,0,0,0,0,0,45),
-"Spellslinger's Shoes":(2200,0,0,0,35,0,0,0,0,0,0,0,0,45,18,.08),
-"Boots of Dynamism":(1200,15,0,0,0,0,0,0,0,0,0,10,0,45),
-"Armorcrusher Boots":(2200,25,0,0,0,0,0,0,0,0,0,12,.06,45)}
-K=["gold","ad","as","crit","ap","hp","mana","armor","mr","ah","ls","flatpen","pctpen","ms","flatmpen","pctmpen"]
-def dct(v):
-    v=tuple(v)+(0,)*(len(K)-len(v))
-    return dict(zip(K,v))
-def gu(l):
-    n=l-1
-    return n*(.7025+.0175*n)
-def stats(n,l,mist=0):
-    ba,g,r,b,bba,asg=C[n]; u=gu(l)
-    return {"basead":ba,"ad":ba+g*u+(mist*1.25 if n=="Senna" else 0),
-            "ratio":r,"baseas":b,"bba":bba,"lvbas":asg*u}
-def rm(x): return 100/(100+x) if x>=0 else 2-100/(100-x)
-def lvl_scale(lo,hi,lvl): return lo+(hi-lo)*(lvl-1)/14
-
-# User-tested level benchmark profiles.
-SQUISHY_JINX_PROFILE={1:{"hp":630,"armor":35,"mr":30},5:{"hp":1014,"armor":51,"mr":35},6:{"hp":1122,"armor":56,"mr":36},8:{"hp":1353,"armor":66,"mr":39},9:{"hp":1475,"armor":71,"mr":40},11:{"hp":1734,"armor":81,"mr":43},12:{"hp":1871,"armor":87,"mr":45},14:{"hp":2159,"armor":99,"mr":48},15:{"hp":2310,"armor":105,"mr":50}}
-BRUISER_DARIUS_PROFILE={1:{"hp":660,"armor":47,"mr":40,"aa_reduction":0},5:{"hp":1617,"armor":89,"mr":46,"aa_reduction":.10},6:{"hp":1750,"armor":94,"mr":48,"aa_reduction":.10},8:{"hp":2034,"armor":151,"mr":52,"aa_reduction":.10},9:{"hp":2185,"armor":156,"mr":54,"aa_reduction":.10},11:{"hp":2905,"armor":167,"mr":59,"aa_reduction":.10},12:{"hp":3074,"armor":173,"mr":61,"aa_reduction":.10},14:{"hp":3729,"armor":242,"mr":117,"aa_reduction":.10},15:{"hp":4315,"armor":249,"mr":182,"aa_reduction":.10}}
-TANK_ORNN_PROFILE={1:{"hp":690,"armor":48,"mr":42,"aa_reduction":0},5:{"hp":2065,"armor":93,"mr":48,"aa_reduction":.10},6:{"hp":2264,"armor":98,"mr":50,"aa_reduction":.10},8:{"hp":2989,"armor":154,"mr":54,"aa_reduction":.10},9:{"hp":3264,"armor":162,"mr":56,"aa_reduction":.10},11:{"hp":3943,"armor":264,"mr":61,"aa_reduction":.10},12:{"hp":4173,"armor":270,"mr":63,"aa_reduction":.10},14:{"hp":5086,"armor":352,"mr":131,"aa_reduction":.10},15:{"hp":5698,"armor":415,"mr":184,"aa_reduction":.10}}
-TARGET_PROFILES={"Squishy • Jinx":SQUISHY_JINX_PROFILE,"Bruiser • Darius":BRUISER_DARIUS_PROFILE,"Tank • Ornn":TANK_ORNN_PROFILE}
-def _target_profile_at_level(profile,lvl):
-    lvl=int(lvl)
-    if lvl in profile: return dict(profile[lvl])
-    levels=sorted(profile); lo=max(x for x in levels if x<lvl); hi=min(x for x in levels if x>lvl); t=(lvl-lo)/(hi-lo)
-    out={k:profile[lo][k]+(profile[hi][k]-profile[lo][k])*t for k in ("hp","armor","mr")}
-    # Boots are discrete: Lv1 has none; all benchmark builds from Lv5 onward have Steelcaps/Armored Advance.
-    out["aa_reduction"]=.10 if lvl>=5 and (profile[hi].get("aa_reduction",0) or profile[lo].get("aa_reduction",0)) else 0
-    return out
 
 
-def _validate_build(items,db,boot=None):
-    from build_fight_optimizer import SPELLBLADE
-    if len(set(items)&SPELLBLADE)>1:raise ValueError("Only one Spellblade item is allowed.")
-    if len(items)>5: raise ValueError("At most five items are allowed.")
-    if len(items)!=len(set(items)): raise ValueError("Duplicate items are not allowed.")
-    if any(x not in db or x in B or x=="Boots of Speed" for x in items): raise ValueError("Choose valid items; boots use the separate slot.")
-    if boot is not None and boot not in B: raise ValueError("Unknown boots.")
 
 
-def _effective_resistance(value,pct=0.,flat=0.,cap=1.):
-    # Penetration cannot make a positive resistance negative; pre-existing negative resistance remains negative.
-    return value if value<0 else max(0.,value*(1-min(cap,max(0.,pct)))-max(0.,flat))
 
 
-def sim_build(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True):
-    engine=_combat_hits(n,l,hp0,arm,mr,items,db,mist,bonus_hp,dist,target_aa_reduction,yuntal_start_stacks,base_mana,spell,energized,ult,execs,active_ready,boot,item_proc)
-    next(engine); hp=float(hp0); t=0.; log=[]
-    while hp>0 and len(log)<500:
-        h=engine.send({"hp":hp,"time":t}); before=hp; hp-=h["damage"]
-        if "The Collector" in items and item_proc and 0<hp<=hp0*min(1,.05+.001*execs): hp=0; h["notes"].append("Execute")
-        log.append([len(log)+1,round(t,3),round(h["as"],4),round(h["crit"]*100,2),round(h["armor"],1),round(before,1),round(h["damage"],1),round(max(hp,0),1),", ".join(h["notes"]),h["rage"],h["light"],h["dark"]])
-        t+=1/h["as"]
-    label=" + ".join(items)+((" + "+boot) if boot else "")
-    if hp>0: label+=" [NOT KILLED: 500 attacks]"
-    gold=sum(dct(db[x])["gold"] for x in items)+(dct(B[boot])["gold"] if boot else 0)
-    return [label,gold,round(t,3) if hp<=0 else float("inf"),len(log),round(sum(x[6] for x in log)/t,1) if t else 0.],log
 
 
-def sim(n,l,hp0,arm,mr,it,db,mist,bonus_hp,dist,base_mana,spell,energized,ult,execs,item_proc=True,target_aa_reduction=0.0,active_ready=False,yuntal_start_stacks=0):
-    row,log=sim_build(n,l,hp0,arm,mr,[it],db,mist,bonus_hp,dist,target_aa_reduction,yuntal_start_stacks,base_mana,spell,energized,ult,execs,active_ready,item_proc=item_proc)
-    return row,[x[:9] for x in log]
 
-def _combat_hits(n,l,hp0,arm,mr,items,db,mist=0,bonus_hp=0,dist=550.0,target_aa_reduction=0.0,yuntal_start_stacks=0,base_mana=0.0,spell=False,energized=False,ult=False,execs=0,active_ready=False,boot=None,item_proc=True,initial_flurry=False):
-    """Shared multi-item AA engine. Carries the audited single-item AA mechanics into item combinations."""
-    items=list(items)
-    from combat_validation import benchmark, finite
-    benchmark(n,l,hp0,arm,mr,mist=mist,bonus_hp=bonus_hp,distance=dist,reduction=target_aa_reduction,mana=base_mana,stacks=yuntal_start_stacks,executes=execs)
-    from champion_database import champion_stat
-    # Item melee/ranged class belongs to the champion, not distance to target.
-    botrk_ratio=.085 if champion_stat(n,"attack_type")=="Melee" else .06
-    _validate_build(items,db,boot)
-    s=stats(n,l,mist); qs=[dct(db[x]) for x in items]
-    bootq=dct(B[boot]) if boot in B else dct(())
-    total=lambda key: sum(float(q[key]) for q in qs)+float(bootq.get(key,0))
-    if base_mana<=0:
-        from champion_database import level_stats
-        base_mana=level_stats(n,int(l))["mana"] or 0.
-    mana=base_mana+total("mana")
-    awe=.02*mana if any(x in items for x in ("Manamune","Muramana")) else 0.0
-    ad=s["ad"]+total("ad")+awe
-    hp=float(hp0); t=0.; k=0; log=[]
-    rb=light=dark=rage_hits=pd_stacks=0
-    kraken_hits=0
-    energized_charge=100. if energized else 0.; energized_path=0.; energized_attacks=set(); energized_launches=set(); energized_pending=set()
-    energized_items=[(name,magic,label) for name,magic,label in (("Stormrazor",120,"Storm Energized"),("Rapid Firecannon",80,"RFC Energized"),("Statikk Shiv",60,"Shiv Energized")) if name in items]
-    energized_attack_charge=14. if "Statikk Shiv" in items else 9.
-    terminus_hits=0
-    ytcrit=min(.25,max(0,int(yuntal_start_stacks))*.002); yt_until=-1.; yt_cd=0.
-    spellblade_ready=0.
-    fh=0  # Only an actual ultimate_cast_time event arms Opening Barrage.
-    fiend_until=8.; last_ult_cast=None; spell_pending=bool(spell); galeforce_ready=0.; duskblade_ready=0.
-    if initial_flurry and "Yun Tal Wildarrows" in items and item_proc: yt_until=6.; yt_cd=25.
-    state=yield None
-    last_event_time=-1.
-    while k<500 or (state.get("event_driven",False) and k<10000):
-        finite(state.get("hp",hp) if state.get("event_phase")=="attack_launch" else state.get("hp"),"live target HP",0)
-        event_time=finite(state.get("time",t) if state.get("event_phase")=="attack_launch" else state.get("time"),"event time",0)
-        if event_time<last_event_time:raise ValueError("Combat events must be monotonic")
-        last_event_time=event_time
-        for _field in ("movement_distance","distance","max_mana","bonus_as","spellblade_crit","crit","armor_override","mr_override","attack_physical","critical_attack_physical","nonbasic_attack_physical","primary_external_damage","on_hit_health_multiplier"):
-            if state.get(_field) is not None:
-                finite(state[_field],_field, None if _field in ("armor_override","mr_override") else 0,1 if _field in ("crit","spellblade_crit") else None)
-        if "bonus_ad" in state:finite(state["bonus_ad"],"bonus AD")
-        # Charge consumption occurs at projectile launch, damage at impact.
-        if energized_items and item_proc:
-            travelled=max(energized_path,float(state.get("movement_distance",energized_path)))
-            energized_charge=min(100.,energized_charge+(travelled-energized_path)*26./700.)
-            energized_path=travelled
-            if "energized_ready" in state:energized_charge=100. if state["energized_ready"] else 0.
-        if state.get("event_phase")=="attack_launch":
-            attack_id=state["attack_id"]
-            if attack_id not in energized_launches:
-                energized_launches.add(attack_id)
-                if energized_items and item_proc and energized_charge>=100.-1e-9:
-                    energized_pending.add(attack_id);energized_charge=0.
-            state=yield {"energized_charge":energized_charge,"stormrazor_charge":energized_charge,"movement_distance":energized_path,"energized_reserved":attack_id in energized_pending}
-            continue
-        hp=float(state["hp"]); t=float(state["time"]); k+=1
-        current_ad=ad+float(state.get("bonus_ad",0))
-        event_driven=bool(state.get("event_driven",False));skill_on_hit=bool(state.get("skill_on_hit",False))
-        if event_driven:
-            _cast_times=state.get("spell_cast_times",[t] if state.get("spell_cast") else [])
-            for _cast_time in _cast_times:
-                if _cast_time>=spellblade_ready:spell_pending=True
-            _ult_time=state.get("ultimate_cast_time")
-            if _ult_time is not None and _ult_time!=last_ult_cast:
-                last_ult_cast=_ult_time; fiend_until=_ult_time+8
-                if "Fiendhunter Bolts" in items and item_proc: fh=3
-        dyn=(.08*rb if ("Guinsoo's Rageblade" in items and item_proc) else 0.0)+(.06*pd_stacks if ("Phantom Dancer" in items and item_proc) else 0.0)
-        if ("Yun Tal Wildarrows" in items and item_proc) and t<yt_until: dyn+=.35
-        asp=min(3,s["baseas"]+s["ratio"]*(s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))))
-        crit=min(1,total("crit")+(mist//20*.10 if n=="Senna" else 0)+(ytcrit if ("Yun Tal Wildarrows" in items and item_proc) else 0))
-        spellblade_crit=float(state.get("spellblade_crit",crit))
-        crit=float(state.get("crit",crit))
-        cd=2.3 if "Infinity Edge" in items else 2.0
-        if n=="Senna": cd*=.9
-        pct=total("pctpen")+(.10*dark if ("Terminus" in items and item_proc) else 0)
-        if ("Terminus" in items and item_proc): pct=min(.40,pct)
-        ea=float(state.get("armor_override",_effective_resistance(arm,pct,total("flatpen"))))
-        # Patch 7.3 Rageblade no longer disables critical strikes; crit remains normal AA expected damage.
-        phy=float(state.get("attack_physical",current_ad*(1+crit*(cd-1)))); onp=0.; onm=0.; true=0.; note=[]; item_components=[]
 
-        if fh and t<=fiend_until and not skill_on_hit:
-            asp=min(3,asp+s["ratio"]*.50); phy=float(state.get("critical_attack_physical",current_ad*cd))*.80; true=current_ad*.15*crit; note.append("Opening Barrage")
-        if "Hexoptics C44" in items and not skill_on_hit:
-            from damage_classification import magnification
-            hit_dist=state.get("distance") if state.get("distance") is not None else (0. if state.get("melee",False) else dist)
-            factor=magnification(hit_dist,['BasicAttack'])
-            secondary=float(state.get('nonbasic_attack_physical',0.))
-            phy=(phy-secondary)*factor+secondary
-            # Opening Barrage is a separate item effect, not the attack base.
-            note.append(f"C44 {(factor-1)*100:.0f}% basic only")
-        if "Galeforce" in items and active_ready and not event_driven and not skill_on_hit and t>=galeforce_ready:
-            bonus_ad=max(0,current_ad-s["basead"])
-            onp+=40+(l-1)/14*80+.45*bonus_ad; note.append("Cloudburst"); galeforce_ready=t+50
-        if "Blade of the Ruined King" in items: onp+=max(15,botrk_ratio*hp)
-        if ("Terminus" in items and item_proc): onm+=30
-        if "Wit's End" in items: onm+=40
-        if "Nashor's Tooth" in items:
-            onm+=15+.20*total("ap")
-        if "Recurve Bow" in items: onp+=15
-        if "Muramana" in items and not skill_on_hit:onp+=.015*float(mana if state.get("max_mana") is None else state["max_mana"])
 
-        rage_extra=False
-        if ("Guinsoo's Rageblade" in items and item_proc):
-            onm+=30
-            # The AA that reaches four stacks is eligible hit 1: user AA6/AA9 confirmation.
-            if rb>=3:
-                rage_hits+=1
-                if rage_hits>=3: rage_extra=True; rage_hits=0
-
-        # Resolve ordinary and Phantom on-hits in order. Magic lands before
-        # Juxtaposition advances; physical attack/procs use the updated penetration.
-        primary_onm=onm
-        primary_em=_effective_resistance(mr,total("pctmpen")+(.10*dark if "Terminus" in items and item_proc else 0),total("flatmpen"),cap=.40 if "Terminus" in items and item_proc else 1.)
-        if "Terminus" in items and item_proc:
-            terminus_hits+=1
-            if terminus_hits%2: light=min(3,light+1)
-            else: dark=min(3,dark+1)
-            ea=_effective_resistance(arm,min(.40,total("pctpen")+.10*dark),total("flatpen"))
-        if ("Kraken Slayer" in items and item_proc):
-            kraken_hits+=1
-            if kraken_hits>=3:
-                base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
-                onp+=base*(1+min(.75,.75*miss)); note.append("Kraken")
-                kraken_hits-=3
-
-        primary_onp=onp
-        if rage_extra:
-            onm+=30
-            if "Blade of the Ruined King" in items:
-                primary_damage=(phy+primary_onp)*rm(ea)+primary_onm*rm(primary_em)+true
-                if "Lord Dominik's Regards" in items:primary_damage*=1+min(.12,max(0,bonus_hp)/125*.01)
-                if boot=="Immortal Treads":primary_damage*=1.05
-                if target_aa_reduction and not skill_on_hit:primary_damage*=1-target_aa_reduction
-                primary_damage*=float(state.get("on_hit_health_multiplier",1.))
-                phantom_hp=max(0.,hp-primary_damage-float(state.get("primary_external_damage",0.)))
-                onp+=max(15,botrk_ratio*phantom_hp)
-
-            if ("Terminus" in items and item_proc): onm+=30
-            if "Wit's End" in items: onm+=40
-            if "Nashor's Tooth" in items:
-                onm+=15+.20*total("ap")
-            if "Recurve Bow" in items: onp+=15
-            # Muramana Shock is once per attack/cast, so Phantom cannot repeat it.
-            if "Terminus" in items and item_proc:
-                terminus_hits+=1
-                if terminus_hits%2: light=min(3,light+1)
-                else: dark=min(3,dark+1)
-            if "Kraken Slayer" in items and item_proc:
-                kraken_hits+=1
-                if kraken_hits>=3:
-                    base=120+(l-1)/14*48; miss=max(0,min(1,(hp0-hp)/hp0))
-                    onp+=base*(1+min(.75,.75*miss)); note.append("Kraken (Phantom)")
-                    kraken_hits-=3
-            note.append("Phantom Hit")
-
-        # All three items share the user-confirmed Energized charge/cadence.
-        if energized_items and item_proc:
-            attack_id=state.get("attack_id")
-            new_attack=attack_id is None or attack_id not in energized_attacks
-            reserved=attack_id is not None and attack_id in energized_pending
-            proc=reserved or (energized_charge>=100.-1e-9 and
-                (skill_on_hit or new_attack and attack_id not in energized_launches))
-            if proc:
-                for _,magic,label in energized_items:onm+=magic;note.append(label)
-                if reserved:energized_pending.remove(attack_id)
-                else:energized_charge=0.
-            if not skill_on_hit and new_attack:
-                if not proc:energized_charge=min(100.,energized_charge+energized_attack_charge)
-                if attack_id is not None:energized_attacks.add(attack_id)
-
-        if "Kircheis Shard" in items and energized and k==1:
-            onm+=40; note.append("Jolt")
-
-        # Legacy pre-cast means ONE initial cast; cooldown alone never rearms.
-        if not event_driven and spell and k==1:spell_pending=True
-        if spell_pending and t>=spellblade_ready:
-            choices=[]
-            if "Essence Reaver" in items and item_proc:choices.append((1.35,1.35*s["basead"]+min(80,.8*spellblade_crit*100),"ER"))
-            if "Trinity Force" in items and item_proc:choices.append((2.,2*s["basead"],"Trinity"))
-            if "Iceborn Gauntlet" in items and item_proc:choices.append((1.,s["basead"]+.25*total("armor"),"Iceborn"))
-            if "Sheen" in items:choices.append((1.,s["basead"],"Sheen"))
-            if choices:
-                _,amount,label=max(choices,key=lambda x:(x[0],x[1]))
-                onp+=amount;note.append(label);spellblade_ready=t+1.5;spell_pending=False
-
-        if ("Duskblade of Draktharr" in items and item_proc) and not skill_on_hit and t>=duskblade_ready:
-            onp+=60+(l-1)/14*100; note.append("Nightstalker"); duskblade_ready=t+10
-
-        if onp:item_components.append({"damage_type":"physical","raw_amount":onp,"tags":["Item"],"status":"unknown_WR","component":"item additional damage","effects":list(note)})
-        if onm:item_components.append({"damage_type":"magic","raw_amount":onm,"tags":["Item"],"status":"unknown_WR","component":"item additional damage","effects":list(note)})
-        if true:item_components.append({"damage_type":"true","raw_amount":true,"tags":["Item"],"status":"unknown_WR","component":"Opening Barrage"})
-        phy+=onp
-        if "Lord Dominik's Regards" in items:
-            gs=min(.12,max(0,bonus_hp)/125*.01)
-            phy*=1+gs; onm*=1+gs; primary_onm*=1+gs; true*=1+gs
-            if gs: note.append(f"Giant Slayer {gs*100:.0f}%")
-        em=_effective_resistance(mr,total("pctmpen")+(.10*dark if ("Terminus" in items and item_proc) and item_proc else 0),total("flatmpen"),cap=.40 if ("Terminus" in items and item_proc) else 1.)
-        em=float(state.get("mr_override",em)) if not ("Terminus" in items and item_proc) else em
-        magic_damage=onm*rm(em)
-        if "Terminus" in items and item_proc:
-            # Preserve the two resistances rather than multiplying merged raw magic.
-            magic_damage=primary_onm*rm(primary_em)+(onm-primary_onm)*rm(em)
-        dmg=phy*rm(ea)+magic_damage+true
-        if boot=="Immortal Treads": dmg*=1.05
-        if target_aa_reduction and not skill_on_hit: dmg*=1-target_aa_reduction
-        on_hit_events=[{"kind":"primary","magic_raw":primary_onm,"magic_damage":primary_onm*rm(primary_em),"physical_proc_raw":primary_onp}]
-        if rage_extra:
-            on_hit_events.append({"kind":"phantom","magic_raw":onm-primary_onm,"magic_damage":(onm-primary_onm)*rm(em),"physical_proc_raw":onp-primary_onp})
-        before=hp
-
-        if ("Phantom Dancer" in items and item_proc) and (not skill_on_hit or n=="Ezreal"): pd_stacks=min(5,pd_stacks+1)
-        if ("Guinsoo's Rageblade" in items and item_proc): rb=min(4,rb+1)
-        if ("Yun Tal Wildarrows" in items and item_proc) and not skill_on_hit:
-            ytcrit=min(.25,ytcrit+.002)
-            if yt_cd<=t:
-                yt_until=t+6; yt_cd=t+25; note.append("Flurry")
-            else: yt_cd=max(t,yt_cd-(1.0+crit))
-
-        if fh and t<=fiend_until and not skill_on_hit: fh-=1
-        state=yield {"energized_charge":energized_charge,"stormrazor_charge":energized_charge,"movement_distance":energized_path,"damage":dmg,"as":asp,"crit":crit,"armor":ea,"mr":em,"physical":phy,"magic":onm,"physical_damage":phy*rm(ea),"magic_damage":magic_damage,"on_hit_events":on_hit_events,"true":true,"notes":note,"damage_components":item_components,"rage":rb,"light":light,"dark":dark,"phantom_dancer":pd_stacks,"kraken":kraken_hits,"yuntal_crit":ytcrit,"ad":current_ad,"fiend_remaining":fh,"fiend_until":fiend_until,"yuntal_until":yt_until,"bonus_as_total":s["bba"]+s["lvbas"]+total("as")+dyn+float(state.get("bonus_as",0))}
 
 
 # Build Lab defaults. Ranking and Item Value use independent widget keys and defaults.
@@ -973,11 +615,6 @@ ult=False
 execs=int(st.session_state.get("build_execs",0))
 
 
-def _benchmark_target(name,lvl):
-    target=dict(_target_profile_at_level(TARGET_PROFILES[name],lvl))
-    natural_hp={"Squishy • Jinx":target["hp"],"Bruiser • Darius":660+148*gu(lvl),"Tank • Ornn":690+132*gu(lvl)}[name]
-    target["bonus_hp"]=max(0.0,target["hp"]-natural_hp)
-    return target
 
 def _tab_hero(kicker,title,description):
     st.markdown(f'<div class="buildlab-hero"><span>{html.escape(kicker)}</span><strong>{html.escape(title)}</strong><p>{html.escape(description)}</p></div>',unsafe_allow_html=True)
@@ -1111,7 +748,7 @@ with tabs[0]:
     with _tier_right,st.container(border=True):
         _setup_heading("02","FIXED BENCHMARK","Target Profile")
         tier_target=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="tier_target",label_visibility="collapsed")
-        _target=_target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
+        _target=target_profile_at_level(TARGET_PROFILES[tier_target],tier_level)
         _target_readout(_target["hp"],_target["armor"],_target["mr"],_target.get("aa_reduction",0))
         st.caption("Darius / Ornn apply 10% basic-attack reduction from level 5. Starting HP is configured below.")
 
@@ -1131,7 +768,7 @@ with tabs[0]:
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
         _progress=st.progress(0.,text="Simulating AA + abilities…")
         try:
-            _evaluator=BuildFightEvaluator(globals(),tier_champ,int(tier_level),tier_hp,tier_armor,tier_mr,mist=tier_mist,bonus_hp=max(0.,tier_hp-_natural),aa_reduction=float(_target.get("aa_reduction",0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
+            _evaluator=BuildFightEvaluator(engine_namespace(),tier_champ,int(tier_level),tier_hp,tier_armor,tier_mr,mist=tier_mist,bonus_hp=max(0.,tier_hp-_natural),aa_reduction=float(_target.get("aa_reduction",0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
             _search=search_builds(_evaluator,F,[x for x in TIER3 if x in B],progress=lambda value,text:_progress.progress(value,text=text))
             _replay_data=None
             _replay_error=None
@@ -1156,9 +793,9 @@ with tabs[0]:
         try:
             for _i,(_name,_profile) in enumerate(TARGET_PROFILES.items()):
                 if _name in _history:continue
-                _t=_target_profile_at_level(_profile,tier_level)
+                _t=target_profile_at_level(_profile,tier_level)
                 _natural={"Squishy • Jinx":_t['hp'],"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[_name]
-                _ev=BuildFightEvaluator(globals(),tier_champ,int(tier_level),float(_t['hp']),float(_t['armor']),float(_t['mr']),mist=tier_mist,bonus_hp=max(0.,_t['hp']-_natural),aa_reduction=float(_t.get('aa_reduction',0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
+                _ev=BuildFightEvaluator(engine_namespace(),tier_champ,int(tier_level),float(_t['hp']),float(_t['armor']),float(_t['mr']),mist=tier_mist,bonus_hp=max(0.,_t['hp']-_natural),aa_reduction=float(_t.get('aa_reduction',0)),base_mana=tier_mana if tier_mana else None,energized=tier_energized,yuntal_stacks=tier_yuntal_stacks,execs=tier_execs,dragon_stacks=tier_dragon)
                 _history[_name]=search_builds(_ev,F,[x for x in TIER3 if x in B],progress=lambda v,text,i=_i:_progress.progress((i+v)/3,text=text))
         except (ValueError,LookupError,StopIteration) as _err:st.error(f"Comparison could not finish: {_err}")
         finally:_progress.empty()
@@ -1243,7 +880,7 @@ with tabs[1]:
     with _target_panel,st.container(border=True):
         _setup_heading("02","FIXED BENCHMARK","Target Profile")
         build_target_profile=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="build_target_profile",label_visibility="collapsed")
-        _build_target=_benchmark_target(build_target_profile,level)
+        _build_target=benchmark_target(build_target_profile,level)
         hp=float(_build_target["hp"]); armor=float(_build_target["armor"]); mr=float(_build_target["mr"])
         bonus_hp=float(_build_target["bonus_hp"])
         target_aa_reduction=float(_build_target.get("aa_reduction",0))
@@ -1582,7 +1219,7 @@ with tabs[1]:
                 if _fight_key=="First Strike":st.caption("First Strike applies to the explicitly ready initial 3-second engagement; rearming and gold are not simulated.")
                 def _run_candidate(_priority=("E","W","Q"),_use_e=True,_weapon="minigun"):
                     _events=[]
-                    _kernel=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),(_fight_base_mana or 0)+_persistent_runes["mana"],spell,energized,False,execs,False,boot,initial_flurry=yt_flurry)
+                    _kernel=combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),(_fight_base_mana or 0)+_persistent_runes["mana"],spell,energized,False,execs,False,boot,initial_flurry=yt_flurry)
                     next(_kernel)
                     _alacrity=(.21 if alacrity_full else .03) if "Legend: Alacrity" in selected_sub_runes else 0.
                     _fight_last_hit={"yuntal_until":6. if yt_flurry else -1.}
@@ -1693,7 +1330,7 @@ with tabs[1]:
         chain_hits_left=2 if chain_marked else 0
         scorch_pending=(1.0 if ("Scorch" in selected_sub_runes and scorch_ability_hit) else None)
         scorch_ready_at=0.0
-        _engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot,initial_flurry=yt_flurry)
+        _engine=combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot,initial_flurry=yt_flurry)
         next(_engine)
         while hp2>0 and attacks<500:
             attacks+=1
@@ -1823,7 +1460,7 @@ with tabs[1]:
 
         # A fresh first-hit scenario uses the same item kernel, with a legal forced crit.
         maxcrit=crit>0
-        _max_engine=_combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot)
+        _max_engine=combat_hits(champ,level,hp,armor,mr,build,F,mist,bonus_hp,dist,target_aa_reduction,round(yt_bonus_crit/.002),_resolved_mana+_persistent_runes["mana"],spell,energized,ult,execs,False,boot)
         next(_max_engine)
         _max=_max_engine.send({"hp":hp,"time":0.,"bonus_ad":rune_bonus_ad,"crit":1. if maxcrit else 0.})
         max_ea=_max["armor"]; max_em=_max["mr"]; max_hit=_max["damage"]
@@ -1926,7 +1563,7 @@ with tabs[2]:
     with _iv_target,st.container(border=True):
         _setup_heading("02","FIXED BENCHMARK","Target Profile")
         iv_target_profile=st.radio("Target Profile",list(TARGET_PROFILES),horizontal=True,key="iv_target_profile",label_visibility="collapsed")
-        _iv_benchmark=_benchmark_target(iv_target_profile,iv_level)
+        _iv_benchmark=benchmark_target(iv_target_profile,iv_level)
         iv_hp=float(_iv_benchmark["hp"]); iv_armor=float(_iv_benchmark["armor"]); iv_mr=float(_iv_benchmark["mr"])
         iv_bonus_hp=float(_iv_benchmark["bonus_hp"]); iv_reduction=float(_iv_benchmark.get("aa_reduction",0))
         _target_readout(iv_hp,iv_armor,iv_mr,iv_reduction)
@@ -2109,7 +1746,7 @@ with tabs[3]:
         if _bi1==_bi2:
             st.warning("Choose two different items.")
         else:
-            _bp=_target_profile_at_level(TARGET_PROFILES[_btarget],_blvl)
+            _bp=target_profile_at_level(TARGET_PROFILES[_btarget],_blvl)
             _bhp=float(_bp["hp"]); _bar=float(_bp["armor"]); _bmr=float(_bp["mr"]); _bred=float(_bp.get("aa_reduction",0))
             _bnatural={"Squishy • Jinx":_bhp,"Bruiser • Darius":660+148*gu(_blvl),"Tank • Ornn":690+132*gu(_blvl)}[_btarget]
             _bbonus=max(0.0,_bhp-float(_bnatural))
@@ -2139,7 +1776,7 @@ with tabs[3]:
         _achamp=_ac1.selectbox("Attacker",list(C),index=list(C).index("Jinx") if "Jinx" in C else 0,key="item_audit_champ")
         _alvl=_ac2.slider("Level",1,15,15,key="item_audit_level")
         _atarget=_ac3.selectbox("Target",list(TARGET_PROFILES),index=list(TARGET_PROFILES).index("Tank • Ornn"),key="item_audit_target")
-        _aprof=_target_profile_at_level(TARGET_PROFILES[_atarget],_alvl)
+        _aprof=target_profile_at_level(TARGET_PROFILES[_atarget],_alvl)
         _afull=float(_aprof["hp"]); _aar=float(_aprof["armor"]); _amr=float(_aprof["mr"]); _ared=float(_aprof.get("aa_reduction",0))
         _anatural={"Squishy • Jinx":_afull,"Bruiser • Darius":660+148*gu(_alvl),"Tank • Ornn":690+132*gu(_alvl)}[_atarget]
         _abonus=max(0.0,_afull-float(_anatural))

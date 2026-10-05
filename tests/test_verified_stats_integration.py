@@ -3,7 +3,7 @@ import math
 import unittest
 from champion_database import level_stats, CHAMPION_DATABASE
 from build_fight_optimizer import BuildFightEvaluator
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 
 class VerifiedStatsIntegration(unittest.TestCase):
     @classmethod

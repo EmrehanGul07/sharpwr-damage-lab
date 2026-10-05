@@ -4,16 +4,12 @@ Usage: python scripts/verify_core_rows.py REPO OUTPUT_JSON
 Run for baseline and candidate repositories, then compare rows exactly.
 This does not rerun the bounded search or establish global optimality.
 """
-import sys,json,ast
+import sys,json
 from pathlib import Path
 root=Path(sys.argv[1]);sys.path[:0]=[str(root),str(root/'scripts')]
-from audit_combat_matrix import namespace
+from sharpwr import engine_namespace,profiles_by_target
 from build_fight_optimizer import BuildFightEvaluator
-ns=namespace();profiles={}
-for node in ast.parse((root/'streamlit_app.py').read_text()).body:
- if isinstance(node,ast.Assign):
-  for var in node.targets:
-   if isinstance(var,ast.Name) and var.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):profiles[var.id.split('_')[0].lower()]=ast.literal_eval(node.value)
+ns=engine_namespace();profiles=profiles_by_target()
 def target_at(profile,level):
  if level in profile:return profile[level]
  lo=max(l for l in profile if l<level);hi=min(l for l in profile if l>level);u=(level-lo)/(hi-lo)

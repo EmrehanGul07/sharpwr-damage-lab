@@ -1,5 +1,5 @@
 import unittest,json
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from build_fight_optimizer import BuildFightEvaluator
 from combat_replay import replay_payload,replay_html
 class CombatReplay(unittest.TestCase):

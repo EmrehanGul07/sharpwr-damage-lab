@@ -1,12 +1,12 @@
 import math
 import unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 
 class UserItemCadence(unittest.TestCase):
  @classmethod
  def setUpClass(cls):cls.ns=engine_namespace()
  def hits(self,item,physical,count):
-  k=self.ns['_combat_hits']('Smolder',15,10000,100,100,(item if isinstance(item,list) else [item]),self.ns['F']);next(k);hp=10000;out=[]
+  k=self.ns['combat_hits']('Smolder',15,10000,100,100,(item if isinstance(item,list) else [item]),self.ns['F']);next(k);hp=10000;out=[]
   for i in range(count):
    hit=k.send({'hp':hp,'time':i,'event_driven':True,'on_hit_health_multiplier':1.065,'attack_physical':physical,'critical_attack_physical':physical*2})
    hit['rune_damage']=hit['damage']*1.065;hp-=hit['rune_damage'];out.append(hit)
@@ -53,35 +53,35 @@ class UserItemCadence(unittest.TestCase):
   self.assertAlmostEqual(phantom,243,delta=1.)
   self.assertLess(events[1]['physical_proc_raw'],events[0]['physical_proc_raw'])
  def test_samira_close_range_retains_ranged_item_class(self):
-  k=self.ns['_combat_hits']('Samira',15,10000,100,100,['Blade of the Ruined King'],self.ns['F']);next(k)
+  k=self.ns['combat_hits']('Samira',15,10000,100,100,['Blade of the Ruined King'],self.ns['F']);next(k)
   h=k.send({'hp':10000,'time':0,'melee':True,'attack_physical':0})
   self.assertEqual(h['physical'],600.)
 
  def test_ezreal_q_advances_kraken_in_both_mixed_orders(self):
   for actions in [('AA','AA','Q'),('Q','AA','AA')]:
-   kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Kraken Slayer'],self.ns['F']);next(kernel)
+   kernel=self.ns['combat_hits']('Ezreal',15,10000,100,100,['Kraken Slayer'],self.ns['F']);next(kernel)
    out=[]
    for i,action in enumerate(actions):
     out.append(kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':action=='Q','attack_physical':0}))
    self.assertEqual([i for i,h in enumerate(out,1) if 'Kraken' in h['notes']],[3])
  def test_ezreal_six_qs_trigger_phantom(self):
-  kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,["Guinsoo's Rageblade"],self.ns['F']);next(kernel)
+  kernel=self.ns['combat_hits']('Ezreal',15,10000,100,100,["Guinsoo's Rageblade"],self.ns['F']);next(kernel)
   out=[kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':True,'attack_physical':0}) for i in range(6)]
   self.assertEqual([i for i,h in enumerate(out,1) if 'Phantom Hit' in h['notes']],[6])
   self.assertEqual([h['magic'] for h in out],[30,30,30,30,30,60])
  def test_ezreal_q_terminus_stack_progression(self):
-  kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Terminus'],self.ns['F']);next(kernel)
+  kernel=self.ns['combat_hits']('Ezreal',15,10000,100,100,['Terminus'],self.ns['F']);next(kernel)
   out=[kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':True,'attack_physical':0}) for i in range(8)]
   self.assertEqual([(h['light'],h['dark']) for h in out],[(1,0),(1,1),(2,1),(2,2),(3,2),(3,3),(3,3),(3,3)])
 
  def test_muramana_does_not_repeat_shock_on_phantom(self):
-  kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Muramana',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
+  kernel=self.ns['combat_hits']('Ezreal',15,10000,100,100,['Muramana',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
   out=[kernel.send({'hp':10000,'time':i,'event_driven':True,'max_mana':1000,'attack_physical':0}) for i in range(6)]
   self.assertEqual([h['physical'] for h in out],[15.]*6)
   self.assertEqual(out[5]['on_hit_events'][1]['physical_proc_raw'],0.)
  def test_skill_phantom_botrk_includes_primary_skill_damage(self):
   def run(extra):
-   kernel=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Blade of the Ruined King',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
+   kernel=self.ns['combat_hits']('Ezreal',15,10000,100,100,['Blade of the Ruined King',"Guinsoo's Rageblade"],self.ns['F']);next(kernel)
    for i in range(6):h=kernel.send({'hp':10000,'time':i,'event_driven':True,'skill_on_hit':True,'attack_physical':0,'primary_external_damage':extra})
    return h['on_hit_events'][1]['physical_proc_raw']
   self.assertAlmostEqual(run(0)-run(200),12.)

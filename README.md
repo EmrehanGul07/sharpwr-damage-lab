@@ -1,6 +1,6 @@
-# SharpWR Damage Lab — V7.0.3
+# SharpWR Damage Lab — V7.0.4
 
-Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
+Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`; the UI-independent damage engine lives in `sharpwr/`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
 The model covers a stationary target that does not attack back. Authorized PC timing proxies and unresolved WR rules remain explicit assumptions. Automated tests check the implemented model; they do not establish real Wild Rift parity.
 
@@ -23,6 +23,7 @@ python -m unittest discover -s tests
 npm ci --ignore-scripts
 for test in tests/*.cjs; do node "$test" || exit 1; done
 python scripts/audit_combat_matrix.py
+black --check .   # engine package formatting; pip install black
 ```
 
 The integrity audit writes `data/combat-audit-current.json` and `data/combat-audit-traces-current.json`; historical audits remain unchanged. It exits with failure when any scenario fails.

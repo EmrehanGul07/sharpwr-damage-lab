@@ -1,18 +1,12 @@
 """Reproducible engine integrity audit, not build optimization or gameplay proof."""
-import ast,json,math,sys,time
+import json,math,sys,time
 from collections import Counter,defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from build_fight_optimizer import BuildFightEvaluator,legal
 from marksman_kits import PRIORITIES
 from champion_database import level_stats
-
-def namespace():
- ns={};functions={'stats','gu','dct','rm','lvl_scale','_combat_hits','_validate_build','_effective_resistance','sim','sim_build','_target_profile_at_level','_benchmark_target'}
- data={'C','F','B','P','K','SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE','TARGET_PROFILES'}
- for node in ast.parse((ROOT/'streamlit_app.py').read_text()).body:
-  if isinstance(node,ast.FunctionDef) and node.name in functions or isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id in data for t in node.targets):exec(compile(ast.Module(body=[node],type_ignores=[]),'audit-namespace','exec'),ns)
- return ns
+from sharpwr import engine_namespace
 
 PROFILES={
  'no_items':([],None),
@@ -75,12 +69,12 @@ def check(result,maxhp,name):
  return sorted(set(errors))
 
 def run(output=None, trace_output=None):
- ns=namespace();rows=[];warnings=defaultdict(set);started=time.perf_counter();simulations=0;examples={}
+ ns=engine_namespace();rows=[];warnings=defaultdict(set);started=time.perf_counter();simulations=0;examples={}
  for name in PRIORITIES:
   count=0
   for level in (1,15):
    for target_name in ns['TARGET_PROFILES']:
-    target=ns['_benchmark_target'](target_name,level)
+    target=ns['benchmark_target'](target_name,level)
     e=BuildFightEvaluator(ns,name,level,target['hp'],target['armor'],target['mr'],bonus_hp=target['bonus_hp'],aa_reduction=target.get('aa_reduction',0),retain_traces=True)
     cases=dict(PROFILES)
     if level==15:cases.update({'single:'+item:([item],None) for item in ns['F']})

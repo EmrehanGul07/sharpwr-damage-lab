@@ -1,6 +1,6 @@
 """Replay actual item kernels through every new champion adapter."""
 import math,unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from test_all_marksman_fights import PENDING
 from champion_database import level_stats
 from fight_engine import replay_samira,champion_ranks,FightEvent
@@ -12,7 +12,7 @@ class MarksmanItems(unittest.TestCase):
         ns=self.ns;s=ns['stats'](name,15);core=level_stats(name,15)
         total={k:sum(ns['dct'](ns['F'][item])[k] for item in build) for k in ns['K']}
         mana=(core.get('mana') or 1000)+total['mana'];last={}
-        kernel=ns['_combat_hits'](name,15,10000,100,100,build,ns['F'],base_mana=mana-total['mana'],dist=550)
+        kernel=ns['combat_hits'](name,15,10000,100,100,build,ns['F'],base_mana=mana-total['mana'],dist=550)
         next(kernel)
         def hit(state):
             out=kernel.send(state);last.update(out);return out

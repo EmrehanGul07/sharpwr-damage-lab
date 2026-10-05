@@ -1,12 +1,12 @@
 import unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from fight_engine import replay_samira,FightEvent
 
 class SpellbladeCasts(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.ns=engine_namespace()
     def kernel(self,item,spell=False):
-        k=self.ns['_combat_hits']('Ezreal',15,10000,100,100,[item],self.ns['F'],spell=spell)
+        k=self.ns['combat_hits']('Ezreal',15,10000,100,100,[item],self.ns['F'],spell=spell)
         next(k);return k
     def test_precaster_does_not_rearm_from_cooldown(self):
         for item,label in [('Trinity Force','Trinity'),('Essence Reaver','ER'),('Iceborn Gauntlet','Iceborn')]:
@@ -23,7 +23,7 @@ class SpellbladeCasts(unittest.TestCase):
         self.assertNotIn('ER',k.send({'hp':10000,'time':2,'event_driven':True,'spell_cast_times':[1]})['notes'])
     def test_multiple_spellblade_items_are_rejected(self):
         with self.assertRaises(ValueError):
-            k=self.ns['_combat_hits']('Ezreal',15,10000,100,100,['Trinity Force','Essence Reaver'],self.ns['F']);next(k)
+            k=self.ns['combat_hits']('Ezreal',15,10000,100,100,['Trinity Force','Essence Reaver'],self.ns['F']);next(k)
     def test_successful_replay_casts_reach_item_kernel(self):
         k=self.kernel('Trinity Force');seen=[]
         def hit(state):

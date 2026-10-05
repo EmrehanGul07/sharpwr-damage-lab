@@ -2,7 +2,7 @@ import unittest
 from damage_classification import ability_profile,ability_magnification,event_profile,magnification,registry
 from marksman_damage_components import damage_component
 from fight_engine import replay_samira,FightEvent
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 
 class DamageClassificationTests(unittest.TestCase):
     def test_inventory_and_unknown_are_explicit(self):
@@ -26,7 +26,7 @@ class DamageClassificationTests(unittest.TestCase):
         raw=damage_component('Samira','E',1,ad=100,base_ad=60)
         self.assertEqual(raw.instances('Samira','E')[0]['tags'],['ActiveSpell','AOE'])
     def test_hexoptics_excludes_champion_extra_and_item_onhit(self):
-        ns=engine_namespace();k=ns['_combat_hits']('Kalista',15,10000,0,0,['Hexoptics C44',"Wit's End"],ns['F']);next(k)
+        ns=engine_namespace();k=ns['combat_hits']('Kalista',15,10000,0,0,['Hexoptics C44',"Wit's End"],ns['F']);next(k)
         hit=k.send({'hp':10000,'time':0,'distance':550,'attack_physical':200,'nonbasic_attack_physical':50})
         self.assertAlmostEqual(hit['physical'],215)
         self.assertAlmostEqual(hit['magic'],40)
@@ -38,7 +38,7 @@ class DamageClassificationTests(unittest.TestCase):
     def test_user_verified_ezreal_q_does_not_magnify_carried_wits_end(self):
         ns=engine_namespace()
         def run(distance,items):
-            kernel=ns['_combat_hits']('Ezreal',15,10000,100,100,items,ns['F']);next(kernel)
+            kernel=ns['combat_hits']('Ezreal',15,10000,100,100,items,ns['F']);next(kernel)
             def onhit(state):return kernel.send(state)
             r=replay_samira([FightEvent(0,'Q')],champion='Ezreal',level=15,ad=178,base_ad=123,ap=0,attack_speed=.99,crit_chance=.25,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,distance=distance,attack_range=550,movement_speed=0,max_mana=2000,aa_hit=onhit,hexoptics=True,sub_runes=('Cut Down',),automatic_until=2)
             return r.total_damage

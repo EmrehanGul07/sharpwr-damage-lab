@@ -8,14 +8,14 @@ import argparse,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'tests'),str(ROOT)]
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from marksman_damage_components import damage_component,xayah_feather_multiplier
 
 
 def predictions(ad=None,ap=None,armor=100,mr=100,hp=10000):
     ns=engine_namespace();champ='Ezreal';level=15
     def sequence(items,distance=550,count=18,health_fraction=1):
-        kernel=ns['_combat_hits'](champ,level,hp,armor,mr,items,ns['F'],dist=distance,active_ready=False)
+        kernel=ns['combat_hits'](champ,level,hp,armor,mr,items,ns['F'],dist=distance,active_ready=False)
         next(kernel);out=[]
         native_ad=ns['stats'](champ,level)['ad']+sum(ns['dct'](ns['F'][x])['ad'] for x in items)
         for i in range(count):
