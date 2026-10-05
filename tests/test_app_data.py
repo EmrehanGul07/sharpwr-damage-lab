@@ -6,7 +6,12 @@ from pathlib import Path
 from unittest.mock import patch
 
 from sharpwr import B, F, P
-from sharpwr.app_data import build_database, champion_level_stats, render_database_json
+from sharpwr.app_data import (
+    ability_icon_files,
+    build_database,
+    champion_level_stats,
+    render_database_json,
+)
 from sharpwr.champion_database import CHAMPION_DATABASE
 from sharpwr.core_items import BUDGETS, EXCLUDED, core_leaders, core_record
 from sharpwr.golden import build_stats_golden, render_golden_json
@@ -32,6 +37,32 @@ class AppDataTests(unittest.TestCase):
             committed == render_golden_json(build_stats_golden()),
             "Run: python scripts/export_app_data.py",
         )
+
+    def test_committed_ability_icons_are_current(self):
+        files = ability_icon_files()
+        folder = ROOT / "assets" / "riot" / "abilities"
+        self.assertEqual(
+            sorted(f"assets/riot/abilities/{path.name}" for path in folder.iterdir()),
+            sorted(files),
+            "Run: python scripts/export_app_data.py",
+        )
+        for name, data in files.items():
+            self.assertTrue((ROOT / name).read_bytes() == data, name)
+
+    def test_every_champion_has_five_described_abilities(self):
+        for champion in self.data["champions"]:
+            abilities = champion["abilities"]
+            self.assertEqual([a["slot"] for a in abilities], ["P", "Q", "W", "E", "R"])
+            for ability in abilities:
+                where = (champion["name"], ability["slot"])
+                self.assertTrue(ability["name"] and ability["description"], where)
+                self.assertTrue((ROOT / ability["icon"]).is_file(), where)
+                ranks = {"P": None, "R": 3}.get(ability["slot"], 4)
+                for values in (ability["cooldown"], ability["mana"]):
+                    if ranks is None:
+                        self.assertIsNone(values, where)
+                    elif values is not None:
+                        self.assertEqual(len(values), ranks, where)
 
     def test_build_inputs_for_the_app(self):
         from sharpwr.catalog import C

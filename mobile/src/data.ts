@@ -42,6 +42,20 @@ export interface ChampionAttack {
   as_growth: number;
 }
 
+export type AbilitySlot = "P" | "Q" | "W" | "E" | "R";
+
+export interface Ability {
+  slot: AbilitySlot;
+  name: string;
+  icon: string | null;
+  /** SharpWR's English summary (data/ability-descriptions.json). */
+  description: string;
+  /** Per rank; null when unknown or none (passives). */
+  cooldown: number[] | null;
+  mana: number[] | null;
+  range: number | null;
+}
+
 export interface Champion {
   name: string;
   icon: string | null;
@@ -54,6 +68,8 @@ export interface Champion {
   source_status: string;
   wiki_source_url: string | null;
   wiki_last_change_patch: string | null;
+  /** Passive, Q, W, E, R. Optional: data exported before app version 0.5.0 lacks it. */
+  abilities?: Ability[];
 }
 
 export type ItemCategory = "completed" | "component" | "boots";

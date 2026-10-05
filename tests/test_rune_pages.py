@@ -6,15 +6,12 @@ from sharpwr.champion_database import CHAMPION_DATABASE
 from sharpwr.rune_pages import DEFAULT_PAGES, default_loadout, page_problems, rune_loadout, stack_progress
 from sharpwr.rune_runtime import DamageProcs, FleetFootwork, PhaseRush
 
-# Pages the editor has not finished yet; they still load, with the missing choice left out.
-INCOMPLETE = {"Caitlyn", "Corki"}
-
 
 class RunePageTests(unittest.TestCase):
     def test_every_champion_has_a_legal_default_page(self):
         self.assertEqual(set(DEFAULT_PAGES), set(CHAMPION_DATABASE))
-        broken = {name for name, page in DEFAULT_PAGES.items() if page_problems(page)}
-        self.assertLessEqual(broken, INCOMPLETE, {n: page_problems(DEFAULT_PAGES[n]) for n in broken})
+        problems = {name: page_problems(page) for name, page in DEFAULT_PAGES.items()}
+        self.assertEqual({name: p for name, p in problems.items() if p}, {})
 
     def test_every_default_rune_has_a_fight_effect_or_none_by_design(self):
         for name in CHAMPION_DATABASE:

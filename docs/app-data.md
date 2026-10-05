@@ -34,6 +34,7 @@ python scripts/export_app_data.py
 | `stats` | Base values and per-level growth as stored, including timing fields. `null` means unknown; never substitute 0. |
 | `levels` | `"1"`–`"15"` → stats before items and runes: `attack_damage`, `attack_speed`, `hp`, `mana`, `hp_regen_per_5s`, `mana_regen_per_5s`, `armor`, `mr`, `movement_speed`, `attack_range`. Identical to the web app's champion card (Senna without Mist stacks). |
 | `source_status`, `wiki_source_url`, `wiki_last_change_patch` | Provenance. `manual_observed_levels_partial` marks Yunara's manually recorded levels. |
+| `abilities` | Passive, Q, W, E and R, in that order (since app 0.5.0). Each: `slot` (`P`, `Q`, `W`, `E`, `R`), `name`, `icon` (`assets/riot/abilities/`, decoded from `data/riot/marksman-skill-icons.json`), `description` (the editor's English summary in `data/ability-descriptions.json`), `cooldown` and `mana` per rank in seconds and mana (`null` when unknown or none, e.g. passives), `range` (`null` when unknown). Cooldown and mana come from `data/marksman-ability-catalogue.json`. |
 
 ## Item, component, boots
 

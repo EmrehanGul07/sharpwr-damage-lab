@@ -1,6 +1,6 @@
 # SharpWR Android app
 
-An English Wild Rift marksman Database for Android: champions with stats at every level, items, components, boots and runes, plus SharpWR's published item tier list, each champion's saved core-item results (core item, item ranking, Top 3 builds per level and target) and Build Lab, which calculates a build's stats on the phone. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
+An English Wild Rift marksman Database for Android: champions with stats at every level and their abilities (icon, cooldown and mana per rank, SharpWR's English summary), items, components, boots and runes, plus SharpWR's published item tier list, each champion's saved core-item results (core item, item ranking, Top 3 builds per level and target) and Build Lab, which calculates a build's stats on the phone. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
 
 ## Layout
 

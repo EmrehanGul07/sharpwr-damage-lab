@@ -240,7 +240,87 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kalista",
-   "wiki_last_change_patch": "V6.3e"
+   "wiki_last_change_patch": "V6.3e",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Martial Poise",
+     "icon": "assets/riot/abilities/Kalista-P.webp",
+     "description": "Moving during a basic attack makes Kalista dash a short distance once the spear is thrown; the dash grows with her boots. A started attack can't be cancelled. She chooses her Oathsworn ally at the start of the game.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Pierce",
+     "icon": "assets/riot/abilities/Kalista-Q.webp",
+     "description": "Throws a spear that deals 70/135/200/265 (+110% AD) physical damage. If it kills, the spear flies on and carries the target's Rend stacks to the next enemy. She can dash after casting.",
+     "cooldown": [
+      8.0,
+      7.5,
+      7.0,
+      6.5
+     ],
+     "mana": [
+      55.0,
+      60.0,
+      65.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Sentinel",
+     "icon": "assets/riot/abilities/Kalista-W.webp",
+     "description": "Passive: when Kalista and her Oathsworn (within 800 units) both hit the same target within 4 s, it takes 16/17/18/19% of its max health as bonus magic damage (once every 8 s per target). Active: sends a sentinel that patrols and reveals enemy champions for 4 s. Up to 2 charges, one every 45/40/35/30 s.",
+     "cooldown": [
+      8.0,
+      8.0,
+      8.0,
+      8.0
+     ],
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Rend",
+     "icon": "assets/riot/abilities/Kalista-E.webp",
+     "description": "Basic attacks and Pierce leave spears in the target for 4 s. Activate to rip them out: 30/45/60/75 (+70% AD) physical damage for the first spear and 12/22/32/42 (+36/43/50/57% AD) for each extra one, slowing by 15/25/35/45% for 2 s. A kill resets the cooldown and refunds 12/18/24/30 mana. Epic monsters take 50%.",
+     "cooldown": [
+      10.0,
+      9.0,
+      8.0,
+      7.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Fate's Call",
+     "icon": "assets/riot/abilities/Kalista-R.webp",
+     "description": "Pulls her Oathsworn ally into stasis for up to 4 s. The ally can then launch toward a location, knocking up enemies for 1/1.5/2 s.",
+     "cooldown": [
+      60.0,
+      55.0,
+      50.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Tristana",
@@ -469,7 +549,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Tristana",
-   "wiki_last_change_patch": "V7.0f"
+   "wiki_last_change_patch": "V7.0f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Draw a Bead",
+     "icon": "assets/riot/abilities/Tristana-P.webp",
+     "description": "Her basic attack, Explosive Charge and Buster Shot range grows by 10 per level.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Rapid Fire",
+     "icon": "assets/riot/abilities/Tristana-Q.webp",
+     "description": "Gains 60/80/100/120% attack speed for 7 s.",
+     "cooldown": [
+      17.0,
+      16.0,
+      15.0,
+      14.0
+     ],
+     "mana": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Rocket Jump",
+     "icon": "assets/riot/abilities/Tristana-W.webp",
+     "description": "Jumps to a location, dealing 80/120/160/200 (+80% bonus AD) (+50% AP) magic damage on landing and slowing by 50% for 2 s. The cooldown resets on a champion takedown or when a fully stacked Explosive Charge detonates on a champion.",
+     "cooldown": [
+      20.0,
+      18.0,
+      16.0,
+      14.0
+     ],
+     "mana": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Explosive Charge",
+     "icon": "assets/riot/abilities/Tristana-E.webp",
+     "description": "Passive: enemies she kills with basic attacks explode for 60/90/120/150 (+25% AP) magic damage. Active: plants a bomb that explodes after 4 s for 80/110/140/170 (+120% bonus AD) (+50% AP) physical damage, with crit chance and crit damage at 50% effectiveness. Each basic attack or ability hit adds 25% damage, up to 4 stacks; at 4 stacks it explodes at once. Larger area on turrets.",
+     "cooldown": [
+      16.0,
+      15.0,
+      14.0,
+      13.0
+     ],
+     "mana": [
+      55.0,
+      60.0,
+      65.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Buster Shot",
+     "icon": "assets/riot/abilities/Tristana-R.webp",
+     "description": "Fires a huge shell that deals 300/350/400 (+70% bonus AD) (+100% AP) magic damage and knocks the target back.",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Twitch",
@@ -698,7 +863,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Twitch",
-   "wiki_last_change_patch": "V6.2c"
+   "wiki_last_change_patch": "V6.2c",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Deadly Venom",
+     "icon": "assets/riot/abilities/Twitch-P.webp",
+     "description": "Basic attacks and Venom Cask poison enemies for 5 s, dealing true damage over time that grows with level (+3% AP per stack), up to 5 stacks. Monsters take 130%.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Ambush",
+     "icon": "assets/riot/abilities/Twitch-Q.webp",
+     "description": "Becomes camouflaged for 8/9/10/11 s with 10% movement speed (20% while unseen). Leaving camouflage grants 35/40/45/50% attack speed for 6 s. Attacking or using a damaging ability ends it. The cooldown resets when a poisoned champion dies.",
+     "cooldown": [
+      15.0,
+      15.0,
+      15.0,
+      15.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Venom Cask",
+     "icon": "assets/riot/abilities/Twitch-W.webp",
+     "description": "Throws a cask that adds a Deadly Venom stack and leaves a puddle for 3 s that adds another stack every second and slows by 30/35/40/45% (+6% per 100 AP). Attack speed shortens the cast time.",
+     "cooldown": [
+      12.0,
+      11.0,
+      10.0,
+      9.0
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Contaminate",
+     "icon": "assets/riot/abilities/Twitch-E.webp",
+     "description": "Deals damage to nearby poisoned enemies: 30/40/50/60 physical damage, plus 20/25/30/35 (+35% bonus AD) physical and 35% AP magic damage per Deadly Venom stack. Damage from fully stacked targets spreads to nearby enemies and gives them full stacks. Monsters take 80%.",
+     "cooldown": [
+      16.0,
+      15.0,
+      14.0,
+      13.0
+     ],
+     "mana": [
+      35.0,
+      45.0,
+      55.0,
+      65.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Spray and Pray",
+     "icon": "assets/riot/abilities/Twitch-R.webp",
+     "description": "Gains 225 attack range and 30/45/60 AD for 6 s. Basic attacks pierce, dealing 15% less to each next enemy (minimum 40%).",
+     "cooldown": [
+      75.0,
+      70.0,
+      65.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Draven",
@@ -927,7 +1177,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Draven",
-   "wiki_last_change_patch": "V6.1d"
+   "wiki_last_change_patch": "V6.1d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "League of Draven",
+     "icon": "assets/riot/abilities/Draven-P.webp",
+     "description": "Each unit killed and each Spinning Axe caught adds an Adoration stack. Killing a champion uses all stacks for 60 bonus gold plus 3 per stack. Dying loses half the stacks.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Spinning Axe",
+     "icon": "assets/riot/abilities/Draven-Q.webp",
+     "description": "His next basic attack within 6 s deals 45/50/55/60 (+90/100/110/120% bonus AD) bonus physical damage and bounces the axe up; catching it readies another. Holds up to 2 axes.",
+     "cooldown": [
+      10.0,
+      9.0,
+      8.0,
+      7.0
+     ],
+     "mana": [
+      45.0,
+      45.0,
+      45.0,
+      45.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Blood Rush",
+     "icon": "assets/riot/abilities/Draven-W.webp",
+     "description": "Gains 25/30/35/40% attack speed for 3 s and 50/55/60/65% movement speed that fades over 1.5 s. Catching a Spinning Axe resets the cooldown.",
+     "cooldown": [
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     "mana": [
+      40.0,
+      35.0,
+      30.0,
+      25.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Stand Aside",
+     "icon": "assets/riot/abilities/Draven-E.webp",
+     "description": "Throws his axes, dealing 75/120/165/210 (+50% bonus AD) physical damage, knocking enemies aside and slowing them by 25/30/35/40% for 2 s.",
+     "cooldown": [
+      15.0,
+      14.0,
+      13.0,
+      12.0
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Whirling Death",
+     "icon": "assets/riot/abilities/Draven-R.webp",
+     "description": "Throws two giant axes that deal 200/300/400 (+150% bonus AD) physical damage, 5% less for each enemy hit (minimum 50%). They return after hitting a champion, on recast or at the map edge, with full damage again. Champions with less health than Draven's Adoration stacks are executed.",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Kog'Maw",
@@ -1156,7 +1491,88 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kog'Maw",
-   "wiki_last_change_patch": "V6.3f"
+   "wiki_last_change_patch": "V6.3f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Icathian Surprise",
+     "icon": "assets/riot/abilities/KogMaw-P.webp",
+     "description": "After dying, Kog'Maw keeps moving for 4 s with movement speed rising from 10% to 50%, then explodes for true damage that grows with level.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Caustic Spittle",
+     "icon": "assets/riot/abilities/KogMaw-Q.webp",
+     "description": "Spits acid that deals 90/150/210/270 (+65% AP) magic damage and lowers the target's armor and magic resist by 20/24/28/32% for 4 s.",
+     "cooldown": [
+      6.0,
+      6.0,
+      6.0,
+      6.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": 1200.0
+    },
+    {
+     "slot": "W",
+     "name": "Bio-Arcane Barrage",
+     "icon": "assets/riot/abilities/KogMaw-W.webp",
+     "description": "For 8 s, gains 90/120/150/180 attack range and his basic attacks deal bonus magic damage equal to 1.5/2.5/3.5/4.5% (+1% per 100 AP) of the target's max health (at most 100 against minions and monsters).",
+     "cooldown": [
+      16.0,
+      16.0,
+      16.0,
+      16.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Void Ooze",
+     "icon": "assets/riot/abilities/KogMaw-E.webp",
+     "description": "Spits ooze that deals 80/130/180/230 (+55% AP) magic damage and leaves a trail for 3.5 s that slows by 45/50/55/60%.",
+     "cooldown": [
+      11.0,
+      11.0,
+      11.0,
+      11.0
+     ],
+     "mana": [
+      40.0,
+      50.0,
+      60.0,
+      70.0
+     ],
+     "range": 1360.0
+    },
+    {
+     "slot": "R",
+     "name": "Living Artillery",
+     "icon": "assets/riot/abilities/KogMaw-R.webp",
+     "description": "Passive: 10/20/30% attack speed. Active: an artillery strike that deals 80/120/160 (+75% bonus AD) (+25% AP) magic damage, up to 50% more against wounded targets; below 40% health it deals 160/240/320 (+150% bonus AD) (+50% AP) instead. Each cast within 8 s of the last costs 50 more mana (up to 500). Range grows with rank.",
+     "cooldown": [
+      2.0,
+      1.5,
+      1.0
+     ],
+     "mana": null,
+     "range": null
+    }
+   ]
   },
   {
    "name": "Vayne",
@@ -1385,7 +1801,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Vayne",
-   "wiki_last_change_patch": "7.0a"
+   "wiki_last_change_patch": "7.0a",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Night Hunter",
+     "icon": "assets/riot/abilities/Vayne-P.webp",
+     "description": "Gains bonus movement speed while moving toward enemy champions (more with level), and 70 during Final Hour.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Tumble",
+     "icon": "assets/riot/abilities/Vayne-Q.webp",
+     "description": "Rolls a short distance; her next basic attack deals 50/60/70/80% AD bonus physical damage. During Final Hour, Tumble also makes her invisible for 1 s. It can't cross walls.",
+     "cooldown": [
+      5.0,
+      4.0,
+      3.0,
+      2.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Silver Bolts",
+     "icon": "assets/riot/abilities/Vayne-W.webp",
+     "description": "Passive: every third hit in a row on the same target, by basic attack or ability, deals true damage equal to the greater of 6/7/8/9% of its max health or 50/65/80/95 (at most 200 against monsters). Active: gains 10/15/20/25% attack speed and 10% omnivamp for 3 s.",
+     "cooldown": [
+      18.0,
+      17.0,
+      16.0,
+      15.0
+     ],
+     "mana": [
+      45.0,
+      45.0,
+      45.0,
+      45.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Condemn",
+     "icon": "assets/riot/abilities/Vayne-E.webp",
+     "description": "Fires a bolt that deals 50/80/110/140 (+55% bonus AD) physical damage and knocks the target back. If it hits a wall, it deals 105/145/185/225 (+75% bonus AD) more physical damage and stuns for 1.5 s.",
+     "cooldown": [
+      21.0,
+      18.0,
+      15.0,
+      12.0
+     ],
+     "mana": [
+      90.0,
+      90.0,
+      90.0,
+      90.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Final Hour",
+     "icon": "assets/riot/abilities/Vayne-R.webp",
+     "description": "Gains 30/40/50 AD for 8/10/12 s. When a champion she damaged dies within 3 s, the duration extends by 4 s (up to 8 s).",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Ashe",
@@ -1614,7 +2115,82 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ashe",
-   "wiki_last_change_patch": "V7.0c"
+   "wiki_last_change_patch": "V7.0c",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Frost Shot",
+     "icon": "assets/riot/abilities/Ashe-P.webp",
+     "description": "Basic attacks and damaging abilities slow by 20% for 2 s. Critical strikes slow by 40% (decaying) instead of dealing extra damage; her basic attacks gain bonus damage from crit chance and crit damage instead.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Ranger's Focus",
+     "icon": "assets/riot/abilities/Ashe-Q.webp",
+     "description": "Basic attacks build Focus (lasts 4 s). At 4 stacks, activate to gain 20/30/40/50% attack speed for 6 s while her basic attacks fire a flurry dealing 115/120/125/130% damage.",
+     "cooldown": null,
+     "mana": [
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Volley",
+     "icon": "assets/riot/abilities/Ashe-W.webp",
+     "description": "Fires 5/7/9/11 arrows in a cone, dealing 70/110/150/190 (+100% bonus AD) physical damage. Each enemy takes damage from one arrow only. Applies Frost Shot's critical slow.",
+     "cooldown": [
+      15.0,
+      12.0,
+      9.0,
+      6.0
+     ],
+     "mana": [
+      65.0,
+      60.0,
+      55.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Hawkshot",
+     "icon": "assets/riot/abilities/Ashe-E.webp",
+     "description": "Sends a hawk spirit that reveals its path. It reveals the area where it lands for 5 s, and units caught in the first burst stay revealed for 5 s. Deals no damage.",
+     "cooldown": [
+      45.0,
+      40.0,
+      35.0,
+      30.0
+     ],
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Enchanted Crystal Arrow",
+     "icon": "assets/riot/abilities/Ashe-R.webp",
+     "description": "Fires a giant arrow that deals 200/350/500 (+40% AP) magic damage to the first champion hit and stuns it for 1.5-3.5 s (longer the farther it flew). Nearby enemies take damage too. Recast to steer the arrow.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Varus",
@@ -1843,7 +2419,87 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Varus",
-   "wiki_last_change_patch": "V6.2e"
+   "wiki_last_change_patch": "V6.2e",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Living Vengeance",
+     "icon": "assets/riot/abilities/Varus-P.png",
+     "description": "A champion takedown grants 55% attack speed for 5 s (it can exceed the cap), plus bonus AD and AP based on his bonus attack speed. Other takedowns grant 20%.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Piercing Arrow",
+     "icon": "assets/riot/abilities/Varus-Q.png",
+     "description": "Charge up, then fire an arrow that deals 80/140/200/260 up to 120/210/300/390 physical damage (+110-165% bonus AD at rank 1), more with longer charge. Charging extends the range and slows Varus by 20%. Each enemy hit lowers the damage by 15% (minimum 33%).",
+     "cooldown": [
+      15.0,
+      14.0,
+      13.0,
+      12.0
+     ],
+     "mana": [
+      75.0,
+      80.0,
+      85.0,
+      90.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Blighted Quiver",
+     "icon": "assets/riot/abilities/Varus-W.png",
+     "description": "Passive: basic attacks deal 15/25/35/45 (+35% AP) bonus magic damage and apply Blight (6 s, up to 3 stacks). His other abilities burst the stacks for 3/3.5/4/4.5% (+1.2% per 100 AP) of the target's max health as magic damage each; on champions and epic monsters this lowers his basic ability cooldowns by 13% per stack. Active: his next Piercing Arrow deals bonus magic damage based on the target's missing health, more with charge.",
+     "cooldown": [
+      25.0,
+      25.0,
+      25.0,
+      25.0
+     ],
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Hail of Arrows",
+     "icon": "assets/riot/abilities/Varus-E.png",
+     "description": "Rains arrows that deal 70/115/160/205 (+90% bonus AD) physical damage. The area lasts 4 s, slowing by 25/30/35/40% and applying 40% Grievous Wounds.",
+     "cooldown": [
+      13.0,
+      12.0,
+      11.0,
+      10.0
+     ],
+     "mana": [
+      80.0,
+      80.0,
+      80.0,
+      80.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Chain of Corruption",
+     "icon": "assets/riot/abilities/Varus-R.png",
+     "description": "Fires a tendril that deals 150/250/350 (+80% AP) magic damage and roots the first champion hit for 2 s. The corruption spreads to nearby champions; rooted enemies gain 3 Blight stacks over 1.5 s.",
+     "cooldown": [
+      75.0,
+      65.0,
+      55.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Xayah",
@@ -2072,7 +2728,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Xayah",
-   "wiki_last_change_patch": "V7.0d"
+   "wiki_last_change_patch": "V7.0d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Clean Cuts",
+     "icon": "assets/riot/abilities/Xayah-P.webp",
+     "description": "After using an ability, her next 3 basic attacks pierce and leave feathers on the ground (up to 5 stored).",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Double Daggers",
+     "icon": "assets/riot/abilities/Xayah-Q.webp",
+     "description": "Throws two daggers, each dealing 50/75/100/125 (+50% bonus AD) physical damage; enemies after the first take 50%.",
+     "cooldown": [
+      10.0,
+      9.0,
+      8.0,
+      7.0
+     ],
+     "mana": [
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ],
+     "range": 1000.0
+    },
+    {
+     "slot": "W",
+     "name": "Deadly Plumage",
+     "icon": "assets/riot/abilities/Xayah-W.webp",
+     "description": "Gains 40/45/50/55% attack speed for 4 s, and her basic attacks deal 25% more damage. Hitting a champion grants 30% movement speed for 1.5 s. A nearby Rakan gets the buff too.",
+     "cooldown": [
+      17.0,
+      16.0,
+      15.0,
+      14.0
+     ],
+     "mana": [
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Bladecaller",
+     "icon": "assets/riot/abilities/Xayah-E.webp",
+     "description": "Calls her feathers back; each deals 70/80/90/100 (+50% bonus AD) physical damage, with crit chance and crit damage at 50% effectiveness. Enemies hit by 3 feathers are rooted for 1.25 s. Minions take 50%.",
+     "cooldown": [
+      11.0,
+      10.0,
+      9.0,
+      8.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Featherstorm",
+     "icon": "assets/riot/abilities/Xayah-R.webp",
+     "description": "Leaps into the air, untargetable but able to move, then throws a fan of daggers that deals 150/250/350 (+100% bonus AD) physical damage and leaves a line of feathers.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": 1000.0
+    }
+   ]
   },
   {
    "name": "Samira",
@@ -2301,7 +3042,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira",
-   "wiki_last_change_patch": "V6.1d"
+   "wiki_last_change_patch": "V6.1d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Daredevil Impulse",
+     "icon": "assets/riot/abilities/Samira-P.webp",
+     "description": "Hitting champions with a different attack or ability than the last raises her Style from E to S (6 grades), each giving 3% movement speed. Melee-range basic attacks and abilities deal bonus magic damage that grows with the target's missing health. Basic attacks on immobilized enemies dash her to them and keep airborne targets up for at least 0.5 s.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Flair",
+     "icon": "assets/riot/abilities/Samira-Q.webp",
+     "description": "Fires a shot, or slashes in a cone at melee range, dealing 15/20/25/30 (+125% AD) physical damage; critical strikes deal 50% more. Cast during Wild Rush to hit every enemy along the path.",
+     "cooldown": [
+      6.5,
+      5.0,
+      3.5,
+      2.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Blade Whirl",
+     "icon": "assets/riot/abilities/Samira-W.webp",
+     "description": "Spins for 0.75 s, hitting nearby enemies twice for 20/40/60/80 (+50% bonus AD) physical damage each and destroying enemy missiles.",
+     "cooldown": [
+      22.0,
+      20.0,
+      18.0,
+      16.0
+     ],
+     "mana": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Wild Rush",
+     "icon": "assets/riot/abilities/Samira-E.webp",
+     "description": "Dashes through an enemy or structure, dealing 45/60/75/90 (+20% bonus AD) magic damage, and gains 25/30/35/40% attack speed for 3 s. Takedowns reset the cooldown. Tap Flair mid-dash to cast it.",
+     "cooldown": [
+      20.0,
+      17.0,
+      14.0,
+      11.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Inferno Trigger",
+     "icon": "assets/riot/abilities/Samira-R.webp",
+     "description": "Usable only at S Style. Fires 10 shots over about 2.2 s at up to 5 nearby enemies, each dealing 20/40/60 (+50% AD) physical damage. Every shot can crit. She moves 30% slower while firing. Minions take 25%.",
+     "cooldown": [
+      6.0,
+      6.0,
+      6.0
+     ],
+     "mana": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Miss Fortune",
@@ -2530,7 +3356,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Miss_Fortune",
-   "wiki_last_change_patch": "V6.3f"
+   "wiki_last_change_patch": "V6.3f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Love Tap",
+     "icon": "assets/riot/abilities/MissFortune-P.webp",
+     "description": "Basic attacks on champions and epic monsters build Love Tap stacks. At 3 stacks her attack deals bonus physical damage (15 + 40% bonus AD, more with crit chance) and the target takes 6% more damage from her.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Double Up",
+     "icon": "assets/riot/abilities/MissFortune-Q.webp",
+     "description": "Fires a shot that bounces to a second enemy, dealing 60/90/120/150 (+110% AD) (+35% AP) physical damage to each and applying on-hit effects to both. The second hit can crit for 60% of her crit damage.",
+     "cooldown": [
+      6.0,
+      5.0,
+      4.0,
+      3.0
+     ],
+     "mana": [
+      35.0,
+      35.0,
+      35.0,
+      35.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Strut",
+     "icon": "assets/riot/abilities/MissFortune-W.webp",
+     "description": "Passive: after 4 s without taking damage she gains 35 movement speed, and 70/80/90/100 after 3 more seconds. Active: full Strut speed and 45/60/75/90% attack speed for 4 s. Basic attacks on targets with full Love Tap stacks lower its cooldown by 2 s.",
+     "cooldown": [
+      12.0,
+      12.0,
+      12.0,
+      12.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Make It Rain",
+     "icon": "assets/riot/abilities/MissFortune-E.webp",
+     "description": "Rains bullets on an area for 2 s, dealing 15/20/25/30 (+10/11/12/13% AP) magic damage every 0.25 s and slowing by 40% (more with AP).",
+     "cooldown": [
+      14.5,
+      13.0,
+      11.5,
+      10.0
+     ],
+     "mana": [
+      65.0,
+      70.0,
+      75.0,
+      80.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Bullet Time",
+     "icon": "assets/riot/abilities/MissFortune-R.webp",
+     "description": "Channels for 3 s, firing 12/14/16 waves of bullets in a cone. Each wave deals 20/30/40 (+60% AD) (+20% AP) physical damage and can crit for 130% (crit damage counts at 30%). Recast to stop.",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Yunara",
@@ -2759,7 +3670,92 @@
    },
    "source_status": "manual_observed_levels_partial",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Yunara",
-   "wiki_last_change_patch": null
+   "wiki_last_change_patch": null,
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Vow of the First Lands",
+     "icon": "assets/riot/abilities/Yunara-P.png",
+     "description": "Critical strikes deal 8% (+8% per 100 AP) bonus magic damage.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Cultivation of Spirit",
+     "icon": "assets/riot/abilities/Yunara-Q.png",
+     "description": "Passive: basic attacks deal 10/15/20/25 (+20% AP) bonus magic damage and build Unleash stacks (2 on champions, 1 otherwise; 6 s, up to 6). Active, with full stacks: gains 25/35/45/55% attack speed for 5 s, and her basic attacks splash 30% AD physical damage to nearby enemies. Always active during Transcend One's Self.",
+     "cooldown": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Arc of Judgment",
+     "icon": "assets/riot/abilities/Yunara-W.png",
+     "description": "Fires a rolling arc that deals 60/110/160/210 (+85% bonus AD) (+50% AP) magic damage, then 8/14/20/26 (+12% bonus AD) (+7.5% AP) magic damage every 0.25 s while it lingers, slowing by 99% (fading over 1.5 s). During Transcend One's Self it becomes Arc of Ruin: 160/320/480 (+120% bonus AD) (+75% AP) magic damage.",
+     "cooldown": [
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     "mana": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Kanmei's Steps",
+     "icon": "assets/riot/abilities/Yunara-E.png",
+     "description": "Gains 30/35/40/45% movement speed for 1.5 s (45/52.5/60/67.5% toward visible nearby enemy champions). During Transcend One's Self it becomes a dash.",
+     "cooldown": [
+      9.0,
+      9.0,
+      9.0,
+      9.0
+     ],
+     "mana": [
+      40.0,
+      40.0,
+      40.0,
+      40.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Transcend One's Self",
+     "icon": "assets/riot/abilities/Yunara-R.png",
+     "description": "Enters an empowered state for 15 s: her basic abilities cost no mana and Cultivation of Spirit stays active. Entering and leaving cut Arc of Judgment's remaining cooldown by 20% and reset Kanmei's Steps.",
+     "cooldown": [
+      70.0,
+      60.0,
+      50.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Kai'Sa",
@@ -2988,7 +3984,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Kai'Sa",
-   "wiki_last_change_patch": "V5.1d"
+   "wiki_last_change_patch": "V5.1d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Second Skin",
+     "icon": "assets/riot/abilities/Kaisa-P.webp",
+     "description": "Basic attacks and Void Seeker apply Plasma (4 s, up to 5 stacks) and deal bonus magic damage that grows with level, AP and the stacks already on the target. The 5th stack detonates for 15% of the target's missing health as magic damage (more with AP). Each completed item evolves one of her abilities.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Icathian Rain",
+     "icon": "assets/riot/abilities/Kaisa-Q.webp",
+     "description": "Fires 6 missiles (12 when evolved) split between nearby enemies, each dealing 40/60/80/100 (+50% bonus AD) (+30% AP) physical damage. Extra missiles on the same champion or monster deal 25%. Monsters take 50%; minions below 35% health take 150%.",
+     "cooldown": [
+      9.0,
+      8.0,
+      7.0,
+      6.0
+     ],
+     "mana": [
+      55.0,
+      55.0,
+      55.0,
+      55.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Void Seeker",
+     "icon": "assets/riot/abilities/Kaisa-W.webp",
+     "description": "Fires a long-range blast that deals 30/60/90/120 (+130% AD) (+50% AP) magic damage, applies 2 Plasma stacks and reveals the target. Evolved: applies 3 stacks and refunds 70% of the cooldown on a champion hit.",
+     "cooldown": [
+      20.0,
+      18.0,
+      16.0,
+      14.0
+     ],
+     "mana": [
+      60.0,
+      65.0,
+      70.0,
+      75.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Supercharge",
+     "icon": "assets/riot/abilities/Kaisa-E.webp",
+     "description": "Charges up while moving 50/55/60/65% faster (more with attack speed), then gains 40/50/60/70% attack speed for 4 s. Evolved: invisible while charging. Basic attacks lower the cooldown by 0.5 s.",
+     "cooldown": [
+      16.0,
+      14.0,
+      12.0,
+      10.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Killer Instinct",
+     "icon": "assets/riot/abilities/Kaisa-R.webp",
+     "description": "Dashes near an enemy champion marked with Plasma and gains a 100/125/150 (+80/120/160% AD) (+100% AP) shield for 2 s.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Corki",
@@ -3217,7 +4298,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Corki",
-   "wiki_last_change_patch": "V7.1"
+   "wiki_last_change_patch": "V7.1",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Hextech Munitions",
+     "icon": "assets/riot/abilities/Corki-P.webp",
+     "description": "Basic attacks and Spellblade hits deal 16% bonus true damage. After 6 Missile Barrage hits on champions, The Package appears; picking it up grants 4 Big One missiles. The Package disappears after 15 s.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Phosphorus Bomb",
+     "icon": "assets/riot/abilities/Corki-Q.webp",
+     "description": "Fires a bomb that deals 60/120/180/240 (+110% bonus AD) (+100% AP) magic damage and reveals the area.",
+     "cooldown": [
+      9.0,
+      8.0,
+      7.0,
+      6.0
+     ],
+     "mana": [
+      60.0,
+      65.0,
+      70.0,
+      75.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Valkyrie",
+     "icon": "assets/riot/abilities/Corki-W.webp",
+     "description": "Dashes, leaving a trail that burns for 2.5 s and deals 60/100/140/180 (+60% bonus AD) (+60% AP) magic damage per second.",
+     "cooldown": [
+      18.0,
+      16.0,
+      14.0,
+      12.0
+     ],
+     "mana": [
+      80.0,
+      85.0,
+      90.0,
+      95.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Gatling Gun",
+     "icon": "assets/riot/abilities/Corki-E.webp",
+     "description": "Fires automatically at the nearest enemy for 4 s, dealing 20/35/50/65 (+55% bonus AD) physical damage per second and lowering armor and magic resist by up to 12/14/16/18 for 2 s.",
+     "cooldown": [
+      12.0,
+      12.0,
+      12.0,
+      12.0
+     ],
+     "mana": [
+      50.0,
+      60.0,
+      70.0,
+      80.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Missile Barrage",
+     "icon": "assets/riot/abilities/Corki-R.webp",
+     "description": "Fires a missile that deals 70/140/210 (+65% bonus AD) physical damage; every third is a Big One that deals 140/210/280 (+130% bonus AD). Holds up to 4 charges (16 s each). Basic attacks on champions shorten the charge time by 2 s, more with crit chance.",
+     "cooldown": [
+      2.0,
+      2.0,
+      2.0
+     ],
+     "mana": [
+      20.0,
+      20.0,
+      20.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Lucian",
@@ -3446,7 +4612,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Lucian",
-   "wiki_last_change_patch": "V6.3d"
+   "wiki_last_change_patch": "V6.3d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Lightslinger",
+     "icon": "assets/riot/abilities/Lucian-P.webp",
+     "description": "After an ability, his next basic attack within 3.5 s fires twice; the second shot deals 40% damage (100% against minions), grows with level and applies on-hit effects and crits. Vigilance: after an ally heals or shields him, or a nearby enemy champion is immobilized, his next 2 basic attacks deal 20 (+10% AD) bonus magic damage.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Piercing Light",
+     "icon": "assets/riot/abilities/Lucian-Q.webp",
+     "description": "Fires a beam through an enemy unit, dealing 75/125/175/225 (+100% bonus AD) physical damage to enemies in a line.",
+     "cooldown": [
+      9.5,
+      8.0,
+      6.5,
+      5.0
+     ],
+     "mana": [
+      50.0,
+      60.0,
+      70.0,
+      80.0
+     ],
+     "range": 1000.0
+    },
+    {
+     "slot": "W",
+     "name": "Ardent Blaze",
+     "icon": "assets/riot/abilities/Lucian-W.webp",
+     "description": "Fires a shot that explodes in a cross, dealing 75/125/175/225 (+90% AP) magic damage and marking enemies for 6 s. Damaging a marked enemy gives Lucian 65/70/75/80 movement speed for 1 s. Allies hitting marked enemies trigger Vigilance.",
+     "cooldown": [
+      13.0,
+      11.5,
+      10.0,
+      8.5
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": 800.0
+    },
+    {
+     "slot": "E",
+     "name": "Relentless Pursuit",
+     "icon": "assets/riot/abilities/Lucian-E.webp",
+     "description": "Dashes a short distance. Lightslinger hits lower the cooldown by 1 s (2 s against champions).",
+     "cooldown": [
+      20.5,
+      18.0,
+      15.5,
+      13.0
+     ],
+     "mana": [
+      45.0,
+      30.0,
+      15.0,
+      0.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "The Culling",
+     "icon": "assets/riot/abilities/Lucian-R.webp",
+     "description": "Fires a stream of shots for 3 s, each dealing 20/25/30 (+25% AD) (+15% AP) physical damage. Crit chance and crit damage add more shots. He can cast Relentless Pursuit during it; recast to stop. Minions take 200%.",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Smolder",
@@ -3675,7 +4926,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Smolder",
-   "wiki_last_change_patch": "7.0f"
+   "wiki_last_change_patch": "7.0f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Dragon Practice",
+     "icon": "assets/riot/abilities/Smolder-P.png",
+     "description": "Hitting champions with abilities and killing enemies with Super Scorcher Breath give stacks. Stacks add magic damage to his abilities: 30% of stacks to Q, 55% to W's explosion and 12% to each E missile.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Super Scorcher Breath",
+     "icon": "assets/riot/abilities/Smolder-Q.png",
+     "description": "Breathes fire that deals 45/80/115/150 (+110% bonus AD) physical damage plus magic damage from stacks; it scales with crit chance and crit damage. A kill refunds 15 mana once per cast. Upgrades at 25 stacks (area damage), 100 (explosions behind the target, 50% damage each) and 175 (a 3 s true-damage burn that executes burning champions below 6.5% max health).",
+     "cooldown": [
+      5.5,
+      5.0,
+      4.5,
+      4.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": 500.0
+    },
+    {
+     "slot": "W",
+     "name": "Achooo!",
+     "icon": "assets/riot/abilities/Smolder-W.png",
+     "description": "Sneezes a fireball that deals 65/85/105/125 (+60% bonus AD) physical damage and explodes on champions for 10/35/60/85 (+55% bonus AD) (+80% AP) physical damage plus magic damage from stacks, slowing by 35% for 1.5 s. Later explosions deal 75%. Minions and monsters take 130%.",
+     "cooldown": [
+      12.0,
+      11.0,
+      10.0,
+      9.0
+     ],
+     "mana": [
+      50.0,
+      55.0,
+      60.0,
+      65.0
+     ],
+     "range": 1250.0
+    },
+    {
+     "slot": "E",
+     "name": "Flap, Flap, Flap",
+     "icon": "assets/riot/abilities/Smolder-E.png",
+     "description": "Flies for 1.25 s with 75% movement speed over terrain, firing 5 missiles (one more per 65 stacks) at the lowest-health nearby enemy, champions first. Each deals 15/20/25/30 (+30% AD) physical damage plus magic damage from stacks.",
+     "cooldown": [
+      18.0,
+      16.0,
+      14.0,
+      12.0
+     ],
+     "mana": [
+      65.0,
+      65.0,
+      65.0,
+      65.0
+     ],
+     "range": 700.0
+    },
+    {
+     "slot": "R",
+     "name": "MMOOOMMMM!",
+     "icon": "assets/riot/abilities/Smolder-R.png",
+     "description": "Smolder's mother breathes fire from afar: 200/300/400 (+110% bonus AD) (+100% AP) physical damage at the edges, or 300/450/600 (+165% bonus AD) (+150% AP) in the center, where enemies are slowed by 40% for 2 s. If it hits Smolder, it heals him for 100/135/170 (+50% bonus AD) (+75% AP). Minions and monsters take 50%.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Caitlyn",
@@ -3904,7 +5240,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Caitlyn",
-   "wiki_last_change_patch": "V6.3f"
+   "wiki_last_change_patch": "V6.3f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Headshot",
+     "icon": "assets/riot/abilities/Caitlyn-P.webp",
+     "description": "Every 6th basic attack is a Headshot that deals bonus physical damage scaling with AD, crit chance and crit damage. Attacks on trapped or netted enemies are Headshots at double range. Attacks from brush count as two.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Piltover Peacemaker",
+     "icon": "assets/riot/abilities/Caitlyn-Q.webp",
+     "description": "Fires a piercing round dealing 50/100/150/200 (+125/145/165/185% AD) physical damage, 40% less after the first target. Trapped or netted enemies always take full damage.",
+     "cooldown": [
+      9.0,
+      8.0,
+      7.0,
+      6.0
+     ],
+     "mana": [
+      50.0,
+      60.0,
+      70.0,
+      80.0
+     ],
+     "range": 1150.0
+    },
+    {
+     "slot": "W",
+     "name": "Yordle Snap Trap",
+     "icon": "assets/riot/abilities/Caitlyn-W.webp",
+     "description": "Places a trap that roots an enemy champion for 1.5 s and reveals it; her Headshot on that target deals 40/90/140/190 (+30% bonus AD) more physical damage. Traps last 30 s; up to 2/3/4/5 at once. A charge returns every 25/20/15/10 s.",
+     "cooldown": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+     ],
+     "mana": [
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "90 Caliber Net",
+     "icon": "assets/riot/abilities/Caitlyn-E.webp",
+     "description": "Fires a net that deals 70/120/170/220 (+80% AP) magic damage and slows by 50% for 1 s, knocking Caitlyn back.",
+     "cooldown": [
+      16.0,
+      14.0,
+      12.0,
+      10.0
+     ],
+     "mana": [
+      75.0,
+      75.0,
+      75.0,
+      75.0
+     ],
+     "range": 725.0
+    },
+    {
+     "slot": "R",
+     "name": "Ace in the Hole",
+     "icon": "assets/riot/abilities/Caitlyn-R.webp",
+     "description": "Takes 1.5 s to line up a shot on a champion, then deals 250/450/650 (+100% bonus AD) physical damage. Crit chance and crit damage apply at 30% effectiveness. An enemy champion can block the shot. Range 1750/2250/2750.",
+     "cooldown": [
+      65.0,
+      55.0,
+      45.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Jinx",
@@ -4133,7 +5554,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jinx",
-   "wiki_last_change_patch": "V6.3f"
+   "wiki_last_change_patch": "V6.3f",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Get Excited!",
+     "icon": "assets/riot/abilities/Jinx-P.webp",
+     "description": "When a champion, epic monster or structure she damaged in the last 3 s dies, she gains 140% movement speed (fading), 25% attack speed that can exceed the cap, and 10% of her missing mana, for 6 s.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Switcheroo!",
+     "icon": "assets/riot/abilities/Jinx-Q.webp",
+     "description": "Swaps weapons. Minigun: basic attacks build up to 3 stacks of attack speed (2.5 s), up to 35/60/85/110% in total. Rocket launcher: basic attacks deal 112% damage in an area, gain 80/95/110/125 range and cost mana.",
+     "cooldown": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     "mana": [
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Zap!",
+     "icon": "assets/riot/abilities/Jinx-W.webp",
+     "description": "Fires a shock blast that deals 10/80/150/220 (+160% AD) physical damage, reveals the target and slows by 30/40/50/60% for 2 s.",
+     "cooldown": [
+      8.0,
+      7.0,
+      6.0,
+      5.0
+     ],
+     "mana": [
+      50.0,
+      60.0,
+      70.0,
+      80.0
+     ],
+     "range": 1500.0
+    },
+    {
+     "slot": "E",
+     "name": "Flame Chompers!",
+     "icon": "assets/riot/abilities/Jinx-E.webp",
+     "description": "Throws 3 traps that last 5 s. They explode on enemy champions for 70/140/210/280 (+100% AP) magic damage and root for 1.45/1.55/1.65/1.75 s, interrupting dashes.",
+     "cooldown": [
+      15.0,
+      13.0,
+      11.0,
+      9.0
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Super Mega Death Rocket!",
+     "icon": "assets/riot/abilities/Jinx-R.webp",
+     "description": "Fires a rocket across the map that grows stronger over its first second of flight: 25/35/45 (+12% bonus AD) up to 250/350/450 (+120% bonus AD) physical damage, plus 25/30/35% of the target's missing health. It explodes on the first champion hit; nearby enemies take 80%.",
+     "cooldown": [
+      60.0,
+      50.0,
+      40.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Ezreal",
@@ -4362,7 +5868,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Ezreal",
-   "wiki_last_change_patch": "V7.0"
+   "wiki_last_change_patch": "V7.0",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Rising Spell Force",
+     "icon": "assets/riot/abilities/Ezreal-P.webp",
+     "description": "Hitting an enemy with an ability grants 13% attack speed for 8 s, stacking up to 4 times.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Mystic Shot",
+     "icon": "assets/riot/abilities/Ezreal-Q.webp",
+     "description": "Fires a bolt that deals 25/55/85/115 (+135% AD) (+30% AP) physical damage and applies on-hit effects. A hit lowers his ability cooldowns by 1.5 s.",
+     "cooldown": [
+      5.5,
+      5.0,
+      4.5,
+      4.0
+     ],
+     "mana": [
+      30.0,
+      35.0,
+      40.0,
+      45.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Essence Flux",
+     "icon": "assets/riot/abilities/Ezreal-W.webp",
+     "description": "Fires an orb that sticks to a champion, epic monster or structure for 4 s. Hitting it with a basic attack or ability detonates it for 80/155/230/305 (+60% bonus AD) (+75/80/85/90% AP) magic damage and restores 60/70/80/90 mana.",
+     "cooldown": [
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     "mana": [
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Arcane Shift",
+     "icon": "assets/riot/abilities/Ezreal-E.webp",
+     "description": "Blinks, then fires a bolt at the nearest enemy (an Essence Flux target first), dealing 80/145/210/275 (+50% bonus AD) (+75% AP) magic damage.",
+     "cooldown": [
+      24.0,
+      20.5,
+      17.0,
+      13.5
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Trueshot Barrage",
+     "icon": "assets/riot/abilities/Ezreal-R.webp",
+     "description": "Fires a wave of energy across the map, dealing 300/500/700 (+100% bonus AD) (+100% AP) magic damage. Minions and non-epic monsters take 50%.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Zeri",
@@ -4591,7 +6182,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Zeri",
-   "wiki_last_change_patch": "V6.3d"
+   "wiki_last_change_patch": "V6.3d",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Living Battery",
+     "icon": "assets/riot/abilities/Zeri-P.webp",
+     "description": "Her basic attack is a burst of 6 rounds dealing 20 (+102% AD) physical damage in total. Her attack speed is capped at 1.5; attack speed above the cap becomes bonus AD.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Electrocute!",
+     "icon": "assets/riot/abilities/Zeri-Q.webp",
+     "description": "Fires a bolt that deals 70/100/130/160 (+80% bonus AD) (+30/35/40/45% AP) magic damage and slows by 14/18/22/26% (fading over 1.5 s). A kill refunds half the cooldown and all the mana.",
+     "cooldown": [
+      7.5,
+      6.0,
+      4.5,
+      3.0
+     ],
+     "mana": [
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     "range": 700.0
+    },
+    {
+     "slot": "W",
+     "name": "Ultrashock Laser",
+     "icon": "assets/riot/abilities/Zeri-W.webp",
+     "description": "Fires a laser that deals 60/100/140/180 (+100% AD) (+50% AP) physical damage and slows by 30/35/40/45% for 2 s. If it hits a wall, a wider beam fires that always crits champions and monsters for 50% more.",
+     "cooldown": [
+      12.0,
+      11.0,
+      10.0,
+      9.0
+     ],
+     "mana": [
+      50.0,
+      50.0,
+      50.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Spark Surge",
+     "icon": "assets/riot/abilities/Zeri-E.webp",
+     "description": "Dashes, vaulting terrain. Her next 3 basic attacks within 6 s pierce and deal 20/23/26/29 (+10% bonus AD) (+20% AP) bonus magic damage to the first target, up to double with crit chance, and 85/90/95/100% to the others. Hitting champions lowers the cooldown by 0.5 s (1.5 s on a crit).",
+     "cooldown": [
+      22.0,
+      19.5,
+      17.0,
+      14.5
+     ],
+     "mana": [
+      80.0,
+      80.0,
+      80.0,
+      80.0
+     ],
+     "range": 300.0
+    },
+    {
+     "slot": "R",
+     "name": "Lightning Crash",
+     "icon": "assets/riot/abilities/Zeri-R.webp",
+     "description": "Discharges for 150/225/300 (+60% bonus AD) (+100% AP) magic damage. Hitting a champion grants 10% movement speed and 30% attack speed (can exceed the cap) for 5 s; her attacks become fast triple shots that chain for 30% AD physical damage (50% more on crits). Hitting champions extends it and adds Overcharge stacks, each giving 0.5% movement speed.",
+     "cooldown": [
+      70.0,
+      65.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Jhin",
@@ -4820,7 +6496,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Jhin",
-   "wiki_last_change_patch": "V6.0"
+   "wiki_last_change_patch": "V6.0",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Whisper",
+     "icon": "assets/riot/abilities/Jhin-P.webp",
+     "description": "Jhin's attack speed is fixed: he fires 4 shots, then reloads. Bonus attack speed and crit chance give him AD instead. His critical strikes deal 80% of normal crit damage. The 4th shot always crits and deals bonus physical damage equal to 11% of the target's missing health, more at higher levels. Critical strikes grant movement speed for 2 s.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Dancing Grenade",
+     "icon": "assets/riot/abilities/Jhin-Q.webp",
+     "description": "Throws a grenade that bounces between up to 4 enemies, dealing 45/80/115/150 (+35/45/55/65% AD) (+60% AP) physical damage. Each kill makes the next bounces deal 44% more.",
+     "cooldown": [
+      6.5,
+      6.0,
+      5.5,
+      5.0
+     ],
+     "mana": [
+      45.0,
+      50.0,
+      55.0,
+      60.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Deadly Flourish",
+     "icon": "assets/riot/abilities/Jhin-W.webp",
+     "description": "Fires a long-range shot that deals 60/100/140/180 (+40% AD) physical damage and stops at the first champion; minions and monsters along the way take 75%. Champions hit by Jhin, an ally or a trap in the last 4 s are rooted for 1.25/1.5/1.75/2 s, and Jhin gains movement speed.",
+     "cooldown": [
+      12.0,
+      12.0,
+      12.0,
+      12.0
+     ],
+     "mana": [
+      60.0,
+      65.0,
+      70.0,
+      75.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Captive Audience",
+     "icon": "assets/riot/abilities/Jhin-E.webp",
+     "description": "Places an invisible trap that reveals and slows by 30%, then explodes for 20/100/180/260 (+120% AD) (+100% AP) magic damage. Killing a champion also leaves a trap. Non-champions and champions recently hit by another trap take 65%. A charge returns every 20/18/16/14 s.",
+     "cooldown": [
+      2.0,
+      2.0,
+      2.0,
+      2.0
+     ],
+     "mana": [
+      35.0,
+      40.0,
+      45.0,
+      50.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Curtain Call",
+     "icon": "assets/riot/abilities/Jhin-R.webp",
+     "description": "Channels 4 long-range shots that each deal 75/150/225 (+25% AD) physical damage, up to four times as much against low-health targets (3% more per 1% missing health). Shots stop at the first champion and slow by 80% for 1 s. The 4th shot crits for 200% and scales with crit damage.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Sivir",
@@ -5049,7 +6810,87 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Sivir",
-   "wiki_last_change_patch": "V6.1a"
+   "wiki_last_change_patch": "V6.1a",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Fleet of Foot",
+     "icon": "assets/riot/abilities/Sivir-P.webp",
+     "description": "Damaging a champion with a basic attack or ability grants bonus movement speed that fades over 1.5 s.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Boomerang Blade",
+     "icon": "assets/riot/abilities/Sivir-Q.webp",
+     "description": "Throws a boomerang that deals 70/100/130/160 (+70% bonus AD) (+60% AP) physical damage on the way out and back. Crit chance and crit damage apply at 40% effectiveness. Non-champions take 75%. Attack speed shortens the cast time.",
+     "cooldown": [
+      9.5,
+      9.0,
+      8.5,
+      8.0
+     ],
+     "mana": [
+      55.0,
+      60.0,
+      65.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "W",
+     "name": "Ricochet",
+     "icon": "assets/riot/abilities/Sivir-W.webp",
+     "description": "For 4 s, gains 25/30/35/40% attack speed and her basic attacks bounce to nearby enemies for 30/35/40/45% AD physical damage; a bounce crits when the attack did. Minions take 70%; at most 2 bounces hit the same target.",
+     "cooldown": [
+      12.0,
+      12.0,
+      12.0,
+      12.0
+     ],
+     "mana": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Spell Shield",
+     "icon": "assets/riot/abilities/Sivir-E.webp",
+     "description": "Blocks the next enemy ability within 2 s. A block heals her for 65/70/75/80% AD (+50% AP) and triggers Fleet of Foot. If nothing is blocked, half the cooldown is refunded.",
+     "cooldown": [
+      22.0,
+      20.0,
+      18.0,
+      16.0
+     ],
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "On the Hunt",
+     "icon": "assets/riot/abilities/Sivir-R.webp",
+     "description": "For 8/10/12 s, gains 15/20/25% movement speed and her basic ability cooldowns are 20/25/30% shorter. Damaging champions adds Morale stacks (2 on a takedown), each giving 2/2.5/3 AD; 8 stacks refresh the duration.",
+     "cooldown": [
+      80.0,
+      70.0,
+      60.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   },
   {
    "name": "Senna",
@@ -5278,7 +7119,92 @@
    },
    "source_status": "wr_wiki_parameter_table",
    "wiki_source_url": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Senna",
-   "wiki_last_change_patch": "V6.2c"
+   "wiki_last_change_patch": "V6.2c",
+   "abilities": [
+    {
+     "slot": "P",
+     "name": "Absolution",
+     "icon": "assets/riot/abilities/Senna-P.webp",
+     "description": "Senna gains no AD from levels. She collects Mist from souls; each Mist gives 1.25 AD, and every 20 gives 15 range and 10% crit chance. 35% of crit chance above 100% becomes physical vamp. Hitting a champion twice in 4 s takes Mist from it and deals bonus physical damage equal to 1% of its current health (once per 6 s per target). Basic attacks deal 10 extra physical damage; her crits deal 90% damage.",
+     "cooldown": null,
+     "mana": null,
+     "range": null
+    },
+    {
+     "slot": "Q",
+     "name": "Piercing Darkness",
+     "icon": "assets/riot/abilities/Senna-Q.webp",
+     "description": "Fires a beam through a target that deals 50/80/110/140 (+60% bonus AD) physical damage to enemies and heals allies for 40/70/100/130 (+40% bonus AD) (+25% AP). Slows enemies by 15% (more with AD and AP) for 0.75/1/1.25/1.5 s. Applies on-hit effects to champions. Basic attacks lower the cooldown by 1 s.",
+     "cooldown": [
+      15.0,
+      15.0,
+      15.0,
+      15.0
+     ],
+     "mana": [
+      70.0,
+      80.0,
+      90.0,
+      100.0
+     ],
+     "range": 1300.0
+    },
+    {
+     "slot": "W",
+     "name": "Last Embrace",
+     "icon": "assets/riot/abilities/Senna-W.webp",
+     "description": "Sends a shadow that deals 90/155/220/285 (+70% bonus AD) physical damage to the first enemy hit. After 1 s, it and nearby enemies are rooted for 1.3/1.6/1.9/2.2 s.",
+     "cooldown": [
+      11.0,
+      11.0,
+      11.0,
+      11.0
+     ],
+     "mana": [
+      55.0,
+      60.0,
+      65.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "E",
+     "name": "Curse of the Black Mist",
+     "icon": "assets/riot/abilities/Senna-E.webp",
+     "description": "Becomes camouflaged in a spreading mist for 6/6.5/7/7.5 s. Allies who enter it are camouflaged; when they leave they become Wraiths with 20% movement speed, hidden while no enemy is near.",
+     "cooldown": [
+      22.0,
+      20.0,
+      18.0,
+      16.0
+     ],
+     "mana": [
+      70.0,
+      70.0,
+      70.0,
+      70.0
+     ],
+     "range": null
+    },
+    {
+     "slot": "R",
+     "name": "Dawning Shadow",
+     "icon": "assets/riot/abilities/Senna-R.webp",
+     "description": "Fires a beam across the map. Enemy champions in the center take 250/400/550 (+120% bonus AD) (+70% AP) physical damage and are marked with Mist; allied champions in the wider wave get a 120/160/200 (+50% AP) shield for 3 s, more with Mist.",
+     "cooldown": [
+      85.0,
+      80.0,
+      75.0
+     ],
+     "mana": [
+      100.0,
+      100.0,
+      100.0
+     ],
+     "range": null
+    }
+   ]
   }
  ],
  "items": [

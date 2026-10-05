@@ -1,8 +1,8 @@
 import { buildParams } from "../build-state";
 import { BUILD_LEVELS, TARGETS, championCore, findItem, stageFor } from "../builds";
-import type { Champion, ChampionCore, CoreBuild, CoreStage, Database, Target } from "../data";
+import type { Ability, AbilitySlot, Champion, ChampionCore, CoreBuild, CoreStage, Database, Target } from "../data";
 import { h, icon } from "../dom";
-import { LEVEL_STATS, formatGold, formatNumber, trimNumber } from "../format";
+import { LEVEL_STATS, formatGold, formatNumber, perRank, trimNumber } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
 import {
@@ -209,6 +209,40 @@ function buildsTab(db: Database, champion: Champion): Array<HTMLElement | null> 
   ];
 }
 
+const SLOT_LABELS: Record<AbilitySlot, string> = { P: "Passive", Q: "Q", W: "W", E: "E", R: "Ultimate" };
+
+function abilityCard(ability: Ability): HTMLElement {
+  const cooldown = perRank(ability.cooldown);
+  const mana = perRank(ability.mana);
+  const facts = [
+    cooldown ? `Cooldown ${cooldown} s` : null,
+    mana ? `Mana ${mana}` : null,
+    ability.range ? `Range ${trimNumber(ability.range, 0)}` : null,
+  ].filter(Boolean);
+  return h(
+    "div",
+    { class: "ability" },
+    icon(ability.icon, ability.name, 48),
+    h(
+      "div",
+      { class: "ability-text" },
+      h("p", { class: "ability-head" }, h("span", { class: "ability-slot" }, SLOT_LABELS[ability.slot]), h("strong", {}, ability.name)),
+      facts.length ? h("p", { class: "ability-facts" }, facts.join(" · ")) : null,
+      h("p", { class: "ability-description" }, ability.description),
+    ),
+  );
+}
+
+function abilitiesTab(champion: Champion): HTMLElement[] {
+  if (!champion.abilities?.length) {
+    return [emptyState("Abilities arrive with the next data update. Connect to the internet and reopen the app.")];
+  }
+  return [
+    ...champion.abilities.map(abilityCard),
+    h("p", { class: "note" }, "Numbers per rank, recorded from the game. Summaries by SharpWR; AD and AP ratios in brackets."),
+  ];
+}
+
 function statsTab(champion: Champion): HTMLElement[] {
   const levelLabel = h("output", { class: "level-value" }, `Level ${selectedLevel}`);
   const slider = h("input", { type: "range", min: 1, max: 15, step: 1, class: "level", "aria-label": "Champion level" });
@@ -233,15 +267,17 @@ function statsTab(champion: Champion): HTMLElement[] {
 export function championDetail(db: Database, name: string, params: URLSearchParams): View {
   const champion = db.champions.find((record) => record.name === name);
   if (!champion) return notFound(name);
-  const showStats = params.get("tab") === "stats";
+  const tab = params.get("tab");
   const meta = [champion.attack_type, champion.resource_type].filter(Boolean).join(" · ");
   const tabs = segments(
     [
-      { label: "Builds", target: href("champions", [champion.name]), active: !showStats },
-      { label: "Stats", target: href("champions", [champion.name], { tab: "stats" }), active: showStats },
+      { label: "Builds", target: href("champions", [champion.name]), active: tab !== "stats" && tab !== "abilities" },
+      { label: "Abilities", target: href("champions", [champion.name], { tab: "abilities" }), active: tab === "abilities" },
+      { label: "Stats", target: href("champions", [champion.name], { tab: "stats" }), active: tab === "stats" },
     ],
     true,
   );
+  const content = tab === "stats" ? statsTab(champion) : tab === "abilities" ? abilitiesTab(champion) : buildsTab(db, champion);
   return {
     title: champion.name,
     back: true,
@@ -250,7 +286,7 @@ export function championDetail(db: Database, name: string, params: URLSearchPara
       { class: "detail" },
       h("div", { class: "hero" }, icon(champion.icon, champion.name, 88, "portrait"), h("div", {}, h("h2", {}, champion.name), meta ? h("p", { class: "muted" }, meta) : null)),
       tabs,
-      ...(showStats ? statsTab(champion) : buildsTab(db, champion)),
+      ...content,
     ),
   };
 }

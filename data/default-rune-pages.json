@@ -1,6 +1,6 @@
 {
  "source": "SharpWR editor, entered with the rune page picker on 2026-10-05",
- "rules": "One keystone; the primary tree's rows 1-3 (one rune each); one rune from a different tree. null marks a choice still missing.",
+ "rules": "One keystone; the primary tree's rows 1-3 (one rune each); one rune from a different tree.",
  "pages": {
   "Kalista": {
    "keystone": "Lethal Tempo",
@@ -153,8 +153,8 @@
     "Cut Down",
     "Legend: Alacrity"
    ],
-   "secondary_tree": null,
-   "secondary": null
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
   },
   "Lucian": {
    "keystone": "Empowerment",
@@ -183,7 +183,7 @@
    "primary_tree": "Precision",
    "primary": [
     "Brutal",
-    null,
+    "Cut Down",
     "Legend: Alacrity"
    ],
    "secondary_tree": "Resolve",

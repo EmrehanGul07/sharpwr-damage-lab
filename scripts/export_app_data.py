@@ -1,5 +1,6 @@
-"""Write app-data/database.json, the read-only Database the mobile app ships with, and
-app-data/golden/, the Python results the app's TypeScript engine port is tested against.
+"""Write app-data/database.json, the read-only Database the mobile app ships with, its ability
+icons under assets/riot/abilities/, and app-data/golden/, the Python results the app's
+TypeScript engine port is tested against.
 
 Run after changing champion, item, boots or rune data, the published tier list or the saved
 core-item results, and after engine changes (stale core results are exported as null);
@@ -11,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sharpwr.app_data import render_database_json
+from sharpwr.app_data import ability_icon_files, render_database_json
 from sharpwr.golden import build_stats_golden, render_golden_json
 
 OUTPUTS = {
@@ -27,3 +28,8 @@ if __name__ == "__main__":
         path.parent.mkdir(exist_ok=True)
         path.write_text(render())
         print(path.relative_to(ROOT))
+    icons = ability_icon_files()
+    for name, data in icons.items():
+        (ROOT / name).parent.mkdir(parents=True, exist_ok=True)
+        (ROOT / name).write_bytes(data)
+    print(f"{len(icons)} ability icons")

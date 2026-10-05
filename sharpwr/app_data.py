@@ -1,11 +1,13 @@
 """Read-only Database export for the mobile app.
 
 Builds the same records the web app's Database tab shows: champions (with level 1-15
-stats), completed items, components, boots and runes, plus SharpWR's published item tier
-list and the saved core-item search results. The result is plain JSON data;
-scripts/export_app_data.py writes it to app-data/database.json.
+stats and abilities), completed items, components, boots and runes, plus SharpWR's published
+item tier list and the saved core-item search results. The result is plain JSON data;
+scripts/export_app_data.py writes it to app-data/database.json, and the ability icons to
+assets/riot/abilities/.
 """
 
+import base64
 import json
 from pathlib import Path
 
@@ -15,6 +17,7 @@ from .catalog import B, C, F, K, P, dct
 from .champion_database import CHAMPION_DATABASE, level_stats
 from .core_items import BUDGETS, EXCLUDED, core_leaders, core_record
 from .icons import icon_entry
+from .marksman_ability_database import catalogue
 from .rune_database import RUNE_DATABASE, RUNE_SLOTS
 
 SCHEMA = 1
@@ -24,7 +27,13 @@ FRACTION_FIELDS = ("as", "crit", "ls", "pctpen", "pctmpen")
 # Components whose movement speed is a flat value; every other item's MS is a fraction of base MS.
 FLAT_MS_COMPONENTS = {"Boots of Speed"}
 DECIMALS = 4
-TIER_LIST = Path(__file__).resolve().parents[1] / "data" / "published-tier-list.json"
+ROOT = Path(__file__).resolve().parents[1]
+TIER_LIST = ROOT / "data" / "published-tier-list.json"
+ABILITY_TEXTS = ROOT / "data" / "ability-descriptions.json"
+# Ability icons cropped from Wild Rift screenshots (or Data Dragon), stored as data URLs.
+SKILL_ICONS = ROOT / "data" / "riot" / "marksman-skill-icons.json"
+ABILITY_ICON_DIR = "assets/riot/abilities"
+ABILITY_SLOTS = ("P", "Q", "W", "E", "R")
 # Attack parameters per champion, in sharpwr/catalog.py C tuple order.
 AA_FIELDS = ("base_ad", "ad_growth", "as_ratio", "base_as", "base_bonus_as", "as_growth")
 # Benchmark targets in display order, as keyed in data/champion-core-items.json.
@@ -56,6 +65,46 @@ def champion_level_stats(name, level, mist=0):
     }
 
 
+def _ability_icon(champion, slot, data_url):
+    """Repository-relative file for an ability icon, named after the champion icon file."""
+    stem = Path(_icon("champions", champion)).stem
+    extension = {"data:image/webp": "webp", "data:image/png": "png"}[data_url.split(";", 1)[0]]
+    return f"{ABILITY_ICON_DIR}/{stem}-{slot}.{extension}"
+
+
+def ability_icon_files():
+    """Every ability icon as {repository-relative path: image bytes}."""
+    icons = json.loads(SKILL_ICONS.read_text())["champions"]
+    return {
+        _ability_icon(name, slot, url): base64.b64decode(url.split(",", 1)[1])
+        for name in CHAMPION_DATABASE
+        for slot, url in icons[name]["icons"].items()
+    }
+
+
+def _per_rank(values):
+    return None if values is None else [_number(float(value)) for value in values]
+
+
+def _abilities(name):
+    """Passive, Q, W, E and R: editor summary, icon, and cooldown and mana per rank."""
+    texts = json.loads(ABILITY_TEXTS.read_text())["champions"][name]
+    icons = json.loads(SKILL_ICONS.read_text())["champions"][name]["icons"]
+    records = catalogue()[name]["abilities"]
+    return [
+        {
+            "slot": slot,
+            "name": texts[slot]["name"],
+            "icon": _ability_icon(name, slot, icons[slot]),
+            "description": texts[slot]["text"],
+            "cooldown": _per_rank(records[slot]["cooldown_by_rank"]),
+            "mana": _per_rank(records[slot]["mana_by_rank"]),
+            "range": records[slot]["range"],
+        }
+        for slot in ABILITY_SLOTS
+    ]
+
+
 def _champion(name, record):
     return {
         "name": name,
@@ -73,6 +122,7 @@ def _champion(name, record):
         "source_status": record["source_status"],
         "wiki_source_url": record.get("wiki_source_url"),
         "wiki_last_change_patch": record.get("wiki_last_change_patch"),
+        "abilities": _abilities(name),
     }
 
 
