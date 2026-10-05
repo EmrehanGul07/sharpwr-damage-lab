@@ -3,7 +3,17 @@ import { App } from "@capacitor/app";
 import { version } from "../package.json";
 import { type DataState, loadDatabase } from "./data";
 import { h } from "./dom";
-import { APK_URL, type KeyValueStore, downloadDatabase, isNewerVersion, latestAppVersion, readSaved, save } from "./online";
+import {
+  APK_URL,
+  confirmStarted,
+  downloadForNextLaunch,
+  latestWebUpdate,
+  planUpdate,
+  readApkVersion,
+  recordLaunch,
+  restartNow,
+} from "./live-update";
+import { type KeyValueStore, downloadDatabase, readSaved, save } from "./online";
 import { type Route, href, parseRoute } from "./router";
 import { about } from "./views/about";
 import { championDetail, championList } from "./views/champions";
@@ -89,22 +99,36 @@ function localStore(): KeyValueStore | null {
   }
 }
 
-/** Preview builds only: Play Store builds are updated by Google Play. */
-async function showUpdateNotice(): Promise<void> {
-  const latest = await latestAppVersion();
-  if (!latest || !isNewerVersion(latest, version)) return;
+function showNotice(title: string, text: string, action: HTMLElement): void {
   notice.replaceChildren(
-    h("p", {}, h("strong", {}, `SharpWR ${latest} is available.`), ` You have ${version}.`),
-    h(
-      "div",
-      { class: "notice-actions" },
-      // External links open in the phone's browser, which downloads the new APK.
-      h("a", { class: "button primary", href: APK_URL }, "Download"),
-      h("button", { class: "button", type: "button", onclick: () => (notice.hidden = true) }, "Later"),
-    ),
+    h("p", {}, h("strong", {}, title), ` ${text}`),
+    h("div", { class: "notice-actions" }, action, h("button", { class: "button", type: "button", onclick: () => (notice.hidden = true) }, "Later")),
   );
   notice.hidden = false;
 }
 
+/**
+ * Preview builds only (Play Store builds are updated by Google Play): new screens download in the
+ * background; a new Android shell is offered as an APK download.
+ */
+async function checkForUpdates(): Promise<void> {
+  const storage = localStore();
+  if (!storage) return;
+  const failed = recordLaunch(storage, version);
+  const apk = await readApkVersion();
+  const update = apk ? await latestWebUpdate() : null;
+  if (!apk || !update) return;
+  const plan = planUpdate(update, version, apk, failed);
+  if (plan.action === "download" && (await downloadForNextLaunch(storage, plan.update))) {
+    const restart = h("button", { class: "button primary", type: "button", onclick: restartNow }, "Restart now");
+    showNotice(`SharpWR ${plan.update.version} is ready.`, "It opens the next time you start the app.", restart);
+  } else if (plan.action === "apk") {
+    // External links open in the phone's browser, which downloads the APK.
+    const download = h("a", { class: "button primary", href: APK_URL }, "Download");
+    showNotice(`SharpWR ${plan.version} needs a new app download.`, `You have ${apk}.`, download);
+  }
+}
+
+confirmStarted();
 void start();
-if (import.meta.env.VITE_PREVIEW_BUILD === "1") void showUpdateNotice();
+if (import.meta.env.VITE_PREVIEW_BUILD === "1") void checkForUpdates();

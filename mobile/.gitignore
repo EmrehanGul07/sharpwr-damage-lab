@@ -2,3 +2,6 @@ dist/
 # Copied from the repository by scripts/sync-data.mjs before every build.
 public/data/
 public/assets/
+# Live update packed by the Android workflow
+sharpwr-web-*.zip
+sharpwr-web.json

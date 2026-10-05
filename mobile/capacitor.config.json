@@ -1,5 +1,13 @@
 {
   "appId": "io.github.emrehangul07.sharpwr",
   "appName": "SharpWR",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorUpdater": {
+      "autoUpdate": false,
+      "updateUrl": "",
+      "statsUrl": "",
+      "channelUrl": ""
+    }
+  }
 }

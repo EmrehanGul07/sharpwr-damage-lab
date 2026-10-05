@@ -1,15 +1,12 @@
 /**
- * Online updates. The app ships with its own copy of the Database and works offline. When the
+ * Online data updates. The app ships with its own copy of the Database and works offline. When the
  * phone is online it downloads the latest copy from this repository's main branch and saves it for
- * offline launches. Preview builds also check whether a newer app version is published.
+ * offline launches. New app screens arrive separately (src/live-update.ts).
  */
 import { type Database, type DataState, isUsableDatabase } from "./data";
 
 const REPO_RAW = "https://raw.githubusercontent.com/EmrehanGul07/sharpwr-damage-lab/main";
 export const DATA_URL = `${REPO_RAW}/app-data/database.json`;
-export const APP_VERSION_URL = `${REPO_RAW}/mobile/package.json`;
-export const APK_URL =
-  "https://github.com/EmrehanGul07/sharpwr-damage-lab/releases/download/mobile-preview/sharpwr-database-preview.apk";
 
 const TIMEOUT_MS = 10_000;
 const SAVED_KEY = "sharpwr.database";
@@ -31,16 +28,6 @@ export async function downloadDatabase(url = DATA_URL): Promise<Database | null>
   try {
     const data = await fetchJson(url);
     return isUsableDatabase(data) ? data : null;
-  } catch {
-    return null;
-  }
-}
-
-/** Newest published app version (mobile/package.json on main), or null when offline. */
-export async function latestAppVersion(url = APP_VERSION_URL): Promise<string | null> {
-  try {
-    const data = (await fetchJson(url)) as { version?: unknown };
-    return typeof data.version === "string" ? data.version : null;
   } catch {
     return null;
   }

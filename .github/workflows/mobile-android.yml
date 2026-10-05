@@ -1,7 +1,8 @@
 name: Build Android preview
-# Tests and builds the mobile Database app, then packs the Android preview APK.
-# Every run uploads the APK as an artifact; runs on main also publish it to the
-# mobile-preview release, whose download link stays the same.
+# Tests and builds the mobile Database app, then packs the Android preview APK and
+# the live update (the web screens as a zip, plus sharpwr-web.json, which installed
+# apps read). Every run uploads the APK as an artifact; runs on main also publish
+# all three to the mobile-preview release, whose APK link stays the same.
 on:
   push:
     paths:
@@ -40,10 +41,26 @@ jobs:
       - run: npm test
       - name: Build the web app
         env:
-          # GitHub preview builds tell the user when a newer version is published.
-          # A Google Play build must not set this: Play updates the app itself.
+          # GitHub preview builds take live updates from the mobile-preview release and
+          # offer a new APK when the Android shell changed. A Google Play build must not
+          # set this: Play updates the APK itself, and needs its own live-update channel.
           VITE_PREVIEW_BUILD: "1"
         run: npm run build
+      - name: Pack the live update
+        run: |
+          version=$(node -p "require('./package.json').version")
+          zip_name="sharpwr-web-$version.zip"
+          (cd dist && zip -qrX "../$zip_name" .)
+          unzip -l "$zip_name" | grep -q " index.html$"
+          checksum=$(sha256sum "$zip_name" | cut -d" " -f1)
+          url="https://github.com/$GITHUB_REPOSITORY/releases/download/mobile-preview/$zip_name"
+          node -e '
+            const [version, url, checksum] = process.argv.slice(1);
+            const { minApkVersion } = require("./native.json");
+            console.log(JSON.stringify({ version, minApkVersion, url, checksum }, null, 2));
+          ' "$version" "$url" "$checksum" > sharpwr-web.json
+          echo "WEB_ZIP=$zip_name" >> "$GITHUB_ENV"
+          echo "Live update $(du -h "$zip_name" | cut -f1):" && cat sharpwr-web.json
       - run: npx cap sync android
       - name: Build preview APK
         working-directory: mobile/android
@@ -62,7 +79,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: sharpwr-android-preview
-          path: mobile/${{ env.APK }}
+          path: |
+            mobile/${{ env.APK }}
+            mobile/${{ env.WEB_ZIP }}
+            mobile/sharpwr-web.json
       - name: Publish to the mobile-preview release
         if: github.ref == 'refs/heads/main'
         run: |
@@ -71,4 +91,10 @@ jobs:
               --title "SharpWR Android preview" \
               --notes "Preview build of the SharpWR Database app for testing on Android. Each new build installs over the previous one. Free fan project, not endorsed by Riot Games."
           fi
-          gh release upload mobile-preview "$APK" --clobber
+          gh release upload mobile-preview "$APK" "$WEB_ZIP" --clobber
+          # The manifest goes last, so it never points at a zip that is not uploaded yet.
+          gh release upload mobile-preview sharpwr-web.json --clobber
+          # Keep the three newest screen zips; installed apps only download the current one.
+          gh release view mobile-preview --json assets \
+            --jq '[.assets[] | select(.name | startswith("sharpwr-web-") and endswith(".zip"))] | sort_by(.createdAt) | reverse | .[3:] | .[].name' |
+            while read -r name; do gh release delete-asset mobile-preview "$name" --yes; done
