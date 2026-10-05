@@ -17,12 +17,14 @@ python scripts/export_app_data.py
 | `components` | Item components. |
 | `boots` | Boots. |
 | `runes` | 51 runes. |
+| `rune_trees` | The four minor rune trees with their icons. |
 
 ## Champion
 
 | Field | Meaning |
 |---|---|
 | `name`, `attack_type`, `resource_type` | Identity. `attack_type`/`resource_type` are `null` when the source has no value (Yunara). |
+| `icon` | Champion portrait. |
 | `stats` | Base values and per-level growth as stored, including timing fields. `null` means unknown; never substitute 0. |
 | `levels` | `"1"`–`"15"` → stats before items and runes: `attack_damage`, `attack_speed`, `hp`, `mana`, `hp_regen_per_5s`, `mana_regen_per_5s`, `armor`, `mr`, `movement_speed`, `attack_range`. Identical to the web app's champion card (Senna without Mist stacks). |
 | `source_status`, `wiki_source_url`, `wiki_last_change_patch` | Provenance. `manual_observed_levels_partial` marks Yunara's manually recorded levels. |
@@ -32,6 +34,7 @@ python scripts/export_app_data.py
 | Field | Meaning |
 |---|---|
 | `name`, `category`, `gold` | `category` is `completed`, `component` or `boots`. |
+| `icon` | Item or boots icon; `null` for components, which have no icon. |
 | `stats` | `ad`, `as`, `crit`, `ap`, `hp`, `mana`, `armor`, `mr`, `ah`, `ls`, `flatpen`, `pctpen`, `ms`, `flatmpen`, `pctmpen`. |
 | `ms_unit` | Present when `ms` is not 0: `fraction` (share of base movement speed, e.g. 0.07 = +7%) or `flat` (e.g. 45). |
 
@@ -42,8 +45,11 @@ python scripts/export_app_data.py
 | Field | Meaning |
 |---|---|
 | `name`, `tree`, `kind` | `tree` is `Key Rune`, `Precision`, `Domination`, `Resolve` or `Sorcery`. |
+| `icon` | Rune icon. |
 | `slot` | Row 1–3 inside a minor tree; `null` for key runes. |
 | `tooltip` | Verified effect text. |
 | `data` | Numeric values behind the tooltip, as stored in `sharpwr/rune_database.py`. |
 
-Icons are not part of schema 1; they are added when Riot artwork is bundled locally (roadmap T2).
+## Icons
+
+`icon` values are repository-relative paths under `assets/riot/` (Riot Games artwork, see [third-party-assets.md](third-party-assets.md)); the app bundles that folder. The list of icons and their sources is `data/riot/icons.json`.

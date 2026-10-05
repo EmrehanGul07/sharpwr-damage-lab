@@ -9,11 +9,13 @@
    "pctmpen"
   ],
   "ms": "Per item: ms_unit 'fraction' (share of base MS) or 'flat'.",
-  "levels": "Champion stats per level 1-15 before items and runes."
+  "levels": "Champion stats per level 1-15 before items and runes.",
+  "icon": "Repository-relative path under assets/riot/; null when there is no icon."
  },
  "champions": [
   {
    "name": "Kalista",
+   "icon": "assets/riot/champions/Kalista.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -234,6 +236,7 @@
   },
   {
    "name": "Tristana",
+   "icon": "assets/riot/champions/Tristana.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -454,6 +457,7 @@
   },
   {
    "name": "Twitch",
+   "icon": "assets/riot/champions/Twitch.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -674,6 +678,7 @@
   },
   {
    "name": "Draven",
+   "icon": "assets/riot/champions/Draven.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -894,6 +899,7 @@
   },
   {
    "name": "Kog'Maw",
+   "icon": "assets/riot/champions/KogMaw.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -1114,6 +1120,7 @@
   },
   {
    "name": "Vayne",
+   "icon": "assets/riot/champions/Vayne.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -1334,6 +1341,7 @@
   },
   {
    "name": "Ashe",
+   "icon": "assets/riot/champions/Ashe.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -1554,6 +1562,7 @@
   },
   {
    "name": "Varus",
+   "icon": "assets/riot/champions/Varus.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -1774,6 +1783,7 @@
   },
   {
    "name": "Xayah",
+   "icon": "assets/riot/champions/Xayah.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -1994,6 +2004,7 @@
   },
   {
    "name": "Samira",
+   "icon": "assets/riot/champions/Samira.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -2214,6 +2225,7 @@
   },
   {
    "name": "Miss Fortune",
+   "icon": "assets/riot/champions/MissFortune.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -2434,6 +2446,7 @@
   },
   {
    "name": "Yunara",
+   "icon": "assets/riot/champions/Yunara.png",
    "attack_type": null,
    "resource_type": null,
    "stats": {
@@ -2654,6 +2667,7 @@
   },
   {
    "name": "Kai'Sa",
+   "icon": "assets/riot/champions/Kaisa.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -2874,6 +2888,7 @@
   },
   {
    "name": "Corki",
+   "icon": "assets/riot/champions/Corki.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -3094,6 +3109,7 @@
   },
   {
    "name": "Lucian",
+   "icon": "assets/riot/champions/Lucian.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -3314,6 +3330,7 @@
   },
   {
    "name": "Smolder",
+   "icon": "assets/riot/champions/Smolder.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -3534,6 +3551,7 @@
   },
   {
    "name": "Caitlyn",
+   "icon": "assets/riot/champions/Caitlyn.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -3754,6 +3772,7 @@
   },
   {
    "name": "Jinx",
+   "icon": "assets/riot/champions/Jinx.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -3974,6 +3993,7 @@
   },
   {
    "name": "Ezreal",
+   "icon": "assets/riot/champions/Ezreal.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -4194,6 +4214,7 @@
   },
   {
    "name": "Zeri",
+   "icon": "assets/riot/champions/Zeri.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -4414,6 +4435,7 @@
   },
   {
    "name": "Jhin",
+   "icon": "assets/riot/champions/Jhin.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -4634,6 +4656,7 @@
   },
   {
    "name": "Sivir",
+   "icon": "assets/riot/champions/Sivir.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -4854,6 +4877,7 @@
   },
   {
    "name": "Senna",
+   "icon": "assets/riot/champions/Senna.png",
    "attack_type": "Ranged",
    "resource_type": "Mana",
    "stats": {
@@ -5076,6 +5100,7 @@
  "items": [
   {
    "name": "Fiendhunter Bolts",
+   "icon": "assets/riot/items/Fiendhunter_Bolts_item.webp",
    "category": "completed",
    "gold": 2650,
    "stats": {
@@ -5098,6 +5123,7 @@
   },
   {
    "name": "Rapid Firecannon",
+   "icon": "assets/riot/items/3094_marksman_t3_rapidfirehandcannon.png",
    "category": "completed",
    "gold": 2650,
    "stats": {
@@ -5121,6 +5147,7 @@
   },
   {
    "name": "Runaan's Hurricane",
+   "icon": "assets/riot/items/3085_marksman_t3_runaans.png",
    "category": "completed",
    "gold": 2650,
    "stats": {
@@ -5144,6 +5171,7 @@
   },
   {
    "name": "Phantom Dancer",
+   "icon": "assets/riot/items/3046_marksman_t3_phantomdancer.png",
    "category": "completed",
    "gold": 2650,
    "stats": {
@@ -5167,6 +5195,7 @@
   },
   {
    "name": "Navori Quickblades",
+   "icon": "assets/riot/items/Navori_Quickblades_WR_item.png",
    "category": "completed",
    "gold": 2650,
    "stats": {
@@ -5190,6 +5219,7 @@
   },
   {
    "name": "Wit's End",
+   "icon": "assets/riot/items/3091_fighter_t3_witsend.png",
    "category": "completed",
    "gold": 2800,
    "stats": {
@@ -5212,6 +5242,7 @@
   },
   {
    "name": "Hexoptics C44",
+   "icon": "assets/riot/items/Hexoptics_C44_item.webp",
    "category": "completed",
    "gold": 2900,
    "stats": {
@@ -5234,6 +5265,7 @@
   },
   {
    "name": "Kraken Slayer",
+   "icon": "assets/riot/items/Kraken_Slayer_WR_item.webp",
    "category": "completed",
    "gold": 2900,
    "stats": {
@@ -5257,6 +5289,7 @@
   },
   {
    "name": "Nashor's Tooth",
+   "icon": "assets/riot/items/3115_mage_t3_nashorstooth.png",
    "category": "completed",
    "gold": 2900,
    "stats": {
@@ -5279,6 +5312,7 @@
   },
   {
    "name": "Manamune",
+   "icon": "assets/riot/items/3004_marksman_t3_manamune.png",
    "category": "completed",
    "gold": 2900,
    "stats": {
@@ -5301,6 +5335,7 @@
   },
   {
    "name": "Muramana",
+   "icon": "assets/riot/items/3042_marksman_t3_muramana.png",
    "category": "completed",
    "gold": 2900,
    "stats": {
@@ -5323,6 +5358,7 @@
   },
   {
    "name": "Statikk Shiv",
+   "icon": "assets/riot/items/3087_statikk_shiv.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5346,6 +5382,7 @@
   },
   {
    "name": "Guinsoo's Rageblade",
+   "icon": "assets/riot/items/3124_marksman_t3_guinsoosrageblade.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5368,6 +5405,7 @@
   },
   {
    "name": "Mortal Reminder",
+   "icon": "assets/riot/items/3033_marksman_t3_mortalreminder.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5390,6 +5428,7 @@
   },
   {
    "name": "Maw of Malmortius",
+   "icon": "assets/riot/items/3156_fighter_t3_mawofmalmortius.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5412,6 +5451,7 @@
   },
   {
    "name": "Essence Reaver",
+   "icon": "assets/riot/items/3508_marksman_t3_essencereaver.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5434,6 +5474,7 @@
   },
   {
    "name": "Immortal Shieldbow",
+   "icon": "assets/riot/items/Immortal_Shieldbow_item.webp",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5456,6 +5497,7 @@
   },
   {
    "name": "The Collector",
+   "icon": "assets/riot/items/The_Collector_WR_item.webp",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5478,6 +5520,7 @@
   },
   {
    "name": "Terminus",
+   "icon": "assets/riot/items/3302_terminus.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5500,6 +5543,7 @@
   },
   {
    "name": "Stormrazor",
+   "icon": "assets/riot/items/Stormrazor_WR_item.webp",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5522,6 +5566,7 @@
   },
   {
    "name": "Yun Tal Wildarrows",
+   "icon": "assets/riot/items/3032_yuntalwildarrows.png",
    "category": "completed",
    "gold": 3100,
    "stats": {
@@ -5544,6 +5589,7 @@
   },
   {
    "name": "Galeforce",
+   "icon": "assets/riot/items/128px-Galeforce_WR_item.png",
    "category": "completed",
    "gold": 3100,
    "stats": {
@@ -5567,6 +5613,7 @@
   },
   {
    "name": "Mercurial Scimitar",
+   "icon": "assets/riot/items/3139_marksman_t3_mercurialscimitar.png",
    "category": "completed",
    "gold": 3100,
    "stats": {
@@ -5589,6 +5636,7 @@
   },
   {
    "name": "Blade of the Ruined King",
+   "icon": "assets/riot/items/Blade_of_the_Ruined_King_WR_item.webp",
    "category": "completed",
    "gold": 3100,
    "stats": {
@@ -5611,6 +5659,7 @@
   },
   {
    "name": "Guardian Angel",
+   "icon": "assets/riot/items/3026_fighter_t3_guardianangel.png",
    "category": "completed",
    "gold": 3200,
    "stats": {
@@ -5633,6 +5682,7 @@
   },
   {
    "name": "Bloodthirster",
+   "icon": "assets/riot/items/3072_fighter_t3_bloodthirster.png",
    "category": "completed",
    "gold": 3200,
    "stats": {
@@ -5655,6 +5705,7 @@
   },
   {
    "name": "Lord Dominik's Regards",
+   "icon": "assets/riot/items/3036_marksman_t3_dominikregards.png",
    "category": "completed",
    "gold": 3300,
    "stats": {
@@ -5677,6 +5728,7 @@
   },
   {
    "name": "Trinity Force",
+   "icon": "assets/riot/items/3078_fighter_t4_trinityforce.png",
    "category": "completed",
    "gold": 3333,
    "stats": {
@@ -5699,6 +5751,7 @@
   },
   {
    "name": "Infinity Edge",
+   "icon": "assets/riot/items/3031_marksman_t3_infinityedge.png",
    "category": "completed",
    "gold": 3400,
    "stats": {
@@ -5721,6 +5774,7 @@
   },
   {
    "name": "Serylda's Grudge",
+   "icon": "assets/riot/items/128px-Serylda's_Grudge_WR_item.webp",
    "category": "completed",
    "gold": 3100,
    "stats": {
@@ -5743,6 +5797,7 @@
   },
   {
    "name": "Serpent's Fang",
+   "icon": "assets/riot/items/Serpent's_Fang_WR_item.png",
    "category": "completed",
    "gold": 2800,
    "stats": {
@@ -5765,6 +5820,7 @@
   },
   {
    "name": "Youmuu's Ghostblade",
+   "icon": "assets/riot/items/3142_assassin_t3_youmuusghostblade.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5788,6 +5844,7 @@
   },
   {
    "name": "Duskblade of Draktharr",
+   "icon": "assets/riot/items/Duskblade_of_Draktharr_WR_item.webp",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5810,6 +5867,7 @@
   },
   {
    "name": "Edge of Night",
+   "icon": "assets/riot/items/3814_assassin_t3_edgeofnight.png",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5832,6 +5890,7 @@
   },
   {
    "name": "Iceborn Gauntlet",
+   "icon": "assets/riot/items/Iceborn_Gauntlet_WR_item.webp",
    "category": "completed",
    "gold": 3000,
    "stats": {
@@ -5854,6 +5913,7 @@
   },
   {
    "name": "Death's Dance",
+   "icon": "assets/riot/items/Death's_Dance_WR_item.webp",
    "category": "completed",
    "gold": 3200,
    "stats": {
@@ -5878,6 +5938,7 @@
  "components": [
   {
    "name": "Pickaxe",
+   "icon": null,
    "category": "component",
    "gold": 800,
    "stats": {
@@ -5900,6 +5961,7 @@
   },
   {
    "name": "Sheen",
+   "icon": null,
    "category": "component",
    "gold": 800,
    "stats": {
@@ -5922,6 +5984,7 @@
   },
   {
    "name": "Kircheis Shard",
+   "icon": null,
    "category": "component",
    "gold": 800,
    "stats": {
@@ -5944,6 +6007,7 @@
   },
   {
    "name": "Executioner's Calling",
+   "icon": null,
    "category": "component",
    "gold": 800,
    "stats": {
@@ -5966,6 +6030,7 @@
   },
   {
    "name": "Recurve Bow",
+   "icon": null,
    "category": "component",
    "gold": 900,
    "stats": {
@@ -5988,6 +6053,7 @@
   },
   {
    "name": "Quicksilver Sash",
+   "icon": null,
    "category": "component",
    "gold": 1100,
    "stats": {
@@ -6010,6 +6076,7 @@
   },
   {
    "name": "Hearthbound Axe",
+   "icon": null,
    "category": "component",
    "gold": 1200,
    "stats": {
@@ -6032,6 +6099,7 @@
   },
   {
    "name": "Vampiric Scepter",
+   "icon": null,
    "category": "component",
    "gold": 1200,
    "stats": {
@@ -6054,6 +6122,7 @@
   },
   {
    "name": "Last Whisper",
+   "icon": null,
    "category": "component",
    "gold": 1200,
    "stats": {
@@ -6076,6 +6145,7 @@
   },
   {
    "name": "Caulfield's Warhammer",
+   "icon": null,
    "category": "component",
    "gold": 1200,
    "stats": {
@@ -6098,6 +6168,7 @@
   },
   {
    "name": "Noonquiver",
+   "icon": null,
    "category": "component",
    "gold": 1300,
    "stats": {
@@ -6120,6 +6191,7 @@
   },
   {
    "name": "Zeal",
+   "icon": null,
    "category": "component",
    "gold": 1400,
    "stats": {
@@ -6143,6 +6215,7 @@
   },
   {
    "name": "B.F. Sword",
+   "icon": null,
    "category": "component",
    "gold": 1500,
    "stats": {
@@ -6165,6 +6238,7 @@
   },
   {
    "name": "Tear of the Goddess",
+   "icon": null,
    "category": "component",
    "gold": 400,
    "stats": {
@@ -6187,6 +6261,7 @@
   },
   {
    "name": "Dagger",
+   "icon": null,
    "category": "component",
    "gold": 400,
    "stats": {
@@ -6209,6 +6284,7 @@
   },
   {
    "name": "Long Sword",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6231,6 +6307,7 @@
   },
   {
    "name": "Brawler's Gloves",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6253,6 +6330,7 @@
   },
   {
    "name": "Cloth Armor",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6275,6 +6353,7 @@
   },
   {
    "name": "Null-Magic Mantle",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6297,6 +6376,7 @@
   },
   {
    "name": "Ruby Crystal",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6319,6 +6399,7 @@
   },
   {
    "name": "Amplifying Tome",
+   "icon": null,
    "category": "component",
    "gold": 500,
    "stats": {
@@ -6341,6 +6422,7 @@
   },
   {
    "name": "Ring of Revelation",
+   "icon": null,
    "category": "component",
    "gold": 300,
    "stats": {
@@ -6363,6 +6445,7 @@
   },
   {
    "name": "Boots of Speed",
+   "icon": null,
    "category": "component",
    "gold": 400,
    "stats": {
@@ -6388,6 +6471,7 @@
  "boots": [
   {
    "name": "Gluttonous Greaves",
+   "icon": "assets/riot/items/Gluttonous_Greaves_WR_item.png",
    "category": "boots",
    "gold": 1000,
    "stats": {
@@ -6411,6 +6495,7 @@
   },
   {
    "name": "Immortal Treads",
+   "icon": "assets/riot/items/immortal_treads_wr_item.webp",
    "category": "boots",
    "gold": 2000,
    "stats": {
@@ -6434,6 +6519,7 @@
   },
   {
    "name": "Ionian Boots of Lucidity",
+   "icon": "assets/riot/items/Ionian_Boots_of_Lucidity_WR_item.png",
    "category": "boots",
    "gold": 1000,
    "stats": {
@@ -6457,6 +6543,7 @@
   },
   {
    "name": "Crimson Lucidity",
+   "icon": "assets/riot/items/item-crimson-lucidity-icon.png",
    "category": "boots",
    "gold": 2000,
    "stats": {
@@ -6480,6 +6567,7 @@
   },
   {
    "name": "Berserker's Greaves",
+   "icon": "assets/riot/items/Berserker's_Greaves_WR_item.png",
    "category": "boots",
    "gold": 1200,
    "stats": {
@@ -6503,6 +6591,7 @@
   },
   {
    "name": "Gunmetal Greaves",
+   "icon": "assets/riot/items/item-gunmetal-greaves-icon.png",
    "category": "boots",
    "gold": 2200,
    "stats": {
@@ -6526,6 +6615,7 @@
   },
   {
    "name": "Mercury's Treads",
+   "icon": "assets/riot/items/Mercury's_Treads_WR_item.png",
    "category": "boots",
    "gold": 1200,
    "stats": {
@@ -6549,6 +6639,7 @@
   },
   {
    "name": "Chainlaced Crushers",
+   "icon": "assets/riot/items/item-chainlaced-crushers-icon.png",
    "category": "boots",
    "gold": 2200,
    "stats": {
@@ -6572,6 +6663,7 @@
   },
   {
    "name": "Plated Steelcaps",
+   "icon": "assets/riot/items/Plated_Steelcaps_WR_item.png",
    "category": "boots",
    "gold": 1200,
    "stats": {
@@ -6595,6 +6687,7 @@
   },
   {
    "name": "Armored Advance",
+   "icon": "assets/riot/items/item-armored-advance-icon.png",
    "category": "boots",
    "gold": 2200,
    "stats": {
@@ -6618,6 +6711,7 @@
   },
   {
    "name": "Boots of Mana",
+   "icon": "assets/riot/items/Boots_of_Mana_WR_item.png",
    "category": "boots",
    "gold": 1200,
    "stats": {
@@ -6641,6 +6735,7 @@
   },
   {
    "name": "Spellslinger's Shoes",
+   "icon": "assets/riot/items/item-spellslingers-shoes-icon.png",
    "category": "boots",
    "gold": 2200,
    "stats": {
@@ -6664,6 +6759,7 @@
   },
   {
    "name": "Boots of Dynamism",
+   "icon": "assets/riot/items/Boots_of_Dynamism_WR_item.png",
    "category": "boots",
    "gold": 1200,
    "stats": {
@@ -6687,6 +6783,7 @@
   },
   {
    "name": "Armorcrusher Boots",
+   "icon": "assets/riot/items/item-armorcrusher-boots-icon.png",
    "category": "boots",
    "gold": 2200,
    "stats": {
@@ -6712,6 +6809,7 @@
  "runes": [
   {
    "name": "First Strike",
+   "icon": "assets/riot/runes/first-strike.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "damage",
@@ -6727,6 +6825,7 @@
   },
   {
    "name": "Ice Overlord",
+   "icon": "assets/riot/runes/ice-overlord.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "cc_defense_damage",
@@ -6742,6 +6841,7 @@
   },
   {
    "name": "Phase Rush",
+   "icon": "assets/riot/runes/phase-rush.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "mobility_haste",
@@ -6756,6 +6856,7 @@
   },
   {
    "name": "Arcane Comet",
+   "icon": "assets/riot/runes/arcane-comet.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "ability_damage",
@@ -6771,6 +6872,7 @@
   },
   {
    "name": "Aery",
+   "icon": "assets/riot/runes/aery.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "damage_shield",
@@ -6790,6 +6892,7 @@
   },
   {
    "name": "Guardian",
+   "icon": "assets/riot/runes/guardian.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "shield",
@@ -6805,6 +6908,7 @@
   },
   {
    "name": "Grasp of the Undying",
+   "icon": "assets/riot/runes/grasp-of-the-undying.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "damage_heal_growth",
@@ -6819,6 +6923,7 @@
   },
   {
    "name": "Conqueror",
+   "icon": "assets/riot/runes/conqueror.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "adaptive_force",
@@ -6838,6 +6943,7 @@
   },
   {
    "name": "Fleet Footwork",
+   "icon": "assets/riot/runes/fleet-footwork.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "sustain_mobility",
@@ -6855,6 +6961,7 @@
   },
   {
    "name": "Lethal Tempo",
+   "icon": "assets/riot/runes/lethal-tempo.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "attack_speed_damage",
@@ -6871,6 +6978,7 @@
   },
   {
    "name": "Empowerment",
+   "icon": "assets/riot/runes/empowerment.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "damage_amp",
@@ -6887,6 +6995,7 @@
   },
   {
    "name": "Dark Harvest",
+   "icon": "assets/riot/runes/dark-harvest.png",
    "tree": "Key Rune",
    "slot": null,
    "kind": "damage_growth",
@@ -6902,6 +7011,7 @@
   },
   {
    "name": "Brutal",
+   "icon": "assets/riot/runes/brutal.png",
    "tree": "Precision",
    "slot": 1,
    "kind": "attack_damage",
@@ -6913,6 +7023,7 @@
   },
   {
    "name": "Triumph",
+   "icon": "assets/riot/runes/triumph.png",
    "tree": "Precision",
    "slot": 1,
    "kind": "takedown_sustain",
@@ -6926,6 +7037,7 @@
   },
   {
    "name": "Battle Zeal",
+   "icon": "assets/riot/runes/battle-zeal.png",
    "tree": "Precision",
    "slot": 1,
    "kind": "ability_damage",
@@ -6937,6 +7049,7 @@
   },
   {
    "name": "Last Stand",
+   "icon": "assets/riot/runes/last-stand.png",
    "tree": "Precision",
    "slot": 2,
    "kind": "damage_amp",
@@ -6952,6 +7065,7 @@
   },
   {
    "name": "Cut Down",
+   "icon": "assets/riot/runes/cut-down.png",
    "tree": "Precision",
    "slot": 2,
    "kind": "damage_amp",
@@ -6963,6 +7077,7 @@
   },
   {
    "name": "Coup de Grace",
+   "icon": "assets/riot/runes/coup-de-grace.png",
    "tree": "Precision",
    "slot": 2,
    "kind": "damage_amp",
@@ -6974,6 +7089,7 @@
   },
   {
    "name": "Legend: Alacrity",
+   "icon": "assets/riot/runes/legend-alacrity.png",
    "tree": "Precision",
    "slot": 3,
    "kind": "attack_speed",
@@ -6986,6 +7102,7 @@
   },
   {
    "name": "Legend: Haste",
+   "icon": "assets/riot/runes/legend-haste.png",
    "tree": "Precision",
    "slot": 3,
    "kind": "haste",
@@ -6996,6 +7113,7 @@
   },
   {
    "name": "Legend: Bloodline",
+   "icon": "assets/riot/runes/legend-bloodline.png",
    "tree": "Precision",
    "slot": 3,
    "kind": "omnivamp",
@@ -7008,6 +7126,7 @@
   },
   {
    "name": "Eyeball Collection",
+   "icon": "assets/riot/runes/eyeball-collection.png",
    "tree": "Domination",
    "slot": 3,
    "kind": "adaptive_force",
@@ -7019,6 +7138,7 @@
   },
   {
    "name": "Hubris",
+   "icon": "assets/riot/runes/hubris.png",
    "tree": "Domination",
    "slot": 2,
    "kind": "takedown_adaptive_force",
@@ -7030,6 +7150,7 @@
   },
   {
    "name": "Tyrant",
+   "icon": "assets/riot/runes/tyrant.png",
    "tree": "Domination",
    "slot": 2,
    "kind": "damage",
@@ -7047,6 +7168,7 @@
   },
   {
    "name": "Chain Assault",
+   "icon": "assets/riot/runes/chain-assault.png",
    "tree": "Domination",
    "slot": 2,
    "kind": "ability_mark_damage",
@@ -7064,6 +7186,7 @@
   },
   {
    "name": "Sudden Impact",
+   "icon": "assets/riot/runes/sudden-impact.png",
    "tree": "Domination",
    "slot": 1,
    "kind": "true_damage",
@@ -7079,6 +7202,7 @@
   },
   {
    "name": "Cheap Shot",
+   "icon": "assets/riot/runes/cheap-shot.png",
    "tree": "Domination",
    "slot": 1,
    "kind": "true_damage",
@@ -7093,6 +7217,7 @@
   },
   {
    "name": "Zombie Ward",
+   "icon": "assets/riot/runes/zombie-ward.png",
    "tree": "Domination",
    "slot": 3,
    "kind": "adaptive_force_utility",
@@ -7106,6 +7231,7 @@
   },
   {
    "name": "Empowered Attack",
+   "icon": "assets/riot/runes/empowered-attack.png",
    "tree": "Domination",
    "slot": 1,
    "kind": "attack_damage",
@@ -7121,6 +7247,7 @@
   },
   {
    "name": "Relentless Hunter",
+   "icon": "assets/riot/runes/relentless-hunter.png",
    "tree": "Domination",
    "slot": 3,
    "kind": "movement",
@@ -7134,6 +7261,7 @@
   },
   {
    "name": "Overgrowth",
+   "icon": "assets/riot/runes/overgrowth.png",
    "tree": "Resolve",
    "slot": 3,
    "kind": "health_growth",
@@ -7148,6 +7276,7 @@
   },
   {
    "name": "Bone Plating",
+   "icon": "assets/riot/runes/bone-plating.png",
    "tree": "Resolve",
    "slot": 2,
    "kind": "damage_reduction",
@@ -7164,6 +7293,7 @@
   },
   {
    "name": "Second Wind",
+   "icon": "assets/riot/runes/second-wind.png",
    "tree": "Resolve",
    "slot": 2,
    "kind": "healing",
@@ -7177,6 +7307,7 @@
   },
   {
    "name": "Perseverance",
+   "icon": "assets/riot/runes/perseverance.png",
    "tree": "Resolve",
    "slot": 3,
    "kind": "tenacity_defense",
@@ -7192,6 +7323,7 @@
   },
   {
    "name": "Revitalize",
+   "icon": "assets/riot/runes/revitalize.png",
    "tree": "Resolve",
    "slot": 3,
    "kind": "heal_shield_amp",
@@ -7204,6 +7336,7 @@
   },
   {
    "name": "Nullifying Orb",
+   "icon": "assets/riot/runes/nullifying-orb.png",
    "tree": "Resolve",
    "slot": 2,
    "kind": "shield",
@@ -7220,6 +7353,7 @@
   },
   {
    "name": "Unshakeable",
+   "icon": "assets/riot/runes/unshakeable.png",
    "tree": "Resolve",
    "slot": 1,
    "kind": "defense",
@@ -7234,6 +7368,7 @@
   },
   {
    "name": "Courage of the Colossus",
+   "icon": "assets/riot/runes/courage-of-the-colossus.png",
    "tree": "Resolve",
    "slot": 1,
    "kind": "shield",
@@ -7250,6 +7385,7 @@
   },
   {
    "name": "Font of Life",
+   "icon": "assets/riot/runes/font-of-life.png",
    "tree": "Resolve",
    "slot": 1,
    "kind": "healing",
@@ -7264,6 +7400,7 @@
   },
   {
    "name": "Demolish",
+   "icon": "assets/riot/runes/demolish.png",
    "tree": "Resolve",
    "slot": 1,
    "kind": "turret_damage",
@@ -7279,6 +7416,7 @@
   },
   {
    "name": "Gathering Storm",
+   "icon": "assets/riot/runes/gathering-storm.png",
    "tree": "Sorcery",
    "slot": 3,
    "kind": "scaling_adaptive_force",
@@ -7298,6 +7436,7 @@
   },
   {
    "name": "Absolute Focus",
+   "icon": "assets/riot/runes/absolute-focus.png",
    "tree": "Sorcery",
    "slot": 2,
    "kind": "adaptive_force",
@@ -7312,6 +7451,7 @@
   },
   {
    "name": "Scorch",
+   "icon": "assets/riot/runes/scorch.png",
    "tree": "Sorcery",
    "slot": 3,
    "kind": "ability_damage",
@@ -7327,6 +7467,7 @@
   },
   {
    "name": "Axiom Arcanist",
+   "icon": "assets/riot/runes/axiom-arcanist.png",
    "tree": "Sorcery",
    "slot": 1,
    "kind": "ultimate",
@@ -7339,6 +7480,7 @@
   },
   {
    "name": "Manaflow Band",
+   "icon": "assets/riot/runes/manaflow-band.png",
    "tree": "Sorcery",
    "slot": 1,
    "kind": "mana_growth",
@@ -7351,6 +7493,7 @@
   },
   {
    "name": "Transcendence",
+   "icon": "assets/riot/runes/transcendence.png",
    "tree": "Sorcery",
    "slot": 2,
    "kind": "haste",
@@ -7364,6 +7507,7 @@
   },
   {
    "name": "Celerity",
+   "icon": "assets/riot/runes/celerity.png",
    "tree": "Sorcery",
    "slot": 2,
    "kind": "movement",
@@ -7375,6 +7519,7 @@
   },
   {
    "name": "Nimbus Cloak",
+   "icon": "assets/riot/runes/nimbus-cloak.png",
    "tree": "Sorcery",
    "slot": 3,
    "kind": "movement",
@@ -7389,6 +7534,7 @@
   },
   {
    "name": "Ixtali Seedjar",
+   "icon": "assets/riot/runes/ixtali-seedjar.png",
    "tree": "Sorcery",
    "slot": 3,
    "kind": "utility",
@@ -7401,6 +7547,7 @@
   },
   {
    "name": "Hexflash",
+   "icon": "assets/riot/runes/hexflash.png",
    "tree": "Sorcery",
    "slot": 1,
    "kind": "mobility",
@@ -7413,6 +7560,7 @@
   },
   {
    "name": "Botanist",
+   "icon": "assets/riot/runes/botanist.png",
    "tree": "Sorcery",
    "slot": 1,
    "kind": "plant_utility",
@@ -7424,6 +7572,24 @@
     "blast_cone_ms_pct": 40,
     "blast_cone_ms_duration": 2.5
    }
+  }
+ ],
+ "rune_trees": [
+  {
+   "name": "Domination",
+   "icon": "assets/riot/rune-trees/7200_domination.png"
+  },
+  {
+   "name": "Precision",
+   "icon": "assets/riot/rune-trees/7201_precision.png"
+  },
+  {
+   "name": "Resolve",
+   "icon": "assets/riot/rune-trees/7204_resolve.png"
+  },
+  {
+   "name": "Sorcery",
+   "icon": "assets/riot/rune-trees/7202_sorcery.png"
   }
  ]
 }
