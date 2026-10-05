@@ -1,6 +1,6 @@
 import unittest
-from champion_skill_data import smolder_skill
-from fight_engine import replay_samira,champion_ranks,FightEvent
+from sharpwr.champion_skill_data import smolder_skill
+from sharpwr.fight_engine import replay_samira,champion_ranks,FightEvent
 
 class SmolderTests(unittest.TestCase):
     def fight(self,events=(),**kw):

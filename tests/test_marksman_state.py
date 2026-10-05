@@ -1,5 +1,5 @@
 import unittest
-from marksman_state import KitState,zeri_attack_speed_conversion
+from sharpwr.marksman_state import KitState,zeri_attack_speed_conversion
 
 class KitStateTests(unittest.TestCase):
     def test_kalista_spears_expire_and_rend_consumes(self):

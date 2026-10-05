@@ -7,16 +7,16 @@ The target never attacks. Timing follows sourced casts/channels when available.
 import heapq
 import itertools
 import math
-from rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
-from damage_classification import event_profile,ability_magnification,component_profile,magnification
-from champion_skill_data import resistance_multiplier,effective_resistance
-from marksman_kits import Kit,default_ranks
-from combat_timing import attack_windup,attack_travel
-from marksman_damage_components import damage_component,yunara_arc_of_ruin,yunara_linger_tick,varus_blight,jhin_attack_damage,RawDamage
+from .rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
+from .damage_classification import event_profile,ability_magnification,component_profile,magnification
+from .champion_skill_data import resistance_multiplier,effective_resistance
+from .marksman_kits import Kit,default_ranks
+from .combat_timing import attack_windup,attack_travel
+from .marksman_damage_components import damage_component,yunara_arc_of_ruin,yunara_linger_tick,varus_blight,jhin_attack_damage,RawDamage
 
 
 def replay_marksman(events,**p):
-    from fight_engine import FightResult
+    from .fight_engine import FightResult
     name=p['champion'];level=p['level'];ad=p['ad'];base_ad=p.get('base_ad') if p.get('base_ad') is not None else ad
     ap=p.get('ap',0.);maxhp=p['hp'];health=float(maxhp);armor=p['armor'];mr=p.get('mr',0.)
     crit=p['crit_chance'];critd=p['crit_damage'];base_as=p['attack_speed'];haste=p.get('ability_haste',0.)

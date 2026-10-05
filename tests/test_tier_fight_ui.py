@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from streamlit.testing.v1 import AppTest
-import build_fight_optimizer as optimizer
+from sharpwr import build_fight_optimizer as optimizer
 
 class TierFightUI(unittest.TestCase):
     def test_public_search_is_disabled_and_cannot_be_triggered(self):

@@ -1,6 +1,6 @@
 import unittest
 from sharpwr import engine_namespace
-from fight_engine import replay_samira,FightEvent
+from sharpwr.fight_engine import replay_samira,FightEvent
 
 class SpellbladeCasts(unittest.TestCase):
     @classmethod

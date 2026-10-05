@@ -2,8 +2,8 @@
 import math,unittest
 from sharpwr import engine_namespace
 from test_all_marksman_fights import PENDING
-from champion_database import level_stats
-from fight_engine import replay_samira,champion_ranks,FightEvent
+from sharpwr.champion_database import level_stats
+from sharpwr.fight_engine import replay_samira,champion_ranks,FightEvent
 
 class MarksmanItems(unittest.TestCase):
     @classmethod

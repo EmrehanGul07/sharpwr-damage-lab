@@ -6,8 +6,8 @@ mechanics are surfaced by the caller; this is not a complete Wild Rift engine.
 from dataclasses import dataclass, field
 import math
 import random
-from rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
-from champion_skill_data import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
+from .rune_runtime import FIGHT_KEYSTONES, FIGHT_RUNES, FirstContact, DamageProcs, last_stand_multiplier
+from .champion_skill_data import samira_skill, resistance_multiplier, effective_resistance, SAMIRA_ABILITIES, SMOLDER_ABILITIES, smolder_skill
 
 @dataclass(frozen=True)
 class FightEvent:
@@ -37,7 +37,7 @@ def samira_ranks(level):
 SMOLDER_SKILL_ORDER=('Q','W','E','Q','R','Q','Q','W','R','W','W','E','R','E','E')
 
 def champion_ranks(champion,level):
-    from marksman_kits import default_ranks
+    from .marksman_kits import default_ranks
     return default_ranks(champion,level)
 
 def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armor,q_rank=1,r_rank=1,ability_haste=0.,pct_pen=0.,flat_pen=0.,mode='Expected',seed=1,keystone=None,sub_runes=(),r_duration=None,aa_hit=None,yuntal_initial=0.,yuntal=False,base_ad=None,terminus=False,w_rank=0,e_rank=0,mr=0.,pct_mpen=0.,flat_mpen=0.,instant_skills=True,navori=False,collector_threshold=0.,skill_amp=1.,melee=False,transcendence=False,automatic_until=None,until_death=False,max_mana=None,mana_regen_per_5s=0.,timed_combat=False,distance=525.,attack_range=525.,aa_windup=None,movement_speed=0.,base_windup=None,starting_bonus_as=0.,aa_stats=None,mana_refund=0.,muramana=False,champion='Samira',ap=0.,initial_stacks=0,skill_priority=('E','W','Q'),use_e=True,**kit_options):
@@ -56,7 +56,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
     if repeat_policy not in ('first_cast','every_hit'):raise ValueError('Invalid Muramana repeat policy')
     if not math.isfinite(windup_scale) or windup_scale<=0:raise ValueError('Invalid windup scale')
     if champion not in ('Samira','Smolder'):
-        from marksman_fight_engine import replay_marksman
+        from .marksman_fight_engine import replay_marksman
         return replay_marksman(events,level=level,ad=ad,attack_speed=attack_speed,crit_chance=crit_chance,crit_damage=crit_damage,hp=hp,armor=armor,q_rank=q_rank,r_rank=r_rank,ability_haste=ability_haste,pct_pen=pct_pen,flat_pen=flat_pen,mode=mode,seed=seed,keystone=keystone,sub_runes=sub_runes,r_duration=r_duration,aa_hit=aa_hit,yuntal_initial=yuntal_initial,yuntal=yuntal,base_ad=base_ad,terminus=terminus,w_rank=w_rank,e_rank=e_rank,mr=mr,pct_mpen=pct_mpen,flat_mpen=flat_mpen,navori=navori,collector_threshold=collector_threshold,skill_amp=skill_amp,transcendence=transcendence,automatic_until=automatic_until,until_death=until_death,max_mana=max_mana,mana_regen_per_5s=mana_regen_per_5s,timed_combat=timed_combat,distance=distance,attack_range=attack_range,aa_windup=aa_windup,movement_speed=movement_speed,base_windup=base_windup,starting_bonus_as=starting_bonus_as,aa_stats=aa_stats,mana_refund=mana_refund,muramana=muramana,champion=champion,ap=ap,initial_stacks=initial_stacks,skill_priority=skill_priority,use_e=use_e,**kit_options)
     abilities=SAMIRA_ABILITIES if champion=='Samira' else SMOLDER_ABILITIES
     if isinstance(initial_stacks,bool) or not isinstance(initial_stacks,int) or initial_stacks<0 or not math.isfinite(ap) or ap<0:raise ValueError('Invalid stack/AP stats.')
@@ -200,7 +200,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
             timeline.append({'order':len(log)+len(timeline),'distance':abs(target_position-position),'time':t,'kind':'attack_launch','action':'AA','id':cast_id,'energized_charge':result.get('energized_charge'),'energized_reserved':result.get('energized_reserved',False)})
             continue
         if action=='Galeforce active':
-            from damage_classification import event_profile
+            from .damage_classification import event_profile
             classification=event_profile(champion,action)
             blocked=max(attack_windup_until,cast_until,channel_until) if timed_combat else channel_until
             if t<blocked:
@@ -270,7 +270,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                             count=max(5,int(5+.0154*dragon+.5))
                             for bolt in range(count):queue.append((t+gap/1800+1.25*bolt/(count-1),order+bolt/100,'E hit',(cast_seq,bolt)))
                         else:
-                            from combat_timing import skill_cast_time,skill_travel
+                            from .combat_timing import skill_cast_time,skill_travel
                             duration=skill_cast_time(champion,action,attack_stats(t)[1]['bonus_as_total'],level) or 0.
                             cast_until=t+duration
                             queue.append((cast_until+(skill_travel(champion,action,gap) or 0.),order,action+' hit',(cast_seq,0,gap)))
@@ -293,7 +293,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
                     bonus_as=(.048*lt if keystone=='Lethal Tempo' and t<lt_expiry else 0.)+([.25,.30,.35,.40][e_rank-1] if e_rank and t<e_until else 0.)
                     total_bonus_as=starting_bonus_as+bonus_as
                     if aa_stats:total_bonus_as=attack_stats(t)[1]['bonus_as_total']
-                    from combat_timing import attack_windup,attack_travel
+                    from .combat_timing import attack_windup,attack_travel
                     windup=((base_windup/(1+.5*total_bonus_as)) if base_windup is not None else attack_windup(champion,total_bonus_as) if aa_windup is None else aa_windup)*windup_scale
                     attack_windup_until=t+windup
                     arrival=t+windup+attack_travel(champion,gap,melee=gap<=200)
@@ -340,7 +340,7 @@ def replay_samira(events,*,level,ad,attack_speed,crit_chance,crit_damage,hp,armo
         live_pen=min(.40,pct_pen+.10*dark) if terminus else pct_pen
         ea=effective_resistance(armor,live_pen,flat_pen)
         hit_magic_pen=min(.40,pct_mpen+.10*dark) if terminus else pct_mpen
-        from damage_classification import event_profile,ability_magnification
+        from .damage_classification import event_profile,ability_magnification
         classification=event_profile(champion,action)
         components=[]
         if action=='AA':

@@ -1,7 +1,7 @@
 import unittest,math
-from fight_engine import FightEvent,replay_samira
-from marksman_kits import Kit,PRIORITIES
-from damage_classification import registry
+from sharpwr.fight_engine import FightEvent,replay_samira
+from sharpwr.marksman_kits import Kit,PRIORITIES
+from sharpwr.damage_classification import registry
 class OfflineBoundaries(unittest.TestCase):
  def args(self,c):return dict(champion=c,level=15,ad=100,base_ad=60,attack_speed=1,crit_chance=.5,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,max_mana=1000,timed_combat=True,distance=200,attack_range=550,movement_speed=0,automatic_until=3)
  def test_nonfinite_spatial_and_fractional_ranks_rejected(self):

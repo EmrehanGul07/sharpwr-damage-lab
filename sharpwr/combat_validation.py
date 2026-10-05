@@ -15,7 +15,7 @@ def integer(value, label, minimum, maximum=None):
 
 def benchmark(champion, level, hp, armor, mr, *, mist=0, bonus_hp=0,
               distance=0, reduction=0, mana=0, stacks=0, executes=0):
-    from champion_database import CHAMPION_DATABASE
+    from .champion_database import CHAMPION_DATABASE
     if champion not in CHAMPION_DATABASE:raise ValueError('Unknown champion')
     integer(level,'level',1,15);finite(hp,'target HP',0)
     if hp==0:raise ValueError('Target HP must be positive')

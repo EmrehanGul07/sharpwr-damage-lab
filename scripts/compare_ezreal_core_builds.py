@@ -3,8 +3,8 @@ import json,sys,collections
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
 from sharpwr import engine_namespace,profiles_by_target
-from build_fight_optimizer import BuildFightEvaluator
-from marksman_kits import records
+from sharpwr.build_fight_optimizer import BuildFightEvaluator
+from sharpwr.marksman_kits import records
 ns=engine_namespace()
 profiles={k:v[15] for k,v in profiles_by_target().items()}
 sets={

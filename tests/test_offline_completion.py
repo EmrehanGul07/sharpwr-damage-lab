@@ -6,10 +6,10 @@ import tempfile
 import shutil
 import unittest
 
-from rune_runtime import persistent_stats, own_stats, FirstContact, DamageProcs
-from fight_engine import FightEvent, replay_samira
+from sharpwr.rune_runtime import persistent_stats, own_stats, FirstContact, DamageProcs
+from sharpwr.fight_engine import FightEvent, replay_samira
 from sharpwr import engine_namespace
-from build_fight_optimizer import BuildFightEvaluator, search_builds
+from sharpwr.build_fight_optimizer import BuildFightEvaluator, search_builds
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -67,13 +67,13 @@ class OfflineCompletion(unittest.TestCase):
         self.assertIn('Trinity',hit(True)['notes'])
         self.assertNotIn('Trinity',hit(False)['notes'])
     def test_deployed_revision_refreshes_cached_core_module(self):
-        import core_items
+        from sharpwr import core_items
         from engine_runtime import ensure_engine_revision
         old=core_items.SOURCE_FILES
         try:
             core_items.SOURCE_FILES=('stale-module-sentinel',)
             ensure_engine_revision('core-hot-reload-regression')
-            self.assertIn('rune_runtime.py',core_items.SOURCE_FILES)
+            self.assertIn('sharpwr/rune_runtime.py',core_items.SOURCE_FILES)
             self.assertIsNotNone(core_items.core_record('Ezreal'))
         finally:
             core_items.SOURCE_FILES=old
@@ -101,7 +101,7 @@ class OfflineCompletion(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);(root/'scripts').mkdir();(root/'data').mkdir()
             shutil.copy(ROOT/'scripts/build_marksman_catalogue.py',root/'scripts')
-            shutil.copy(ROOT/'champion_skill_data.py',root)
+            shutil.copytree(ROOT/'sharpwr',root/'sharpwr')
             for name in ('marksman-ability-evidence.json','marksman-implementation-queue.json','marksman-ability-catalogue.json'):
                 shutil.copy(ROOT/'data'/name,root/'data'/name)
             before=json.loads((root/'data/marksman-ability-catalogue.json').read_text())

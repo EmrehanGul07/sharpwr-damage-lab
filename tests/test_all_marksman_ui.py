@@ -2,7 +2,7 @@ import sys,unittest
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from marksman_kits import PRIORITIES
+from sharpwr.marksman_kits import PRIORITIES
 
 class AllMarksmanUI(unittest.TestCase):
     def test_all_twenty_three_champions_can_replay_from_build_lab(self):

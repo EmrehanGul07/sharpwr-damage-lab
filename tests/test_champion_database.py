@@ -1,5 +1,5 @@
 import unittest
-from champion_database import CHAMPION_DATABASE, champion_stat
+from sharpwr.champion_database import CHAMPION_DATABASE, champion_stat
 from sharpwr import C
 
 class ChampionDatabaseTests(unittest.TestCase):
@@ -31,7 +31,7 @@ if __name__=='__main__':unittest.main()
 
 class LevelStatTests(unittest.TestCase):
     def test_samira_level_and_item_independent_stats(self):
-        from champion_database import level_stats
+        from sharpwr.champion_database import level_stats
         self.assertEqual(level_stats('Samira',1)['mana'],345)
         self.assertAlmostEqual(level_stats('Samira',15)['mana'],345+49*13.265)
         self.assertEqual(level_stats('Yunara',15)['mana'],807)

@@ -32,7 +32,7 @@ class StormrazorCharge(unittest.TestCase):
   self.assertFalse(any('Shiv Energized' in h['notes'] for h in hits[:8]))
   self.assertIn('Shiv Energized',hits[8]['notes']);self.assertIn('RFC Energized',hits[8]['notes'])
  def test_kiting_path_reaches_kernel_without_radial_change(self):
-  from fight_engine import replay_samira
+  from sharpwr.fight_engine import replay_samira
   for champion in ('Smolder','Ashe'):
    seen=[];k=self.kernel()
    def hit(state):
@@ -41,7 +41,7 @@ class StormrazorCharge(unittest.TestCase):
    self.assertGreater(seen[-1]['movement_distance'],700)
    self.assertAlmostEqual(seen[0]['distance'],seen[-1]['distance'])
  def test_ezreal_shift_adds_sixteen_without_q_charge(self):
-  from fight_engine import replay_samira,FightEvent
+  from sharpwr.fight_engine import replay_samira,FightEvent
   seen=[];k=self.kernel()
   def hit(state):
    h=k.send(state);seen.append(h);return h
@@ -70,7 +70,7 @@ class StormrazorCharge(unittest.TestCase):
   h=self.hit(self.kernel(['Stormrazor','Rapid Firecannon','Statikk Shiv'],True))
   self.assertEqual(h['magic'],260);self.assertEqual(h['energized_charge'],0)
  def test_replay_launch_precedes_impact_both_adapters(self):
-  from fight_engine import replay_samira
+  from sharpwr.fight_engine import replay_samira
   for champion in ('Smolder','Ezreal'):
    seen=[];k=self.kernel(energized=True)
    def hit(state):

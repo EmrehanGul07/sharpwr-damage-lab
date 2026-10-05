@@ -3,8 +3,8 @@ import json,sys,collections
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
 from sharpwr import engine_namespace,profiles_by_target
-from build_fight_optimizer import BuildFightEvaluator,legal
-from champion_database import level_stats
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,legal
+from sharpwr.champion_database import level_stats
 ns=engine_namespace();screen=json.loads((root/'data/item-adoption-screen.json').read_text());screen['results']=json.loads((root/'data/item-progression-checkpoint.json').read_text())['results']
 profiles=profiles_by_target()
 G="Guinsoo's Rageblade";S='Stormrazor';results=[]

@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
-from build_fight_optimizer import legal
+from sharpwr.build_fight_optimizer import legal
 
 class SpellbladePicker(unittest.TestCase):
     def test_exclusive_search_group(self):

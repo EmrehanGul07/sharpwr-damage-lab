@@ -1,7 +1,7 @@
 import unittest
-from damage_classification import ability_profile,ability_magnification,event_profile,magnification,registry
-from marksman_damage_components import damage_component
-from fight_engine import replay_samira,FightEvent
+from sharpwr.damage_classification import ability_profile,ability_magnification,event_profile,magnification,registry
+from sharpwr.marksman_damage_components import damage_component
+from sharpwr.fight_engine import replay_samira,FightEvent
 from sharpwr import engine_namespace
 
 class DamageClassificationTests(unittest.TestCase):

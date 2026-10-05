@@ -3,8 +3,8 @@ import sys,json,argparse
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
 from sharpwr import engine_namespace,profiles_by_target
-from build_fight_optimizer import BuildFightEvaluator,search_builds,TIER3
-from core_items import BUDGETS,EXCLUDED,available,rank_core,fingerprint
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,search_builds,TIER3
+from sharpwr.core_items import BUDGETS,EXCLUDED,available,rank_core,fingerprint
 p=argparse.ArgumentParser();p.add_argument('--champion',action='append');p.add_argument('--output',default=str(root/'data/champion-core-items.json'));args=p.parse_args()
 ns=engine_namespace()
 profiles=profiles_by_target()

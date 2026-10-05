@@ -19,7 +19,7 @@ class KitState:
     last_action:str|None=None
 
     def __post_init__(self):
-        from marksman_ability_database import catalogue
+        from .marksman_ability_database import catalogue
         if self.champion not in catalogue():raise ValueError('Unknown champion')
         if self.champion in ('Jhin','Corki'):self.ammo=4
 

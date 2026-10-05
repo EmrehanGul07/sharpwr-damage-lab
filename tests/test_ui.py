@@ -65,7 +65,7 @@ class InterfaceTests(unittest.TestCase):
         table=next(x.value for x in a.dataframe if 'Dragon stacks' in x.value.columns)
         self.assertEqual(table['Target HP'].iloc[-1],0)
         self.assertGreater(table['Dragon stacks'].iloc[-1],175)
-        from champion_database import level_stats
+        from sharpwr.champion_database import level_stats
         max_range=level_stats('Smolder',15)['attack_range']
         self.assertTrue(all(550<=x<=max_range for x in table['Distance']))
         self.assertIn('Q',set(table['Event']))

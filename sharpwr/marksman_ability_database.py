@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import math
 
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 
 def catalogue():
     return json.loads((ROOT/'data/marksman-ability-catalogue.json').read_text())['champions']

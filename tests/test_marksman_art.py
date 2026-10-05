@@ -3,7 +3,7 @@ from unittest.mock import patch
 from pathlib import Path
 from html.parser import HTMLParser
 from marksman_art import art_catalogue,studio_html
-from marksman_kits import PRIORITIES
+from sharpwr.marksman_kits import PRIORITIES
 ROOT=Path(__file__).resolve().parents[1]
 class MarksmanArt(unittest.TestCase):
  def test_complete_roster_and_exports(self):
@@ -37,7 +37,7 @@ class MarksmanArt(unittest.TestCase):
     self.assertNotEqual(before,marksman_art._input_stamp())
  def test_channel_windows_come_from_captured_trace(self):
   from sharpwr import engine_namespace
-  from build_fight_optimizer import BuildFightEvaluator
+  from sharpwr.build_fight_optimizer import BuildFightEvaluator
   from combat_replay import replay_payload
   for name in ['Samira','Lucian','Jhin']:
    ev=BuildFightEvaluator(engine_namespace(),name,15,10000,100,100);row=ev.evaluate([]);r=ev.replay_row(row)

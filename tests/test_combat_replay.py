@@ -1,6 +1,6 @@
 import unittest,json
 from sharpwr import engine_namespace
-from build_fight_optimizer import BuildFightEvaluator
+from sharpwr.build_fight_optimizer import BuildFightEvaluator
 from combat_replay import replay_payload,replay_html
 class CombatReplay(unittest.TestCase):
  @classmethod
@@ -29,8 +29,8 @@ class CombatReplay(unittest.TestCase):
   self.assertTrue(detonations);self.assertLess(flights[0]['impact'],detonations[0])
   self.assertEqual(payload['damage'],row['Damage']);self.assertEqual(payload['ttk'],row['TTK'])
  def test_runtime_recovers_stale_dependency_graph(self):
-  import build_fight_optimizer as optimizer
-  import marksman_damage_components as components
+  from sharpwr import build_fight_optimizer as optimizer
+  from sharpwr import marksman_damage_components as components
   import engine_runtime
   from unittest.mock import patch
   del components.jhin_attack_damage

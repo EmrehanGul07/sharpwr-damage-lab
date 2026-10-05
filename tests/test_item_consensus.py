@@ -1,5 +1,5 @@
 import unittest
-from item_consensus import consensus,adopters
+from sharpwr.item_consensus import consensus,adopters
 class ItemConsensus(unittest.TestCase):
  def test_equal_targets_and_no_boots(self):
   searches={'tank':{'full':[{'Items':['A'],'Boots':'Boot'}]},'squishy':{'full':[{'Items':['B']},{'Items':['A']},{'Items':['A']}]}}
@@ -14,7 +14,7 @@ class ItemConsensus(unittest.TestCase):
 
 class ChampionItemList(unittest.TestCase):
  def test_top_ten_includes_partial_build_candidates(self):
-  from item_consensus import champion_items
+  from sharpwr.item_consensus import champion_items
   search={'full':[{'Items':['A','B','C','D','E']}],'stages':{1:[{'Items':['F']},{'Items':['G']},{'Items':['H']},{'Items':['I']},{'Items':['J']},{'Items':['K']}]}}
   rows=champion_items(search)
   self.assertEqual(len(rows),10);self.assertEqual(rows[0]['Item'],'A');self.assertTrue(all(r['Note'] for r in rows))
@@ -36,13 +36,13 @@ class ChampionItemList(unittest.TestCase):
 
 class ProgressionWeights(unittest.TestCase):
  def test_five_item_stage_cannot_outweigh_one_item_stage(self):
-  from item_consensus import progression_ranking
+  from sharpwr.item_consensus import progression_ranking
   data={'Samira':{'5:tank':{'item_count':1,'builds':[{'Items':['A']}]},'15:tank':{'item_count':5,'builds':[{'Items':['A','B','C','D','E']}]}}}
   rows=progression_ranking(data,['A','B','C','D','E'])
   self.assertEqual(rows[0]['Stage-balanced score'],60)
   self.assertEqual(sum(r['Stage-balanced score'] for r in rows),100)
  def test_champion_is_counted_once(self):
-  from item_consensus import progression_ranking
+  from sharpwr.item_consensus import progression_ranking
   cells={str(i):{'item_count':1,'builds':[{'Items':['A']}]} for i in range(18)}
   row=progression_ranking({'Samira':cells},['A'])[0]
   self.assertEqual(row['Champions'],1);self.assertEqual(row['Level-target appearances'],18)

@@ -14,7 +14,7 @@ class RawDamage:
     true:float=0.
 
     def instances(self,champion,slot):
-        from damage_classification import annotate_raw
+        from .damage_classification import annotate_raw
         return annotate_raw(champion,slot,self)
 
 # (damage type, base ranks, total AD ratio, bonus AD ratio, AP ratio)
@@ -64,11 +64,11 @@ def damage_component(champion,slot,rank,*,ad,base_ad,ap=0.,crit_chance=0.,crit_d
     if slot not in ('P','Q','W','E','R') or not isinstance(rank,int) or isinstance(rank,bool) or not 1<=rank<=limit:raise ValueError('Invalid slot/rank')
     if not isinstance(stacks,int) or stacks<0 or not isinstance(hits,int) or hits<1 or not isinstance(level,int) or not 1<=level<=15:raise ValueError('Invalid level/stacks/hits')
     if champion=='Samira' and slot!='P':
-        from champion_skill_data import samira_skill
+        from .champion_skill_data import samira_skill
         v=samira_skill(slot,rank,ad,crit_chance,crit_damage,0,base_ad=base_ad,mr=0,hits=hits)
         return RawDamage(v.physical,v.magic,v.true)
     if champion=='Smolder' and slot!='P':
-        from champion_skill_data import smolder_skill
+        from .champion_skill_data import smolder_skill
         physical,magic=smolder_skill(slot,rank,ad,base_ad,ap,stacks,crit_chance,crit_damage)
         return RawDamage(physical*hits,magic*hits)
     no_direct={'Kalista':('R',),'Tristana':('Q',),'Twitch':('Q','R'),'Draven':('W',),'Vayne':('R',),'Ashe':('E',),'Xayah':('W',),'Miss Fortune':('W',),'Yunara':('E','R'),"Kai'Sa":('E','R'),'Lucian':('E',),'Jinx':('Q',),'Sivir':('E','R'),'Senna':('E',)}

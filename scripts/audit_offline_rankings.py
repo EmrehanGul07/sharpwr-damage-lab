@@ -4,8 +4,8 @@ from pathlib import Path
 from itertools import combinations
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from scripts.audit_combat_matrix import namespace,PROFILES
-from build_fight_optimizer import BuildFightEvaluator,search_builds,legal,score
-from marksman_kits import PRIORITIES
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,search_builds,legal,score
+from sharpwr.marksman_kits import PRIORITIES
 
 def run():
  ns=namespace();profiles=dict(PROFILES);profiles.pop('no_items');profiles['hex_crit']=(['Infinity Edge','Phantom Dancer','Yun Tal Wildarrows','The Collector','Hexoptics C44'],'Armorcrusher Boots')

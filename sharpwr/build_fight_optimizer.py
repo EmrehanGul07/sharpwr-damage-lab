@@ -1,11 +1,11 @@
 """Ability-aware build search. Candidate pruning is explicit, never global optimality."""
 from itertools import combinations,permutations,product
 from collections import defaultdict
-from combat_validation import benchmark, integer
-from champion_database import level_stats
-from fight_engine import replay_samira,champion_ranks
-from marksman_kits import PRIORITIES
-from marksman_damage_components import jhin_attack_damage
+from .combat_validation import benchmark, integer
+from .champion_database import level_stats
+from .fight_engine import replay_samira,champion_ranks
+from .marksman_kits import PRIORITIES
+from .marksman_damage_components import jhin_attack_damage
 
 SPELLBLADE=frozenset({'Trinity Force','Essence Reaver','Iceborn Gauntlet','Sheen'})
 EXCLUSIVE=({'Mortal Reminder',"Lord Dominik's Regards","Serylda's Grudge",'Terminus'},{'Manamune','Muramana'},SPELLBLADE)

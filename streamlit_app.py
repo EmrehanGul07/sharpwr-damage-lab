@@ -11,18 +11,18 @@ ensure_engine_revision(APP_VERSION)
 # Riot Games' fan-project notice; shown in the footer and kept identical to the README.
 RIOT_NOTICE="SharpWR isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc."
 from combat_replay import replay_payload, replay_html
-import item_consensus as _item_consensus
+from sharpwr import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
     import importlib
     importlib.reload(_item_consensus)
-from item_consensus import consensus, adopters, champion_items, progression_ranking
-from champion_database import CHAMPION_DATABASE, level_stats
-from rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
-from rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
-from champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
-from fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
-from marksman_kits import Kit, records as marksman_records
-from build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPELLBLADE
+from sharpwr.item_consensus import consensus, adopters, champion_items, progression_ranking
+from sharpwr.champion_database import CHAMPION_DATABASE, level_stats
+from sharpwr.rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
+from sharpwr.rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
+from sharpwr.champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
+from sharpwr.fight_engine import FightEvent, replay_samira, samira_ranks, champion_ranks
+from sharpwr.marksman_kits import Kit, records as marksman_records
+from sharpwr.build_fight_optimizer import BuildFightEvaluator, search_builds, TIER3, SPELLBLADE
 from sharpwr import (
     B, C, F, K, P, TARGET_PROFILES, benchmark_target, combat_hits, dct, engine_namespace,
     gu, lvl_scale, rm, sim, sim_build, stats, target_profile_at_level,
@@ -627,7 +627,7 @@ def _champion_profile(name,lvl,mist_count=0):
     slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(name,name)
     portrait=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{slug}.png"
     attack_speed=profile["baseas"]+profile["ratio"]*(profile["bba"]+profile["lvbas"])
-    from core_items import core_record
+    from sharpwr.core_items import core_record
     _core=core_record(name)
     _core_card=''
     if _core and _core.get('complete') and _core.get('ranking'):

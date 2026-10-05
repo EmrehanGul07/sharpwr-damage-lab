@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 class OfflineInterface(unittest.TestCase):
     def test_skill_replay_uses_rune_stats_mana_override_and_yuntal_start(self):
         ensure_engine_revision((ROOT/'VERSION').read_text().strip())
-        import fight_engine
+        from sharpwr import fight_engine
         original=fight_engine.replay_samira;calls=[]
         def capture(events,**kwargs):
             result=original(events,**kwargs);calls.append((kwargs,result));return result

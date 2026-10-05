@@ -1,13 +1,13 @@
 import unittest
 from sharpwr import engine_namespace
-from build_fight_optimizer import BuildFightEvaluator,search_builds,legal,score,TIER3
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,search_builds,legal,score,TIER3
 
 class AbilityBuildRanking(unittest.TestCase):
     @classmethod
     def setUpClass(cls):cls.ns=engine_namespace()
     def evaluator(self,champ='Ezreal',level=15):return BuildFightEvaluator(self.ns,champ,level,10000,100,100)
     def test_every_champion_runs_ability_aware_build(self):
-        from marksman_kits import PRIORITIES
+        from sharpwr.marksman_kits import PRIORITIES
         for name in PRIORITIES:
             with self.subTest(champion=name):
                 row=self.evaluator(name).evaluate(['Muramana',"Nashor's Tooth"],"Spellslinger's Shoes")

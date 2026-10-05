@@ -1,5 +1,5 @@
 import unittest
-from combat_timing import database,attack_windup,attack_travel,skill_travel,skill_cast_time
+from sharpwr.combat_timing import database,attack_windup,attack_travel,skill_travel,skill_cast_time
 class TimingTests(unittest.TestCase):
  def test_all_23_have_sourced_base_windup(self):
   self.assertEqual(len(database()),23)
