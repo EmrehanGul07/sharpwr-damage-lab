@@ -84,7 +84,11 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | T5 | Uygulamada Tier List sekmesi; şampiyon sayfasında core item, eşya sıralaması ve seviye/hedefe göre ilk 3 build (kayıtlı core-item sonuçları); eşya sayfasında tier ve "Core item for"; şampiyon listesinde core item ikonu (0.4.1). Web ile aynı core item kuralı (`core_leaders`). | Tamamlandı (7.0.8, uygulama 0.3.0–0.4.1) |
 | T6 | Canlı güncelleme: yeni ekranlar APK indirmeden gelir (`@capgo/capacitor-updater`, kendi sunucusuna bağlantısı kapalı); SHA-256 doğrulaması, açılmayan sürümde geri dönüş; kabuk değişince `native.json` ile APK uyarısı | Tamamlandı (uygulama 0.4.0) |
 | T4 | Play Store hazırlığı: ikon, ekran görüntüleri, gizlilik politikası, mağaza metni, geliştirici hesabı; Play sürümünde APK indirme uyarısı kapalı (`VITE_PREVIEW_BUILD` verilmez) ve canlı güncelleme için ayrı kanal | Uygulama son sürümüne gelince |
-| 3b-2 | Build Lab için tek JSON giriş noktası ve motorun mobil portu için referans (golden) çıktılar (ikinci sürüm) | |
+| 3b-2 | Motorun mobil portu için tek kaynaklı fonksiyonlar ve referans (golden) çıktılar. İlk parça: build özeti `sharpwr/build_stats.py` (arama da bunu kullanır; doğrulanmış parmak izi geçişi), `app-data/golden/build-stats.json` | Başladı (7.0.9) |
+| BL1 | Build Lab 1: telefonda build hesaplayıcı (şampiyon, seviye, 5 eşya + bot → değerler), Python'la golden karşılaştırmalı TypeScript portu, şampiyon sayfasından "Try in Build Lab" | Tamamlandı (uygulama 0.5.0) |
+| BL2 | Varsayılan rün sayfaları ve rünlerin hesaba girmesi (kullanıcıyla karar: elle mi, motor mu seçsin); rünler değişince kayıtlı sonuçlar yeniden hesaplanır | |
+| BL3 | Top build'ler tüm eşya havuzundan (IE, LDR vb. dahil); kısıtlama yalnız core item seçiminde; şampiyona özgü core item ve 10 şampiyonun core incelemesi. BL2 ile birlikte tek seferde yeniden hesaplama | |
+| BL4 | Telefonda normal saldırı hasarı (DPS), sonra yeteneklerle tam dövüş (TTK) | |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |

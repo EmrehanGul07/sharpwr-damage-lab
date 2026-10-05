@@ -6,7 +6,7 @@ from .combat_validation import benchmark, integer
 from .champion_database import level_stats
 from .fight_engine import replay_samira, champion_ranks
 from .marksman_kits import PRIORITIES
-from .marksman_damage_components import jhin_attack_damage
+from .build_stats import awe_bonus, build_stats, build_totals
 
 SPELLBLADE = frozenset({"Trinity Force", "Essence Reaver", "Iceborn Gauntlet", "Sheen"})
 EXCLUSIVE = (
@@ -187,17 +187,21 @@ class BuildFightEvaluator:
         l = self.level
         core = level_stats(n, l)
         s = ns["stats"](n, l, self.mist)
-        stats = [ns["dct"](ns["F"][x]) for x in items] + [
-            ns["dct"](ns["B"][boot]) if boot else ns["dct"](())
-        ]
-        total = {k: sum(q[k] for q in stats) for k in ns["K"]}
+        total = build_totals(items, boot)
         base_mana = core["mana"] if core["mana"] is not None else self.base_mana
-        maxmana = None if base_mana is None else base_mana + total["mana"]
-        awe = 0.02 * (maxmana or 0) if any(x in items for x in ("Manamune", "Muramana")) else 0
+        summary = build_stats(
+            n,
+            l,
+            items,
+            boot,
+            mist=self.mist,
+            yuntal_stacks=self.yuntal_stacks,
+            base_mana=self.base_mana,
+        )
+        maxmana = summary["mana"]
+        awe = awe_bonus(items, maxmana)
         radius = core["attack_range"] or 550
-        ms = (core["movement_speed"] or 0) * (
-            1 + sum(ns["dct"](ns["F"][x])["ms"] for x in items)
-        ) + (ns["dct"](ns["B"][boot])["ms"] if boot else 0)
+        ms = summary["movement_speed"]
         deep = refine is True
         default = tuple(PRIORITIES[n])
         priorities = list(permutations("QWE")) if refine else [default]
@@ -366,26 +370,6 @@ class BuildFightEvaluator:
                     duration = max(0.05, r.killed_at if r.killed_at is not None else 60)
                     # Separate command-based AA damage from ability/passive/DoT events.
                     aa_damage = sum(x["damage"] for x in r.log if x["action"].startswith("AA"))
-                    start_raw = s["baseas"] + s["ratio"] * (s["bba"] + s["lvbas"] + total["as"])
-                    cap = 1.5 if n == "Zeri" else 3
-                    starting_ad = s["ad"] + total["ad"] + awe
-                    if n == "Jhin":
-                        starting_ad = jhin_attack_damage(
-                            starting_ad,
-                            l,
-                            s["bba"] + s["lvbas"] + total["as"],
-                            min(
-                                1,
-                                total["crit"]
-                                + (
-                                    min(0.25, self.yuntal_stacks * 0.002)
-                                    if "Yun Tal Wildarrows" in items
-                                    else 0
-                                ),
-                            ),
-                        )
-                    if n == "Jhin":
-                        start_raw = s["baseas"] + s["ratio"] * (s["bba"] + s["lvbas"])
                     results.append(
                         {
                             "Items": items,
@@ -395,38 +379,13 @@ class BuildFightEvaluator:
                             "Damage": r.total_damage,
                             "AA damage": aa_damage,
                             "Other damage": max(0.0, r.total_damage - aa_damage),
-                            "Gold": total["gold"],
-                            "AD": starting_ad
-                            + (
-                                0.5
-                                * max(
-                                    0.0,
-                                    (
-                                        s["bba"]
-                                        + s["lvbas"]
-                                        + total["as"]
-                                        - max(0.0, (1.5 - s["baseas"]) / s["ratio"])
-                                    )
-                                    * 100,
-                                )
-                                if n == "Zeri"
-                                else 0.0
-                            ),
-                            "AP": total["ap"],
-                            "Crit %": 100
-                            * min(
-                                1.0,
-                                total["crit"]
-                                + (self.mist // 20 * 0.1 if n == "Senna" else 0.0)
-                                + (
-                                    min(0.25, self.yuntal_stacks * 0.002)
-                                    if "Yun Tal Wildarrows" in items
-                                    else 0.0
-                                ),
-                            ),
-                            "AH": total["ah"],
-                            "Starting AS": min(cap, start_raw),
-                            "AS over cap": max(0, start_raw - cap),
+                            "Gold": summary["gold"],
+                            "AD": summary["attack_damage"],
+                            "AP": summary["ability_power"],
+                            "Crit %": 100 * summary["crit_chance"],
+                            "AH": summary["ability_haste"],
+                            "Starting AS": summary["attack_speed"],
+                            "AS over cap": summary["attack_speed_over_cap"],
                             "Rotation": " → ".join(priority),
                             "Movement": movement,
                             "Ultimate timing": ultimate_policy,

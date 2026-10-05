@@ -9,6 +9,7 @@ from sharpwr import B, F, P
 from sharpwr.app_data import build_database, champion_level_stats, render_database_json
 from sharpwr.champion_database import CHAMPION_DATABASE
 from sharpwr.core_items import BUDGETS, EXCLUDED, core_leaders, core_record
+from sharpwr.golden import build_stats_golden, render_golden_json
 from sharpwr.rune_database import RUNE_DATABASE
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,7 +22,28 @@ class AppDataTests(unittest.TestCase):
 
     def test_committed_export_is_current(self):
         committed = (ROOT / "app-data" / "database.json").read_text()
-        self.assertTrue(committed == render_database_json(), "Run: python scripts/export_app_data.py")
+        self.assertTrue(
+            committed == render_database_json(), "Run: python scripts/export_app_data.py"
+        )
+
+    def test_committed_golden_outputs_are_current(self):
+        committed = (ROOT / "app-data" / "golden" / "build-stats.json").read_text()
+        self.assertTrue(
+            committed == render_golden_json(build_stats_golden()),
+            "Run: python scripts/export_app_data.py",
+        )
+
+    def test_build_inputs_for_the_app(self):
+        from sharpwr.catalog import C
+        from sharpwr.build_fight_optimizer import EXCLUSIVE
+
+        for champion in self.data["champions"]:
+            self.assertEqual(tuple(champion["aa"].values()), C[champion["name"]])
+        rules = self.data["build_rules"]
+        self.assertEqual(rules["max_items"], 5)
+        self.assertEqual(
+            [set(group) for group in rules["exclusive_groups"]], [set(g) for g in EXCLUSIVE]
+        )
 
     def test_every_database_record_is_exported_in_display_order(self):
         data = self.data
@@ -73,16 +95,30 @@ class AppDataTests(unittest.TestCase):
             record = core_record(name)
             self.assertIsNotNone(exported, name)
             self.assertEqual(exported["core"], core_leaders(record), name)
-            self.assertEqual([row["item"] for row in exported["ranking"]], [row["Item"] for row in record["ranking"]])
+            self.assertEqual(
+                [row["item"] for row in exported["ranking"]],
+                [row["Item"] for row in record["ranking"]],
+            )
             self.assertTrue(set(exported["core"]) <= {row["item"] for row in exported["ranking"]})
-            stages = [(stage["level"], stage["target"], stage["items_allowed"]) for stage in exported["stages"]]
-            expected = [(level, target, budget) for level, budget in BUDGETS.items() for target in ("squishy", "bruiser", "tank")]
+            stages = [
+                (stage["level"], stage["target"], stage["items_allowed"])
+                for stage in exported["stages"]
+            ]
+            expected = [
+                (level, target, budget)
+                for level, budget in BUDGETS.items()
+                for target in ("squishy", "bruiser", "tank")
+            ]
             self.assertEqual(stages, expected, name)
             for stage in exported["stages"]:
                 saved = record["cells"][f'{stage["level"]}:{stage["target"]}']["search"]["full"]
-                self.assertEqual([b["items"] for b in stage["builds"]], [row["Items"] for row in saved])
+                self.assertEqual(
+                    [b["items"] for b in stage["builds"]], [row["Items"] for row in saved]
+                )
                 for build in stage["builds"]:
-                    self.assertEqual(len(build["items"]), stage["items_allowed"], (name, stage["level"]))
+                    self.assertEqual(
+                        len(build["items"]), stage["items_allowed"], (name, stage["level"])
+                    )
                     self.assertTrue(set(build["items"]) <= set(F) - EXCLUDED, build["items"])
                     self.assertIn(build["boots"], B)
             self.assertTrue(all(isinstance(note, str) and note for note in exported["notes"]), name)

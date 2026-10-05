@@ -1,5 +1,6 @@
+import { buildParams } from "../build-state";
 import { BUILD_LEVELS, TARGETS, championCore, findItem, stageFor } from "../builds";
-import type { Champion, ChampionCore, CoreBuild, Database, Target } from "../data";
+import type { Champion, ChampionCore, CoreBuild, CoreStage, Database, Target } from "../data";
 import { h, icon } from "../dom";
 import { LEVEL_STATS, formatGold, formatNumber, trimNumber } from "../format";
 import { href } from "../router";
@@ -112,7 +113,7 @@ function coreCard(db: Database, champion: Champion, core: ChampionCore): HTMLEle
   );
 }
 
-function buildCard(db: Database, build: CoreBuild, rank: number): HTMLElement {
+function buildCard(db: Database, champion: Champion, stage: CoreStage, build: CoreBuild, rank: number): HTMLElement {
   const names = [...build.items, build.boots];
   const ttk = build.ttk === null ? "Target survived" : `TTK ${trimNumber(build.ttk)} s`;
   return h(
@@ -122,10 +123,11 @@ function buildCard(db: Database, build: CoreBuild, rank: number): HTMLElement {
     h("div", { class: "build-icons" }, ...names.map((name) => itemIcon(db, name, 44))),
     h("p", { class: "build-names" }, names.join(" · ")),
     build.note ? h("p", { class: "build-note" }, build.note) : null,
+    h("a", { class: "try", href: href("build", [], buildParams(champion.name, stage.level, build.items, build.boots)) }, "Try in Build Lab ›"),
   );
 }
 
-function stageView(db: Database, core: ChampionCore): HTMLElement {
+function stageView(db: Database, champion: Champion, core: ChampionCore): HTMLElement {
   const stage = stageFor(core, buildLevel, buildTarget);
   if (!stage) return emptyState("No saved builds for this level and target.");
   const target = TARGETS.find((option) => option.key === buildTarget);
@@ -134,7 +136,7 @@ function stageView(db: Database, core: ChampionCore): HTMLElement {
     "div",
     {},
     h("p", { class: "muted small" }, `Level ${stage.level} · ${items} + boots · vs ${target?.label.toLowerCase()} (${target?.example})`),
-    ...stage.builds.map((build, index) => buildCard(db, build, index + 1)),
+    ...stage.builds.map((build, index) => buildCard(db, champion, stage, build, index + 1)),
   );
 }
 
@@ -177,8 +179,8 @@ function buildsTab(db: Database, champion: Champion): Array<HTMLElement | null> 
       : "Build results arrive with the next data update. Connect to the internet and reopen the app.";
     return [emptyState(text)];
   }
-  const stage = h("div", {}, stageView(db, core));
-  const redraw = () => stage.replaceChildren(stageView(db, core));
+  const stage = h("div", {}, stageView(db, champion, core));
+  const redraw = () => stage.replaceChildren(stageView(db, champion, core));
   return [
     coreCard(db, champion, core),
     h("h3", {}, "Top builds"),

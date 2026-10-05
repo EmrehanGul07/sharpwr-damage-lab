@@ -48,6 +48,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.5187
    },
+   "aa": {
+    "base_ad": 57,
+    "ad_growth": 5.2,
+    "as_ratio": 0.694,
+    "base_as": 0.694,
+    "base_bonus_as": 0.16,
+    "as_growth": 0.046
+   },
    "levels": {
     "1": {
      "attack_damage": 57.0,
@@ -268,6 +276,14 @@
     "attack_projectile_speed": 2250.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2256
+   },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 5,
+    "as_ratio": 0.694,
+    "base_as": 0.694,
+    "base_bonus_as": 0.17,
+    "as_growth": 0.02
    },
    "levels": {
     "1": {
@@ -490,6 +506,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2974
    },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 4,
+    "as_ratio": 0.679,
+    "base_as": 0.679,
+    "base_bonus_as": 0.18,
+    "as_growth": 0.03
+   },
    "levels": {
     "1": {
      "attack_damage": 58.0,
@@ -710,6 +734,14 @@
     "attack_projectile_speed": 1600.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.23
+   },
+   "aa": {
+    "base_ad": 66,
+    "ad_growth": 3.8,
+    "as_ratio": 0.679,
+    "base_as": 0.679,
+    "base_bonus_as": 0.11,
+    "as_growth": 0.03
    },
    "levels": {
     "1": {
@@ -932,6 +964,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.25
    },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 3.5,
+    "as_ratio": 0.665,
+    "base_as": 0.665,
+    "base_bonus_as": 0.2,
+    "as_growth": 0.03
+   },
    "levels": {
     "1": {
      "attack_damage": 58.0,
@@ -1152,6 +1192,14 @@
     "attack_projectile_speed": 2000.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2666
+   },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 3,
+    "as_ratio": 0.658,
+    "base_as": 0.658,
+    "base_bonus_as": 0.23,
+    "as_growth": 0.03
    },
    "levels": {
     "1": {
@@ -1374,6 +1422,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.3333
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 4,
+    "as_ratio": 0.658,
+    "base_as": 0.658,
+    "base_bonus_as": 0.23,
+    "as_growth": 0.03
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -1594,6 +1650,14 @@
     "attack_projectile_speed": 2000.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2666
+   },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 4,
+    "as_ratio": 0.658,
+    "base_as": 0.658,
+    "base_bonus_as": 0.22,
+    "as_growth": 0.03
    },
    "levels": {
     "1": {
@@ -1816,6 +1880,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2688
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 4.2,
+    "as_ratio": 0.658,
+    "base_as": 0.658,
+    "base_bonus_as": 0.22,
+    "as_growth": 0.034
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -2036,6 +2108,14 @@
     "attack_projectile_speed": 2800.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.228
+   },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 3.5,
+    "as_ratio": 0.658,
+    "base_as": 0.658,
+    "base_bonus_as": 0.14,
+    "as_growth": 0.03
    },
    "levels": {
     "1": {
@@ -2258,6 +2338,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2256
    },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 4,
+    "as_ratio": 0.656,
+    "base_as": 0.656,
+    "base_bonus_as": 0.22,
+    "as_growth": 0.032
+   },
    "levels": {
     "1": {
      "attack_damage": 58.0,
@@ -2478,6 +2566,14 @@
     "attack_projectile_speed": 2500.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2501
+   },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 3,
+    "as_ratio": 0.65,
+    "base_as": 0.65,
+    "base_bonus_as": 0.23,
+    "as_growth": 0.032
    },
    "levels": {
     "1": {
@@ -2700,6 +2796,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2501
    },
+   "aa": {
+    "base_ad": 59,
+    "ad_growth": 3.5,
+    "as_ratio": 0.644,
+    "base_as": 0.644,
+    "base_bonus_as": 0.17,
+    "as_growth": 0.022
+   },
    "levels": {
     "1": {
      "attack_damage": 59.0,
@@ -2920,6 +3024,14 @@
     "attack_projectile_speed": 2000.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.4193
+   },
+   "aa": {
+    "base_ad": 54,
+    "ad_growth": 2.5,
+    "as_ratio": 0.644,
+    "base_as": 0.644,
+    "base_bonus_as": 0.17,
+    "as_growth": 0.032
    },
    "levels": {
     "1": {
@@ -3142,6 +3254,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2351
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 3.5,
+    "as_ratio": 0.638,
+    "base_as": 0.638,
+    "base_bonus_as": 0.25,
+    "as_growth": 0.028
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -3362,6 +3482,14 @@
     "attack_projectile_speed": 1800.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2605
+   },
+   "aa": {
+    "base_ad": 54,
+    "ad_growth": 3.5,
+    "as_ratio": 0.638,
+    "base_as": 0.638,
+    "base_bonus_as": 0.25,
+    "as_growth": 0.031
    },
    "levels": {
     "1": {
@@ -3584,6 +3712,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.26
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 4.2,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.28,
+    "as_growth": 0.025
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -3804,6 +3940,14 @@
     "attack_projectile_speed": 2750.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.27
+   },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 4,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.3,
+    "as_growth": 0.02
    },
    "levels": {
     "1": {
@@ -4026,6 +4170,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.3014
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 4.5,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.28,
+    "as_growth": 0.022
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -4246,6 +4398,14 @@
     "attack_projectile_speed": 0.0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.2375
+   },
+   "aa": {
+    "base_ad": 58,
+    "ad_growth": 4,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.28,
+    "as_growth": 0.024
    },
    "levels": {
     "1": {
@@ -4468,6 +4628,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.25
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 5,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.06,
+    "as_growth": 0.032
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -4689,6 +4857,14 @@
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.192
    },
+   "aa": {
+    "base_ad": 60,
+    "ad_growth": 4,
+    "as_ratio": 0.625,
+    "base_as": 0.625,
+    "base_bonus_as": 0.3,
+    "as_growth": 0.01
+   },
    "levels": {
     "1": {
      "attack_damage": 60.0,
@@ -4909,6 +5085,14 @@
     "attack_projectile_speed": 0,
     "gameplay_radius": null,
     "base_attack_windup_seconds": 0.5
+   },
+   "aa": {
+    "base_ad": 50,
+    "ad_growth": 0,
+    "as_ratio": 0.3,
+    "base_as": 0.3,
+    "base_bonus_as": 1.1,
+    "as_growth": 0.025
    },
    "levels": {
     "1": {
@@ -7592,6 +7776,33 @@
    "icon": "assets/riot/rune-trees/7202_sorcery.png"
   }
  ],
+ "build_rules": {
+  "max_items": 5,
+  "exclusive_groups": [
+   [
+    "Lord Dominik's Regards",
+    "Mortal Reminder",
+    "Serylda's Grudge",
+    "Terminus"
+   ],
+   [
+    "Manamune",
+    "Muramana"
+   ],
+   [
+    "Essence Reaver",
+    "Iceborn Gauntlet",
+    "Sheen",
+    "Trinity Force"
+   ]
+  ],
+  "spellblade": [
+   "Essence Reaver",
+   "Iceborn Gauntlet",
+   "Sheen",
+   "Trinity Force"
+  ]
+ },
  "tier_list": {
   "title": "ADC ITEM TIER LIST",
   "patch": "7.3a",

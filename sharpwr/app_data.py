@@ -10,7 +10,8 @@ import json
 from pathlib import Path
 
 from .aa_engine import stats
-from .catalog import B, F, K, P, dct
+from .build_fight_optimizer import EXCLUSIVE, SPELLBLADE
+from .catalog import B, C, F, K, P, dct
 from .champion_database import CHAMPION_DATABASE, level_stats
 from .core_items import BUDGETS, EXCLUDED, core_leaders, core_record
 from .icons import icon_entry
@@ -24,6 +25,8 @@ FRACTION_FIELDS = ("as", "crit", "ls", "pctpen", "pctmpen")
 FLAT_MS_COMPONENTS = {"Boots of Speed"}
 DECIMALS = 4
 TIER_LIST = Path(__file__).resolve().parents[1] / "data" / "published-tier-list.json"
+# Attack parameters per champion, in sharpwr/catalog.py C tuple order.
+AA_FIELDS = ("base_ad", "ad_growth", "as_ratio", "base_as", "base_bonus_as", "as_growth")
 # Benchmark targets in display order, as keyed in data/champion-core-items.json.
 TARGETS = ("squishy", "bruiser", "tank")
 
@@ -60,6 +63,7 @@ def _champion(name, record):
         "attack_type": record.get("attack_type"),
         "resource_type": record.get("resource_type"),
         "stats": {key: _number(value) for key, value in record["stats"].items()},
+        "aa": dict(zip(AA_FIELDS, C[name])),
         "levels": {
             str(level): {
                 key: _number(value) for key, value in champion_level_stats(name, level).items()
@@ -196,6 +200,11 @@ def build_database():
         "boots": [_item(name, values, "boots") for name, values in B.items()],
         "runes": [_rune(name, record) for name, record in RUNE_DATABASE.items()],
         "rune_trees": [{"name": tree, "icon": _icon("rune_trees", tree)} for tree in RUNE_SLOTS],
+        "build_rules": {
+            "max_items": 5,
+            "exclusive_groups": [sorted(group) for group in EXCLUSIVE],
+            "spellblade": sorted(SPELLBLADE),
+        },
         "tier_list": _tier_list(),
         "core_items": _core_items(),
     }

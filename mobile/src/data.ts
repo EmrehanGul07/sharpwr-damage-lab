@@ -32,9 +32,21 @@ export interface LevelStats {
   attack_range: number | null;
 }
 
+/** Attack parameters of the engine's AA model (sharpwr/catalog.py C). */
+export interface ChampionAttack {
+  base_ad: number;
+  ad_growth: number;
+  as_ratio: number;
+  base_as: number;
+  base_bonus_as: number;
+  as_growth: number;
+}
+
 export interface Champion {
   name: string;
   icon: string | null;
+  /** Optional: data exported before app version 0.5.0 lacks it. */
+  aa?: ChampionAttack;
   attack_type: string | null;
   resource_type: string | null;
   stats: Record<string, number | null>;
@@ -67,6 +79,14 @@ export interface Rune {
 export interface RuneTree {
   name: string;
   icon: string | null;
+}
+
+/** Legal builds (sharpwr/build_fight_optimizer.py legal and aa_engine.validate_build). */
+export interface BuildRules {
+  max_items: number;
+  /** At most one item from each group. */
+  exclusive_groups: string[][];
+  spellblade: string[];
 }
 
 /** SharpWR's published item tier list, best tier first. */
@@ -128,6 +148,8 @@ export interface Database {
   boots: Item[];
   runes: Rune[];
   rune_trees: RuneTree[];
+  /** Optional: data exported before app version 0.5.0 lacks it. */
+  build_rules?: BuildRules;
   /** Optional: data exported before app version 0.3.0 has neither. */
   tier_list?: TierList;
   core_items?: CoreItems;

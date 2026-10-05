@@ -20,6 +20,7 @@ python scripts/export_app_data.py
 | `boots` | Boots. |
 | `runes` | 51 runes. |
 | `rune_trees` | The four minor rune trees with their icons. |
+| `build_rules` | Legal builds: `max_items` (5), `exclusive_groups` (at most one item from each), `spellblade`. Same as `legal` in `sharpwr/build_fight_optimizer.py` and `validate_build` in `sharpwr/aa_engine.py`. |
 | `tier_list` | SharpWR's published item tier list (`data/published-tier-list.json`). |
 | `core_items` | Saved core-item search results per champion (`data/champion-core-items.json`). |
 
@@ -28,6 +29,7 @@ python scripts/export_app_data.py
 | Field | Meaning |
 |---|---|
 | `name`, `attack_type`, `resource_type` | Identity. `attack_type`/`resource_type` are `null` when the source has no value (Yunara). |
+| `aa` | The engine's attack parameters (`sharpwr/catalog.py` `C`): `base_ad`, `ad_growth`, `as_ratio`, `base_as`, `base_bonus_as`, `as_growth`. Exported unrounded. |
 | `icon` | Champion portrait. |
 | `stats` | Base values and per-level growth as stored, including timing fields. `null` means unknown; never substitute 0. |
 | `levels` | `"1"`–`"15"` → stats before items and runes: `attack_damage`, `attack_speed`, `hp`, `mana`, `hp_regen_per_5s`, `mana_regen_per_5s`, `armor`, `mr`, `movement_speed`, `attack_range`. Identical to the web app's champion card (Senna without Mist stacks). |
@@ -78,6 +80,14 @@ Per champion:
 | `ranking` | Every scored item, best first: `item`, `score` (0–100; Top-3 presence weighted 1, 1/2, 1/3, averaged over eligible cells), `winner_cells` (in the #1 build), `top3_cells` (in all three Top builds), `appearance_cells`, `eligible_cells`. |
 | `stages` | 18 cells, levels 5, 7, 9, 11, 13, 15 × targets `squishy`, `bruiser`, `tank`: `items_allowed` (1, 1, 2, 3, 4, 5) and `builds`, the Top 3 with `items`, `boots`, `ttk` (seconds to defeat the target; `null` if it survived), `dps`, `gold` and `note` (tie explanation or `null`). |
 | `notes` | Unverified mechanics behind this champion's results. |
+
+## Golden outputs (`app-data/golden/`)
+
+Python results the app's TypeScript port of the engine is tested against (`mobile/tests/`), written by the same script and checked by the same test.
+
+| File | Content |
+|---|---|
+| `build-stats.json` | `sharpwr.build_stats.build_stats` for 1,144 builds: empty builds at levels 1, 5, 9 and 15 for every champion, special cases (Senna Mist, mana items, Zeri's cap, Jhin), and every saved core-search finalist. One case per line: inputs and `expected`. |
 
 ## Icons
 

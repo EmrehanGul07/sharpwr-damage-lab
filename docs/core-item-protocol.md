@@ -16,6 +16,10 @@ Cache identity covers engine rules, champion/item/ability/timing datasets, targe
 
 Fingerprint schema 5 hashes the full source of every engine module in the `sharpwr/` package plus the selected core-protocol declarations in `sharpwr/core_items.py`. Schema 4 used the earlier root-level module paths; schema 3 hashed selected source segments of `streamlit_app.py`. Hashing source text rather than `ast.dump` keeps the fingerprint independent of the Python version.
 
+## 7.0.9 cache migration
+
+The search's build summary (AD, AP, Crit %, AH, Starting AS, AS over cap, gold, mana, movement speed) moved into `sharpwr/build_stats.py`, which the mobile app's build calculator also ports, and that module joined the fingerprint. It is bit-for-bit identical to the replaced code on 21,242 builds. Against baseline commit `ded24d0`, all 1,242 retained finalists replay with identical hit ledgers, damage, health and TTK, and the 3,312-case integrity matrix is identical apart from its run time. Saved rows' Starting AS can differ from `build_stats` in the last bit, from an older summation order; tests compare them to 1e-9.
+
 ## 7.0.5 cache migration
 
 The remaining engine modules moved from the repository root into `sharpwr/` and were Black-formatted; each module's AST is unchanged by formatting. Against baseline commit `c833ad3`, all 1,242 retained finalists replay with identical hit ledgers, damage, health and TTK, and the 3,312-case integrity matrix is identical. The stored fingerprint advanced with this evidence.

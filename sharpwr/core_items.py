@@ -11,6 +11,7 @@ BUDGETS = {5: 1, 7: 1, 9: 2, 11: 3, 13: 4, 15: 5}
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_FILES = (
     "sharpwr/build_fight_optimizer.py",
+    "sharpwr/build_stats.py",
     "sharpwr/fight_engine.py",
     "sharpwr/marksman_fight_engine.py",
     "sharpwr/marksman_damage_components.py",
