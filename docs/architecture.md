@@ -26,7 +26,7 @@ data/ (JSON, sayıların tek kaynağı)
 | Katman | Bugün | Hedef |
 |---|---|---|
 | Veri | `data/*.json`, `*_database.py` | Aynı. Sayılar yalnız JSON/veri modüllerinde durur, arayüz kodunda kopyası olmaz. |
-| Motor | Ortak AA motoru (`combat_hits`, `sim_build`, `sim`), seviye formülleri, item/şampiyon tabloları ve hedef profilleri `sharpwr/` paketinde. Uygulama, testler ve scriptler onu normal `import` ile kullanır; `engine_namespace()` build optimizer'a verilir. Diğer motor modülleri (`fight_engine.py`, `marksman_fight_engine.py`, `build_fight_optimizer.py` vb.) hâlâ kök dizinde; hiçbiri Streamlit import etmez. | `sharpwr/` paketi. Tek, belgelenmiş bir giriş noktası: girdi (şampiyon, seviye, item, rün, hedef) → olay kaydı + özet. Testler ve scriptler normal `import` kullanır. |
+| Motor | Motorun tamamı `sharpwr/` paketinde: ortak AA motoru (`catalog`, `aa_engine`, `targets`), şampiyon dövüş adaptörleri (`fight_engine`, `marksman_fight_engine`, `marksman_kits` …), şampiyon/rün/zamanlama verileri, build optimizer, kayıtlı core-item sonuçları. Hiçbiri Streamlit import etmez (test). Kök dizinde yalnız web katmanı kalır: `streamlit_app.py`, `marksman_art.py`, `combat_replay.py`, `engine_runtime.py`. | Tek, belgelenmiş bir giriş noktası: girdi (şampiyon, seviye, item, rün, hedef) → olay kaydı + özet. |
 | Arayüz | `streamlit_app.py`: tek dosyada 6 sekme | Sekme başına modül; yalnız motoru çağırır, hesap yapmaz. |
 | 3D stüdyo | `assets/marksman-3d/*.js`; `marksman_art.studio_html()` dosyaları tek HTML'e metin olarak birleştirir. GLB'ler `static/marksman-3d/` klasöründen uygulamanın kendisi tarafından sunulur (`app/static/`); GitHub kopyası yalnız yedektir. | Kendi başına açılan bir sayfa; veriyi JSON'dan, modelleri uygulamanın kendi dosyalarından yükler. |
 | Mobil | Yok | Capacitor ile paketlenmiş web uygulaması (aşağıya bakın). |
@@ -75,7 +75,8 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | 2a | Model dosyaları: `.blend`/zip → `art-sources` Release; GLB'leri uygulamanın kendisinden sunmak; Ezreal'i sayfaya gömmeyi bırakmak (sayfa 4,4 MB → 0,75 MB) | Tamamlandı (7.0.2) |
 | 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Tamamlandı (7.0.3) |
 | 3a | Ortak AA motorunu `streamlit_app.py`'den `sharpwr/` paketine taşımak; testler ve scriptler `import` kullanır. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.4) |
-| 3b | Kök dizindeki diğer motor modüllerini `sharpwr/` paketine toplamak; tek JSON giriş noktası ve referans (golden) çıktılar | Sırada |
+| 3b-1 | Kök dizindeki 17 motor modülünü `sharpwr/` paketine taşımak ve Black ile biçimlemek. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.5) |
+| 3b-2 | Tek JSON giriş noktası ve mobil port için referans (golden) çıktılar | Sırada |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
