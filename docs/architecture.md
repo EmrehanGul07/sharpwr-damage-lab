@@ -31,7 +31,9 @@ data/ (JSON, sayıların tek kaynağı)
 | 3D stüdyo | `assets/marksman-3d/*.js`; `marksman_art.studio_html()` dosyaları tek HTML'e metin olarak birleştirir. GLB'ler `static/marksman-3d/` klasöründen uygulamanın kendisi tarafından sunulur (`app/static/`); GitHub kopyası yalnız yedektir. | Kendi başına açılan bir sayfa; veriyi JSON'dan, modelleri uygulamanın kendi dosyalarından yükler. |
 | Mobil | Yok | Capacitor ile paketlenmiş web uygulaması (aşağıya bakın). |
 
-## Mobil uygulama yaklaşımı (öneri; 6. adımda kesinleşir)
+## Mobil uygulama yaklaşımı
+
+**Karar (5 Ekim 2026):** İlk sürüm yalnız **Database** içerir: şampiyonlar, eşyalar, parçalar, botlar, rünler. Hesap yapmaz; veriyi motorun ürettiği `app-data/database.json` dosyasından okur ([app-data.md](app-data.md)). Build Lab ve motorun telefona taşınması ikinci sürümdedir. Play Store hazırlığı (T4) uygulama son sürümüne geldiğinde yapılır.
 
 - **Kabuk:** Capacitor. Aynı web kodu Android'de (ileride iOS'ta) çalışır. 3D stüdyo zaten JavaScript/Three.js olduğu için doğrudan taşınır.
 - **Motor:** Telefonda çalışır: internet ve sunucu gerekmez, sunucu masrafı yoktur. Bunun için motorun TypeScript'e taşınması gerekir.
@@ -76,11 +78,15 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Tamamlandı (7.0.3) |
 | 3a | Ortak AA motorunu `streamlit_app.py`'den `sharpwr/` paketine taşımak; testler ve scriptler `import` kullanır. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.4) |
 | 3b-1 | Kök dizindeki 17 motor modülünü `sharpwr/` paketine taşımak ve Black ile biçimlemek. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.5) |
-| 3b-2 | Tek JSON giriş noktası ve mobil port için referans (golden) çıktılar | Sırada |
+| T1 | Database verisini telefon uygulaması için dışa aktarmak (`app-data/database.json`, şema 1); sitedeki şampiyon kartı aynı AD/AS fonksiyonunu kullanır | Tamamlandı (7.0.6) |
+| T2 | İkonları projenin içine almak: rün, eşya ve rün ağacı ikonları ile şampiyon portreleri `assets/riot/` altında; veri dosyasına ikon yolları | Sırada |
+| T3 | Telefon uygulaması ilk sürümü: Database ekranı ve arama; GitHub robotunun ürettiği Android test dosyası (APK) | |
+| T4 | Play Store hazırlığı: ikon, ekran görüntüleri, gizlilik politikası, mağaza metni, geliştirici hesabı | Uygulama son sürümüne gelince |
+| 3b-2 | Build Lab için tek JSON giriş noktası ve motorun mobil portu için referans (golden) çıktılar (ikinci sürüm) | |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
-| 6 | Mobil prototip: Capacitor + TypeScript motor + Play Store kapalı test kanalı | |
+| 6 | Mobil ikinci sürüm: Build Lab, TypeScript motor (3b-2 referanslarıyla doğrulanmış) | |
 | 7 | Görsel kalite (telefon performans bütçesiyle) | |
 | 8 | Gerçek 1v1 düello (hedefin karşılık vermesi) | |
 

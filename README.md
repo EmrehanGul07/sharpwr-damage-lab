@@ -1,4 +1,4 @@
-# SharpWR Damage Lab — V7.0.5
+# SharpWR Damage Lab — V7.0.6
 
 Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`; the UI-independent damage engine lives in `sharpwr/`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
@@ -24,6 +24,7 @@ npm ci --ignore-scripts
 for test in tests/*.cjs; do node "$test" || exit 1; done
 python scripts/audit_combat_matrix.py
 black --check .   # engine package formatting; pip install black
+python scripts/export_app_data.py   # refresh app-data/database.json after data changes
 ```
 
 The integrity audit writes `data/combat-audit-current.json` and `data/combat-audit-traces-current.json`; historical audits remain unchanged. It exits with failure when any scenario fails.
@@ -41,6 +42,7 @@ The integrity audit writes `data/combat-audit-current.json` and `data/combat-aud
 
 - [Architecture and roadmap](docs/architecture.md)
 - [Third-party assets and external hosts](docs/third-party-assets.md)
+- [Mobile app data (`app-data/database.json`)](docs/app-data.md)
 - [Offline completion report](docs/offline-completion-20261003.md)
 - [Active WR evidence TODO](docs/ingame-test-todo.md)
 - [Per-champion queue](docs/marksman-task-queue.md)

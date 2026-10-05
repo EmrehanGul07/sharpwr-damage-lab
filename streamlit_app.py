@@ -17,6 +17,7 @@ if not hasattr(_item_consensus, "progression_ranking"):
     importlib.reload(_item_consensus)
 from sharpwr.item_consensus import consensus, adopters, champion_items, progression_ranking
 from sharpwr.champion_database import CHAMPION_DATABASE, level_stats
+from sharpwr.app_data import champion_level_stats
 from sharpwr.rune_database import RUNE_DATABASE, RUNE_TREES, RUNE_SLOTS
 from sharpwr.rune_runtime import persistent_stats, own_stats, FIGHT_KEYSTONES, FIGHT_RUNES
 from sharpwr.champion_skill_data import SAMIRA_ABILITIES, SMOLDER_ABILITIES
@@ -623,10 +624,10 @@ def _setup_heading(step,kicker,title):
     st.markdown(f'<div class="setup-head"><span class="setup-step">{html.escape(step)}</span><div><small>{html.escape(kicker)}</small><strong>{html.escape(title)}</strong></div></div>',unsafe_allow_html=True)
 
 def _champion_profile(name,lvl,mist_count=0):
-    profile=stats(name,lvl,mist_count)
+    profile=champion_level_stats(name,lvl,mist_count)
     slug={"Kog'Maw":"KogMaw","Kai'Sa":"Kaisa","Miss Fortune":"MissFortune"}.get(name,name)
     portrait=f"https://ddragon.leagueoflegends.com/cdn/15.15.1/img/champion/{slug}.png"
-    attack_speed=profile["baseas"]+profile["ratio"]*(profile["bba"]+profile["lvbas"])
+    attack_speed=profile["attack_speed"]
     from sharpwr.core_items import core_record
     _core=core_record(name)
     _core_card=''
@@ -634,7 +635,7 @@ def _champion_profile(name,lvl,mist_count=0):
         _leaders=[r for r in _core['ranking'] if abs(r['Score']-_core['ranking'][0]['Score'])<1e-6][:2]
         _icons=''.join(f'<img src="{html.escape(item_icon(r["Item"]))}" alt="{html.escape(r["Item"])}" title="{html.escape(r["Item"])}">' for r in _leaders)
         _core_card=f'<div class="champion-core"><span>CORE ITEM</span><div class="core-icons">{_icons}</div></div>'
-    st.markdown(f'<div class="champion-profile"><img class="champion-portrait" src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["ad"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div>{_core_card}</div>',unsafe_allow_html=True)
+    st.markdown(f'<div class="champion-profile"><img class="champion-portrait" src="{html.escape(portrait)}" alt="{html.escape(name)} portrait"><div class="identity"><div class="name">{html.escape(name)}</div><div class="level">LEVEL {lvl} · BEFORE ITEMS & RUNES</div><div class="champion-stats"><div><b>{profile["attack_damage"]:.1f}</b><span>ATTACK DAMAGE</span></div><div><b>{attack_speed:.3f}</b><span>ATTACK SPEED</span></div></div></div>{_core_card}</div>',unsafe_allow_html=True)
     if not _core_card:
         st.caption('CORE ITEM · calculation pending')
 
