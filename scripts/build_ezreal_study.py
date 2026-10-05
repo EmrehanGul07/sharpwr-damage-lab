@@ -5,8 +5,11 @@ import bpy, math, json, hashlib, zipfile
 from pathlib import Path
 from mathutils import Vector
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'assets/marksman-3d/studies/ezreal-v2'
-OUT.mkdir(parents=True,exist_ok=True)
+# Editable source and intermediate GLBs are build outputs (not tracked); the roster build copies them to static/.
+OUT=ROOT/'build/ezreal-v2'
+RELEASE=ROOT/'build/release'
+MANIFEST=ROOT/'assets/marksman-3d/studies/ezreal-v2/manifest.json'
+for folder in (OUT,RELEASE,MANIFEST.parent):folder.mkdir(parents=True,exist_ok=True)
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 def material(name,color,metal=0,rough=.5,emission=0):
  m=bpy.data.materials.new(name);m.diffuse_color=(*color,1);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*color,1);p.inputs['Metallic'].default_value=metal;p.inputs['Roughness'].default_value=rough
@@ -222,7 +225,7 @@ review=ROOT/'docs/art-review';review.mkdir(parents=True,exist_ok=True)
 for name,u in [('Idle',0),('Q',.5),('R',.45),('Walk',.2)]:
  performance(name,u,u*clips[name]);bpy.context.view_layer.update();scene.render.filepath=str(review/('ezreal-v2-'+name.lower()+'.png'));bpy.ops.render.render(write_still=True)
 meta={'schema':1,'champion':'Ezreal','tool':'Blender 4.5.14 LTS','source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'bones':len(defs),'animations':clips,'status':'original stylized production study; not final Wild Rift fidelity'}
-(OUT/'manifest.json').write_text(json.dumps(meta,indent=2)+'\n')
-with zipfile.ZipFile(OUT/'ezreal-v2-source.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
- for file in [OUT/'ezreal-v2.blend',OUT/'ezreal-v2.glb',OUT/'ezreal-v2-preview.glb',OUT/'manifest.json',Path(__file__)]:z.write(file,file.name)
+MANIFEST.write_text(json.dumps(meta,indent=2)+'\n')
+with zipfile.ZipFile(RELEASE/'sharpwr-ezreal-v2-source.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+ for file in [OUT/'ezreal-v2.blend',OUT/'ezreal-v2.glb',OUT/'ezreal-v2-preview.glb',MANIFEST,Path(__file__)]:z.write(file,file.name)
 print('EZREAL_V2_COMPLETE',str(OUT))

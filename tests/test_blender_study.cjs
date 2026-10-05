@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 (async()=>{
  const T=await import('three'),{GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js'),{clone}=await import('three/addons/utils/SkeletonUtils.js');
- const Avatar=require('../assets/marksman-3d/baked-avatar.js'),root=path.join(__dirname,'../assets/marksman-3d/studies/ezreal-v2'),bytes=fs.readFileSync(path.join(root,'ezreal-v2.glb'));
+ const Avatar=require('../assets/marksman-3d/baked-avatar.js'),bytes=fs.readFileSync(path.join(__dirname,'../static/marksman-3d/ezreal/character.glb'));
  const gltf=await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
  assert.deepEqual(gltf.animations.map(c=>c.name),['Idle','Walk','AA','P','Q','W','E','R']);
  const profile={...JSON.parse(fs.readFileSync(path.join(__dirname,'../data/marksman-art-direction.json'))).champions.Ezreal,name:'Ezreal'},avatar=Avatar.createAvatar(T,gltf,clone,profile);

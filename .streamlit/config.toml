@@ -8,3 +8,7 @@ font = "sans serif"
 
 [browser]
 gatherUsageStats = false
+
+[server]
+# Serves static/ (skinned GLBs) at app/static/ for the Animation Studio.
+enableStaticServing = true
