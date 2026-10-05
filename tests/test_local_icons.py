@@ -33,11 +33,9 @@ class LocalIconTests(unittest.TestCase):
             for name, entry in manifest()[kind].items():
                 self.assertTrue(entry["path"].startswith("assets/riot/"), (kind, name))
                 path = ROOT / entry["path"]
-                if entry["source"] is None:
-                    # No URL to fetch from: the file itself is the only copy.
-                    self.assertTrue(path.is_file(), (kind, name))
-                if path.is_file():
-                    self.assertTrue(_is_image(path.read_bytes()[:16]), (kind, name))
+                # Missing files: run the "Fetch bundled Riot icons" workflow.
+                self.assertTrue(path.is_file(), (kind, name))
+                self.assertTrue(_is_image(path.read_bytes()[:16]), (kind, name))
 
 
 if __name__ == "__main__":

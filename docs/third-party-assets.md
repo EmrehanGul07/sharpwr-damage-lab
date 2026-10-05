@@ -6,11 +6,15 @@ Bu dosyanın amacı: Riot'a ait görselleri ve dış bağlantıları tek bir lis
 
 ## Projede duran Riot görselleri
 
-Hepsi `riot/` adlı klasörlerde tutulur.
+Hepsi `riot/` adlı klasörlerde tutulur. Uygulamanın gösterdiği her ikon, dosya yolu ve kaynağıyla `data/riot/icons.json` listesindedir. Listede olup projede olmayan dosyaları "Fetch bundled Riot icons" GitHub iş akışı (`scripts/fetch_riot_icons.py`) indirir; liste değiştiğinde kendiliğinden çalışır.
 
 | Yol | İçerik | Kaynak |
 |---|---|---|
-| `assets/riot/items/` | 28 Wild Rift item ve boots ikonu (PNG/WebP) | Topluluk wiki'leri ve fan siteleri; dosya bazında kaynak kaydedilmemiş |
+| `assets/riot/items/` | 14 Wild Rift item ve 14 boots ikonu | Topluluk wiki'leri ve fan siteleri; dosya bazında kaynak kaydedilmemiş |
+| `assets/riot/items/` (sayısal adlar) | 22 item ikonu | Community Dragon (PC oyun dosyaları) |
+| `assets/riot/runes/` | 51 rün ikonu | riftpatchnotes.com (fan sitesi) |
+| `assets/riot/rune-trees/` | 4 rün ağacı ikonu | Community Dragon |
+| `assets/riot/champions/` | 23 şampiyon portresi | Riot Data Dragon 15.15.1 (PC) |
 | `data/riot/marksman-skill-icons.json` | 23 şampiyon için 115 yetenek ikonu (base64) | 20 şampiyon kullanıcının Wild Rift ekran görüntülerinden kırpıldı, 3 şampiyon Riot Data Dragon'dan. Her şampiyonun `source` alanı kaynağı belirtir. |
 
 ## Site çalışırken dışarıdan yüklenenler
@@ -18,11 +22,10 @@ Hepsi `riot/` adlı klasörlerde tutulur.
 | Adres | Ne için | Kodda | Sahibi | Mobil uygulama için |
 |---|---|---|---|---|
 | `cdn.jsdelivr.net/npm/three@0.169.0` | 3D kütüphanesi (Three.js) | `assets/marksman-3d/scene.js`, `studio.html`, `assets/combat_replay.html`, `assets/ezreal_replay_3d.js` | Açık kaynak (MIT) | Uygulamaya gömülmeli; paket zaten `package.json`'da |
-| `raw.communitydragon.org` | Yerel kopyası olmayan item ikonları ve 4 rün ağacı ikonu | `CD_ITEM_ICON_BASE`, `ITEM_ICON_FILE`, `TREE_ICON_URL` (`streamlit_app.py`) | Riot görselleri (PC oyun dosyalarından) | Yerel kopyaları `assets/riot/` altına alınmalı |
-| `www.riftpatchnotes.com/runes/` | Rün ikonları | `rune_icon()` (`streamlit_app.py`) | Riot görselleri, bir fan sitesinden doğrudan bağlanıyor | Resmi bir kaynaktan yerel kopya ile değiştirilmeli |
-| `ddragon.leagueoflegends.com/cdn/15.15.1` | Şampiyon portreleri | `_champion_profile()` (`streamlit_app.py`) | Riot'un resmi Data Dragon'u (PC görselleri) | Yerel kopyaları `assets/riot/` altına alınmalı |
 | `raw.githubusercontent.com/.../static/marksman-3d` | 3D modeller için yedek adres | `MODEL_FALLBACK` (`scene.js`) | Bu proje | Gerekmez; modeller uygulamanın içinde |
 | `github.com/.../releases/download/art-sources` | Blender kaynakları ve indirme paketleri | `RELEASE_URL` (`marksman_art.py`) | Bu proje | Gerekmez |
+
+İkonlar için dış adresler yalnız yedek olarak kalır: bir ikon dosyası projede yoksa site, `icons.json`'daki kaynak adresi kullanır.
 
 ## Orijinal içerik
 

@@ -30,6 +30,15 @@ class AppDataTests(unittest.TestCase):
         for champion in data["champions"]:
             self.assertEqual(list(champion["levels"]), [str(level) for level in range(1, 16)])
 
+    def test_icon_paths_point_to_bundled_files(self):
+        groups = ("champions", "items", "components", "boots", "runes", "rune_trees")
+        for group in groups:
+            for record in self.data[group]:
+                if group == "components":
+                    self.assertIsNone(record["icon"], record["name"])
+                else:
+                    self.assertTrue((ROOT / record["icon"]).is_file(), (group, record["name"]))
+
     def test_movement_speed_unit_is_explicit(self):
         for group in ("items", "components", "boots"):
             for record in self.data[group]:
