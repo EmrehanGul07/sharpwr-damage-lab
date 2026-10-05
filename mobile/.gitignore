@@ -1,0 +1,4 @@
+dist/
+# Copied from the repository by scripts/sync-data.mjs before every build.
+public/data/
+public/assets/

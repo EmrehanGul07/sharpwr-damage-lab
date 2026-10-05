@@ -80,7 +80,7 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | 3b-1 | Kök dizindeki 17 motor modülünü `sharpwr/` paketine taşımak ve Black ile biçimlemek. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.5) |
 | T1 | Database verisini telefon uygulaması için dışa aktarmak (`app-data/database.json`, şema 1); sitedeki şampiyon kartı aynı AD/AS fonksiyonunu kullanır | Tamamlandı (7.0.6) |
 | T2 | İkonları projenin içine almak: 128 ikon `assets/riot/` altında, liste `data/riot/icons.json`'da, eksikleri GitHub iş akışı indirir; veri dosyasına ikon yolları | Tamamlandı (7.0.7) |
-| T3 | Telefon uygulaması ilk sürümü: Database ekranı ve arama; GitHub robotunun ürettiği Android test dosyası (APK) | Sırada |
+| T3 | Telefon uygulaması ilk sürümü (İngilizce): Database ekranları ve arama, `mobile/` (Capacitor + TypeScript), GitHub iş akışının ürettiği Android önizleme APK'sı ([mobile.md](mobile.md)) | Önizleme 0.1.0 |
 | T4 | Play Store hazırlığı: ikon, ekran görüntüleri, gizlilik politikası, mağaza metni, geliştirici hesabı | Uygulama son sürümüne gelince |
 | 3b-2 | Build Lab için tek JSON giriş noktası ve motorun mobil portu için referans (golden) çıktılar (ikinci sürüm) | |
 | 3c | Arayüzü sekme modüllerine bölmek | |
