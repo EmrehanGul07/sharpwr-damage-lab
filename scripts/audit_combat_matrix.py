@@ -97,8 +97,7 @@ def run(output=None, trace_output=None):
     simulations+=e.simulations
   print(name,count,'cases',flush=True)
  failures=[r for r in rows if r['status']=='FAIL']
- import re
- version=re.search(r'ensure_engine_revision\("([^" ]+)"\)',(ROOT/'streamlit_app.py').read_text()).group(1)
+ version=(ROOT/'VERSION').read_text().strip()
  out={'version':version,'purpose':'Integrity audit only; PC timing proxies and provisional WR mechanics do not establish gameplay parity or globally optimal builds. Not a build cache.','champions':len(PRIORITIES),'levels':[1,15],'targets':list(ns['TARGET_PROFILES']),'case_count':len(rows),'fight_simulations':simulations,'elapsed_seconds':time.perf_counter()-started,'failures':failures,'warnings':{k:sorted(v) for k,v in warnings.items()},'rows':rows}
  Path(output or ROOT/'data/combat-audit-current.json').write_text(json.dumps(out,ensure_ascii=False,separators=(',',':'))+'\n')
  Path(trace_output or ROOT/'data/combat-audit-traces-current.json').write_text(json.dumps(examples,ensure_ascii=False,separators=(',',':'))+'\n')

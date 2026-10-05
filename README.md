@@ -1,6 +1,6 @@
-# SharpWR Damage Lab — V5.87.1
+# SharpWR Damage Lab — V7.0.1
 
-Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays. Entry point: `streamlit_app.py`.
+Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
 The model covers a stationary target that does not attack back. Authorized PC timing proxies and unresolved WR rules remain explicit assumptions. Automated tests check the implemented model; they do not establish real Wild Rift parity.
 
@@ -12,6 +12,7 @@ The model covers a stationary target that does not attack back. Authorized PC ti
 - First Strike models only the explicitly ready initial three-second engagement; rearming and gold are excluded. Adaptive damage procs retain the existing ADC physical assumption.
 - Yun Tal starting crit/Flurry, Energized launch consumption, Spellblade readiness, manual base mana and persistent rune settings reach replay.
 - Recorded core items use a bounded search, not exhaustive/global optimization. Source fingerprints guard saved results.
+- Animation Studio is presentation only: original stylized skinned models for all 23 marksmen, practice mode and range-aware skill indicators. It does not calculate damage.
 
 ## Run and validate
 
@@ -19,20 +20,31 @@ The model covers a stationary target that does not attack back. Authorized PC ti
 python -m pip install -r requirements.txt
 streamlit run streamlit_app.py
 python -m unittest discover -s tests
-node tests/test_replay_state.cjs
+npm ci --ignore-scripts
+for test in tests/*.cjs; do node "$test" || exit 1; done
 python scripts/audit_combat_matrix.py
 ```
 
 The integrity audit writes `data/combat-audit-current.json` and `data/combat-audit-traces-current.json`; historical audits remain unchanged. It exits with failure when any scenario fails.
 
+## Versioning
+
+`VERSION` is the single version source. The app footer, the integrity audit and this title read or match it, and a test enforces that. Bump it with every release that changes Python code: the live server reloads the engine modules only when the version changes.
+
 ## Current work and evidence
 
+- [Architecture and roadmap](docs/architecture.md)
 - [Offline completion report](docs/offline-completion-20261003.md)
 - [Active WR evidence TODO](docs/ingame-test-todo.md)
 - [Per-champion queue](docs/marksman-task-queue.md)
 - [Current adapters and runtime assumptions](docs/all-marksman-fight-engine.md)
 - [Core-item protocol](docs/core-item-protocol.md)
+- [Skinned roster V7](docs/roster-v7.md)
 
 ## Deploy
 
 Streamlit Community Cloud uses this repository's `main` branch and `streamlit_app.py`. The published tier board and its saved data are separate from the research calculator.
+
+## Legal
+
+SharpWR isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.

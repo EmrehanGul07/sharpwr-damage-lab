@@ -6,7 +6,8 @@ import urllib.parse
 import streamlit.components.v1 as components
 from pathlib import Path
 from engine_runtime import ensure_engine_revision
-ensure_engine_revision("7.0.0")
+APP_VERSION=(Path(__file__).resolve().parent/"VERSION").read_text().strip()
+ensure_engine_revision(APP_VERSION)
 from combat_replay import replay_payload, replay_html
 import item_consensus as _item_consensus
 if not hasattr(_item_consensus, "progression_ranking"):
@@ -95,7 +96,7 @@ def _equipped_rune_slot(label, state_key):
         if icon: st.image(icon,width=48)
     with b:
         st.markdown(f'<div class="wr-eq-name">{html.escape(name)}</div>',unsafe_allow_html=True)
-        if st.button("Remove",key=f"remove_{state_key}",use_container_width=False):
+        if st.button("Remove",key=f"remove_{state_key}",width="content"):
             st.session_state[state_key]=None
             st.rerun()
 
@@ -117,7 +118,7 @@ def _tree_icon_picker(label, options, state_key, cols=4):
             st.markdown('<div class="wr-tree-marker '+('wr-tree-selected' if chosen else '')+'"></div>',unsafe_allow_html=True)
             st.image(TREE_ICON_URL[name],width=72)
             st.markdown(f'<div class="wr-tree-name">{html.escape(name)}</div>',unsafe_allow_html=True)
-            if st.button("Selected" if chosen else "Choose",key=f"{state_key}_tree_{i}",help=None,use_container_width=False):
+            if st.button("Selected" if chosen else "Choose",key=f"{state_key}_tree_{i}",help=None,width="content"):
                 st.session_state[state_key]=name
                 st.rerun()
     return st.session_state.get(state_key,current)
@@ -139,7 +140,7 @@ def _rune_icon_grid(label, options, state_key, cols=6):
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if chosen else '')+'">'+card+'</div>',unsafe_allow_html=True)
                 if icon: st.image(icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(name)}</div>',unsafe_allow_html=True)
-                if st.button("Equip",key=f"{state_key}__{i}__{name}",help=None,use_container_width=False):
+                if st.button("Equip",key=f"{state_key}__{i}__{name}",help=None,width="content"):
                     st.session_state[state_key]=name; st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
     return st.session_state.get(state_key,current)
@@ -330,7 +331,7 @@ def _premium_item_grid(items, selected):
 
 import pandas as pd
 
-st.set_page_config(page_title="SharpWR Damage Lab V5", page_icon="⚔️", layout="wide")
+st.set_page_config(page_title="SharpWR Damage Lab", page_icon="⚔️", layout="wide")
 st.markdown("""
 <style>
 .wr-picker-title{margin:.7rem 0 .3rem;font-size:.9rem;font-weight:700;color:#dce3ec}
@@ -1123,7 +1124,7 @@ with tabs[0]:
             tier_mana=None
     st.info("Public preview · Build search is temporarily unavailable while the combat engine is being validated.")
     _tier_signature=("7.0.0",tier_champ,tier_level,tier_target,tier_scenario,tier_mist,tier_execs,tier_yuntal_stacks,tier_dragon,tier_mana)
-    if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",use_container_width=True,key="tiercalc",disabled=True) and False:
+    if st.button(f"⚔️ FIND BEST BUILDS VS {tier_target.split(' • ')[0].upper()}",type="primary",width="stretch",key="tiercalc",disabled=True) and False:
         tier_hp=float(_target["hp"]);tier_armor=float(_target["armor"]);tier_mr=float(_target["mr"])
         _natural={"Squishy • Jinx":tier_hp,"Bruiser • Darius":660+148*gu(tier_level),"Tank • Ornn":690+132*gu(tier_level)}[tier_target]
         _progress=st.progress(0.,text="Simulating AA + abilities…")
@@ -1450,7 +1451,7 @@ with tabs[1]:
                 _it=build[_i]; _url=item_icon(_it)
                 if _url: st.image(_url,width=58)
                 st.markdown(f'<div class="build-slot-name">{html.escape(_it)}</div>',unsafe_allow_html=True)
-                if st.button("✕ Remove",key=f"remove_item_{_i}",use_container_width=True):
+                if st.button("✕ Remove",key=f"remove_item_{_i}",width="stretch"):
                     build.pop(_i); st.session_state.build_items_v2=build; st.rerun()
             else:
                 st.markdown('<div class="build-empty-slot">＋</div><div class="build-slot-name">EMPTY SLOT</div>',unsafe_allow_html=True)
@@ -1474,7 +1475,7 @@ with tabs[1]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _selected else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button("Equipped" if _selected else "Spellblade locked" if _spellblade_locked else "Build full" if len(build)>=5 else "Equip",key=f"native_item_{_ii}",help=None,use_container_width=False,disabled=_selected or len(build)>=5 or _spellblade_locked):
+                if st.button("Equipped" if _selected else "Spellblade locked" if _spellblade_locked else "Build full" if len(build)>=5 else "Equip",key=f"native_item_{_ii}",help=None,width="content",disabled=_selected or len(build)>=5 or _spellblade_locked):
                     _new=list(st.session_state.build_items_v2)
                     if _name not in _new and len(_new)<5 and not (_name in SPELLBLADE and set(_new)&SPELLBLADE):
                         _new.append(_name); st.session_state.build_items_v2=_new
@@ -1516,7 +1517,7 @@ with tabs[1]:
                 st.markdown('<div class="wr-pick-marker '+('wr-selected' if _sel else '')+'">'+_card+'</div>',unsafe_allow_html=True)
                 if _icon: st.image(_icon,width=66)
                 st.markdown(f'<div class="wr-icon-name">{html.escape(_name)}</div>',unsafe_allow_html=True)
-                if st.button("Equipped" if _sel else "Equip",key=f"pick_boot_{_i}",help=None,use_container_width=False):
+                if st.button("Equipped" if _sel else "Equip",key=f"pick_boot_{_i}",help=None,width="content"):
                     st.session_state.build_boot_v2=_name
                     st.rerun()
         st.markdown('<div class="wr-grid-gap"></div>',unsafe_allow_html=True)
@@ -1610,8 +1611,8 @@ with tabs[1]:
                 _fight_rows=[]
                 for _e in _fight_result.log:
                     _fight_rows.append([round(_e["time"],3),_e["action"],round(_e["AD"],2),round(_e["crit_chance"]*100,2),round(_e["damage"],2),round(_e["hp_after"],2),round(_e["mana"],2) if _e["mana"] is not None else None,round(_e["distance"],2),_e["dragon_stacks"] if champ=="Smolder" else None,round(_e["kite_arc"],1),str(_e["before"]),str(_e["after"]),str({k:round(v,2) for k,v in _e["cooldowns"].items()}),_e["executed"],"Melee" if _e["melee"] else "Ranged"," / ".join(_e["effects"])])
-                if _fight_rows: st.dataframe(pd.DataFrame(_fight_rows,columns=["Time","Event","AD","Crit %","Damage","Target HP","Mana","Distance","Dragon stacks","Kite movement","Stacks before","Stacks after","Cooldowns remaining","Collector execute","Range","Effects"]),hide_index=True,use_container_width=True)
-                if _fight_result.rejected: st.dataframe(pd.DataFrame(_fight_result.rejected),hide_index=True,use_container_width=True)
+                if _fight_rows: st.dataframe(pd.DataFrame(_fight_rows,columns=["Time","Event","AD","Crit %","Damage","Target HP","Mana","Distance","Dragon stacks","Kite movement","Stacks before","Stacks after","Cooldowns remaining","Collector execute","Range","Effects"]),hide_index=True,width="stretch")
+                if _fight_result.rejected: st.dataframe(pd.DataFrame(_fight_result.rejected),hide_index=True,width="stretch")
                 if _fight_result.assumptions:
                     with st.expander("Research notes — unverified mechanics"):
                         for _note in _fight_result.assumptions:st.write(_note)
@@ -1625,7 +1626,7 @@ with tabs[1]:
         if _cd_rows: st.table(pd.DataFrame(_cd_rows,columns=["Ability","Base cooldown","Cooldown with total haste","Mana cost"]))
     if len(build)<5 or len(set(build))<5:
         st.error("Choose 5 different completed items.")
-    elif champ!="Jhin" and st.button("Calculate build",type="primary",use_container_width=True):
+    elif champ!="Jhin" and st.button("Calculate build",type="primary",width="stretch"):
         qs=[dct(F[x]) for x in build]; qb=dct(B[boot])
         total={k:sum(q[k] for q in qs)+qb[k] for k in K}
         s0=stats(champ,level,mist)
@@ -1867,12 +1868,12 @@ with tabs[1]:
         with st.expander("Rune Combat Breakdown V2"):
             if rune_trace:
                 st.caption("Each rune contribution is separated. Multipliers show their exact damage delta on that hit.")
-                st.dataframe(pd.DataFrame(rune_trace,columns=["AA","Time","Target HP %","Rune Events","Total Rune Delta","Final Hit"]),use_container_width=True,hide_index=True)
+                st.dataframe(pd.DataFrame(rune_trace,columns=["AA","Time","Target HP %","Rune Events","Total Rune Delta","Final Hit"]),width="stretch",hide_index=True)
             else:
                 st.caption("No selected rune changed auto-attack damage in this scenario.")
             st.markdown("**Stack / Cooldown Timeline**")
             if rune_timeline:
-                st.dataframe(pd.DataFrame(rune_timeline,columns=["AA","Time","Target HP After","Stacks Before → After","Cooldowns","Rune Events"]),use_container_width=True,hide_index=True)
+                st.dataframe(pd.DataFrame(rune_timeline,columns=["AA","Time","Target HP After","Stacks Before → After","Cooldowns","Rune Events"]),width="stretch",hide_index=True)
         with st.expander("Max Single Hit breakdown"):
             st.caption("Item-only first-hit estimate using the shared engine; rune damage is excluded. Highest one basic attack when a crit is possible. Ready Spellblade, Energized and first-hit effects use the scenario switches. Kraken 3rd-hit and pre-stacked Terminus/Rageblade are not assumed.")
             br=[]
@@ -1978,7 +1979,7 @@ with tabs[2]:
             _iv_table=val[val["Item"].str.contains(_iv_query.strip(),case=False,regex=False)].sort_values(_iv_sort,ascending=_iv_sort=="Cost")
             st.caption(f"{len(_iv_table)} of {len(val)} items · Rank refers to DPS / 1000g")
             if _iv_table.empty: st.info("No items match this search. Try another item name.")
-            st.dataframe(_iv_table,use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
+            st.dataframe(_iv_table,width="stretch",hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
         st.info("Unpriced stats/passives are excluded from Raw Gold Efficiency rather than assigned invented prices.")
     else:
         st.info("Jhin item value rankings are pending dedicated four-shot and reload modeling.")
@@ -2089,7 +2090,7 @@ with tabs[3]:
         _tests=_rune_self_tests()
         _passed=sum(1 for r in _tests if r[1]=="PASS")
         st.caption(f"{_passed}/{len(_tests)} deterministic checks passing. Guards verified rune math, thresholds, stack timing and persistent defaults.")
-        st.dataframe(pd.DataFrame(_tests,columns=["Test","Status","Actual","Expected"]),use_container_width=True,hide_index=True)
+        st.dataframe(pd.DataFrame(_tests,columns=["Test","Status","Actual","Expected"]),width="stretch",hide_index=True)
         if _passed==len(_tests): st.success("All rune regression checks PASS.")
         else: st.error(f"{len(_tests)-_passed} rune regression check(s) FAILED.")
         counts={tree:len(names) for tree,names in RUNE_TREES.items()}
@@ -2126,7 +2127,7 @@ with tabs[3]:
                     _kh=sum(1+(1 if "Phantom Hit" in str(_x[8]) else 0) for _x in _blog[:_k])
                     _state.append(f"Kraken {_kh%3}/3")
                 _brows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note," • ".join(_state)])
-            st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),use_container_width=True,hide_index=True)
+            st.dataframe(pd.DataFrame(_brows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Build State"]),width="stretch",hide_index=True)
             st.caption("Build engine now carries the audited AA mechanics used by the single-item simulator: Giant Slayer, Energized cadence, Cloudburst, Nightstalker, Collector execute, Spellblade, Phantom Dancer stacks, mana on-hits and the verified Rageblade interactions. Rageblade + Kraken, Wit's End and Terminus behavior follows the in-game checks.")
     elif dbpick=="Item Engine Audit":
         st.caption("Developer trace: this runs the same single-item sim() used by Item Tier List, so the table exposes the actual ranking engine rather than a second calculator.")
@@ -2181,7 +2182,7 @@ with tabs[3]:
                 _state=f"Distance {_adist:.0f} • Magnification +{_amp}%"
             _rows.append([_k,_t,_asp,_crit,_ea,_before,_dmg,_after,_note,_state])
         _trace=pd.DataFrame(_rows,columns=["AA","Time","AS","Crit %","Effective Armor","HP Before","Damage","HP After","Proc / Note","Item State"])
-        st.dataframe(_trace,use_container_width=True,hide_index=True)
+        st.dataframe(_trace,width="stretch",hide_index=True)
         if _ai=="Yun Tal Wildarrows":
             st.info("Yun Tal trace currently exposes permanent-crit growth and Flurry trigger notes. Flurry cooldown reduction is executed inside sim(); a dedicated per-hit remaining-CD field would require extending sim()'s log schema.")
         elif _ai=="Hexoptics C44":
@@ -2200,7 +2201,7 @@ with tabs[3]:
             q=dct(v0); rows.append([boot_icon(n) if dbpick=="Boots" else item_icon(n),n,q["gold"],q["ad"],q["as"]*100,q["crit"]*100,q["ap"],q["hp"],q["mana"],q["armor"],q["mr"],q["ah"],q["ls"]*100,q["flatpen"],q["pctpen"]*100,q["ms"]])
         st.caption(f"{len(rows)} of {len(DB)} records · Base stats")
         if not rows: st.info("No records match this search. Try another item or boots name.")
-        st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),use_container_width=True,hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
+        st.dataframe(pd.DataFrame(rows,columns=["Icon","Item","Gold","AD","AS%","Crit%","AP","HP","Mana","Armor","MR","AH","LS%","Flat Pen","Armor Pen%","MS"]),width="stretch",hide_index=True,column_config={"Icon":st.column_config.ImageColumn(""),"Item":st.column_config.TextColumn("Item",width="medium")})
 
 with tabs[4]:
     import json
@@ -2231,4 +2232,4 @@ with tabs[5]:
         if (_study_root/'ezreal-v2-source.zip').is_file():
             st.download_button("Download editable Blender study",(_study_root/'ezreal-v2-source.zip').read_bytes(),file_name="sharpwr-ezreal-v2-source.zip",mime="application/zip",key="ezreal_v2_source")
 
-st.caption("Web V7.0.0 | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
+st.caption(f"Web V{APP_VERSION} | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
