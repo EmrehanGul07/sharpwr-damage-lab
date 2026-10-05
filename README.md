@@ -1,4 +1,4 @@
-# SharpWR Damage Lab — V7.0.2
+# SharpWR Damage Lab — V7.0.3
 
 Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
@@ -39,6 +39,7 @@ The integrity audit writes `data/combat-audit-current.json` and `data/combat-aud
 ## Current work and evidence
 
 - [Architecture and roadmap](docs/architecture.md)
+- [Third-party assets and external hosts](docs/third-party-assets.md)
 - [Offline completion report](docs/offline-completion-20261003.md)
 - [Active WR evidence TODO](docs/ingame-test-todo.md)
 - [Per-champion queue](docs/marksman-task-queue.md)

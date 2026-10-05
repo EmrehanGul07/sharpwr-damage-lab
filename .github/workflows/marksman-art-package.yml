@@ -5,7 +5,7 @@ on:
     paths:
       - "assets/marksman-3d/*.js"
       - "data/marksman-art-direction.json"
-      - "data/marksman-skill-icons.json"
+      - "data/riot/marksman-skill-icons.json"
       - "assets/marksman-3d/studio.html"
       - "marksman_art.py"
       - "tests/test_combat_hud.cjs"

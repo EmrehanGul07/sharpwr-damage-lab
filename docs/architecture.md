@@ -38,13 +38,25 @@ data/ (JSON, sayıların tek kaynağı)
 - **Doğruluk:** Taşınan motor, Python motorundan üretilen referans (golden) çıktılara karşı birebir test edilir. Kaynak olarak mevcut entegrasyon matrisi (3.312 senaryo / 6.912 dövüş) kullanılır. İki motor sürümü yan yana durduğu sürece Python sürümü referanstır.
 - **Değerlendirilen alternatifler:** Sunucuda Python (FastAPI) internet ve sunucu maliyeti gerektirir. Pyodide (Python'ı telefonda çalıştırmak) uygulamayı büyütür ve açılışı yavaşlatır.
 
+## Mobil boyut ölçümü (5 Ekim 2026)
+
+23 şampiyonun GLB'lerinde doku yoktur; boyutun tamamı geometri ve animasyondur. `gltf-transform` 4.5.1 ile ölçüldü, depodaki dosyalar değiştirilmedi:
+
+| Set | Bugün | meshopt | optimize + meshopt (palet ve simplify kapalı) |
+|---|---|---|---|
+| Tam modeller (`character.glb`) | 27,3 MB | 6,4 MB | 5,6 MB |
+| Önizlemeler (`preview.glb`) | 10,1 MB | 3,9 MB | 3,5 MB |
+| Toplam | 37,4 MB | 10,3 MB | 9,1 MB |
+
+Sıkıştırılmış 92 dosyanın hepsi Three.js `GLTFLoader` + `MeshoptDecoder` ile açıldı ve 8 klibini korudu. Tüm kliplerde kemik pozisyonu sapması en fazla 0,0016 dünya birimi (≈0,16 oyun birimi). `optimize` varsayılan olarak malzemeleri bir palet dokusuna dönüştürür; bu yüzden `--palette false` gerekir. Uygulamadan önce `scene.js` yükleyicisine `MeshoptDecoder` eklenmeli ve yazılım (CPU skinning) yolu tarayıcıda görsel olarak karşılaştırılmalıdır.
+
 ## Kurallar
 
 1. **Bağımlılık tek yönlüdür:** arayüz → motor → veri. Motor Streamlit'i veya arayüz modüllerini import etmez.
 2. **Yeniden düzenleme davranışı değiştirmez.** Her adımda Python ve JS testleri çalışır. Motora dokunan adımlarda entegrasyon matrisinin çıktıları önce/sonra birebir karşılaştırılır.
 3. **Yeni ve taşınan kod okunabilir yazılır:** açıklayıcı isimler, makul satır uzunluğu, motor API'sinde tip bilgisi.
 4. **Model kaynakları depoya girmez.** `.blend` dosyaları ve indirme paketleri `art-sources` GitHub Release'inde tutulur; CI yalnız kaynak değiştiğinde Blender ile yeniden üretir. Depoda yalnız uygulamanın çalışırken kullandığı GLB'ler (`static/marksman-3d/`) kalır.
-5. **Riot kaynaklı görseller ayrı tutulur.** Item ikonları (`assets/items/`, wiki) ve skill ikonları (`data/marksman-skill-icons.json`: 20 set oyun ekran görüntülerinden, 3 set Data Dragon'dan) kaynak etiketiyle tek yerde durur; gerektiğinde değiştirilebilir veya çıkarılabilir. 3D modeller orijinal çizimdir ama Riot karakterlerini tasvir eder.
+5. **Riot kaynaklı görseller ayrı tutulur.** Projede duranlar `assets/riot/` ve `data/riot/` klasörlerindedir. Bunların ve site çalışırken dışarıdan yüklenen her şeyin listesi: [third-party-assets.md](third-party-assets.md). 3D modeller orijinal çizimdir ama Riot karakterlerini tasvir eder.
 6. **Sürüm tek kaynaktan gelir:** `VERSION`. Python kodu değişen her yayında artırılır. Canlı sunucu motor modüllerini yalnız sürüm değiştiğinde yeniden yükler (`engine_runtime.py`).
 
 ## Yasal
@@ -53,7 +65,7 @@ Uygulama ücretsizdir ve Riot Games ile bağlantısı yoktur. Play Store yayın�
 - Riot Games'in fan projesi politikası ("Legal Jibber Jabber"),
 - Google Play'in fikri mülkiyet politikası.
 
-Riot'un standart feragat metni README'de bulunur. Uygulamanın içinde de görünür olmalıdır.
+Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; bir test ikisinin aynı kalmasını denetler.
 
 ## Yol haritası
 
@@ -61,7 +73,7 @@ Riot'un standart feragat metni README'de bulunur. Uygulamanın içinde de görü
 |---|---|---|
 | 1 | Hızlı temizlik: stüdyo önbelleği, `use_container_width` → `width`, tek kaynaklı sürüm, bu doküman | Tamamlandı (7.0.1) |
 | 2a | Model dosyaları: `.blend`/zip → `art-sources` Release; GLB'leri uygulamanın kendisinden sunmak; Ezreal'i sayfaya gömmeyi bırakmak (sayfa 4,4 MB → 0,75 MB) | Tamamlandı (7.0.2) |
-| 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Sırada |
+| 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Tamamlandı (7.0.3) |
 | 3 | Çekirdek motor: `streamlit_app.py` içindeki hesapları `sharpwr/` paketine taşımak, JSON API, referans (golden) çıktılar; ardından arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
