@@ -224,6 +224,17 @@ a {
   white-space: nowrap;
 }
 
+.row-core {
+  display: flex;
+  flex: none;
+  gap: 4px;
+}
+
+.row-core .icon {
+  border: 1px solid rgba(216, 180, 93, 0.6);
+  border-radius: 8px;
+}
+
 .chevron {
   color: var(--muted);
   font-size: 22px;
