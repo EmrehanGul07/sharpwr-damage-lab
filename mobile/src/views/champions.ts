@@ -38,6 +38,13 @@ const BASE_STATS: ReadonlyArray<[string, string, string | null, boolean, number]
   ["Attack Range", "attack_range", null, false, 0],
 ];
 
+/** Core item icons at the end of a champion row; plain images, since the row is already a link. */
+function coreIcons(db: Database, champion: Champion): HTMLElement | null {
+  const core = championCore(db, champion.name)?.core ?? [];
+  if (!core.length) return null;
+  return h("span", { class: "row-core", title: `Core item: ${core.join(", ")}` }, ...core.map((name) => icon(findItem(db, name)?.icon ?? null, name, 30)));
+}
+
 function subtitle(champion: Champion): string {
   const range = champion.levels["1"]?.attack_range;
   return [champion.attack_type, range ? `Range ${range}` : null].filter(Boolean).join(" · ");
@@ -48,7 +55,7 @@ export function championList(db: Database): View {
   const render = (query: string) => {
     const rows = db.champions
       .filter((champion) => matches(query, champion.name))
-      .map((champion) => listRow(href("champions", [champion.name]), champion.icon, champion.name, subtitle(champion)));
+      .map((champion) => listRow(href("champions", [champion.name]), champion.icon, champion.name, subtitle(champion), coreIcons(db, champion)));
     list.replaceChildren(...(rows.length ? rows : [emptyState("No champion matches this search.")]));
   };
   render(currentQuery("champions"));
