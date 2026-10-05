@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+  "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
   "champions": {
     "Ashe": {
       "champion": "Ashe",
@@ -21,7 +21,7 @@
       "materials": 10,
       "silhouette": "Ivory hood, layered navy mantle, frost crystal longbow and pale braided hair",
       "weapon": "bow",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Caitlyn": {
@@ -43,7 +43,7 @@
       "materials": 10,
       "silhouette": "Tall structured hat, tailored violet jacket, copper rifle with scope and side braid",
       "weapon": "rifle",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Corki": {
@@ -65,7 +65,7 @@
       "materials": 6,
       "silhouette": "Yordle aviator, moustache, goggles, twin-wing hextech aircraft, rotor and exhaust",
       "weapon": "aircraft",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Draven": {
@@ -87,7 +87,7 @@
       "materials": 10,
       "silhouette": "Broad bare arms, angular moustache, high black crest, fur collar and two crescent axes",
       "weapon": "axes",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Ezreal": {
@@ -104,7 +104,7 @@
         "E": 0.95,
         "R": 1.4
       },
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "existing Blender Ezreal v2 retained"
     },
     "Jhin": {
@@ -126,7 +126,7 @@
       "materials": 10,
       "silhouette": "Porcelain half-mask, asymmetrical gold shoulder shell, white coat tails and ornate four-shot rifle",
       "weapon": "rifle",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Jinx": {
@@ -148,7 +148,7 @@
       "materials": 11,
       "silhouette": "Long cyan twin braids, magenta top, striped stockings, minigun and shark-shaped rocket launcher",
       "weapon": "launcher",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kai'Sa": {
@@ -170,7 +170,7 @@
       "materials": 11,
       "silhouette": "Sculpted violet void carapace, dark hair, glowing eyes and articulated shoulder missile pods",
       "weapon": "void_cannons",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kalista": {
@@ -192,7 +192,7 @@
       "materials": 11,
       "silhouette": "Translucent teal armored revenant, spear, torn floating hair and angular spirit crown",
       "weapon": "spear",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kog'Maw": {
@@ -214,7 +214,7 @@
       "materials": 8,
       "silhouette": "Low six-limbed void creature, large glowing mouth, ridged carapace, tusks and bulbous acid sacs",
       "weapon": "maw",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Lucian": {
@@ -236,7 +236,7 @@
       "materials": 10,
       "silhouette": "Dark skin, close-cropped hair, long black split coat and paired ivory relic pistols",
       "weapon": "pistols",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Miss Fortune": {
@@ -258,7 +258,7 @@
       "materials": 10,
       "silhouette": "Copper-red flowing hair, broad pirate hat, navy/red corset coat and two brass flintlocks",
       "weapon": "pistols",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Samira": {
@@ -280,7 +280,7 @@
       "materials": 10,
       "silhouette": "Dark swept hair, eyepatch, red scarf, armored leather suit, curved blade and compact pistol",
       "weapon": "blade_pistol",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Senna": {
@@ -302,7 +302,7 @@
       "materials": 11,
       "silhouette": "Dark skin, white long coat, flowing dark locks and oversized spectral relic cannon",
       "weapon": "relic_cannon",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Sivir": {
@@ -324,7 +324,7 @@
       "materials": 11,
       "silhouette": "Dark hair, gold tiara, teal armor, red sash and broad four-point crossblade",
       "weapon": "crossblade",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Smolder": {
@@ -346,7 +346,7 @@
       "materials": 7,
       "silhouette": "Orange young dragon, large expressive muzzle, curved horns, membranous wings and tapered tail",
       "weapon": "breath",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Tristana": {
@@ -368,7 +368,7 @@
       "materials": 10,
       "silhouette": "Blue-skinned yordle, oversized ears, silver hair, pilot goggles and oversized brass cannon",
       "weapon": "cannon",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Twitch": {
@@ -390,7 +390,7 @@
       "materials": 10,
       "silhouette": "Hunched rat marksman, long snout, pink ears, articulated tail, ragged hood and chem crossbow",
       "weapon": "crossbow",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Varus": {
@@ -412,7 +412,7 @@
       "materials": 11,
       "silhouette": "Pale archer, white flowing hair, black-violet corrupted lower body and sculptural living bow",
       "weapon": "bow",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Vayne": {
@@ -434,7 +434,7 @@
       "materials": 11,
       "silhouette": "Dark ponytail, red-lensed goggles, navy armor, crimson cape and wrist-mounted crossbows",
       "weapon": "crossbows",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Xayah": {
@@ -456,7 +456,7 @@
       "materials": 11,
       "silhouette": "Magenta hair and hood, feather cape, gold-edged armor, bird feet and twin feather blades",
       "weapon": "feathers",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Yunara": {
@@ -478,7 +478,7 @@
       "materials": 11,
       "silhouette": "Ivory/teal ceremonial robes, black flowing hair, golden headdress and orbiting prayer beads",
       "weapon": "spirit_orbs",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Zeri": {
@@ -500,7 +500,7 @@
       "materials": 11,
       "silhouette": "Bright green twin hair knots, yellow jacket, teal shirt, articulated electric rifle and battery pack",
       "weapon": "electric_rifle",
-      "source_sha256": "ca872da99af9294801d18fd738232fb224da20a2179c0fb80d359089d7463dfe",
+      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     }
   }
