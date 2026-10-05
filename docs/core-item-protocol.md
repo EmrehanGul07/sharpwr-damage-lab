@@ -14,7 +14,11 @@ The shared champion profile displays CORE ITEM, icon and name in Tier List, Buil
 
 Cache identity covers engine rules, champion/item/ability/timing datasets, target profiles and core-search protocol. Pure UI styling changes do not invalidate numerical results.
 
-Fingerprint schema 4 hashes the full source of the engine modules, including the `sharpwr/` package, plus the selected core-protocol declarations in `core_items.py`. Schema 3 hashed selected source segments of `streamlit_app.py`; those definitions now live in `sharpwr/`. Hashing source text rather than `ast.dump` keeps the fingerprint independent of the Python version.
+Fingerprint schema 5 hashes the full source of every engine module in the `sharpwr/` package plus the selected core-protocol declarations in `sharpwr/core_items.py`. Schema 4 used the earlier root-level module paths; schema 3 hashed selected source segments of `streamlit_app.py`. Hashing source text rather than `ast.dump` keeps the fingerprint independent of the Python version.
+
+## 7.0.5 cache migration
+
+The remaining engine modules moved from the repository root into `sharpwr/` and were Black-formatted; each module's AST is unchanged by formatting. Against baseline commit `c833ad3`, all 1,242 retained finalists replay with identical hit ledgers, damage, health and TTK, and the 3,312-case integrity matrix is identical. The stored fingerprint advanced with this evidence.
 
 ## 7.0.4 cache migration
 
