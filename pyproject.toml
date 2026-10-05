@@ -1,0 +1,5 @@
+[tool.black]
+# Only the engine package is Black-formatted; legacy modules keep their style because
+# core-item fingerprints hash their source bytes.
+line-length = 100
+include = '^/sharpwr/.*\.py$'

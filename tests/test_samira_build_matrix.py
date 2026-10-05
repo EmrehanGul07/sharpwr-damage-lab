@@ -1,7 +1,7 @@
 """Integration regressions against the actual shared item kernel and fight replay."""
 import math
 import unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from fight_engine import replay_samira,samira_ranks
 from champion_database import level_stats
 
@@ -14,7 +14,7 @@ class SamiraBuildMatrix(unittest.TestCase):
         qs=[ns['dct'](ns['F'][name]) for name in items]+[ns['dct'](ns['B'][boot]) if boot else ns['dct'](())]
         total={k:sum(q[k] for q in qs) for k in ns['K']}
         mana=core['mana']+total['mana'];awe=.02*mana if any(x in items for x in ('Muramana','Manamune')) else 0
-        kernel=ns['_combat_hits']('Samira',level,10000,249,182,items,ns['F'],base_mana=core['mana'],boot=boot,dist=distance)
+        kernel=ns['combat_hits']('Samira',level,10000,249,182,items,ns['F'],base_mana=core['mana'],boot=boot,dist=distance)
         next(kernel);last={}
         def stats(state):
             dyn=(.08*state['items'].get('rage',0) if "Guinsoo's Rageblade" in items else 0)+(.06*state['items'].get('phantom_dancer',0) if 'Phantom Dancer' in items else 0)

@@ -3,17 +3,19 @@
 Run from repo root. Existing six combat stats remain authoritative. No PC fallback.
 Dependencies for this one-time importer: requests, lxml (not app dependencies).
 """
-import ast
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import re
+import sys
 import requests
 import lxml.html
 
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from sharpwr import C
 AUDIT=Path(os.environ.get('SHARPWR_WIKI_AUDIT_DIR','/tmp/sharpwr-wiki-stat-audit'))
 FIELD_MAP={
     'hp_base':'base_hp','hp_lvl':'hp_growth',
@@ -29,10 +31,7 @@ FIELD_MAP={
     'gameplay_radius':'gameplay_radius',
 }
 LEGACY_FIELDS=('base_ad','ad_growth','as_ratio','base_as','base_bonus_as','as_growth')
-LEGACY={}
-for node in ast.parse((ROOT/'streamlit_app.py').read_text()).body:
-    if isinstance(node,ast.Assign) and any(isinstance(x,ast.Name) and x.id=='C' for x in node.targets):
-        LEGACY=ast.literal_eval(node.value)
+LEGACY=dict(C)
 
 def number(value):
     cleaned=value.strip().replace(',','').replace('−','-')

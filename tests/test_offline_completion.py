@@ -8,7 +8,7 @@ import unittest
 
 from rune_runtime import persistent_stats, own_stats, FirstContact, DamageProcs
 from fight_engine import FightEvent, replay_samira
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 from build_fight_optimizer import BuildFightEvaluator, search_builds
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -62,7 +62,7 @@ class OfflineCompletion(unittest.TestCase):
     def test_initial_spellblade_ready_survives_event_driven_attack(self):
         ns=engine_namespace()
         def hit(ready):
-            kernel=ns['_combat_hits']('Ezreal',15,10000,100,100,['Trinity Force'],ns['F'],spell=ready);next(kernel)
+            kernel=ns['combat_hits']('Ezreal',15,10000,100,100,['Trinity Force'],ns['F'],spell=ready);next(kernel)
             return kernel.send({'hp':10000,'time':0.,'event_driven':True,'spell_cast_times':[]})
         self.assertIn('Trinity',hit(True)['notes'])
         self.assertNotIn('Trinity',hit(False)['notes'])
@@ -85,8 +85,8 @@ class OfflineCompletion(unittest.TestCase):
         ns=engine_namespace()
         for field,value in [('hp0',0),('hp0',math.nan),('dist',math.inf),('l',True),('l',1.5),('base_mana',-1),('target_aa_reduction',1.1)]:
             args=dict(n='Ezreal',l=15,hp0=10000,arm=100,mr=100,items=[],db=ns['F'])|{field:value}
-            with self.subTest(field=field),self.assertRaises(ValueError):next(ns['_combat_hits'](**args))
-        kernel=ns['_combat_hits']('Ezreal',15,10000,100,100,[],ns['F']);next(kernel)
+            with self.subTest(field=field),self.assertRaises(ValueError):next(ns['combat_hits'](**args))
+        kernel=ns['combat_hits']('Ezreal',15,10000,100,100,[],ns['F']);next(kernel)
         kernel.send(dict(hp=10000,time=1))
         with self.assertRaises(ValueError):kernel.send(dict(hp=10000,time=0))
     def test_optimizer_rejects_duplicates_unknowns_and_invalid_budget_controls(self):

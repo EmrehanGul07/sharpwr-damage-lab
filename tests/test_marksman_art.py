@@ -36,7 +36,7 @@ class MarksmanArt(unittest.TestCase):
     before=marksman_art._input_stamp();probe.write_text('changed')
     self.assertNotEqual(before,marksman_art._input_stamp())
  def test_channel_windows_come_from_captured_trace(self):
-  from test_combat_engine import engine_namespace
+  from sharpwr import engine_namespace
   from build_fight_optimizer import BuildFightEvaluator
   from combat_replay import replay_payload
   for name in ['Samira','Lucian','Jhin']:

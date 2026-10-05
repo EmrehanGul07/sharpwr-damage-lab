@@ -1,14 +1,10 @@
-import ast
 import unittest
-from pathlib import Path
 from champion_database import CHAMPION_DATABASE, champion_stat
+from sharpwr import C
 
 class ChampionDatabaseTests(unittest.TestCase):
     def test_existing_stats_preserved_exactly(self):
-        root=Path(__file__).resolve().parents[1]
-        for node in ast.parse((root/'streamlit_app.py').read_text()).body:
-            if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='C' for t in node.targets):
-                old=ast.literal_eval(node.value)
+        old=C
         fields=('base_ad','ad_growth','as_ratio','base_as','base_bonus_as','as_growth')
         self.assertEqual(set(old),set(CHAMPION_DATABASE))
         for name,values in old.items():

@@ -26,7 +26,7 @@ data/ (JSON, sayıların tek kaynağı)
 | Katman | Bugün | Hedef |
 |---|---|---|
 | Veri | `data/*.json`, `*_database.py` | Aynı. Sayılar yalnız JSON/veri modüllerinde durur, arayüz kodunda kopyası olmaz. |
-| Motor | `fight_engine.py`, `marksman_fight_engine.py`, `build_fight_optimizer.py` vb. Streamlit import etmez. Ancak `sim`, `sim_build`, `_combat_hits`, `stats`, `rm`, `lvl_scale`, hedef profilleri ve item tabloları `streamlit_app.py` içinde. 17 test dosyası ve 8 script bunları o dosyadan AST + `exec` ile çıkarıyor. | `sharpwr/` paketi. Tek, belgelenmiş bir giriş noktası: girdi (şampiyon, seviye, item, rün, hedef) → olay kaydı + özet. Testler ve scriptler normal `import` kullanır. |
+| Motor | Ortak AA motoru (`combat_hits`, `sim_build`, `sim`), seviye formülleri, item/şampiyon tabloları ve hedef profilleri `sharpwr/` paketinde. Uygulama, testler ve scriptler onu normal `import` ile kullanır; `engine_namespace()` build optimizer'a verilir. Diğer motor modülleri (`fight_engine.py`, `marksman_fight_engine.py`, `build_fight_optimizer.py` vb.) hâlâ kök dizinde; hiçbiri Streamlit import etmez. | `sharpwr/` paketi. Tek, belgelenmiş bir giriş noktası: girdi (şampiyon, seviye, item, rün, hedef) → olay kaydı + özet. Testler ve scriptler normal `import` kullanır. |
 | Arayüz | `streamlit_app.py`: tek dosyada 6 sekme | Sekme başına modül; yalnız motoru çağırır, hesap yapmaz. |
 | 3D stüdyo | `assets/marksman-3d/*.js`; `marksman_art.studio_html()` dosyaları tek HTML'e metin olarak birleştirir. GLB'ler `static/marksman-3d/` klasöründen uygulamanın kendisi tarafından sunulur (`app/static/`); GitHub kopyası yalnız yedektir. | Kendi başına açılan bir sayfa; veriyi JSON'dan, modelleri uygulamanın kendi dosyalarından yükler. |
 | Mobil | Yok | Capacitor ile paketlenmiş web uygulaması (aşağıya bakın). |
@@ -54,7 +54,7 @@ Sıkıştırılmış 92 dosyanın hepsi Three.js `GLTFLoader` + `MeshoptDecoder`
 
 1. **Bağımlılık tek yönlüdür:** arayüz → motor → veri. Motor Streamlit'i veya arayüz modüllerini import etmez.
 2. **Yeniden düzenleme davranışı değiştirmez.** Her adımda Python ve JS testleri çalışır. Motora dokunan adımlarda entegrasyon matrisinin çıktıları önce/sonra birebir karşılaştırılır.
-3. **Yeni ve taşınan kod okunabilir yazılır:** açıklayıcı isimler, makul satır uzunluğu, motor API'sinde tip bilgisi.
+3. **Yeni ve taşınan kod okunabilir yazılır:** açıklayıcı isimler, makul satır uzunluğu, motor API'sinde tip bilgisi. `sharpwr/` paketi Black ile biçimlenir (`black .`, ayar `pyproject.toml`'da ve yalnız bu paketi kapsar).
 4. **Model kaynakları depoya girmez.** `.blend` dosyaları ve indirme paketleri `art-sources` GitHub Release'inde tutulur; CI yalnız kaynak değiştiğinde Blender ile yeniden üretir. Depoda yalnız uygulamanın çalışırken kullandığı GLB'ler (`static/marksman-3d/`) kalır.
 5. **Riot kaynaklı görseller ayrı tutulur.** Projede duranlar `assets/riot/` ve `data/riot/` klasörlerindedir. Bunların ve site çalışırken dışarıdan yüklenen her şeyin listesi: [third-party-assets.md](third-party-assets.md). 3D modeller orijinal çizimdir ama Riot karakterlerini tasvir eder.
 6. **Sürüm tek kaynaktan gelir:** `VERSION`. Python kodu değişen her yayında artırılır. Canlı sunucu motor modüllerini yalnız sürüm değiştiğinde yeniden yükler (`engine_runtime.py`).
@@ -74,7 +74,9 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | 1 | Hızlı temizlik: stüdyo önbelleği, `use_container_width` → `width`, tek kaynaklı sürüm, bu doküman | Tamamlandı (7.0.1) |
 | 2a | Model dosyaları: `.blend`/zip → `art-sources` Release; GLB'leri uygulamanın kendisinden sunmak; Ezreal'i sayfaya gömmeyi bırakmak (sayfa 4,4 MB → 0,75 MB) | Tamamlandı (7.0.2) |
 | 2b | Riot kaynaklı görselleri ayırmak, dış bağlantıların envanteri, feragat metnini arayüze eklemek, mobil için model boyutu ölçümü | Tamamlandı (7.0.3) |
-| 3 | Çekirdek motor: `streamlit_app.py` içindeki hesapları `sharpwr/` paketine taşımak, JSON API, referans (golden) çıktılar; ardından arayüzü sekme modüllerine bölmek | |
+| 3a | Ortak AA motorunu `streamlit_app.py`'den `sharpwr/` paketine taşımak; testler ve scriptler `import` kullanır. 3.312 senaryo ve 1.242 finalist önce/sonra birebir aynı. | Tamamlandı (7.0.4) |
+| 3b | Kök dizindeki diğer motor modüllerini `sharpwr/` paketine toplamak; tek JSON giriş noktası ve referans (golden) çıktılar | Sırada |
+| 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
 | 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
 | 6 | Mobil prototip: Capacitor + TypeScript motor + Play Store kapalı test kanalı | |

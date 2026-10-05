@@ -10,6 +10,7 @@ SOURCE_FILES=('build_fight_optimizer.py','fight_engine.py','marksman_fight_engin
  'combat_timing.py','damage_classification.py','champion_abilities.py',
  'champion_skill_data.py','marksman_state.py','marksman_ability_database.py',
  'rune_database.py','rune_runtime.py','combat_validation.py','scripts/build_core_items.py',
+ 'sharpwr/__init__.py','sharpwr/catalog.py','sharpwr/aa_engine.py','sharpwr/targets.py',
  'data/marksman-ability-catalogue.json','data/pc-combat-timing.json',
  'data/marksman_champion_stats.json','data/damage-classification.json')
 def _selected_digest(source,names):
@@ -20,14 +21,12 @@ def _selected_digest(source,names):
  return '\n'.join(selected)
 @lru_cache(maxsize=2)
 def _fingerprint(stamps):
- h=hashlib.sha256(b'core-protocol-v3-source-segments')
+ h=hashlib.sha256(b'core-protocol-v4-sharpwr-package')
  for name in SOURCE_FILES:h.update(name.encode());h.update((ROOT/name).read_bytes())
- engine_names={'stats','gu','dct','rm','lvl_scale','_combat_hits','_validate_build','_effective_resistance','sim','sim_build','C','F','B','P','K','SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'}
- h.update(_selected_digest((ROOT/'streamlit_app.py').read_text(),engine_names).encode())
  h.update(_selected_digest((ROOT/'core_items.py').read_text(),{'EXCLUDED','BUDGETS','available','rank_core'}).encode())
  return h.hexdigest()
 def fingerprint():
- return _fingerprint(tuple((name,(ROOT/name).stat().st_mtime_ns) for name in (*SOURCE_FILES,'streamlit_app.py','core_items.py')))
+ return _fingerprint(tuple((name,(ROOT/name).stat().st_mtime_ns) for name in (*SOURCE_FILES,'core_items.py')))
 def available(item,level):return item not in EXCLUDED and (item!='Muramana' or level>=11)
 def rank_core(cells,pool):
  rows=[]

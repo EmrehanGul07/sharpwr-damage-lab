@@ -1,15 +1,12 @@
 """Paired Ezreal build diagnostics; preserves live engine coefficients."""
-import ast,json,sys,collections
+import json,sys,collections
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace,profiles_by_target
 from build_fight_optimizer import BuildFightEvaluator
 from marksman_kits import records
-ns=engine_namespace();profiles={}
-for node in ast.parse((root/'streamlit_app.py').read_text()).body:
- if isinstance(node,ast.Assign):
-  for target in node.targets:
-   if isinstance(target,ast.Name) and target.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):profiles[target.id.split('_')[0].lower()]=ast.literal_eval(node.value)[15]
+ns=engine_namespace()
+profiles={k:v[15] for k,v in profiles_by_target().items()}
 sets={
  'crit':['Duskblade of Draktharr','Infinity Edge',"Lord Dominik's Regards",'The Collector','Yun Tal Wildarrows'],
  'muramana_trinity':['Muramana','Trinity Force',"Lord Dominik's Regards",'Blade of the Ruined King','Navori Quickblades'],

@@ -1,8 +1,8 @@
 import unittest
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 class StormrazorCharge(unittest.TestCase):
  def kernel(self,items=None,energized=False):
-  ns=engine_namespace();k=ns['_combat_hits']('Ezreal',15,10000,100,100,items or ['Stormrazor'],ns['F'],energized=energized);next(k);return k
+  ns=engine_namespace();k=ns['combat_hits']('Ezreal',15,10000,100,100,items or ['Stormrazor'],ns['F'],energized=energized);next(k);return k
  def hit(self,k,path=0,skill=False):
   return k.send({'hp':10000,'time':0,'event_driven':True,'movement_distance':path,'skill_on_hit':skill,'attack_physical':0})
  def test_walk_and_q_no_charge(self):

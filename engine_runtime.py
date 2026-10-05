@@ -9,7 +9,9 @@ _MODULES = (
     'combat_validation', 'champion_database', 'rune_database', 'rune_runtime', 'champion_skill_data',
     'marksman_ability_database', 'damage_classification', 'combat_timing',
     'marksman_state', 'marksman_damage_components', 'marksman_kits',
-    'marksman_fight_engine', 'fight_engine', 'build_fight_optimizer',
+    'marksman_fight_engine', 'fight_engine',
+    'sharpwr.catalog', 'sharpwr.aa_engine', 'sharpwr.targets', 'sharpwr',
+    'build_fight_optimizer',
     'marksman_art', 'combat_replay', 'core_items', 'item_consensus',
 )
 

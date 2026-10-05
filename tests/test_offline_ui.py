@@ -31,7 +31,7 @@ class OfflineInterface(unittest.TestCase):
             self.assertFalse(app.exception,[e.message for e in app.exception])
             self.assertFalse(app.error,[x.value for x in app.error])
             self.assertTrue(calls)
-            from test_combat_engine import engine_namespace
+            from sharpwr import engine_namespace
             ns=engine_namespace();s=ns['stats'](calls[0][0]['champion'],15)
             item_ad=sum(ns['dct'](ns['F'][i])['ad'] for i in app.session_state['build_items_v2'])+ns['dct'](ns['B'][app.session_state['build_boot_v2']])['ad']
             item_mana=sum(ns['dct'](ns['F'][i])['mana'] for i in app.session_state['build_items_v2'])+ns['dct'](ns['B'][app.session_state['build_boot_v2']])['mana']

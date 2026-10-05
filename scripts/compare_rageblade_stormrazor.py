@@ -1,15 +1,12 @@
 """Paired diagnostics only: no edits to locked item coefficients or rankings."""
-import ast,json,sys,collections
+import json,sys,collections
 from pathlib import Path
 root=Path(__file__).resolve().parents[1];sys.path[:0]=[str(root),str(root/'tests')]
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace,profiles_by_target
 from build_fight_optimizer import BuildFightEvaluator,legal
 from champion_database import level_stats
-ns=engine_namespace();screen=json.loads((root/'data/item-adoption-screen.json').read_text());screen['results']=json.loads((root/'data/item-progression-checkpoint.json').read_text())['results'];profiles={}
-for node in ast.parse((root/'streamlit_app.py').read_text()).body:
- if isinstance(node,ast.Assign):
-  for name in node.targets:
-   if isinstance(name,ast.Name) and name.id in ('SQUISHY_JINX_PROFILE','BRUISER_DARIUS_PROFILE','TANK_ORNN_PROFILE'):profiles[name.id.split('_')[0].lower()]=ast.literal_eval(node.value)
+ns=engine_namespace();screen=json.loads((root/'data/item-adoption-screen.json').read_text());screen['results']=json.loads((root/'data/item-progression-checkpoint.json').read_text())['results']
+profiles=profiles_by_target()
 G="Guinsoo's Rageblade";S='Stormrazor';results=[]
 def measure(champ,level,target,common,policy,charged):
  t=profiles[target][level];natural=t['hp'] if target=='squishy' else (660+148*ns['gu'](level) if target=='bruiser' else 690+132*ns['gu'](level))

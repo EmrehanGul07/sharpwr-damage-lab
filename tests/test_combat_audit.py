@@ -1,7 +1,7 @@
 import unittest
 from fight_engine import replay_samira
 from marksman_ability_database import mana_cost
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 
 class CombatAudit(unittest.TestCase):
  @classmethod
@@ -30,11 +30,11 @@ class CombatAudit(unittest.TestCase):
   rocket=next(x for x in hits if x['attack_id']==commands[0]['id']);self.assertAlmostEqual(rocket['physical'],112)
  def test_user_confirmed_energized_hit_cadence(self):
   for item,period,label in [('Rapid Firecannon',13,'RFC Energized'),('Statikk Shiv',9,'Shiv Energized')]:
-   k=self.ns['_combat_hits']('Ezreal',15,1e6,0,0,[item],self.ns['F'],energized=False);next(k)
+   k=self.ns['combat_hits']('Ezreal',15,1e6,0,0,[item],self.ns['F'],energized=False);next(k)
    indices=[i for i in range(1,22) if label in k.send({'time':i,'hp':1e6,'event_driven':True})['notes']]
    self.assertEqual(indices,list(range(period,22,period)))
  def test_explicit_energized_readiness_remains_authoritative(self):
-  k=self.ns['_combat_hits']('Ezreal',15,1e6,0,0,['Statikk Shiv'],self.ns['F']);next(k)
+  k=self.ns['combat_hits']('Ezreal',15,1e6,0,0,['Statikk Shiv'],self.ns['F']);next(k)
   self.assertIn('Shiv Energized',k.send({'time':0,'hp':1e6,'event_driven':True,'energized_ready':True})['notes'])
   for i in range(1,11):self.assertNotIn('Shiv Energized',k.send({'time':i,'hp':1e6,'event_driven':True,'energized_ready':False})['notes'])
  def test_sivir_return_uses_endpoint_and_return_speed(self):

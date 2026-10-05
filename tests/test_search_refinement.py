@@ -2,7 +2,7 @@ import unittest
 from fight_engine import FightEvent,replay_samira
 from build_fight_optimizer import BuildFightEvaluator,diverse_shortlist,build_profiles
 from marksman_damage_components import jhin_attack_damage,xayah_feather_multiplier,damage_component
-from test_combat_engine import engine_namespace
+from sharpwr import engine_namespace
 
 class SearchRefinement(unittest.TestCase):
     @classmethod

@@ -13,7 +13,7 @@ def run():
  pool=['Muramana',"Nashor's Tooth",'Infinity Edge','Phantom Dancer',"Guinsoo's Rageblade",'Hexoptics C44']
  for c in PRIORITIES:
   for target in ns['TARGET_PROFILES']:
-   t=ns['_benchmark_target'](target,15);hp,arm,mr,bhp,aared=t['hp'],t['armor'],t['mr'],t['bonus_hp'],t.get('aa_reduction',0)
+   t=ns['benchmark_target'](target,15);hp,arm,mr,bhp,aared=t['hp'],t['armor'],t['mr'],t['bonus_hp'],t.get('aa_reduction',0)
    def evaluator(override=None,base_mana=None):return BuildFightEvaluator(ns,c,15,hp,arm,mr,bonus_hp=bhp,aa_reduction=aared,base_mana=base_mana,simulation_overrides=override)
    def rank(ev):
     values=[(label,ev.evaluate(items,boot)) for label,(items,boot) in profiles.items()]
