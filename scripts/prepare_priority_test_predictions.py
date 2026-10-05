@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'tests'),str(ROOT)]
 from sharpwr import engine_namespace
-from marksman_damage_components import damage_component,xayah_feather_multiplier
+from sharpwr.marksman_damage_components import damage_component,xayah_feather_multiplier
 
 
 def predictions(ad=None,ap=None,armor=100,mr=100,hp=10000):

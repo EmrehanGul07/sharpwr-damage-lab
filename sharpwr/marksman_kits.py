@@ -5,7 +5,7 @@ instant-impact mode for that action and is recorded, never a hidden PC fallback.
 """
 from functools import lru_cache
 import math
-from marksman_ability_database import catalogue
+from .marksman_ability_database import catalogue
 
 PRIORITIES={
 'Twitch':'EQW','Yunara':'QWE','Lucian':'QEW','Varus':'QWE','Ezreal':'QEW','Vayne':'QWE','Tristana':'EQW','Ashe':'QWE','Kalista':'EQW','Draven':'QWE','Caitlyn':'QWE','Jinx':'QWE',"Kai'Sa":'QEW',"Kog'Maw":'WQE','Miss Fortune':'QWE','Xayah':'EWQ','Sivir':'QWE','Corki':'QEW','Senna':'QWE','Zeri':'QEW','Jhin':'QWE','Samira':'QEW','Smolder':'QWE'}
@@ -42,7 +42,7 @@ class Kit:
         self.reloading_until=-1.;self.last_style=None
         if champion=='Yunara':self.unresolved.add('Yunara uses rounded WR stats at all 15 levels; HP regeneration units and AD/AS observation reconciliation remain pending')
         self.unresolved.add('AA windup/projectile use user-authorized PC timing proxies with WR AS scaling')
-        from combat_timing import database
+        from .combat_timing import database
         if database()[champion]['aa']['projectile_speed'] is None:self.unresolved.add(f'{champion} AA projectile speed absent from PC wiki: explicit instant-flight fallback')
     def rank(self,slot):return self.ranks.get(slot,0)
     def cost(self,slot,t):
@@ -65,7 +65,7 @@ class Kit:
         if v is None:self.unresolved.add(f'{self.name} {slot} cooldown unresolved');return None
         return v[self.rank(slot)-1]
     def cast_time(self,slot,t,bonus_as=0.):
-        from combat_timing import skill_cast_time
+        from .combat_timing import skill_cast_time
         sourced=skill_cast_time(self.name,slot,bonus_as,self.level)
         v=self.data[slot]['cast_time_seconds']
         if v is None and sourced is not None:return sourced
@@ -101,7 +101,7 @@ class Kit:
         return self.attack_range(t)
     def travel(self,slot,gap):
         if slot in SELF_BUFFS.get(self.name,()):return 0.
-        from combat_timing import skill_travel
+        from .combat_timing import skill_travel
         sourced=skill_travel(self.name,slot,gap)
         if sourced is not None:return sourced
         v=self.data[slot]['projectile_speed']

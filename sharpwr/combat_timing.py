@@ -3,7 +3,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 @lru_cache(maxsize=1)
-def database():return json.loads((Path(__file__).resolve().parent/'data/pc-combat-timing.json').read_text())['champions']
+def database():return json.loads((Path(__file__).resolve().parents[1]/'data/pc-combat-timing.json').read_text())['champions']
 def base_windup(champion):return database()[champion]['aa']['base_windup_seconds']
 def attack_windup(champion,bonus_as):
     if champion=='Senna':return .5/(1+.6*bonus_as)

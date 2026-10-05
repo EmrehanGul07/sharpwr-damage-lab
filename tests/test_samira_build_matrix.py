@@ -2,8 +2,8 @@
 import math
 import unittest
 from sharpwr import engine_namespace
-from fight_engine import replay_samira,samira_ranks
-from champion_database import level_stats
+from sharpwr.fight_engine import replay_samira,samira_ranks
+from sharpwr.champion_database import level_stats
 
 class SamiraBuildMatrix(unittest.TestCase):
     @classmethod

@@ -3,9 +3,9 @@ import json,math,sys,time
 from collections import Counter,defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from build_fight_optimizer import BuildFightEvaluator,legal
-from marksman_kits import PRIORITIES
-from champion_database import level_stats
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,legal
+from sharpwr.marksman_kits import PRIORITIES
+from sharpwr.champion_database import level_stats
 from sharpwr import engine_namespace
 
 PROFILES={
@@ -27,7 +27,7 @@ def check(result,maxhp,name):
  verify(not result.rejected,'automatic rejected command')
  for x in result.log:
   verify(math.isfinite(x['damage']) and x['damage']>=0,'invalid damage')
-  from damage_classification import TAGS
+  from sharpwr.damage_classification import TAGS
   for part in x.get('damage_components',[]):
    verify(set(part.get('tags',[]))<=TAGS,'unknown component tag')
    verify(math.isfinite(part['raw_amount']) and part['raw_amount']>=0,'invalid component amount')

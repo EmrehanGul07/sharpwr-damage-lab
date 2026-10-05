@@ -2,7 +2,7 @@
 import json,re,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from damage_classification import TAGS,PROPERTIES
+from sharpwr.damage_classification import TAGS,PROPERTIES
 
 def build():
     sources=json.loads((ROOT/'data/wr-damage-classification-sources.json').read_text())
@@ -55,7 +55,7 @@ def build():
         if source.get('on_hit_explicit'):result['items'][item]['damage_tags']=['Item','OnHit']
         if category=='active':result['items'][item]['damage_tags']=['Item','ActiveSpell']
         r['damage_classification']=result['items'][item]
-    from rune_database import RUNE_DATABASE
+    from sharpwr.rune_database import RUNE_DATABASE
     for name,rune in RUNE_DATABASE.items():
         data=rune.get('data',{});kind=rune.get('kind','')
         direct=any('damage' in k and not ('amp' in k or 'reduction' in k) for k in data) or name in ('Brutal','Lethal Tempo')

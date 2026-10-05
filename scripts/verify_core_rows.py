@@ -8,7 +8,7 @@ import sys,json
 from pathlib import Path
 root=Path(sys.argv[1]);sys.path[:0]=[str(root),str(root/'scripts')]
 from sharpwr import engine_namespace,profiles_by_target
-from build_fight_optimizer import BuildFightEvaluator
+from sharpwr.build_fight_optimizer import BuildFightEvaluator
 ns=engine_namespace();profiles=profiles_by_target()
 def target_at(profile,level):
  if level in profile:return profile[level]

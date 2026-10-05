@@ -3,8 +3,8 @@ import sys,json,hashlib,argparse
 from pathlib import Path
 sys.path[:0]=[str(Path(__file__).resolve().parents[1]),str(Path(__file__).resolve().parents[1]/'tests')]
 from sharpwr import engine_namespace,profiles_by_target
-from build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortlist
-from item_consensus import progression_ranking
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,legal,score,diverse_shortlist
+from sharpwr.item_consensus import progression_ranking
 parser=argparse.ArgumentParser()
 parser.add_argument('--champion', action='append', help='Recompute only selected champion(s), preserving other checkpoint cells')
 parser.add_argument('--checkpoint', help='Separate checkpoint path for an isolated worker')

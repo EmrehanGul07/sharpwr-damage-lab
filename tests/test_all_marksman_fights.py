@@ -1,7 +1,7 @@
 import math
 import unittest
-from fight_engine import FightEvent,replay_samira,champion_ranks
-from marksman_kits import PRIORITIES
+from sharpwr.fight_engine import FightEvent,replay_samira,champion_ranks
+from sharpwr.marksman_kits import PRIORITIES
 
 PENDING=[n for n in PRIORITIES if n not in ('Samira','Smolder')]
 
@@ -59,7 +59,7 @@ class AllMarksmanFights(unittest.TestCase):
     def test_tristana_bomb_expiry_is_scheduled_damage(self):
         r=fight('Tristana',events=[FightEvent(0,'E')],automatic_until=5)
         det=next(x for x in r.log if x['action']=='E detonation')
-        from combat_timing import attack_windup
+        from sharpwr.combat_timing import attack_windup
         self.assertAlmostEqual(det['time'],4+attack_windup('Tristana',1)+550/2400);self.assertGreater(det['damage'],0)
     def test_vayne_three_eligible_hits_trigger_true_damage(self):
         r=fight('Vayne',events=[FightEvent(0,'AA'),FightEvent(1,'AA'),FightEvent(2,'AA')],automatic_until=3,crit_chance=0)

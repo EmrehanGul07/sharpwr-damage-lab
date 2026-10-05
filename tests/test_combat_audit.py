@@ -1,6 +1,6 @@
 import unittest
-from fight_engine import replay_samira
-from marksman_ability_database import mana_cost
+from sharpwr.fight_engine import replay_samira
+from sharpwr.marksman_ability_database import mana_cost
 from sharpwr import engine_namespace
 
 class CombatAudit(unittest.TestCase):
@@ -38,14 +38,14 @@ class CombatAudit(unittest.TestCase):
   self.assertIn('Shiv Energized',k.send({'time':0,'hp':1e6,'event_driven':True,'energized_ready':True})['notes'])
   for i in range(1,11):self.assertNotIn('Shiv Energized',k.send({'time':i,'hp':1e6,'event_driven':True,'energized_ready':False})['notes'])
  def test_sivir_return_uses_endpoint_and_return_speed(self):
-  from fight_engine import FightEvent
+  from sharpwr.fight_engine import FightEvent
   for distance in (550,1250):
    r=self.fight('Sivir',q_rank=1,distance=distance,attack_range=0,automatic_until=3)
    q=[x for x in r.log if x['action'] in ('Q','Q hit')];cast=next(x for x in r.timeline if x.get('action')=='Q')
    self.assertGreaterEqual(len(q),2)
    self.assertAlmostEqual(q[1]['time']-q[0]['time'],(1250-distance)/1450.+(1250-distance)/1200.)
  def test_muramana_first_cast_shock_gets_same_target_damage_modifier(self):
-  from fight_engine import FightEvent
+  from sharpwr.fight_engine import FightEvent
   p=dict(champion='Ezreal',level=15,ad=100,base_ad=60,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=1,w_rank=0,e_rank=0,r_rank=0,max_mana=2000,muramana=True,automatic_until=2)
   a=replay_samira([FightEvent(0,'Q')],**p);b=replay_samira([FightEvent(0,'Q')],sub_runes=('Cut Down',),**p)
   self.assertAlmostEqual(b.total_damage/a.total_damage,1.065)

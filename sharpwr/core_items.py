@@ -4,12 +4,12 @@ from functools import lru_cache
 import hashlib,json
 EXCLUDED=frozenset({"Lord Dominik's Regards","Serylda's Grudge",'Mortal Reminder','Infinity Edge','Terminus'})
 BUDGETS={5:1,7:1,9:2,11:3,13:4,15:5}
-ROOT=Path(__file__).resolve().parent
-SOURCE_FILES=('build_fight_optimizer.py','fight_engine.py','marksman_fight_engine.py',
- 'marksman_damage_components.py','marksman_kits.py','champion_database.py',
- 'combat_timing.py','damage_classification.py','champion_abilities.py',
- 'champion_skill_data.py','marksman_state.py','marksman_ability_database.py',
- 'rune_database.py','rune_runtime.py','combat_validation.py','scripts/build_core_items.py',
+ROOT=Path(__file__).resolve().parents[1]
+SOURCE_FILES=('sharpwr/build_fight_optimizer.py','sharpwr/fight_engine.py','sharpwr/marksman_fight_engine.py',
+ 'sharpwr/marksman_damage_components.py','sharpwr/marksman_kits.py','sharpwr/champion_database.py',
+ 'sharpwr/combat_timing.py','sharpwr/damage_classification.py','sharpwr/champion_abilities.py',
+ 'sharpwr/champion_skill_data.py','sharpwr/marksman_state.py','sharpwr/marksman_ability_database.py',
+ 'sharpwr/rune_database.py','sharpwr/rune_runtime.py','sharpwr/combat_validation.py','scripts/build_core_items.py',
  'sharpwr/__init__.py','sharpwr/catalog.py','sharpwr/aa_engine.py','sharpwr/targets.py',
  'data/marksman-ability-catalogue.json','data/pc-combat-timing.json',
  'data/marksman_champion_stats.json','data/damage-classification.json')
@@ -23,10 +23,10 @@ def _selected_digest(source,names):
 def _fingerprint(stamps):
  h=hashlib.sha256(b'core-protocol-v4-sharpwr-package')
  for name in SOURCE_FILES:h.update(name.encode());h.update((ROOT/name).read_bytes())
- h.update(_selected_digest((ROOT/'core_items.py').read_text(),{'EXCLUDED','BUDGETS','available','rank_core'}).encode())
+ h.update(_selected_digest((ROOT/'sharpwr/core_items.py').read_text(),{'EXCLUDED','BUDGETS','available','rank_core'}).encode())
  return h.hexdigest()
 def fingerprint():
- return _fingerprint(tuple((name,(ROOT/name).stat().st_mtime_ns) for name in (*SOURCE_FILES,'core_items.py')))
+ return _fingerprint(tuple((name,(ROOT/name).stat().st_mtime_ns) for name in (*SOURCE_FILES,'sharpwr/core_items.py')))
 def available(item,level):return item not in EXCLUDED and (item!='Muramana' or level>=11)
 def rank_core(cells,pool):
  rows=[]

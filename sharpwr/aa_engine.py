@@ -35,7 +35,7 @@ def lvl_scale(lo, hi, lvl):
 
 def validate_build(items, db, boot=None):
     """Raise ValueError for an illegal build: over five items, duplicates, two Spellblades or boots in an item slot."""
-    from build_fight_optimizer import SPELLBLADE
+    from .build_fight_optimizer import SPELLBLADE
 
     if len(set(items) & SPELLBLADE) > 1:
         raise ValueError("Only one Spellblade item is allowed.")
@@ -219,7 +219,7 @@ def combat_hits(
     and receive that hit as a dict (damage, attack speed, crit, effective armor/MR, item state).
     """
     items = list(items)
-    from combat_validation import benchmark, finite
+    from .combat_validation import benchmark, finite
 
     benchmark(
         n,
@@ -235,7 +235,7 @@ def combat_hits(
         stacks=yuntal_start_stacks,
         executes=execs,
     )
-    from champion_database import champion_stat
+    from .champion_database import champion_stat
 
     # Item melee/ranged class belongs to the champion, not distance to target.
     botrk_ratio = 0.085 if champion_stat(n, "attack_type") == "Melee" else 0.06
@@ -245,7 +245,7 @@ def combat_hits(
     bootq = dct(B[boot]) if boot in B else dct(())
     total = lambda key: sum(float(q[key]) for q in qs) + float(bootq.get(key, 0))
     if base_mana <= 0:
-        from champion_database import level_stats
+        from .champion_database import level_stats
 
         base_mana = level_stats(n, int(l))["mana"] or 0.0
     mana = base_mana + total("mana")
@@ -410,7 +410,7 @@ def combat_hits(
             true = current_ad * 0.15 * crit
             note.append("Opening Barrage")
         if "Hexoptics C44" in items and not skill_on_hit:
-            from damage_classification import magnification
+            from .damage_classification import magnification
 
             hit_dist = (
                 state.get("distance")

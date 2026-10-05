@@ -2,7 +2,7 @@
 import json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
-from marksman_damage_components import LINEAR
+from sharpwr.marksman_damage_components import LINEAR
 import re
 active=(ROOT/'docs/ingame-test-todo.md').read_text()
 remaining={m.group(1).strip():m.group(2).strip() for m in re.finditer(r'^\| ([^|]+) \| ([^|]+) \|$',active,re.M)}

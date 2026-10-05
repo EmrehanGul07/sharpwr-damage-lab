@@ -12,7 +12,7 @@ PROPERTIES=frozenset(('ApplyAttackRatio','ApplyCritical','ApplyDamageModifier','
 
 @lru_cache(maxsize=1)
 def registry():
-    return json.loads((Path(__file__).resolve().parent/'data/damage-classification.json').read_text())
+    return json.loads((Path(__file__).resolve().parents[1]/'data/damage-classification.json').read_text())
 
 def ability_profile(champion,slot):
     return registry()['abilities'][champion][slot]

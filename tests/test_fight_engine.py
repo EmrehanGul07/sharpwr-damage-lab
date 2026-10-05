@@ -1,5 +1,5 @@
 import unittest
-from fight_engine import FightEvent, replay_samira, samira_ranks
+from sharpwr.fight_engine import FightEvent, replay_samira, samira_ranks
 
 class ReplayTests(unittest.TestCase):
     def run_fight(self,actions,**kw):

@@ -1,6 +1,6 @@
 import unittest
-from core_items import EXCLUDED,available,rank_core
-from build_fight_optimizer import BuildFightEvaluator,search_builds,legal
+from sharpwr.core_items import EXCLUDED,available,rank_core
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,search_builds,legal
 from sharpwr import engine_namespace
 class CoreItems(unittest.TestCase):
  def test_five_exclusions_and_muramana_unlock(self):
@@ -23,7 +23,7 @@ class CoreItems(unittest.TestCase):
   self.assertTrue(all(len(r['Items'])==1 and legal(r['Items']) for r in result['full']))
   self.assertEqual(result['boot_count'],2)
  def test_fingerprint_selection_ignores_ui_and_tracks_model(self):
-  from core_items import _selected_digest
+  from sharpwr.core_items import _selected_digest
   base='F={"test":1}\ndef stats():return 1\ndef ui():return "old"\n'
   names={'F','stats'}
   self.assertEqual(_selected_digest(base,names),_selected_digest(base.replace('"old"','"new"'),names))
@@ -31,13 +31,13 @@ class CoreItems(unittest.TestCase):
 
  def test_fingerprint_is_independent_of_ast_dump_schema(self):
   from unittest.mock import patch
-  from core_items import _selected_digest
+  from sharpwr.core_items import _selected_digest
   source='F={"test":1}\ndef stats():return 1\n'
   expected=_selected_digest(source,{'F','stats'})
   with patch('ast.dump',side_effect=AssertionError('Runtime-specific AST serialization must not be hashed')):
    self.assertEqual(_selected_digest(source,{'F','stats'}),expected)
  def test_saved_results_match_current_fingerprint(self):
-  from core_items import core_record
+  from sharpwr.core_items import core_record
   ns=engine_namespace()
   for name in ns['C']:
    with self.subTest(champion=name):

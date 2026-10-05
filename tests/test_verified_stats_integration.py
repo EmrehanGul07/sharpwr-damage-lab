@@ -1,8 +1,8 @@
 """Database-to-fight regressions: resource, reach and real event timing."""
 import math
 import unittest
-from champion_database import level_stats, CHAMPION_DATABASE
-from build_fight_optimizer import BuildFightEvaluator
+from sharpwr.champion_database import level_stats, CHAMPION_DATABASE
+from sharpwr.build_fight_optimizer import BuildFightEvaluator
 from sharpwr import engine_namespace
 
 class VerifiedStatsIntegration(unittest.TestCase):
@@ -55,7 +55,7 @@ class VerifiedStatsIntegration(unittest.TestCase):
                     self.assertAlmostEqual(sum(x['damage'] for x in trace.log),row['Damage'])
 
     def test_yunara_regenerates_mana_between_actions(self):
-        from fight_engine import FightEvent,replay_samira
+        from sharpwr.fight_engine import FightEvent,replay_samira
         core=level_stats('Yunara',15)
         r=replay_samira([FightEvent(0,'W'),FightEvent(5,'AA')],champion='Yunara',level=15,ad=100,base_ad=100,ap=0,attack_speed=1,crit_chance=0,crit_damage=2,hp=10000,armor=100,mr=100,q_rank=0,w_rank=1,e_rank=1,r_rank=0,max_mana=core['mana'],mana_regen_per_5s=core['mana_regen_per_5s'],timed_combat=False,movement_speed=0,distance=500,attack_range=575,automatic_until=6)
         w=next(x for x in r.timeline if x['kind']=='cast' and x['action']=='W')

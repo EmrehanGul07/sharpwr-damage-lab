@@ -1,6 +1,6 @@
 import unittest
-from marksman_ability_database import catalogue,mana_cost,cooldown
-from marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight
+from sharpwr.marksman_ability_database import catalogue,mana_cost,cooldown
+from sharpwr.marksman_damage_components import damage_component,yunara_arc_of_ruin,varus_blight
 
 class CatalogueTests(unittest.TestCase):
     def test_all_champions_preserve_slots_and_unknowns(self):

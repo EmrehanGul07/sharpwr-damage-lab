@@ -1,7 +1,7 @@
 import unittest
-from fight_engine import FightEvent,replay_samira
-from build_fight_optimizer import BuildFightEvaluator,diverse_shortlist,build_profiles
-from marksman_damage_components import jhin_attack_damage,xayah_feather_multiplier,damage_component
+from sharpwr.fight_engine import FightEvent,replay_samira
+from sharpwr.build_fight_optimizer import BuildFightEvaluator,diverse_shortlist,build_profiles
+from sharpwr.marksman_damage_components import jhin_attack_damage,xayah_feather_multiplier,damage_component
 from sharpwr import engine_namespace
 
 class SearchRefinement(unittest.TestCase):
@@ -54,7 +54,7 @@ class FeatherTimeline(unittest.TestCase):
         self.assertAlmostEqual(e['raw_damage'],90*1.9)
         self.assertEqual(q['after']['feathers'],2)
     def test_stored_passive_attacks_expire(self):
-        from marksman_kits import Kit
+        from sharpwr.marksman_kits import Kit
         k=Kit('Xayah',{'Q':1,'W':0,'E':1,'R':0},15,550)
         k.state.update(feather_attacks=3,feather_attacks_until=7.5)
         k.expire(7.5);self.assertEqual(k.state['feather_attacks'],0)

@@ -6,13 +6,13 @@ import threading
 _lock = threading.RLock()
 _loaded_revision = None
 _MODULES = (
-    'combat_validation', 'champion_database', 'rune_database', 'rune_runtime', 'champion_skill_data',
-    'marksman_ability_database', 'damage_classification', 'combat_timing',
-    'marksman_state', 'marksman_damage_components', 'marksman_kits',
-    'marksman_fight_engine', 'fight_engine',
+    'sharpwr.combat_validation', 'sharpwr.champion_database', 'sharpwr.rune_database', 'sharpwr.rune_runtime',
+    'sharpwr.champion_skill_data', 'sharpwr.marksman_ability_database', 'sharpwr.damage_classification',
+    'sharpwr.combat_timing', 'sharpwr.marksman_state', 'sharpwr.marksman_damage_components', 'sharpwr.marksman_kits',
+    'sharpwr.marksman_fight_engine', 'sharpwr.fight_engine',
     'sharpwr.catalog', 'sharpwr.aa_engine', 'sharpwr.targets', 'sharpwr',
-    'build_fight_optimizer',
-    'marksman_art', 'combat_replay', 'core_items', 'item_consensus',
+    'sharpwr.build_fight_optimizer',
+    'marksman_art', 'combat_replay', 'sharpwr.core_items', 'sharpwr.item_consensus',
 )
 
 def ensure_engine_revision(revision):

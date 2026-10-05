@@ -1,5 +1,5 @@
 import unittest
-from fight_engine import FightEvent,replay_samira
+from sharpwr.fight_engine import FightEvent,replay_samira
 
 class YunaraLinger(unittest.TestCase):
  def fight(self,events,**kw):

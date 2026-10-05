@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-DATABASE=json.loads((Path(__file__).resolve().parent/'data/marksman_champion_stats.json').read_text())
+DATABASE=json.loads((Path(__file__).resolve().parents[1]/'data/marksman_champion_stats.json').read_text())
 CHAMPION_DATABASE={record['name']:record for record in DATABASE['champions']}
 
 def champion_record(name):
@@ -17,7 +17,7 @@ def level_stats(name, level, growth_units=None):
     if isinstance(level,bool) or not isinstance(level, int) or not 1 <= level <= 15:
         raise ValueError('Invalid champion level.')
     u = (level-1)*(.7025+.0175*(level-1)) if growth_units is None else growth_units
-    from combat_validation import finite
+    from .combat_validation import finite
     finite(u,'growth units',0)
     raw = champion_record(name)['stats']
     pairs = {'hp':('base_hp','hp_growth'), 'mana':('base_mana','mana_growth'),

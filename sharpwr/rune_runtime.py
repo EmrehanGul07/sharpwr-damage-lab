@@ -71,7 +71,7 @@ class DamageProcs:
         self.level=level;self.keystone=keystone;self.runes=set(runes)
         self.souls=souls;self.ready={name:0. for name in ('Dark Harvest','Tyrant','Empowered Attack')}
     def apply(self,time,action,hp_fraction,bonus_ad,ap,physical_multiplier,damage_multiplier=1.):
-        from champion_skill_data import resistance_multiplier
+        from .champion_skill_data import resistance_multiplier
         candidates=[]
         scale=lambda low,high:low+(high-low)*(self.level-1)/14
         if self.keystone=='Dark Harvest' and hp_fraction<.5 and time>=self.ready['Dark Harvest']:
