@@ -26,7 +26,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | Yunara | 1–15 tüm seviyelerde core stat ve mana regen kaydedildi; MS 335 ve AA range 575 teyitli. HP regen birimi; AD/AS görüntüleri ile eski formüllerin/rün katkılarının uzlaştırılması; W hareketli hedef/contact geometrisi; Q/W/P damage classification açık. Normal W ilk hit + 4 ek tick, 0.25s aralık/1s süre teyit edildi. |
 | Samira | R AH/static cooldown ve başlangıç anı; W1–E–W2 Style/Conqueror sırası; W2/R sonraki hit'lerde süre yenileme; CC özel AA/retrigger/reset; gerçek WR channel/shot offsetleri |
 | Smolder | E bolt sayısı/stack grant; W sneeze/explosion/stack işlem sırası; burn refresh/snapshot/rounding/rün amplification; %50 crit + %230 crit damage çapraz nokta; Q100 patlamalarının ana hedefe overlap'i |
-| Jhin | AD dönüşümü temporary AS dahil oyun içi çapraz kontrol; 4. AA launch/ammo/reload; W beam timing; W/R WR damage tag'leri |
+| Jhin | **Yeniden kurulum TODO** (aşağıdaki Jhin bölümü): rünsüz AD, tek AS ve tek crit item ile AD, 4. atış eksik-can yüzdesi, R mermi aralığı. Ayrıca W beam timing; W/R WR damage tag'leri. |
 | Jinx | Rocket mana ve silah geçişi; E delivery/arming; R mesafe hasar eğrisi |
 | Xayah | Q efektif hız ve yukarıdaki I03; R WR lock süresi |
 | Caitlyn | Headshot level/crit progression; R crit etkisi; trap ammo/recharge/arming |
@@ -46,6 +46,34 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 | Tristana | W trajectory; E/R hedef menzili; R damage tag |
 | Ezreal | Q Kraken/Phantom/Terminus sayaç kapsamı teyitli; Q Rageblade AS stack kazanımı, Q/W detonation ve diğer item eligibility açık; Q/AA ortak sayaç testi tekrar istenmez |
 | Sivir | Q 1450/1200 gidiş/dönüş WR doğrulaması; Morale cap/expiry |
+
+## Jhin yeniden kurulum — kullanıcı verisi 2026-10-06 (TODO)
+
+Kullanıcı müsait olduğunda açık soruları cevaplayacak; Jhin'in motoru, animasyonları ve kayıtlı build sonuçları ondan sonra yeniden kurulacak.
+
+**Kullanıcı teyitli:**
+- Saldırı hızı sabit: yalnız level ile büyür, item/rün AS'si atış hızını değiştirmez (L15'te en fazla 0,94). R mermileri de sabit hızla atılır.
+- 4 mermi; 4. mermi %100 crit ve hedefin eksik canına göre ek hasar; 4 atıştan sonra reload **2,5 s**.
+- R 4. süper atış hasar oranı: mevcut kritik vuruş hasarı.
+- Patch 7.3 pasif: kritikler normal kritik hasarının %80'i; AD dönüşümü = ilave AS × %30 + crit × %40 + seviye × %3; crit hareket hızı %14 + %0,44 × ilave AS; 4. atışın kulelere ilave hasarı (Ebedi Kılıç ile) %150 / %172,5.
+
+**Ölçülen değerler (Legend: Alacrity %3 AS ile, item yok):**
+
+| Level | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| AD | 63 | 69 | 75 | 81 | 89 | 96 | 104 | 113 | 122 | 132 | 142 | 153 | 165 | 177 | 190 |
+| AS | 0,66 | 0,68 | 0,69 | 0,71 | 0,73 | 0,74 | 0,76 | 0,78 | 0,80 | 0,82 | 0,85 | 0,87 | 0,89 | 0,92 | 0,94 |
+
+**Analiz:** veritabanı büyüme eğrisindeki taban AD ile yamadaki formül (yalnız Alacrity %3) L1'de ~1, L15'te ~6 puan düşük kalıyor (184 vs 190). 15 değerin hepsine oturan çarpan ≈ 1 + 0,012 + 0,0327 × level: ya seviye katsayısı %3'ten biraz fazla, ya da level kaynaklı AS'nin küçük bir kısmı da dönüşüyor. Motordaki sabit AS (veritabanı eğrisi) L15'te 0,928; ölçülen tablo kullanılacak.
+
+**Açık sorular (kullanıcıya soruldu):**
+1. Rün yokken L1 ve L15 AD (seviye katsayısını Alacrity'den ayırmak için).
+2. L15'te yalnız bir AS item'ı ile AD (item adı ve AS yüzdesi) → %30 katsayısının teyidi.
+3. L15'te yalnız bir crit item'ı ile AD (item adı ve crit yüzdesi) → %40 katsayısının teyidi.
+4. 4. atışın eksik-can yüzdesi level'a göre (motor: %11 + %1/level).
+5. R mermileri arası süre: normal saldırı aralığı mı, sabit süre mi?
+
+**Kodda düzeltilecekler (veri gelince):** ölçülen sabit AS tablosu; AD dönüşümü; R'nin yalnız mermi bitince kullanılabilmesi kuralı kaldırılacak; Q sekme, W kök (son 4 s'de vurulmuş hedef), E tuzak kurulma/tetiklenme; studio/replay'de 4'lü atış ritmi ve reload görünümü; Jhin kayıtlı build sonuçlarının yeniden hesabı.
 
 ## Ortak kaynak / oyun doğrulaması
 
