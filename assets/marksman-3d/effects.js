@@ -30,6 +30,10 @@ const STYLE={
 // Base-skin color direction, with separate spell colors instead of one model-wide tint.
 const SPELL_COLORS={
  Ashe:['#68c9ff','#70bfff','#9bddff','#63bcff','#84ddff'],Caitlyn:['#e8c790','#efcf91','#b99768','#76dce9','#f5c49a'],Corki:['#ffbd56','#ff9541','#ef6a2b','#ffd577','#ff9c40'],Draven:['#d9dbe4','#ded8c5','#e6965f','#dbd9d1','#e19c58'],Ezreal:['#ffd95a','#71e6ff','#ffd948','#ffe56c','#ffc33e'],Jhin:['#eab4d6','#b473d2','#da96d5','#a84bcf','#f4b97d'],Jinx:['#f2b3df','#ebc77c','#67d1ff','#ec9869','#ff8e42'],"Kai'Sa":['#b46aff','#cf83ff','#ca8eff','#a473ec','#cba0ff'],Kalista:['#69d8d2','#67ddda','#8acacb','#61ddd8','#7cdfdb'],"Kog'Maw":['#b7e954','#a0dc49','#a5df66','#90d94c','#a7e845'],Lucian:['#f6e9b8','#ffe39b','#98d8ff','#dceaff','#ffe6aa'],"Miss Fortune":['#ffbe68','#ffc073','#eda071','#ffa950','#ffc280'],Samira:['#f6cf7b','#dedbe8','#dde3ef','#eaae88','#efc49a'],Senna:['#73dcd1','#a9f0df','#70d3cf','#73d5ce','#ffeeaf'],Sivir:['#c9cf8a','#f0d789','#d6eab5','#ffe28d','#9fdcd5'],Smolder:['#ffae42','#ff9e36','#ffd46c','#ffac58','#ff8535'],Tristana:['#ffbf70','#ffd184','#ffb65c','#edb678','#ffc568'],Twitch:['#8fde58','#81c762','#91dc4a','#a4e961','#a2d97a'],Varus:['#b47aff','#b482ef','#b673eb','#af83d7','#b476eb'],Vayne:['#b8caff','#b7caff','#eef5ff','#d1d9ff','#aaa5f7'],Xayah:['#d587e9','#edb5fa','#d67cdb','#e897f4','#e9a1ed'],Yunara:['#a295ff','#aea5ff','#a8e4ea','#b9a0ff','#d09fff'],Zeri:['#d0f77c','#defa8b','#dcf57c','#b5ee83','#cef885']};
+// Basic attack visual per weapon, and the impact family each projectile kind ends in.
+const WEAPON_AA={bow:'arrow',rifle:'pierce',pistols:'barrage',axes:'axe',spear:'spear',cannon:'cannon_ball',maw:'acid',breath:'flame',aircraft:'barrage',relic_cannon:'dark_beam',void_cannons:'swarm',crossbows:'heavy_bolt',crossblade:'disc',feathers:'feather',spirit_orbs:'spirit_arc',electric_rifle:'spark_bolt',launcher:'pierce',blade_pistol:'barrage',crossbow:'heavy_bolt'};
+const IMPACTS={explosion:['rocket','bomb','grenade','cannon_ball','artillery','charge','dragon_shadow','flame','sneeze'],splash:['acid','ooze','cask','poison_burst'],sparks:['pierce','barrage','slash_bullet','heavy_bolt','spark_bolt','arrow','charged_arrow','spear','axe','disc','boomerang','feather','fan','swarm','cone_barrage','radial_barrage','arcane_arrow','lance','dark_beam','beam','wide_beam','sniper']};
+function impactKind(profile,action,empowered){const slot=action.startsWith('AA')?'AA':action[0],effect=slot==='AA'?(empowered||WEAPON_AA[profile.weapon]||'arcane_arrow'):profile.skills?.[slot]?.effect,style=STYLE[effect]||[effect,1,1,profile.theme];if(style[3]==='frost')return'shards';for(const[k,list]of Object.entries(IMPACTS))if(list.includes(style[0]))return k;return'burst';}
 function effectColor(profile,slot){return SPELL_COLORS[profile.name]?.[{P:0,Q:1,W:2,E:3,R:4,AA:1}[slot]]||profile.palette.energy;}
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),hash=(i)=>{const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x);};
 function createEffects(T,scene,{software=false,budget=1400}={}){
@@ -69,7 +73,7 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
  }
  function draw(profile,slot,frame={}){
   const spec=slot==='AA'?profile.attack:slot==='P'?profile.passive:profile.skills[slot];if(!spec)return;
-  const effect=slot==='AA'?frame.empowered||({bow:'arrow',rifle:'pierce',pistols:'barrage',axes:'axe',spear:'spear',cannon:'cannon_ball',maw:'acid',breath:'flame',aircraft:'barrage',relic_cannon:'dark_beam',void_cannons:'swarm',crossbows:'heavy_bolt',crossblade:'disc',feathers:'feather',spirit_orbs:'spirit_arc',electric_rifle:'spark_bolt',launcher:'pierce',blade_pistol:'barrage',crossbow:'heavy_bolt'}[profile.weapon]||'arcane_arrow'):slot==='P'?'passive':spec.effect;
+  const effect=slot==='AA'?frame.empowered||WEAPON_AA[profile.weapon]||'arcane_arrow':slot==='P'?'passive':spec.effect;
   // Ezreal's basic bolt and Mystic Shot deliberately have separate silhouettes and rhythms.
   if(profile.name==='Ezreal'&&['AA','Q','W','R'].includes(slot)){
    drawArcane(slot,spec,frame);return;
@@ -152,9 +156,16 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
   }
   if(impact&&fade>0){ring(target,.12+(1-fade)*.6*scale,color,fade,new T.Vector3(1,0,0));emit(target,kind==='rocket'?70:kind==='cannon_ball'?45:22,color,seed,(1-fade)*.8,{radius:.13,speed:1.2*scale,lifetime:.85,up:1,gravity:1.4,size:.09});}
  }
- function impact(profile,action,age,point,seed=1){if(age<0||age>.7)return;const c=effectColor(profile,action.startsWith('AA')?'AA':action[0]);ring(point,.1+age*1.1,c,(1-age/.7)*.65,new T.Vector3(1,0,0));emit(point,action.startsWith('R')?40:16,c,seed*67,age,{radius:.1,speed:1.3,up:1,gravity:1.8,lifetime:.7,size:.09});}
+ // Hit effects by what struck: ordnance explodes, acid and venom splash, frost shatters, bullets and blades throw sparks.
+ function impact(profile,action,age,point,seed=1,hit={}){if(age<0||age>.9)return;const slot=action.startsWith('AA')?'AA':action[0],kind=impactKind(profile,action,hit.empowered),c=effectColor(profile,hit.colorSlot||slot),big=slot==='R'?1.6:slot==='AA'?.7:1,f=1-age/.9,ground=point.clone().setY(.06);
+  if(kind==='explosion'){sphere(point,(.12+age*.9)*big,c,f*.5);sphere(point,(.05+age*.4)*big,'#fff1c2',f*.8);ring(ground,(.2+age*1.6)*big,c,f*.55);emit(point,Math.round(44*big),c,seed*67,age,{radius:.12,speed:2.1*big,up:1.4,gravity:2.2,lifetime:.9,size:.11});emit(point,14,'#7d746a',seed*31,age,{radius:.2,speed:.45,up:.9,gravity:-.3,lifetime:.9,size:.17});}
+  else if(kind==='splash'){ring(ground,(.15+age*.9)*big,c,f*.5);for(let i=0;i<8;i++){const a=i*Math.PI/4+seed,d=(.1+age*.8)*big,y=Math.max(.05,point.y+age*1.2-age*age*4);sphere(new T.Vector3(point.x+Math.cos(a)*d,y,point.z+Math.sin(a)*d),.05*big*f+.01,c,f*.8);}emit(point,26,c,seed*67,age,{radius:.1,speed:1.2,up:1.6,gravity:3.5,lifetime:.8,size:.09});}
+  else if(kind==='shards'){ring(point,.1+age,c,f*.7,new T.Vector3(1,0,0));for(let i=0;i<9;i++){const a=i*Math.PI*2/9+seed*.7,dir=new T.Vector3(Math.cos(a),Math.sin(a)*.8+.3,Math.sin(a*1.3)).normalize();projectile(point.clone().addScaledVector(dir,.08+age*.9*big),dir,.035*big,'#e8fbff','cone');}emit(point,22,c,seed*67,age,{radius:.08,speed:1.3,up:.8,gravity:1.5,lifetime:.7,size:.07});}
+  else if(kind==='sparks'){ring(point,.08+age*.7*big,c,f*.7,new T.Vector3(1,0,0));for(let i=0;i<10;i++){const a=hash(seed+i)*Math.PI*2,e=hash(seed+i+9)*.8+.2,dir=new T.Vector3(Math.cos(a),e,Math.sin(a)).normalize();segment(point.clone().addScaledVector(dir,age*1.6*big),point.clone().addScaledVector(dir,age*1.6*big+.12*f),.012,i%2?c:'#fff6d8',f*.9);}emit(point,Math.round(16*big),c,seed*67,age,{radius:.05,speed:1.6,up:.9,gravity:2,lifetime:.6,size:.07});}
+  else{ring(point,.1+age*1.1,c,f*.65,new T.Vector3(1,0,0));emit(point,slot==='R'?40:16,c,seed*67,age,{radius:.1,speed:1.3,up:1,gravity:1.8,lifetime:.7,size:.09});}
+ }
  function dispose(){scene.remove(group);for(const g of Object.values(geometries))g.dispose();for(const m of materials.values())m.dispose();shader.dispose();buffer.dispose();}
  return {group,begin,finish,draw,impact,dispose,metrics:()=>({meshPool:pool.length,liveMeshes:used,particles:particleCount,budget})};
 }
-const API={STYLE,SPELL_COLORS,effectColor,createEffects,hash};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanEffects=API;
+const API={STYLE,SPELL_COLORS,WEAPON_AA,IMPACTS,impactKind,effectColor,createEffects,hash};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanEffects=API;
 })(typeof globalThis!=='undefined'?globalThis:this);
