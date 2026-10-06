@@ -1026,6 +1026,74 @@ def build_rig(name, chains=(), extra=(), arm_iks=()):
     return rig
 
 
+def build_creature_rig(name, bones, legs=(), chains=(), extra=()):
+    """A free-form skeleton for creatures (dragons, six-legged beasts):
+    bones: (name, head, tail, parent, deform) rows (a root bone is added first);
+    legs: (prefix, upper, lower, ankle point, pole point) -> an IK control 'ik_<prefix>' and a
+    pole 'pole_<prefix>' (both under root) with a 2-bone 'Leg IK' on the lower bone;
+    chains and extra as in build_rig."""
+    global rig, PB, REST, REST3
+    data = bpy.data.armatures.new(name)
+    rig = bpy.data.objects.new(name, data)
+    scene.collection.objects.link(rig)
+    activate(rig)
+    bpy.ops.object.mode_set(mode="EDIT")
+    eb = data.edit_bones
+
+    def bone(bname, head, tail, parent=None, deform=True):
+        b = eb.new(bname)
+        b.head, b.tail = Vector(head), Vector(tail)
+        b.use_deform = deform
+        if parent:
+            b.parent = eb[parent]
+        return b
+
+    bone("root", (0, 0, 0), (0, 0.25, 0), deform=False)
+    for bname, head, tail, parent, deform in bones:
+        bone(bname, head, tail, parent or "root", deform)
+    for prefix, upper, lower, ankle, pole in legs:
+        ankle, pole = Vector(ankle), Vector(pole)
+        bone(f"ik_{prefix}", ankle, ankle + Vector((0, 0.08, 0)), "root", deform=False)
+        bone(f"pole_{prefix}", pole, pole + Vector((0, 0.08, 0)), "root", deform=False)
+    for cname, points, parent, options in chains:
+        pts = [Vector(p) for p in points]
+        names, prev = [], parent
+        for i in range(len(pts) - 1):
+            bname = f"{cname}.{i}"
+            bone(bname, pts[i], pts[i + 1], prev, deform=options.get("deform", False))
+            prev = bname
+            names.append(bname)
+        CHAINS[cname] = dict(
+            bones=names,
+            points=pts,
+            parent=parent,
+            stiffness=options.get("stiffness", 70.0),
+            damping=options.get("damping", 7.0),
+            gain=options.get("gain", 0.9),
+            limit=options.get("limit", (35.0, 25.0)),
+            sway=options.get("sway", 0.0),
+            scale=options.get("scale", 0.5),
+            skin=options.get("skin", False),
+        )
+    for bname, head, tail, parent in extra:
+        bone(bname, head, tail, parent, deform=False)
+    bpy.ops.object.mode_set(mode="POSE")
+    PB = rig.pose.bones
+    for p in PB:
+        p.rotation_mode = "QUATERNION"
+    for prefix, upper, lower, ankle, pole in legs:
+        ik = PB[lower].constraints.new("IK")
+        ik.name = "Leg IK"
+        ik.target, ik.subtarget = rig, f"ik_{prefix}"
+        ik.pole_target, ik.pole_subtarget = rig, f"pole_{prefix}"
+        ik.pole_angle = math.radians(-90)
+        ik.chain_count = 2
+    bpy.ops.object.mode_set(mode="OBJECT")
+    REST = {b.name: b.matrix_local.to_quaternion() for b in rig.data.bones}
+    REST3 = {b.name: b.matrix_local.to_3x3() for b in rig.data.bones}
+    return rig
+
+
 def bone_frame(head, direction, length=0.1):
     """(head, tail) for a bone at `head` pointing along a world direction."""
     head = Vector(head)
@@ -1195,9 +1263,9 @@ def iks_off(frame, side=None):
 
 def leg_ik(frame, value=1.0):
     """Blend the leg IK on or off (off: the legs follow the hips in FK, e.g. tucked in a roll)."""
-    for side in ("L", "R"):
-        for c in PB[f"shin.{side}"].constraints:
-            if c.type == "IK":
+    for pb in PB:
+        for c in pb.constraints:
+            if c.type == "IK" and (pb.name.startswith("shin") or c.name == "Leg IK"):
                 c.influence = value
                 c.keyframe_insert("influence", frame=frame)
 
@@ -1222,7 +1290,7 @@ def reset_pose():
         for c in pb.constraints:
             if c.name.startswith("IK ") and pb.name.startswith("forearm"):
                 c.influence = 0.0
-            elif c.type == "IK" and pb.name.startswith("shin"):
+            elif c.type == "IK" and (pb.name.startswith("shin") or c.name == "Leg IK"):
                 c.influence = 1.0
 
 
@@ -1468,7 +1536,7 @@ def complete_channels(action):
             if c.type == "IK" or c.name.startswith("IK "):
                 path = f'{base}.constraints["{c.name}"].influence'
                 if (path, 0) not in have:
-                    rest = 1.0 if pb.name.startswith("shin") else 0.0
+                    rest = 1.0 if pb.name.startswith("shin") or c.name == "Leg IK" else 0.0
                     action.fcurves.new(path, index=0, action_group=pb.name).keyframe_points.insert(0, rest)
 
 
@@ -1592,7 +1660,7 @@ def render_clip(camera, actions, name, out, view=CLIP_VIEW, every=1, scale=1.0):
         scene.frame_set(f)
         # Follow root motion (preview videos) so the character stays framed.
         follow = PB["root"].head.copy()
-        follow.z = 0.0
+        follow.z *= 0.5  # half of any jump, so leaps stay in frame but still read as height
         frame_camera(camera, scale=scale, **view)
         camera.location += follow
         look_at(camera, Vector((0, 0, view.get("target_z", 0.9) * scale)) + follow)
@@ -1630,9 +1698,70 @@ def reduce_to(budget, keep=("body",)):
         ratio = max(0.15, (budget - fixed) / flexible)
         for o in rest:
             if triangles(o) > 64:
-                d = o.modifiers.new("Decimate", "DECIMATE")
-                d.ratio = ratio
-                apply_modifiers(o)
+                decimate_first(o, ratio)
+
+
+def decimate_first(obj, ratio):
+    """Collapse-decimate a mesh's base shape only: the decimation goes first in the stack and
+    is the only modifier applied, so a skinned mesh keeps its armature and weights."""
+    d = obj.modifiers.new("Decimate", "DECIMATE")
+    d.ratio = ratio
+    activate(obj)
+    bpy.ops.object.modifier_move_to_index(modifier=d.name, index=0)
+    bpy.ops.object.modifier_apply(modifier=d.name)
+
+
+def skin_parts():
+    """One skinned mesh for the app: every rigid part (parented to a bone) becomes geometry
+    weighted fully to that bone and is joined, with the other skinned meshes, into the body
+    (one skin and one draw call per material instead of one per part)."""
+    rig.data.pose_position = "REST"
+    bpy.context.view_layer.update()
+    meshes = [o for o in rig.children_recursive if o.type == "MESH"]
+    skinned = [o for o in meshes if any(m.type == "ARMATURE" for m in o.modifiers)]
+    body = max(skinned, key=triangles)
+    for o in meshes:
+        if o.parent_type == "BONE":
+            bone, world = o.parent_bone, o.matrix_world.copy()
+            o.parent = None
+            o.matrix_world = world
+            activate(o)
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            group = o.vertex_groups.new(name=bone)
+            group.add(list(range(len(o.data.vertices))), 1.0, "REPLACE")
+            rig.data.bones[bone].use_deform = True
+    others = [o for o in meshes if o is not body]
+    if others:
+        body = join([body] + others, body.name)
+    body.data.validate()
+    rig.data.pose_position = "POSE"
+    bpy.context.view_layer.update()
+
+
+def prune_bones():
+    """Remove leaf bones the app never needs (effect, flash and prop helpers): non-deforming,
+    childless, carrying no object (sockets) and not an IK target or pole."""
+    used = {"root"}
+    for pb in rig.pose.bones:
+        for c in pb.constraints:
+            used.update(n for n in (getattr(c, "subtarget", ""), getattr(c, "pole_subtarget", "")) if n)
+    used.update(o.parent_bone for o in rig.children if o.parent_type == "BONE")
+    activate(rig)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones = rig.data.edit_bones
+    pruned = True
+    while pruned:
+        pruned = False
+        for b in list(bones):
+            if not b.use_deform and not b.children and b.name not in used:
+                bones.remove(b)
+                pruned = True
+    bpy.ops.object.mode_set(mode="OBJECT")
+    names = {b.name for b in rig.data.bones}
+    for action in bpy.data.actions:
+        for fc in list(action.fcurves):
+            if fc.data_path.startswith('pose.bones["') and fc.data_path.split('"')[1] not in names:
+                action.fcurves.remove(fc)
 
 
 def drop_fx():

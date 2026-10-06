@@ -13,7 +13,7 @@ on:
       - "scripts/export_marksman_art.mjs"
       - "scripts/package_marksman_art.py"
       - "scripts/build_ezreal_study.py"
-      - "scripts/build_marksman_roster.py"
+      - "scripts/marksman_v2/**"
       - "scripts/build_skill_geometry.py"
       - "scripts/check_art_sources.py"
       - "data/marksman-skill-geometry.json"
@@ -31,7 +31,7 @@ env:
 jobs:
   art:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     permissions:
       contents: write
     env:
@@ -53,7 +53,7 @@ jobs:
           rebuild=false
           python scripts/check_art_sources.py || rebuild=true
           published=$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name' 2>/dev/null || true)
-          for asset in sharpwr-skinned-roster.zip sharpwr-ezreal-v2-source.zip; do
+          for asset in sharpwr-skinned-roster-v8.zip sharpwr-ezreal-v2-source.zip; do
             if ! grep -qx "$asset" <<<"$published"; then
               echo "Release asset missing: $asset"
               rebuild=true
@@ -67,7 +67,8 @@ jobs:
           tar -xf /tmp/blender.tar.xz -C /tmp
           blender=/tmp/blender-4.5.14-linux-x64/blender
           "$blender" --background --threads 2 --python scripts/build_ezreal_study.py
-          "$blender" --background --threads 2 --python scripts/build_marksman_roster.py
+          # v2 studies: one Blender process per champion, four at a time.
+          python scripts/marksman_v2/export_studio.py --blender "$blender" --jobs 4
           python scripts/check_art_sources.py
       - run: node tests/test_blender_study.cjs
       - run: node tests/test_roster_v7.cjs

@@ -1788,8 +1788,8 @@ with tabs[5]:
     _tab_hero("SHARPWR • CHARACTER ART","Animation Studio","Explore 23 skinned marksmen, range-aware skill indicators, blink landing markers and dash paths.")
     from marksman_art import studio_html, release_asset_url
     components.html(studio_html(),height=1220,scrolling=True)
-    st.caption("All 23 champions: Blender skinned models, weapon-aware baked clips, software previews and editable sources. Original stylized artwork; not extracted game assets.")
-    st.link_button("Download 23 skinned models + Blender sources",release_asset_url("sharpwr-skinned-roster.zip"))
+    st.caption("All 23 champions: Blender skinned models with hand-animated clips (V8), software previews and editable sources. Original stylized artwork; not extracted game assets.")
+    st.link_button("Download 23 skinned models + Blender sources",release_asset_url("sharpwr-skinned-roster-v8.zip"))
     _ezreal_glb=Path(__file__).resolve().parent/"static/marksman-3d/ezreal/character.glb"
     if _ezreal_glb.is_file():
         st.download_button("Download Ezreal Blender v2 GLB",_ezreal_glb.read_bytes(),file_name="sharpwr-ezreal-v2.glb",mime="model/gltf-binary",key="ezreal_v2_glb")

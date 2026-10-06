@@ -51,7 +51,7 @@ The integrity audit writes `data/combat-audit-current.json` and `data/combat-aud
 - [Per-champion queue](docs/marksman-task-queue.md)
 - [Current adapters and runtime assumptions](docs/all-marksman-fight-engine.md)
 - [Core-item protocol](docs/core-item-protocol.md)
-- [Skinned roster V7](docs/roster-v7.md)
+- [Skinned roster V8](docs/roster-v8.md)
 
 ## Deploy
 

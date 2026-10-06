@@ -22,6 +22,13 @@ def digest(*sources):
     return hashlib.sha256(b''.join(source.read_bytes() for source in sources)).hexdigest()
 
 
+def roster_digest():
+    """Signature of the v2 skinned roster: the shared toolkit, the exporter, every champion
+    study and the art direction they read."""
+    v2 = ROOT / 'scripts/marksman_v2'
+    return digest(v2 / 'core.py', v2 / 'export_studio.py', *sorted((v2 / 'champions').glob('*.py')), ROOT / 'data/marksman-art-direction.json')
+
+
 CHECKS = {
     'Ezreal study': (
         ROOT / 'assets/marksman-3d/studies/ezreal-v2/manifest.json',
@@ -29,7 +36,7 @@ CHECKS = {
     ),
     'Skinned roster': (
         ROOT / 'static/marksman-3d/manifest.json',
-        digest(ROOT / 'scripts/build_marksman_roster.py', ROOT / 'data/marksman-art-direction.json'),
+        roster_digest(),
     ),
 }
 

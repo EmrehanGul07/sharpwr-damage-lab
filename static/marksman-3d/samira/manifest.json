@@ -1,7 +1,7 @@
 {
   "champion": "Samira",
   "id": "samira",
-  "bones": 19,
+  "bones": 39,
   "animations": {
     "Idle": 3,
     "Walk": 1.2,
@@ -12,11 +12,12 @@
     "E": 0.95,
     "R": 2.3
   },
-  "full_triangles": 28652,
-  "preview_triangles": 8022,
-  "materials": 10,
+  "full_triangles": 30263,
+  "preview_triangles": 7999,
+  "materials": 13,
   "silhouette": "Dark swept hair, eyepatch, red scarf, armored leather suit, curved blade and compact pistol",
   "weapon": "blade_pistol",
-  "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+  "source": "scripts/marksman_v2/champions/samira.py",
+  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
   "status": "original authored stylized asset; not extracted Wild Rift game art"
 }
