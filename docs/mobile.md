@@ -1,6 +1,6 @@
 # SharpWR Android app
 
-An English Wild Rift marksman Database for Android: champions with stats at every level and their abilities (icon, cooldown and mana per rank, SharpWR's English summary), items, components, boots and runes, plus SharpWR's published item tier list, each champion's saved build results (SharpWR's core item pick beside the engine's, the rune page with a keystone check, Top 3 builds per level and target from every item, build styles and the item ranking) and Build Lab, which calculates a build's stats on the phone. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
+An English Wild Rift marksman Database for Android: champions with stats at every level and their abilities (icon, cooldown and mana per rank, SharpWR's English summary), items, components, boots and runes, plus SharpWR's published item tier list, each champion's saved build results (SharpWR's core item pick beside the engine's, the rune page with a keystone check, Top 3 builds per level and target from every item, build styles and the item ranking) Build Lab, which calculates a build's stats on the phone, and a 3D tab on every champion page with the champion's skinned model and its eight studio animations. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
 
 ## Layout
 
@@ -28,6 +28,10 @@ cd android && ./gradlew assembleDebug   # needs JDK 21 and the Android SDK
 ```
 
 When champion, item or rune data changes, run `python scripts/export_app_data.py` at the repository root first; the next build picks the new file up.
+
+## 3D tab
+
+`src/views/model3d.ts` shows the champion's model from the web Animation Studio (`static/marksman-3d/<id>/character.glb`, see [roster-v8.md](roster-v8.md)) with buttons for Idle, Run, Attack, P, Q, W, E and R; the caption names the ability. Drag turns the model. The model downloads from this repository's `main` branch the first time the tab opens (network first, so updated models arrive) and is kept in Cache Storage for offline use. Three.js (a dev dependency, so the Android shell fingerprint is unchanged) loads as a separate chunk only when the tab opens. One viewer runs at a time and releases its GPU resources when the tab is left.
 
 ## Build Lab
 

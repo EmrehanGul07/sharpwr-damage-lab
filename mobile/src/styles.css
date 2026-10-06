@@ -805,3 +805,49 @@ a {
 .tabbar a.active {
   color: var(--gold);
 }
+
+/* 3D tab (src/views/model3d.ts) */
+.model-stage {
+  position: relative;
+  height: 340px;
+  margin: 12px 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 35%, #1d2b3f 0%, #0b111b 75%);
+  overflow: hidden;
+}
+
+.model-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.model-status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 16px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.model-caption {
+  margin: 4px 0 8px;
+  color: var(--gold);
+  font-weight: 600;
+  text-align: center;
+}
+
+.segments.model-clips {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.segments.model-clips button:disabled {
+  opacity: 0.45;
+}

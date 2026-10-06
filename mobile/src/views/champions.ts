@@ -5,6 +5,7 @@ import { h, icon } from "../dom";
 import { LEVEL_STATS, formatGold, formatNumber, perRank, trimNumber } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
+import { modelTab } from "./model3d";
 import {
   type View,
   choiceChips,
@@ -378,13 +379,15 @@ export function championDetail(db: Database, name: string, params: URLSearchPara
   const meta = [champion.attack_type, champion.resource_type].filter(Boolean).join(" · ");
   const tabs = segments(
     [
-      { label: "Builds", target: href("champions", [champion.name]), active: tab !== "stats" && tab !== "abilities" },
+      { label: "Builds", target: href("champions", [champion.name]), active: tab !== "stats" && tab !== "abilities" && tab !== "3d" },
       { label: "Abilities", target: href("champions", [champion.name], { tab: "abilities" }), active: tab === "abilities" },
       { label: "Stats", target: href("champions", [champion.name], { tab: "stats" }), active: tab === "stats" },
+      { label: "3D", target: href("champions", [champion.name], { tab: "3d" }), active: tab === "3d" },
     ],
     true,
   );
-  const content = tab === "stats" ? statsTab(champion) : tab === "abilities" ? abilitiesTab(champion) : buildsTab(db, champion);
+  const content =
+    tab === "stats" ? statsTab(champion) : tab === "abilities" ? abilitiesTab(champion) : tab === "3d" ? modelTab(champion) : buildsTab(db, champion);
   return {
     title: champion.name,
     back: true,
