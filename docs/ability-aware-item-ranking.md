@@ -28,7 +28,7 @@ The simulation uses expected damage; thresholds and ability decisions follow exp
 
 ## UI and persistence
 
-Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce uses an independent fight action when unlocked and repeats 50s after actual use. It does not inject active damage into AA. Galeforce now dashes toward the target by up to 325 units and damages only within 600 units after the dash. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
+Results persist through widget reruns. Changing champion, level, target, scenario or progression hides stale rankings until recalculation. Only three full builds are displayed; there is no expanded full-build Top 10 table. The contribution table is collapsed by default. Galeforce uses an independent fight action when unlocked and repeats 60s after actual use (Wild Rift tooltip: 40-125 by level +35% bonus AD physical damage). It does not inject active damage into AA. Galeforce now dashes toward the target by up to 325 units and damages only within 600 units after the dash. First Contact prepares Energized; Spellblade requires an actual skill cast, and ultimates require their real kit resources.
 
 ## Validation
 

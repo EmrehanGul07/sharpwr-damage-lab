@@ -495,25 +495,40 @@ def explain_ties(rows):
 
 
 def search_builds(
-    evaluator, pool, boots, *, beam_width=80, refine_count=40, progress=None, max_items=5
+    evaluator,
+    pool,
+    boots,
+    *,
+    beam_width=80,
+    refine_count=40,
+    progress=None,
+    max_items=5,
+    required=(),
 ):
-    """All singles/pairs; diverse beam, rotation screening, then deeper policy validation."""
+    """All singles/pairs; diverse beam, rotation screening, then deeper policy validation.
+
+    required: items every build holds (a build style); the search fills the other slots.
+    """
     if isinstance(max_items, bool) or not isinstance(max_items, int) or not 1 <= max_items <= 5:
         raise ValueError("Item budget must be 1–5")
     integer(beam_width, "beam width", 1)
     integer(refine_count, "refine count", 1)
-    if any(x not in evaluator.ns["F"] for x in pool):
+    if any(x not in evaluator.ns["F"] for x in (*pool, *required)):
         raise ValueError("Unknown search item")
     if any(x not in evaluator.ns["B"] for x in boots):
         raise ValueError("Unknown search boots")
-    pool = tuple(sorted(set(pool)))
+    required = tuple(sorted(set(required)))
+    if not legal(required) or len(required) > max_items:
+        raise ValueError("Required items must form a legal build within the item budget")
+    pool = tuple(sorted(set(pool) - set(required)))
     boots = tuple(sorted(set(boots)))
-    if not pool or not boots:
+    if (not pool and len(required) < max_items) or not boots:
         raise ValueError("Search requires items and boots")
     stages = {}
-    beam = [()]
+    beam = [required]
     tested = {}
-    for stage in range(1, max_items + 1):
+    first = len(required) + 1
+    for stage in range(first, max_items + 1):
         candidates = {
             tuple(sorted((*seed, item)))
             for seed in beam
@@ -527,7 +542,7 @@ def search_builds(
         beam = [
             x["Items"]
             for x in diverse_shortlist(
-                evaluator, rows, max(beam_width, len(pool)) if stage == 1 else beam_width
+                evaluator, rows, max(beam_width, len(pool)) if stage == first else beam_width
             )
         ]
         if stage < max_items:
@@ -543,7 +558,7 @@ def search_builds(
                 for x in diverse_shortlist(
                     evaluator,
                     [refined_by_items.get(x["Items"], x) for x in rows],
-                    max(beam_width, len(pool)) if stage == 1 else beam_width,
+                    max(beam_width, len(pool)) if stage == first else beam_width,
                 )
             ]
         if progress:
@@ -594,6 +609,7 @@ def search_builds(
         "simulations": evaluator.simulations,
         "beam_width": beam_width,
         "max_items": max_items,
+        "required": list(required),
         "pool_size": len(pool),
         "boot_count": len(boots),
         "search_status": "bounded diverse beam; not globally exhaustive",

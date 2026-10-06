@@ -14,6 +14,8 @@ export interface BuildState {
   boots: string | null;
   mist: number;
   yuntalStacks: number;
+  /** Count the champion's default rune page. */
+  runes: boolean;
 }
 
 /** Yun Tal permanent stacks the web Tier List assumes at a level: 0 to level 5, 125 from level 9. */
@@ -29,6 +31,7 @@ export function emptyBuild(champion: string, level = 15): BuildState {
     boots: null,
     mist: champion === "Senna" ? 40 : 0,
     yuntalStacks: defaultYuntalStacks(level),
+    runes: true,
   };
 }
 
@@ -40,6 +43,7 @@ export function buildInput(state: BuildState): BuildInput {
     boots: state.boots,
     mist: state.mist,
     yuntalStacks: state.yuntalStacks,
+    runes: state.runes,
   };
 }
 
@@ -57,6 +61,8 @@ export function cleanBuild(db: Database, saved: Partial<BuildState>): BuildState
     boots: typeof saved.boots === "string" && db.boots.some((item) => item.name === saved.boots) ? saved.boots : null,
     mist: count(saved.mist, champion === "Senna" ? 40 : 0),
     yuntalStacks: count(saved.yuntalStacks, defaultYuntalStacks(level)),
+    // Builds saved before runes existed start with the default page.
+    runes: saved.runes !== false,
   };
 }
 

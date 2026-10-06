@@ -7,6 +7,7 @@ _lock = threading.RLock()
 _loaded_revision = None
 _MODULES = (
     'sharpwr.combat_validation', 'sharpwr.champion_database', 'sharpwr.rune_database', 'sharpwr.rune_runtime',
+    'sharpwr.rune_pages',
     'sharpwr.champion_skill_data', 'sharpwr.marksman_ability_database', 'sharpwr.damage_classification',
     'sharpwr.combat_timing', 'sharpwr.marksman_state', 'sharpwr.marksman_damage_components', 'sharpwr.marksman_kits',
     'sharpwr.marksman_fight_engine', 'sharpwr.fight_engine',

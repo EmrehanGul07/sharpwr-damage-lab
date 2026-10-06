@@ -8,6 +8,7 @@ The target never attacks. Timing follows sourced casts/channels when available.
 import heapq
 import itertools
 import math
+from .catalog import GALEFORCE_COOLDOWN, galeforce_damage
 from .rune_runtime import (
     FIGHT_KEYSTONES,
     FIGHT_RUNES,
@@ -1770,14 +1771,10 @@ def replay_marksman(events, **p):
                         continue
                     record(
                         "Galeforce active",
-                        RawDamage(
-                            physical=40
-                            + (level - 1) / 14 * 80
-                            + 0.45 * max(0.0, current_ad() - base_ad)
-                        ),
-                        effects=("Cloudburst active; 50s cooldown",),
+                        RawDamage(physical=galeforce_damage(level, current_ad() - base_ad)),
+                        effects=(f"Cloudburst active; {GALEFORCE_COOLDOWN}s cooldown",),
                     )
-                    queue(t + 50, "galeforce")
+                    queue(t + GALEFORCE_COOLDOWN, "galeforce")
             elif kind == "aa_launch":
                 result = aa_hit(
                     {

@@ -15,6 +15,8 @@ export interface BuildInput {
   mist?: number;
   /** Yun Tal Wildarrows permanent stacks. */
   yuntalStacks?: number;
+  /** Apply the champion's default rune page (champion.rune_stats at this level). */
+  runes?: boolean;
 }
 
 /** Same fields as sharpwr.build_stats.build_stats; fractions stay fractions (0.25 = 25%). */
@@ -104,11 +106,18 @@ export function buildStats(db: Database, input: BuildInput): BuildStats {
   const core = champion.levels[String(l)];
   const s = attackStats(champion, l, mist);
   const total = totals(items.map((name) => findCompleted(db, name)), input.boots ? findBoots(db, input.boots) : null);
-  const maxMana = core.mana === null ? null : core.mana + total.mana;
+  const runes = input.runes ? champion.rune_stats?.[String(l)] : undefined;
+  if (input.runes && !runes) throw new Error("This data has no rune stats; update the app data.");
+  let maxMana = core.mana === null ? null : core.mana + total.mana;
+  if (runes && maxMana !== null) maxMana += runes.mana;
   const yuntalCrit = items.includes("Yun Tal Wildarrows") ? Math.min(0.25, (input.yuntalStacks ?? 0) * 0.002) : 0;
   const awe = items.some((name) => MANA_ITEMS.includes(name)) ? 0.02 * (maxMana ?? 0) : 0;
   let startingAd = s.ad + total.ad + awe;
-  const bonusAs = s.bba + s.lvbas + total.as;
+  let bonusAs = s.bba + s.lvbas + total.as;
+  if (runes) {
+    startingAd += runes.ad;
+    bonusAs += runes.bonus_as;
+  }
   let startRaw: number;
   if (n === "Jhin") {
     // Whisper converts attack speed and crit into AD; Jhin's attack speed does not grow.
@@ -137,7 +146,7 @@ export function buildStats(db: Database, input: BuildInput): BuildStats {
     attack_speed_cap: cap,
     crit_chance: Math.min(1, total.crit + (n === "Senna" ? Math.floor(mist / 20) * 0.1 : 0) + yuntalCrit),
     crit_damage: critDamage,
-    ability_haste: total.ah,
+    ability_haste: total.ah + (runes ? runes.ah : 0),
     armor_pen_pct: total.pctpen,
     armor_pen_flat: total.flatpen,
     magic_pen_pct: total.pctmpen,

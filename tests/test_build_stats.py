@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from sharpwr.build_stats import build_stats
+from sharpwr.rune_pages import default_loadout
 
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = {
@@ -19,14 +20,23 @@ SUMMARY = {
 
 
 class BuildStatsTests(unittest.TestCase):
-    def test_reproduces_every_saved_core_search_row(self):
-        # Saved rows come from an older summation order: equal to 1e-9, not to the last bit.
-        # Against the search code it replaced, build_stats is bit-for-bit identical
-        # (21,242 builds, see verification in data/champion-core-items.json).
+    def test_reproduces_every_saved_search_row(self):
+        # Every saved row (core search, Top builds, styles) was found with the champion's rune
+        # page; a style's keystone does not change the page's persistent stats.
         payload = json.loads((ROOT / "data" / "champion-core-items.json").read_text())
         checked = 0
         for name, record in payload["champions"].items():
-            for key, cell in record["cells"].items():
+            cells = {
+                **{f"core {k}": c for k, c in record["cells"].items()},
+                **{f"top {k}": c for k, c in record["top"].items()},
+                **{
+                    f"{style['key']} {k}": c
+                    for style in record["styles"]
+                    for k, c in style["cells"].items()
+                },
+            }
+            for key, cell in cells.items():
+                runes = default_loadout(name, cell["level"])
                 for row in cell["search"]["full"]:
                     summary = build_stats(
                         name,
@@ -35,13 +45,12 @@ class BuildStatsTests(unittest.TestCase):
                         row["Boots"],
                         mist=40 if name == "Senna" else 0,
                         yuntal_stacks=cell["yuntal_start_stacks"],
+                        runes=runes,
                     )
                     for field, value in SUMMARY.items():
-                        self.assertAlmostEqual(
-                            value(summary), row[field], 9, (name, key, row["Items"], field)
-                        )
+                        self.assertEqual(value(summary), row[field], (name, key, row["Items"], field))
                     checked += 1
-        self.assertEqual(checked, 1242)
+        self.assertGreater(checked, 2 * 1242)
 
     def test_champion_rules(self):
         zeri = build_stats(

@@ -15,10 +15,19 @@ from .aa_engine import stats
 from .build_fight_optimizer import EXCLUSIVE, SPELLBLADE
 from .catalog import B, C, F, K, P, dct
 from .champion_database import CHAMPION_DATABASE, level_stats
-from .core_items import BUDGETS, EXCLUDED, core_leaders, core_record
+from .core_items import (
+    BUDGETS,
+    EDITOR_PATH,
+    EXCLUDED,
+    TARGETS,
+    build_styles,
+    core_leaders,
+    core_record,
+)
 from .icons import icon_entry
 from .marksman_ability_database import catalogue
 from .rune_database import RUNE_DATABASE, RUNE_SLOTS
+from .rune_pages import DEFAULT_PAGES, default_loadout
 
 SCHEMA = 1
 LEVELS = range(1, 16)
@@ -36,8 +45,6 @@ ABILITY_ICON_DIR = "assets/riot/abilities"
 ABILITY_SLOTS = ("P", "Q", "W", "E", "R")
 # Attack parameters per champion, in sharpwr/catalog.py C tuple order.
 AA_FIELDS = ("base_ad", "ad_growth", "as_ratio", "base_as", "base_bonus_as", "as_growth")
-# Benchmark targets in display order, as keyed in data/champion-core-items.json.
-TARGETS = ("squishy", "bruiser", "tank")
 
 
 def _icon(kind, name):
@@ -105,6 +112,18 @@ def _abilities(name):
     ]
 
 
+def rune_stats(name, level):
+    """What the default rune page adds to build_stats at a level, unrounded: AD, mana, ability
+    haste and bonus attack speed."""
+    loadout = default_loadout(name, level)
+    return {
+        "ad": loadout.persistent["ad"],
+        "mana": loadout.persistent["mana"],
+        "ah": loadout.persistent["ah"],
+        "bonus_as": loadout.bonus_as,
+    }
+
+
 def _champion(name, record):
     return {
         "name": name,
@@ -123,6 +142,9 @@ def _champion(name, record):
         "wiki_source_url": record.get("wiki_source_url"),
         "wiki_last_change_patch": record.get("wiki_last_change_patch"),
         "abilities": _abilities(name),
+        "rune_page": DEFAULT_PAGES[name],
+        "rune_stats": {str(level): rune_stats(name, level) for level in LEVELS},
+        "editor_core": json.loads(EDITOR_PATH.read_text())["picks"].get(name),
     }
 
 
@@ -186,13 +208,33 @@ def _build(row):
     }
 
 
+def _stages(cells):
+    """Saved finalists per matchup, in level and target order."""
+    return [
+        {
+            "level": level,
+            "target": target,
+            "items_allowed": budget,
+            "builds": [_build(row) for row in cells[f"{level}:{target}"]["search"]["full"]],
+        }
+        for level, budget in BUDGETS.items()
+        for target in TARGETS
+    ]
+
+
 def _core_builds(name):
-    """Saved core-item search for one champion; None while it is stale or incomplete."""
+    """Saved build results for one champion; None while they are stale or incomplete."""
     record = core_record(name)
     core = core_leaders(record)
     if not core:
         return None
-    cells = record["cells"]
+    defined = {style["key"]: style for style in build_styles(name)}
+    styles = [style for style in record.get("styles", []) if style["key"] in defined]
+    every_cell = [
+        *record["cells"].values(),
+        *record.get("top", {}).values(),
+        *(cell for style in styles for cell in style["cells"].values()),
+    ]
     return {
         "core": core,
         "ranking": [
@@ -206,20 +248,37 @@ def _core_builds(name):
             }
             for row in record["ranking"]
         ],
-        "stages": [
+        # Top builds: every item allowed (saved before 7.1.0: the core-item search).
+        "stages": _stages(record.get("top") or record["cells"]),
+        "styles": [
             {
-                "level": level,
-                "target": target,
-                "items_allowed": budget,
-                "builds": [_build(row) for row in cells[f"{level}:{target}"]["search"]["full"]],
+                "key": style["key"],
+                "name": defined[style["key"]]["name"],
+                "items": style["items"],
+                "keystone": style["keystone"],
+                "editor": bool(defined[style["key"]].get("editor")),
+                "note": defined[style["key"]].get("note"),
+                "stages": _stages(style["cells"]),
             }
-            for level, budget in BUDGETS.items()
-            for target in TARGETS
+            for style in styles
+        ],
+        "keystone_check": [
+            {
+                "level": row["level"],
+                "target": row["target"],
+                "items": row["items"],
+                "boots": row["boots"],
+                "ttk": {
+                    keystone: None if ttk is None else round(ttk, 3)
+                    for keystone, ttk in row["ttk"].items()
+                },
+            }
+            for row in record.get("keystone_check", [])
         ],
         "notes": sorted(
             {
                 note
-                for cell in cells.values()
+                for cell in every_cell
                 for row in cell["search"]["full"]
                 for note in row["Assumptions"]
             }

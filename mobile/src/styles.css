@@ -495,6 +495,29 @@ a {
   margin-top: 0;
 }
 
+.rune-card {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.rune-card .eyebrow {
+  margin-top: 0;
+}
+
+.rune-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.rune-icons .icon {
+  border-radius: 50%;
+}
+
 .core-items {
   display: flex;
   gap: 16px;

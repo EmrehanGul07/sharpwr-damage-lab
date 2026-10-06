@@ -506,7 +506,7 @@ ITEM_SCENARIO_AUDIT={
 "Terminus":("stacking/on-hit","modeled","Current in-game test: Shadow deals 30 bonus magic on-hit. Juxtaposition grants 10% armor + magic penetration per Dark stack, up to 3 stacks / 30%; no level scaling. Item percent penetration cap 40%. Defensive Light stacks are not scored in DPS."),
 "Stormrazor":("energized","modeled","Bolt: 120 bonus magic per Energized proc; charges 26 per 700 travelled units and 9 per AA. Ready proc is consumed on the next attack launch, damage on hit; Ezreal Q consumes ready charge on hit. Proc grants +45% movement speed for 1.5s (utility)."),
 "Yun Tal Wildarrows":("permanent stacking","modeled","Ranged: +0.2% permanent crit per AA, max 125 stacks / 25% crit. Pre-combat stacks are scenario state."),
-"Galeforce":("active","modeled","Cloudburst active: 40-120 linear by level +45% bonus AD total physical damage, 50s cooldown."),
+"Galeforce":("active","modeled","Cloudburst active: 40-125 linear by level +35% bonus AD total physical damage, 60s cooldown (Wild Rift tooltip)."),
 "Mercurial Scimitar":("active/defensive","not modeled","Cleanse/active excluded."),
 "Blade of the Ruined King":("current-HP/on-hit","modeled","User-confirmed ranged 6% current HP; melee tooltip 8.5%. Phantom uses HP remaining after the primary hit. Minimum15 raw physical remains unverified."),
 "Guardian Angel":("defensive","not modeled","Revive excluded."),
@@ -560,8 +560,8 @@ def _champion_profile(name,lvl,mist_count=0):
     profile=champion_level_stats(name,lvl,mist_count)
     portrait=_icon_url("champions",name)
     attack_speed=profile["attack_speed"]
-    from sharpwr.core_items import core_leaders, core_record
-    _leaders=core_leaders(core_record(name))
+    from sharpwr.core_items import shown_core
+    _leaders=shown_core(name)
     _core_card=''
     if _leaders:
         _icons=''.join(f'<img src="{html.escape(item_icon(x))}" alt="{html.escape(x)}" title="{html.escape(x)}">' for x in _leaders)

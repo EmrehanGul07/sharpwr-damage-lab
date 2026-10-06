@@ -7,6 +7,7 @@ mechanics are surfaced by the caller; this is not a complete Wild Rift engine.
 from dataclasses import dataclass, field
 import math
 import random
+from .catalog import GALEFORCE_COOLDOWN, galeforce_damage
 from .rune_runtime import (
     FIGHT_KEYSTONES,
     FIGHT_RUNES,
@@ -669,7 +670,7 @@ def replay_samira(
                 queue.sort(key=lambda x: (x[0], x[1]))
                 continue
             item_ad = ad + (conq * (3 + (level - 1) * 2 / 14) if keystone == "Conqueror" else 0.0)
-            raw = 40 + (level - 1) / 14 * 80 + 0.45 * max(0.0, item_ad - base_ad)
+            raw = galeforce_damage(level, item_ad - base_ad)
             pen = min(0.40, pct_pen + 0.1 * dark) if terminus else pct_pen
             dmg = (
                 raw * resistance_multiplier(effective_resistance(armor, pen, flat_pen)) * skill_amp
@@ -708,7 +709,9 @@ def replay_samira(
                     "before": state,
                     "after": dict(state),
                     "cooldowns": {k: max(0.0, v - t) for k, v in ready.items()},
-                    "effects": ["Cloudburst active; dash up to 325; target range 600; 50s cooldown"]
+                    "effects": [
+                        f"Cloudburst active; dash up to 325; target range 600; {GALEFORCE_COOLDOWN}s cooldown"
+                    ]
                     + _first_notes,
                     "melee": melee,
                     "executed": executed,
@@ -720,8 +723,8 @@ def replay_samira(
             )
             if health <= 0:
                 killed = t
-            if t + 50 <= (automatic_until or 120):
-                queue.append((t + 50, order, action, None))
+            if t + GALEFORCE_COOLDOWN <= (automatic_until or 120):
+                queue.append((t + GALEFORCE_COOLDOWN, order, action, None))
                 queue.sort(key=lambda x: (x[0], x[1]))
             continue
         if timed_combat:

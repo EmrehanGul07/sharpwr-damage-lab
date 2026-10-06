@@ -1,6 +1,6 @@
 import { buildParams } from "../build-state";
-import { BUILD_LEVELS, TARGETS, championCore, findItem, stageFor } from "../builds";
-import type { Ability, AbilitySlot, Champion, ChampionCore, CoreBuild, CoreStage, Database, Target } from "../data";
+import { BUILD_LEVELS, KEYSTONE_CHECK_LEVELS, TARGETS, championCore, coreItems, findItem, rankKeystones, stageFor } from "../builds";
+import type { Ability, AbilitySlot, BuildStyle, Champion, ChampionCore, CoreBuild, CoreStage, Database, Target } from "../data";
 import { h, icon } from "../dom";
 import { LEVEL_STATS, formatGold, formatNumber, perRank, trimNumber } from "../format";
 import { href } from "../router";
@@ -24,6 +24,8 @@ import {
 let selectedLevel = 1;
 let buildLevel = 15;
 let buildTarget: Target = "squishy";
+// Selected build style per champion.
+const selectedStyle = new Map<string, string>();
 
 // [label, base field, growth field, growth shown as a percentage, base decimals]
 const BASE_STATS: ReadonlyArray<[string, string, string | null, boolean, number]> = [
@@ -41,7 +43,7 @@ const BASE_STATS: ReadonlyArray<[string, string, string | null, boolean, number]
 
 /** Core item icons at the end of a champion row; plain images, since the row is already a link. */
 function coreIcons(db: Database, champion: Champion): HTMLElement | null {
-  const core = championCore(db, champion.name)?.core ?? [];
+  const core = coreItems(db, champion);
   if (!core.length) return null;
   return h("span", { class: "row-core", title: `Core item: ${core.join(", ")}` }, ...core.map((name) => icon(findItem(db, name)?.icon ?? null, name, 30)));
 }
@@ -104,12 +106,68 @@ function source(champion: Champion): HTMLElement {
 }
 
 function coreCard(db: Database, champion: Champion, core: ChampionCore): HTMLElement {
+  const pick = champion.editor_core;
+  const engine = h("div", { class: "core-items" }, ...core.core.map((name) => itemTile(db, name, pick ? 44 : 56)));
+  const engineText = `The item that appears most consistently in ${champion.name}'s top builds from level 5 to 15, against all three targets.`;
+  if (!pick) {
+    return h("div", { class: "core-card" }, h("p", { class: "eyebrow" }, core.core.length > 1 ? "Core items" : "Core item"), engine, h("p", { class: "muted small" }, engineText));
+  }
+  const agrees = core.core.includes(pick.item);
   return h(
     "div",
     { class: "core-card" },
-    h("p", { class: "eyebrow" }, core.core.length > 1 ? "Core items" : "Core item"),
-    h("div", { class: "core-items" }, ...core.core.map((name) => itemTile(db, name, 56))),
-    h("p", { class: "muted small" }, `The item that appears most consistently in ${champion.name}'s top builds from level 5 to 15, against all three targets.`),
+    h("p", { class: "eyebrow" }, "Core item · SharpWR pick"),
+    h("div", { class: "core-items" }, itemTile(db, pick.item, 56)),
+    pick.reason ? h("p", { class: "small" }, pick.reason) : null,
+    h("p", { class: "eyebrow" }, agrees ? "The damage engine agrees" : "Damage engine's core"),
+    agrees ? null : engine,
+    h("p", { class: "muted small" }, engineText, agrees ? "" : ` Compare both in "Build styles" below.`),
+  );
+}
+
+function runeIcon(db: Database, name: string, size: number): HTMLElement {
+  const rune = db.runes.find((record) => record.name === name);
+  const image = icon(rune?.icon ?? null, name, size);
+  return rune ? h("a", { class: "icon-link", href: href("runes", [rune.name]), title: name }, image) : image;
+}
+
+function keystoneLevel(): number {
+  return KEYSTONE_CHECK_LEVELS.includes(buildLevel) ? buildLevel : KEYSTONE_CHECK_LEVELS[KEYSTONE_CHECK_LEVELS.length - 1];
+}
+
+function keystoneCheck(core: ChampionCore, keystone: string): HTMLElement | null {
+  const level = keystoneLevel();
+  const row = core.keystone_check?.find((check) => check.level === level && check.target === buildTarget);
+  if (!row) return null;
+  const own = row.ttk[keystone] ?? null;
+  const target = TARGETS.find((option) => option.key === buildTarget);
+  return h(
+    "div",
+    {},
+    h("p", { class: "muted small" }, `Keystone check · level ${level} vs ${target?.label.toLowerCase()}: this matchup's #1 build with each keystone and the rest of the page.`),
+    statTable(
+      rankKeystones(row.ttk).map(([name, ttk]): [string, string] => {
+        const label = name === keystone ? `${name} (page)` : name;
+        if (ttk === null) return [label, "Target survived"];
+        const change = own !== null && name !== keystone ? ` (${ttk <= own ? "−" : "+"}${trimNumber((Math.abs(ttk - own) / own) * 100, 1)}%)` : "";
+        return [label, `TTK ${trimNumber(ttk)} s${change}`];
+      }),
+    ),
+  );
+}
+
+function runeCard(db: Database, champion: Champion, core: ChampionCore): HTMLElement | null {
+  const page = champion.rune_page;
+  if (!page) return null;
+  const names = [page.keystone, ...page.primary, page.secondary];
+  return h(
+    "div",
+    { class: "rune-card" },
+    h("p", { class: "eyebrow" }, "Rune page"),
+    h("div", { class: "rune-icons" }, runeIcon(db, page.keystone, 48), ...[...page.primary, page.secondary].map((name) => runeIcon(db, name, 34))),
+    h("p", { class: "build-names" }, names.join(" · ")),
+    h("p", { class: "muted small" }, "SharpWR's default page. Every build below is calculated with it; stacking runes fill with level."),
+    keystoneCheck(core, page.keystone),
   );
 }
 
@@ -127,8 +185,8 @@ function buildCard(db: Database, champion: Champion, stage: CoreStage, build: Co
   );
 }
 
-function stageView(db: Database, champion: Champion, core: ChampionCore): HTMLElement {
-  const stage = stageFor(core, buildLevel, buildTarget);
+function stageView(db: Database, champion: Champion, stages: CoreStage[]): HTMLElement {
+  const stage = stageFor(stages, buildLevel, buildTarget);
   if (!stage) return emptyState("No saved builds for this level and target.");
   const target = TARGETS.find((option) => option.key === buildTarget);
   const items = stage.items_allowed === 1 ? "1 item" : `${stage.items_allowed} items`;
@@ -137,6 +195,24 @@ function stageView(db: Database, champion: Champion, core: ChampionCore): HTMLEl
     {},
     h("p", { class: "muted small" }, `Level ${stage.level} · ${items} + boots · vs ${target?.label.toLowerCase()} (${target?.example})`),
     ...stage.builds.map((build, index) => buildCard(db, champion, stage, build, index + 1)),
+  );
+}
+
+function styleLabel(style: BuildStyle): string {
+  return style.editor ? `${style.items[0]} (SharpWR pick)` : style.name;
+}
+
+function styleView(db: Database, champion: Champion, style: BuildStyle): HTMLElement {
+  const facts = [
+    style.items.length ? `Holds ${style.items.join(", then ")}` : null,
+    style.keystone ? `Keystone: ${style.keystone}` : null,
+  ].filter(Boolean);
+  return h(
+    "div",
+    {},
+    style.note ? h("p", { class: "small" }, style.note) : null,
+    facts.length ? h("p", { class: "muted small" }, facts.join(" · ")) : null,
+    stageView(db, champion, style.stages),
   );
 }
 
@@ -162,9 +238,11 @@ function method(db: Database, core: ChampionCore): HTMLElement {
     h(
       "p",
       { class: "note" },
-      "SharpWR's damage model fights a training target that does not hit back. A matchup is one level and target type; the target is a champion of that type at the same level. Scores weight each matchup's top 3 builds 1, 1/2 and 1/3. TTK is the time to defeat the target. This is a bounded search, not match statistics.",
+      "SharpWR's damage model fights a training target that does not hit back, using the champion's rune page. A matchup is one level and target type; the target is a champion of that type at the same level. TTK is the time to defeat the target. The item ranking weights each matchup's top 3 builds 1, 1/2 and 1/3. These are bounded searches, not match statistics.",
     ),
-    excluded.length ? h("p", { class: "note" }, `Left out of this search: ${excluded.join(", ")}.`) : null,
+    excluded.length
+      ? h("p", { class: "note" }, `The core item search and item ranking leave out ${excluded.join(", ")}, which are strong but never a first item. Top builds and build styles use every item.`)
+      : null,
     core.notes.length
       ? h("details", { class: "notes" }, h("summary", {}, `Unverified mechanics (${core.notes.length})`), h("ul", {}, ...core.notes.map((note) => h("li", {}, note))))
       : null,
@@ -179,11 +257,24 @@ function buildsTab(db: Database, champion: Champion): Array<HTMLElement | null> 
       : "Build results arrive with the next data update. Connect to the internet and reopen the app.";
     return [emptyState(text)];
   }
-  const stage = h("div", {}, stageView(db, champion, core));
-  const redraw = () => stage.replaceChildren(stageView(db, champion, core));
+  const styles = core.styles ?? [];
+  const styleKey = () => {
+    const key = selectedStyle.get(champion.name);
+    return styles.some((style) => style.key === key) ? key : (styles.find((style) => style.editor) ?? styles[0])?.key;
+  };
+  const stage = h("div", {}, stageView(db, champion, core.stages));
+  const styleStage = h("div", {});
+  const runes = h("div", {});
+  const redraw = () => {
+    stage.replaceChildren(stageView(db, champion, core.stages));
+    const style = styles.find((option) => option.key === styleKey());
+    styleStage.replaceChildren(...(style ? [styleView(db, champion, style)] : []));
+    runes.replaceChildren(...[runeCard(db, champion, core)].filter((node): node is HTMLElement => node !== null));
+  };
+  redraw();
   return [
     coreCard(db, champion, core),
-    h("h3", {}, "Top builds"),
+    runes,
     choiceChips(
       "Level",
       BUILD_LEVELS.map((level) => ({ value: level, label: String(level) })),
@@ -202,7 +293,23 @@ function buildsTab(db: Database, champion: Champion): Array<HTMLElement | null> 
         redraw();
       },
     ),
+    h("h3", {}, "Top builds"),
     stage,
+    ...(styles.length
+      ? [
+          h("h3", {}, "Build styles"),
+          choiceChips(
+            "Style",
+            styles.map((style) => ({ value: style.key, label: styleLabel(style) })),
+            styleKey() ?? "",
+            (key) => {
+              selectedStyle.set(champion.name, key);
+              redraw();
+            },
+          ),
+          styleStage,
+        ]
+      : []),
     h("h3", {}, "Item ranking"),
     rankingList(db, core),
     method(db, core),

@@ -34,6 +34,9 @@ python scripts/export_app_data.py
 | `stats` | Base values and per-level growth as stored, including timing fields. `null` means unknown; never substitute 0. |
 | `levels` | `"1"`–`"15"` → stats before items and runes: `attack_damage`, `attack_speed`, `hp`, `mana`, `hp_regen_per_5s`, `mana_regen_per_5s`, `armor`, `mr`, `movement_speed`, `attack_range`. Identical to the web app's champion card (Senna without Mist stacks). |
 | `source_status`, `wiki_source_url`, `wiki_last_change_patch` | Provenance. `manual_observed_levels_partial` marks Yunara's manually recorded levels. |
+| `rune_page` | SharpWR's default rune page (`data/default-rune-pages.json`): `keystone`, `primary_tree`, `primary` (rows 1–3), `secondary_tree`, `secondary`. The build results use it. |
+| `rune_stats` | `"1"`–`"15"` → what that page adds to the build summary at the level, unrounded: `ad`, `mana`, `ah`, `bonus_as` (fraction). Stacking runes fill with level (`sharpwr/rune_pages.py`). |
+| `editor_core` | SharpWR's own core item pick, `{item, reason}`, or `null` (`data/editor-core-items.json`). |
 | `abilities` | Passive, Q, W, E and R, in that order (since app 0.5.0). Each: `slot` (`P`, `Q`, `W`, `E`, `R`), `name`, `icon` (`assets/riot/abilities/`, decoded from `data/riot/marksman-skill-icons.json`), `description` (the editor's English summary in `data/ability-descriptions.json`), `cooldown` and `mana` per rank in seconds and mana (`null` when unknown or none, e.g. passives), `range` (`null` when unknown). Cooldown and mana come from `data/marksman-ability-catalogue.json`. |
 
 ## Item, component, boots
@@ -66,20 +69,22 @@ python scripts/export_app_data.py
 
 ## Core items
 
-The saved results of the core-item search ([core-item-protocol.md](core-item-protocol.md)): a bounded search against a stationary training target that does not attack back, not match statistics.
+The saved build results ([core-item-protocol.md](core-item-protocol.md)), all calculated with each champion's default rune page: bounded searches against a stationary training target that does not attack back, not match statistics.
 
 | Field | Meaning |
 |---|---|
-| `excluded` | Items left out of this search: Infinity Edge, Lord Dominik's Regards, Mortal Reminder, Serylda's Grudge, Terminus. |
-| `champions` | Champion name → result, or `null` while the saved result is stale (source fingerprint changed) or incomplete. Then the web app shows "calculation pending" too. |
+| `excluded` | Items left out of the core-item search and its ranking (never of Top builds or styles): Infinity Edge, Lord Dominik's Regards, Mortal Reminder, Serylda's Grudge, Terminus. |
+| `champions` | Champion name → result, or `null` while the saved result is stale (engine fingerprint or the champion's rune page changed) or incomplete. Then the web app shows "calculation pending" too. |
 
 Per champion:
 
 | Field | Meaning |
 |---|---|
-| `core` | The core item the web champion card shows: top score, at most two on an exact tie (`core_leaders` in `sharpwr/core_items.py`). |
-| `ranking` | Every scored item, best first: `item`, `score` (0–100; Top-3 presence weighted 1, 1/2, 1/3, averaged over eligible cells), `winner_cells` (in the #1 build), `top3_cells` (in all three Top builds), `appearance_cells`, `eligible_cells`. |
-| `stages` | 18 cells, levels 5, 7, 9, 11, 13, 15 × targets `squishy`, `bruiser`, `tank`: `items_allowed` (1, 1, 2, 3, 4, 5) and `builds`, the Top 3 with `items`, `boots`, `ttk` (seconds to defeat the target; `null` if it survived), `dps`, `gold` and `note` (tie explanation or `null`). |
+| `core` | The engine's core item: top score of the core-item search, at most two on an exact tie (`core_leaders` in `sharpwr/core_items.py`). The apps show the champion's `editor_core` first when there is one. |
+| `ranking` | Every scored item of the core-item search, best first: `item`, `score` (0–100; Top-3 presence weighted 1, 1/2, 1/3, averaged over eligible cells), `winner_cells` (in the #1 build), `top3_cells` (in all three Top builds), `appearance_cells`, `eligible_cells`. |
+| `stages` | Top builds from every item: 18 cells, levels 5, 7, 9, 11, 13, 15 × targets `squishy`, `bruiser`, `tank`: `items_allowed` (1, 1, 2, 3, 4, 5) and `builds`, the Top 3 with `items`, `boots`, `ttk` (seconds to defeat the target; `null` if it survived), `dps`, `gold` and `note` (tie explanation or `null`). Before 7.1.0 these came from the core-item search. |
+| `styles` | Build styles (since 7.1.0): `key`, `name`, `items` (a build path: a build with N items holds the first N; Muramana stands for Manamune before level 11), `keystone` (replaces the page's keystone, or `null`), `editor` (`true` for the style of SharpWR's core item pick), `note`, and `stages` as above. Defined in `data/build-styles.json` and `data/editor-core-items.json`. |
+| `keystone_check` | Levels 13 and 15 × the three targets: the cell's #1 Top build (`items`, `boots`) replayed with every keystone the fight engines model, the rest of the page unchanged; `ttk` maps keystone → seconds (`null`: target survived). |
 | `notes` | Unverified mechanics behind this champion's results. |
 
 ## Golden outputs (`app-data/golden/`)
@@ -88,7 +93,7 @@ Python results the app's TypeScript port of the engine is tested against (`mobil
 
 | File | Content |
 |---|---|
-| `build-stats.json` | `sharpwr.build_stats.build_stats` for 1,144 builds: empty builds at levels 1, 5, 9 and 15 for every champion, special cases (Senna Mist, mana items, Zeri's cap, Jhin), and every saved core-search finalist. One case per line: inputs and `expected`. |
+| `build-stats.json` | `sharpwr.build_stats.build_stats` for empty builds at levels 1, 5, 6, 9 and 15 for every champion, special cases (Senna Mist, mana items, Zeri's cap, Jhin), each with and without runes, and every saved finalist (core search, Top builds and styles without a keystone change). One case per line: inputs, `runes` (`true`: the champion's default page, as in `rune_stats`) and `expected`. |
 
 ## Icons
 

@@ -56,6 +56,29 @@ export interface Ability {
   range: number | null;
 }
 
+/** A rune page: keystone, three primary-tree runes and one rune from another tree. */
+export interface RunePage {
+  keystone: string;
+  primary_tree: string;
+  primary: string[];
+  secondary_tree: string;
+  secondary: string;
+}
+
+/** AD, mana, ability haste and bonus attack speed (fraction) a rune page adds before a fight. */
+export interface RuneStats {
+  ad: number;
+  mana: number;
+  ah: number;
+  bonus_as: number;
+}
+
+/** SharpWR's own core item pick for a champion, with the reason. */
+export interface EditorCore {
+  item: string;
+  reason: string;
+}
+
 export interface Champion {
   name: string;
   icon: string | null;
@@ -70,6 +93,12 @@ export interface Champion {
   wiki_last_change_patch: string | null;
   /** Passive, Q, W, E, R. Optional: data exported before app version 0.5.0 lacks it. */
   abilities?: Ability[];
+  /** SharpWR's default rune page; the build results use it. Optional before 0.5.0. */
+  rune_page?: RunePage;
+  /** "1"-"15" -> what the default page adds to build stats (sharpwr/app_data.py rune_stats). */
+  rune_stats?: Record<string, RuneStats>;
+  /** null when the engine's core item stands alone. Optional before 0.5.0. */
+  editor_core?: EditorCore | null;
 }
 
 export type ItemCategory = "completed" | "component" | "boots";
@@ -142,11 +171,38 @@ export interface CoreRanking {
   eligible_cells: number;
 }
 
-/** Saved core-item search for one champion (docs/app-data.md). */
+/** Builds that hold a style's items (a build path) and, when set, use another keystone. */
+export interface BuildStyle {
+  key: string;
+  name: string;
+  items: string[];
+  keystone: string | null;
+  /** The style of SharpWR's core item pick. */
+  editor: boolean;
+  note: string | null;
+  stages: CoreStage[];
+}
+
+/** One matchup's #1 build replayed with every keystone the engine models. */
+export interface KeystoneCheck {
+  level: number;
+  target: Target;
+  items: string[];
+  boots: string;
+  /** Keystone -> seconds to defeat the target; null when it survived. */
+  ttk: Record<string, number | null>;
+}
+
+/** Saved build results for one champion (docs/app-data.md). */
 export interface ChampionCore {
+  /** The engine's core item(s): most consistent in the core-item search's top builds. */
   core: string[];
   ranking: CoreRanking[];
+  /** Top builds per matchup (every item allowed since 0.5.0). */
   stages: CoreStage[];
+  /** Optional: data exported before app version 0.5.0 has neither. */
+  styles?: BuildStyle[];
+  keystone_check?: KeystoneCheck[];
   notes: string[];
 }
 

@@ -13,7 +13,17 @@ from sharpwr.app_data import (
     render_database_json,
 )
 from sharpwr.champion_database import CHAMPION_DATABASE
-from sharpwr.core_items import BUDGETS, EXCLUDED, core_leaders, core_record
+from sharpwr.core_items import (
+    BUDGETS,
+    EXCLUDED,
+    KEYSTONE_CHECK_LEVELS,
+    TARGETS,
+    build_styles,
+    core_leaders,
+    core_record,
+    style_items,
+)
+from sharpwr.rune_pages import DEFAULT_PAGES
 from sharpwr.golden import build_stats_golden, render_golden_json
 from sharpwr.rune_database import RUNE_DATABASE
 
@@ -141,8 +151,9 @@ class AppDataTests(unittest.TestCase):
                 for target in ("squishy", "bruiser", "tank")
             ]
             self.assertEqual(stages, expected, name)
+            # Top builds come from the full-pool search; only the core ranking leaves items out.
             for stage in exported["stages"]:
-                saved = record["cells"][f'{stage["level"]}:{stage["target"]}']["search"]["full"]
+                saved = record["top"][f'{stage["level"]}:{stage["target"]}']["search"]["full"]
                 self.assertEqual(
                     [b["items"] for b in stage["builds"]], [row["Items"] for row in saved]
                 )
@@ -150,9 +161,43 @@ class AppDataTests(unittest.TestCase):
                     self.assertEqual(
                         len(build["items"]), stage["items_allowed"], (name, stage["level"])
                     )
-                    self.assertTrue(set(build["items"]) <= set(F) - EXCLUDED, build["items"])
+                    self.assertTrue(set(build["items"]) <= set(F), build["items"])
                     self.assertIn(build["boots"], B)
+            for cell in record["cells"].values():
+                for row in cell["search"]["full"]:
+                    self.assertFalse(set(row["Items"]) & EXCLUDED, (name, row["Items"]))
+            styles = {style["key"]: style for style in build_styles(name)}
+            self.assertEqual([s["key"] for s in exported["styles"]], list(styles), name)
+            for style in exported["styles"]:
+                self.assertEqual(style["editor"], bool(styles[style["key"]].get("editor")))
+                self.assertEqual(len(style["stages"]), len(expected), (name, style["key"]))
+                for stage in style["stages"]:
+                    required = style_items(styles[style["key"]], stage["level"], stage["items_allowed"])
+                    for build in stage["builds"]:
+                        self.assertTrue(set(required) <= set(build["items"]), (name, style["key"]))
+            checks = {(row["level"], row["target"]) for row in exported["keystone_check"]}
+            self.assertEqual(
+                checks, {(level, target) for level in KEYSTONE_CHECK_LEVELS for target in TARGETS}
+            )
+            page_keystone = DEFAULT_PAGES[name]["keystone"]
+            for row in exported["keystone_check"]:
+                self.assertIn(page_keystone, row["ttk"], name)
             self.assertTrue(all(isinstance(note, str) and note for note in exported["notes"]), name)
+
+    def test_rune_stats_are_what_build_stats_adds(self):
+        from sharpwr.build_stats import build_stats
+        from sharpwr.rune_pages import default_loadout
+
+        for champion in self.data["champions"]:
+            for level in ("1", "7", "15"):
+                runes = champion["rune_stats"][level]
+                loadout = default_loadout(champion["name"], int(level))
+                self.assertEqual(runes["bonus_as"], loadout.bonus_as)
+                self.assertEqual(runes["ah"], loadout.persistent["ah"])
+                plain = build_stats(champion["name"], int(level), [])
+                paged = build_stats(champion["name"], int(level), [], runes=loadout)
+                self.assertEqual(paged["ability_haste"] - plain["ability_haste"], runes["ah"])
+        self.assertEqual(self.data["champions"][0]["rune_page"], DEFAULT_PAGES[self.data["champions"][0]["name"]])
 
     def test_stale_core_results_are_left_out(self):
         with patch("sharpwr.app_data.core_record", return_value=None):

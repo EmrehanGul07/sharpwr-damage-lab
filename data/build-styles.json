@@ -1,0 +1,51 @@
+{
+ "source": "SharpWR editor notes, 2026-10-05. Each style's items are a build path: a build with N items holds the first N (Muramana stands for Manamune before level 11); the search fills the remaining slots from every item. A keystone replaces the champion's default keystone for that style. The editor's core item (data/editor-core-items.json) is always a style too.",
+ "styles": {
+  "Ashe": [
+   {"name": "Yun Tal", "items": ["Yun Tal Wildarrows"], "note": "The other good core: more damage, no movement speed."}
+  ],
+  "Corki": [
+   {"name": "Muramana + Trinity", "items": ["Muramana", "Trinity Force"], "note": "Burst with Q, R and basic attacks; Missile Barrage triggers Trinity Force often."},
+   {"name": "Crit with Essence Reaver", "items": ["Essence Reaver"], "note": "Missile Barrage triggers Essence Reaver often."}
+  ],
+  "Draven": [
+   {"name": "The Collector", "items": ["The Collector"], "note": "Executes targets at low health."},
+   {"name": "Bloodthirster", "items": ["Bloodthirster"], "note": "Sustain against poke lanes."}
+  ],
+  "Ezreal": [
+   {"name": "Trinity spellblade", "items": ["Muramana", "Trinity Force", "Serylda's Grudge", "Blade of the Ruined King"], "note": "Muramana, Trinity Force, Serylda's Grudge and Blade of the Ruined King (Spear of Shojin is not in the database yet)."}
+  ],
+  "Jinx": [
+   {"name": "Yun Tal into Runaan's", "items": ["Yun Tal Wildarrows", "Runaan's Hurricane"], "note": "Runaan's Hurricane second."},
+   {"name": "Stormrazor", "items": ["Stormrazor"], "note": "Against assassins when Jinx has no peel."}
+  ],
+  "Lucian": [
+   {"name": "Essence Reaver", "items": ["Essence Reaver"], "note": "His short cooldowns trigger Essence Reaver often."}
+  ],
+  "Miss Fortune": [
+   {"name": "Dark Harvest", "items": ["The Collector"], "keystone": "Dark Harvest", "note": "Dark Harvest (one soul per level) with The Collector."},
+   {"name": "Attack speed", "items": [], "keystone": "Lethal Tempo", "note": "Lethal Tempo with an attack speed build."}
+  ],
+  "Sivir": [
+   {"name": "Stormrazor", "items": ["Stormrazor"], "note": "Utility against a tank with no peeling support."}
+  ],
+  "Tristana": [
+   {"name": "Empowerment", "items": [], "keystone": "Empowerment", "note": "Keystone comparison."},
+   {"name": "Conqueror", "items": [], "keystone": "Conqueror", "note": "Keystone comparison."}
+  ],
+  "Varus": [
+   {"name": "On-hit", "items": ["Nashor's Tooth", "Guinsoo's Rageblade", "Blade of the Ruined King", "Terminus"], "note": "Nashor's Tooth, Guinsoo's Rageblade, Blade of the Ruined King and Terminus."},
+   {"name": "Muramana skill spam", "items": ["Muramana", "Serylda's Grudge"], "note": "Long range and short cooldowns favour Muramana."}
+  ],
+  "Vayne": [
+   {"name": "Crit with Essence Reaver", "items": ["Essence Reaver"], "note": "Tumble's short cooldown triggers Essence Reaver often."}
+  ],
+  "Xayah": [
+   {"name": "Conqueror + Essence Reaver", "items": ["Essence Reaver"], "keystone": "Conqueror", "note": "To compare with Yun Tal."}
+  ],
+  "Yunara": [
+   {"name": "Crit path", "items": ["Yun Tal Wildarrows", "Infinity Edge", "Lord Dominik's Regards"], "note": "Yun Tal, then Infinity Edge and Lord Dominik's Regards: Yunara needs crit."},
+   {"name": "Stormrazor", "items": ["Stormrazor"], "note": "Can replace Yun Tal."}
+  ]
+ }
+}

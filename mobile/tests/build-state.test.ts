@@ -31,6 +31,8 @@ describe("build state", () => {
     expect(cleaned?.items).toEqual(["Infinity Edge", null, null, null, null]);
     expect(cleaned?.boots).toBeNull();
     expect(cleanBuild(db, { champion: "Teemo" })).toBeNull();
+    expect(cleaned?.runes).toBe(true);
+    expect(cleanBuild(db, { champion: "Ezreal", runes: false })?.runes).toBe(false);
   });
 
   it("opens a linked build", () => {
@@ -43,6 +45,7 @@ describe("build state", () => {
       boots: "Spellslinger's Shoes",
       mist: 0,
       yuntalStacks: 125,
+      runes: true,
     });
   });
 });

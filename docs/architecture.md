@@ -86,8 +86,8 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | T4 | Play Store hazırlığı: ikon, ekran görüntüleri, gizlilik politikası, mağaza metni, geliştirici hesabı; Play sürümünde APK indirme uyarısı kapalı (`VITE_PREVIEW_BUILD` verilmez) ve canlı güncelleme için ayrı kanal | Uygulama son sürümüne gelince |
 | 3b-2 | Motorun mobil portu için tek kaynaklı fonksiyonlar ve referans (golden) çıktılar. İlk parça: build özeti `sharpwr/build_stats.py` (arama da bunu kullanır; doğrulanmış parmak izi geçişi), `app-data/golden/build-stats.json` | Başladı (7.0.9) |
 | BL1 | Build Lab 1: telefonda build hesaplayıcı (şampiyon, seviye, 5 eşya + bot → değerler), Python'la golden karşılaştırmalı TypeScript portu, şampiyon sayfasından "Try in Build Lab" | Tamamlandı (uygulama 0.5.0) |
-| BL2 | Varsayılan rün sayfaları ve rünlerin hesaba girmesi (kullanıcıyla karar: elle mi, motor mu seçsin); rünler değişince kayıtlı sonuçlar yeniden hesaplanır | |
-| BL3 | Top build'ler tüm eşya havuzundan (IE, LDR vb. dahil); kısıtlama yalnız core item seçiminde; şampiyona özgü core item ve 10 şampiyonun core incelemesi. BL2 ile birlikte tek seferde yeniden hesaplama | |
+| BL2 | Varsayılan rün sayfaları ve rünlerin hesaba girmesi (karar: sayfaları editör verir, motor anahtar rün alternatiflerini dener ve raporlar); rün sayfası değişince o şampiyonun kayıtlı sonuçları yeniden hesaplanır; telefonda Build Lab rünleri sayar | Tamamlandı (motor 7.1.0, uygulama 0.5.0) |
+| BL3 | Top build'ler tüm eşya havuzundan (IE, LDR vb. dahil); kısıtlama yalnız core item seçiminde; SharpWR'ın core seçimi gerekçesiyle, motorun core'u yanında; editörün build stilleri; anahtar rün kontrolü. BL2 ile birlikte tek seferde yeniden hesaplama | Tamamlandı (motor 7.1.0, uygulama 0.5.0) |
 | BL4 | Telefonda normal saldırı hasarı (DPS), sonra yeteneklerle tam dövüş (TTK) | |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |

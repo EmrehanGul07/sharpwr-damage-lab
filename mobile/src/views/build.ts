@@ -6,7 +6,7 @@ import { type BuildStats, buildProblems, buildStats } from "../engine/build";
 import { formatGold, itemStatLines, trimNumber } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
-import { type View, currentQuery, emptyState, notFound, searchField, statTable, tierBadge } from "./shared";
+import { type View, choiceChips, currentQuery, emptyState, notFound, searchField, statTable, tierBadge } from "./shared";
 
 /** The build behind the Build screen (main.ts): set() redraws the screen, replace() does not. */
 export interface BuildStore {
@@ -85,7 +85,8 @@ export function buildView(db: Database, store: BuildStore): View {
   const levelLabel = h("output", { class: "level-value" }, `Level ${state.level}`);
   level.addEventListener("input", () => (levelLabel.textContent = `Level ${level.value}`));
 
-  const input = buildInput(state);
+  const page = champion.rune_page;
+  const input = { ...buildInput(state), runes: state.runes && Boolean(champion.rune_stats) };
   const problems = buildProblems(db, input.items, input.boots);
   const hasYuntal = input.items.includes("Yun Tal Wildarrows");
   const filled = input.items.length + (input.boots ? 1 : 0);
@@ -103,13 +104,30 @@ export function buildView(db: Database, store: BuildStore): View {
       h("h3", {}, "Boots"),
       h("div", { class: "slots" }, slot(db, state.boots, href("build", ["pick", "boots"]), "Boots")),
       hasYuntal ? stepper("Yun Tal stacks", state.yuntalStacks, 125, 5, (yuntalStacks) => update({ yuntalStacks })) : null,
+      page && champion.rune_stats
+        ? h(
+            "div",
+            {},
+            h("h3", {}, "Runes"),
+            choiceChips(
+              "Runes",
+              [
+                { value: true, label: "SharpWR page" },
+                { value: false, label: "Off" },
+              ],
+              state.runes,
+              (runes) => update({ runes }),
+            ),
+            h("p", { class: "muted small" }, `${[page.keystone, ...page.primary, page.secondary].join(" · ")}. Adds the page's attack speed, AD, ability haste and mana; stacking runes fill with level.`),
+          )
+        : null,
       filled ? h("button", { class: "button clear", type: "button", onclick: () => update({ items: Array(ITEM_SLOTS).fill(null), boots: null }) }, "Clear build") : null,
       h("h3", {}, "Stats at the start of a fight"),
       problems.length ? h("p", { class: "notice" }, problems.join(" ")) : statTable(statRows(buildStats(db, input))),
       h(
         "p",
         { class: "note" },
-        "Champion stats plus items and boots, before stacks, procs and ability effects, from the same formulas as SharpWR's damage engine. Runes and fight damage come in the next Build Lab steps.",
+        "Champion stats plus items, boots and runes, before stacks, procs and ability effects, from the same formulas as SharpWR's damage engine. Fight damage comes in the next Build Lab step.",
       ),
     ),
   };

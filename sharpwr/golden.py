@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .build_stats import build_stats
 from .champion_database import CHAMPION_DATABASE
+from .rune_pages import default_loadout
 
 CORE_ITEMS = Path(__file__).resolve().parents[1] / "data" / "champion-core-items.json"
 # Builds that exercise a special rule: crit damage, mana items, caps, champion conversions.
@@ -51,20 +52,32 @@ def _cases():
     seen = set()
     cases = []
 
-    def add(champion, level, items, boots=None, mist=0, yuntal_stacks=0):
-        key = (champion, level, tuple(sorted(items)), boots, mist, yuntal_stacks)
+    def add(champion, level, items, boots=None, mist=0, yuntal_stacks=0, runes=False):
+        key = (champion, level, tuple(sorted(items)), boots, mist, yuntal_stacks, runes)
         if key not in seen:
             seen.add(key)
             cases.append(key)
 
     for name in CHAMPION_DATABASE:
-        for level in (1, 5, 9, 15):
+        for level in (1, 5, 6, 9, 15):
             add(name, level, [])
+            add(name, level, [], runes=True)
     for case in EDGE_CASES:
         add(*case)
-    # Real builds: every saved core-search finalist, with the search's starting state.
+        add(*case, runes=True)
+    # Real builds: every saved finalist with the search's starting state and the default runes.
     for name, record in json.loads(CORE_ITEMS.read_text())["champions"].items():
-        for cell in record["cells"].values():
+        cells = [
+            *record["cells"].values(),
+            *record.get("top", {}).values(),
+            *(
+                cell
+                for style in record.get("styles", [])
+                if not style["keystone"]
+                for cell in style["cells"].values()
+            ),
+        ]
+        for cell in cells:
             for row in cell["search"]["full"]:
                 mist = 40 if name == "Senna" else 0
                 add(
@@ -74,11 +87,13 @@ def _cases():
                     row["Boots"],
                     mist,
                     cell["yuntal_start_stacks"],
+                    "top" in record,
                 )
     return cases
 
 
 def build_stats_golden():
+    """Each case's runes flag means the champion's default rune page (app data rune_stats)."""
     return [
         {
             "champion": champion,
@@ -87,9 +102,18 @@ def build_stats_golden():
             "boots": boots,
             "mist": mist,
             "yuntal_stacks": stacks,
-            "expected": build_stats(champion, level, items, boots, mist=mist, yuntal_stacks=stacks),
+            "runes": runes,
+            "expected": build_stats(
+                champion,
+                level,
+                items,
+                boots,
+                mist=mist,
+                yuntal_stacks=stacks,
+                runes=default_loadout(champion, level) if runes else None,
+            ),
         }
-        for champion, level, items, boots, mist, stacks in _cases()
+        for champion, level, items, boots, mist, stacks, runes in _cases()
     ]
 
 

@@ -12,6 +12,7 @@ const golden = read("golden/build-stats.json") as Array<{
   boots: string | null;
   mist: number;
   yuntal_stacks: number;
+  runes: boolean;
   expected: BuildStats;
 }>;
 
@@ -23,7 +24,7 @@ describe("build stats port", () => {
   it("matches the Python engine on every golden build", () => {
     expect(golden.length).toBeGreaterThan(1000);
     for (const c of golden) {
-      const actual = buildStats(db, { champion: c.champion, level: c.level, items: c.items, boots: c.boots, mist: c.mist, yuntalStacks: c.yuntal_stacks });
+      const actual = buildStats(db, { champion: c.champion, level: c.level, items: c.items, boots: c.boots, mist: c.mist, yuntalStacks: c.yuntal_stacks, runes: c.runes });
       for (const [field, expected] of Object.entries(c.expected) as Array<[keyof BuildStats, number | null]>) {
         const label = `${c.champion} L${c.level} ${c.items.join("+")} ${c.boots ?? ""} ${field}`;
         if (expected === null) expect(actual[field], label).toBeNull();
@@ -35,13 +36,14 @@ describe("build stats port", () => {
   it("is exact wherever no rounded level stat is involved", () => {
     let exact = 0;
     for (const c of golden) {
-      const actual = buildStats(db, { champion: c.champion, level: c.level, items: c.items, boots: c.boots, mist: c.mist, yuntalStacks: c.yuntal_stacks });
+      const actual = buildStats(db, { champion: c.champion, level: c.level, items: c.items, boots: c.boots, mist: c.mist, yuntalStacks: c.yuntal_stacks, runes: c.runes });
       const fields: Array<keyof BuildStats> = ["gold", "ability_power", "attack_speed", "attack_speed_over_cap", "crit_chance", "crit_damage", "ability_haste", "movement_speed"];
       if (!c.items.some((name) => name === "Manamune" || name === "Muramana")) fields.push("attack_damage");
       for (const field of fields) expect(actual[field], `${c.champion} ${c.items.join("+")} ${field}`).toBe(c.expected[field]);
       exact += fields.length;
     }
     expect(exact).toBeGreaterThan(9000);
+    expect(golden.filter((c) => c.runes).length).toBeGreaterThan(100);
   });
 });
 
