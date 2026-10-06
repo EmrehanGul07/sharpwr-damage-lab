@@ -62,7 +62,7 @@ Kapsam: sabit, bize saldırmayan hedef; expected crit; kullanıcı tarafından d
 - RFC/Stormrazor/Statikk periyodik ve Yun Tal crit varsayımları korunur. Energized dolum katsayısı veya Yun Tal varsayımını yeniden ölçme zorunluluğu yoktur; daha kesin charge modeli kullanıcı ileride isterse ayrı kapsam olur.
 - PD stack süresi 6s; sürekli vuruşta yeniden test istenmez.
 - Youmuu combat dışı momentum model dışıdır.
-- Tek Spellblade satın alma; Galeforce 325 dash / 600 hit range / 50s; Duskblade ilk AA / 10s kullanıcı kuralları uygulanır.
+- Tek Spellblade satın alma; Galeforce 325 dash / 600 hit range / 60s (oyun içi açıklama: 40–125 + bonus AD %35, 2026-10-05); Duskblade ilk AA / 10s kullanıcı kuralları uygulanır.
 - Samira R manasız ve S Style gerektirir; R melee pasif almaz. Mana bedelleri tekrar sorulmaz.
 - Rakibin saldırması, kendi ölümümüz ve lifesteal ile hayatta kalma model kapsamı değildir.
 

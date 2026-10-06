@@ -39,10 +39,21 @@ class AbilityBuildRanking(unittest.TestCase):
         self.assertEqual(len({(x['Items'],x['Boots']) for x in r['full']}),3)
         self.assertEqual(len(r['marginal']),6)
         self.assertEqual(r['full'],sorted(r['full'],key=score))
-    def test_offensive_active_obeys_fifty_second_cooldown(self):
+    def test_required_items_are_in_every_build(self):
+        pool=['Muramana',"Nashor's Tooth",'Infinity Edge','Phantom Dancer','Statikk Shiv']
+        r=search_builds(self.evaluator(),pool,TIER3[:2],beam_width=8,refine_count=4,max_items=3,required=['Essence Reaver'])
+        self.assertEqual(r['required'],['Essence Reaver']);self.assertEqual(set(r['stages']),{2})
+        self.assertEqual(r['tested'][2],5)
+        for rows in (r['stages'][2],r['full']):
+            self.assertTrue(all('Essence Reaver' in x['Items'] for x in rows))
+        self.assertTrue(all(len(x['Items'])==3 for x in r['full']))
+        whole=search_builds(self.evaluator(),pool,TIER3[:2],max_items=2,required=['Essence Reaver','Infinity Edge'])
+        self.assertTrue(all(x['Items']==('Essence Reaver','Infinity Edge') for x in whole['full']))
+        with self.assertRaises(ValueError):search_builds(self.evaluator(),pool,TIER3[:2],max_items=2,required=['Muramana','Manamune'])
+    def test_offensive_active_obeys_sixty_second_cooldown(self):
         ns=self.ns;kernel=ns['combat_hits']('Ezreal',15,10000,100,100,['Galeforce'],ns['F'],active_ready=True)
         next(kernel)
-        hits=[kernel.send({'hp':10000,'time':t}) for t in (0,1,49,50)]
+        hits=[kernel.send({'hp':10000,'time':t}) for t in (0,1,59,60)]
         self.assertEqual(['Cloudburst' in x['notes'] for x in hits],[True,False,False,True])
     def test_cache_reuses_simulation(self):
         e=self.evaluator();a=e.evaluate(['Muramana']);count=e.simulations;b=e.evaluate(['Muramana'])

@@ -1,6 +1,7 @@
 import "./styles.css";
 import { App } from "@capacitor/app";
 import { version } from "../package.json";
+import { type BuildState, buildFromParams, loadBuild, saveBuild } from "./build-state";
 import { type DataState, loadDatabase } from "./data";
 import { h } from "./dom";
 import {
@@ -16,6 +17,7 @@ import {
 import { type KeyValueStore, downloadDatabase, readSaved, save } from "./online";
 import { type Route, href, parseRoute } from "./router";
 import { about } from "./views/about";
+import { type BuildStore, buildView, pickView } from "./views/build";
 import { championDetail, championList } from "./views/champions";
 import { itemDetail, itemList } from "./views/items";
 import { runeDetail, runeList } from "./views/runes";
@@ -28,10 +30,22 @@ const viewRoot = document.getElementById("view") as HTMLElement;
 const notice = document.getElementById("notice") as HTMLElement;
 const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>(".tabbar a"));
 
+let buildStore: BuildStore;
+
 function resolve(state: DataState, route: Route): View {
   const { db } = state;
   const [first, second] = route.parts;
   switch (route.section) {
+    case "build": {
+      if (first === "pick") return pickView(db, buildStore, second ?? "", goBack);
+      const linked = route.params.has("champion") ? buildFromParams(db, route.params) : null;
+      if (linked) {
+        buildStore.replace(linked);
+        // Drop the parameters so Back and reloads show the saved build, not the link again.
+        history.replaceState(null, "", href("build"));
+      }
+      return buildView(db, buildStore);
+    }
     case "champions":
       return first ? championDetail(db, first, route.params) : championList(db);
     case "tiers":
@@ -45,7 +59,8 @@ function resolve(state: DataState, route: Route): View {
   }
 }
 
-function render(state: DataState): void {
+/** keepScroll: redraw in place after a change on the same screen. */
+function render(state: DataState, keepScroll = false): void {
   const route = parseRoute(location.hash);
   const view = resolve(state, route);
   title.textContent = view.title;
@@ -57,7 +72,7 @@ function render(state: DataState): void {
     if (active) tab.setAttribute("aria-current", "page");
     else tab.removeAttribute("aria-current");
   }
-  window.scrollTo(0, 0);
+  if (!keepScroll) window.scrollTo(0, 0);
 }
 
 function goBack(): void {
@@ -80,6 +95,18 @@ async function start(): Promise<void> {
     viewRoot.replaceChildren(h("p", { class: "status" }, `Could not load the database: ${(error as Error).message}`));
     return;
   }
+  let build: BuildState = loadBuild(storage, state.db);
+  buildStore = {
+    get: () => build,
+    replace: (next) => {
+      build = next;
+      saveBuild(storage, next);
+    },
+    set: (next) => {
+      buildStore.replace(next);
+      render(state, true);
+    },
+  };
   window.addEventListener("hashchange", () => render(state));
   render(state);
 

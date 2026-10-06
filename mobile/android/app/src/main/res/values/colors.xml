@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SharpWR's app background (the bg colour in mobile/src/styles.css), behind the Android 12+ splash icon. -->
+    <color name="splash_background">#070B11</color>
+</resources>

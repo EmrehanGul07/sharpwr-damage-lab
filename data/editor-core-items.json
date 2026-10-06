@@ -1,0 +1,81 @@
+{
+ "source": "SharpWR editor, 2026-10-05. Shown in the app as the champion's core item, beside the engine's damage ranking.",
+ "picks": {
+  "Ashe": {
+   "item": "Stormrazor",
+   "reason": "Ashe has no mobility skill: Stormrazor's movement speed lets her dodge skillshots and escape. Yun Tal is also a good core."
+  },
+  "Caitlyn": {
+   "item": "Stormrazor",
+   "reason": "Caitlyn has no mobility: Stormrazor's movement speed is a big plus."
+  },
+  "Draven": {
+   "item": "Essence Reaver",
+   "reason": "Catching an axe resets W, so Draven triggers Essence Reaver again and again. The Collector (executes) or Bloodthirster (sustain against poke) are the alternatives."
+  },
+  "Jhin": {
+   "item": "The Collector",
+   "reason": "Dark Harvest, the missing-health fourth shot and the Collector's execute together finish targets that would otherwise survive."
+  },
+  "Kog'Maw": {
+   "item": "Guinsoo's Rageblade",
+   "reason": "Kog'Maw plays around W: he fights while W is active, so his build is built around that skill."
+  },
+  "Lucian": {
+   "item": "Stormrazor",
+   "reason": "Lucian's mobility stacks Stormrazor very fast. Essence Reaver is the alternative: his short cooldowns proc it often."
+  },
+  "Miss Fortune": {
+   "item": "The Collector",
+   "reason": ""
+  },
+  "Samira": {
+   "item": "The Collector",
+   "reason": "Samira's burst has to one-shot, and with her ultimate every enemy that drops to 5% is executed."
+  },
+  "Senna": {
+   "item": "Stormrazor",
+   "reason": "Senna now pokes from long range with big single hits and repositions; with no dash, Stormrazor's movement speed is a big plus."
+  },
+  "Twitch": {
+   "item": "The Collector",
+   "reason": "After stacking poison and popping E, the Collector executes targets at around 5%."
+  },
+  "Yunara": {
+   "item": "Yun Tal Wildarrows",
+   "reason": "Yun Tal first (Stormrazor can replace it), then Infinity Edge and Lord Dominik's Regards in almost every build: Yunara needs crit."
+  },
+  "Zeri": {
+   "item": "Essence Reaver",
+   "reason": "Zeri's Q is an ability with a very short cooldown, so she triggers Essence Reaver constantly."
+  },
+  "Ezreal": {
+   "item": "Muramana",
+   "reason": "Long Q and ultimate range with constant ability spam: Muramana with Trinity Force, then Serylda's Grudge and Blade of the Ruined King."
+  },
+  "Jinx": {
+   "item": "Yun Tal Wildarrows",
+   "reason": "Yun Tal first and Runaan's Hurricane second. Stormrazor is an option when there is no peel and the enemy has assassins."
+  },
+  "Kai'Sa": {
+   "item": "Guinsoo's Rageblade",
+   "reason": "Guinsoo's Rageblade for the on-hit build; an AP build will be compared once AP items are in the database."
+  },
+  "Sivir": {
+   "item": "Yun Tal Wildarrows",
+   "reason": "Yun Tal is the core; Stormrazor is a utility option with a tank but no peeling support."
+  },
+  "Smolder": {
+   "item": "Muramana",
+   "reason": "Smolder plays by spamming abilities and rarely auto attacks, so Muramana for now; AP items will be compared once they are in the database."
+  },
+  "Vayne": {
+   "item": "Guinsoo's Rageblade",
+   "reason": "Guinsoo's Rageblade for the on-hit build; a crit build (likely Essence Reaver, with Q's short cooldown) is compared as a separate style."
+  },
+  "Xayah": {
+   "item": "Yun Tal Wildarrows",
+   "reason": "Yun Tal is a good core; a Conqueror + Essence Reaver first build is being compared for burst."
+  }
+ }
+}

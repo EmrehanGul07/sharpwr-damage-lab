@@ -1,5 +1,6 @@
 import unittest
-from sharpwr.core_items import EXCLUDED,available,rank_core
+from sharpwr.core_items import EXCLUDED,available,build_styles,rank_core,style_items
+from sharpwr.rune_pages import DEFAULT_PAGES
 from sharpwr.build_fight_optimizer import BuildFightEvaluator,search_builds,legal
 from sharpwr import engine_namespace
 class CoreItems(unittest.TestCase):
@@ -44,4 +45,22 @@ class CoreItems(unittest.TestCase):
     record=core_record(name)
     self.assertIsNotNone(record)
     self.assertTrue(record['complete'])
-    self.assertEqual(len(record['cells']),18)
+    self.assertEqual(len(record['cells']),18);self.assertEqual(len(record['top']),18)
+    self.assertEqual(record['rune_page'],DEFAULT_PAGES[name])
+    self.assertEqual({s['key'] for s in record['styles']},{s['key'] for s in build_styles(name)})
+    for style in record['styles']:self.assertEqual(len(style['cells']),18,(name,style['key']))
+    self.assertEqual(len(record['keystone_check']),6)
+ def test_styles_put_the_editor_pick_first_and_follow_the_build_path(self):
+  styles=build_styles('Miss Fortune')
+  self.assertEqual(styles[0],{'name':"Editor's core",'items':['The Collector'],'editor':True,'keystone':None,'key':'The Collector'})
+  self.assertEqual([s['key'] for s in styles[1:]],['The Collector@Dark Harvest','@Lethal Tempo'])
+  self.assertTrue(all(s['key']!='Stormrazor' or s.get('editor') for s in build_styles('Ashe')))
+  path={'items':['Muramana','Trinity Force',"Serylda's Grudge"]}
+  self.assertEqual(style_items(path,9,2),['Manamune','Trinity Force']);self.assertEqual(style_items(path,15,5),path['items'])
+ def test_stale_rune_page_hides_saved_results(self):
+  from unittest.mock import patch
+  from sharpwr import core_items
+  # Patch the pages core_items reads now (other tests reload the engine modules).
+  pages=core_items.DEFAULT_PAGES
+  with patch.dict(pages,{'Ezreal':{**pages['Ezreal'],'keystone':'Conqueror'}}):
+   self.assertIsNone(core_items.core_record('Ezreal'))

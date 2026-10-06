@@ -17,11 +17,15 @@ describe("bundled database", () => {
     expect(db.champions).toHaveLength(23);
     expect(db.runes).toHaveLength(51);
     expect(db.items.length + db.components.length + db.boots.length).toBeGreaterThan(0);
-    for (const champion of db.champions) expect(Object.keys(champion.levels)).toHaveLength(15);
+    for (const champion of db.champions) {
+      expect(Object.keys(champion.levels)).toHaveLength(15);
+      expect(champion.abilities?.map((ability) => ability.slot)).toEqual(["P", "Q", "W", "E", "R"]);
+    }
   });
 
   it("points every icon at a bundled file", () => {
-    const records = [...db.champions, ...db.items, ...db.components, ...db.boots, ...db.runes, ...db.rune_trees];
+    const abilities = db.champions.flatMap((champion) => champion.abilities ?? []);
+    const records = [...db.champions, ...abilities, ...db.items, ...db.components, ...db.boots, ...db.runes, ...db.rune_trees];
     for (const record of records) {
       if (record.icon) expect(existsSync(join(repo, record.icon)), record.icon).toBe(true);
     }

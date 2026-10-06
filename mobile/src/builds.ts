@@ -23,11 +23,25 @@ export function championCore(db: Database, championName: string): ChampionCore |
   return db.core_items?.champions[championName] ?? null;
 }
 
-/** Champions whose core item this is. */
-export function coreChampions(db: Database, itemName: string): Champion[] {
-  return db.champions.filter((champion) => championCore(db, champion.name)?.core.includes(itemName));
+/** The core item(s) to show for a champion: SharpWR's pick, or the engine's when there is none. */
+export function coreItems(db: Database, champion: Champion): string[] {
+  if (champion.editor_core) return [champion.editor_core.item];
+  return championCore(db, champion.name)?.core ?? [];
 }
 
-export function stageFor(core: ChampionCore, level: number, target: Target): CoreStage | undefined {
-  return core.stages.find((stage) => stage.level === level && stage.target === target);
+/** Champions whose core item this is. */
+export function coreChampions(db: Database, itemName: string): Champion[] {
+  return db.champions.filter((champion) => coreItems(db, champion).includes(itemName));
+}
+
+export function stageFor(stages: CoreStage[], level: number, target: Target): CoreStage | undefined {
+  return stages.find((stage) => stage.level === level && stage.target === target);
+}
+
+/** Levels whose #1 builds are replayed with every keystone. */
+export const KEYSTONE_CHECK_LEVELS = [13, 15];
+
+/** Keystones by time to defeat the target, fastest first; survived (null) last. */
+export function rankKeystones(ttk: Record<string, number | null>): Array<[string, number | null]> {
+  return Object.entries(ttk).sort(([, a], [, b]) => (a ?? Infinity) - (b ?? Infinity));
 }

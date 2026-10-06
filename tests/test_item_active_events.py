@@ -16,12 +16,12 @@ class ItemEvents(unittest.TestCase):
     def test_galeforce_no_longer_injected_into_aa(self):
         k=self.ns['combat_hits']('Ezreal',15,100000,100,100,['Galeforce'],self.ns['F'],active_ready=True);next(k)
         self.assertNotIn('Cloudburst',k.send({'time':0,'hp':100000,'event_driven':True})['notes'])
-    def test_independent_galeforce_event_and_fifty_second_recast(self):
+    def test_independent_galeforce_event_and_sixty_second_recast(self):
         for champion in ('Ezreal','Samira','Smolder'):
             with self.subTest(champion=champion):
-                r=replay_samira([FightEvent(0,'AA')],champion=champion,level=15,ad=200,base_ad=100,attack_speed=.7,crit_chance=0,crit_damage=2,hp=1000000,armor=100,mr=100,q_rank=0,w_rank=0,e_rank=0,r_rank=0,automatic_until=60,galeforce=True)
+                r=replay_samira([FightEvent(0,'AA')],champion=champion,level=15,ad=200,base_ad=100,attack_speed=.7,crit_chance=0,crit_damage=2,hp=1000000,armor=100,mr=100,q_rank=0,w_rank=0,e_rank=0,r_rank=0,automatic_until=70,galeforce=True)
                 events=[x for x in r.log if x['action']=='Galeforce active']
-                self.assertEqual(len(events),2);self.assertAlmostEqual(events[1]['time']-events[0]['time'],50)
+                self.assertEqual(len(events),2);self.assertAlmostEqual(events[1]['time']-events[0]['time'],60)
                 self.assertTrue(all(x['damage']>0 for x in events))
                 self.assertAlmostEqual(sum(x['damage'] for x in r.log),r.total_damage)
                 self.assertAlmostEqual(1000000-r.hp_remaining,r.total_damage)

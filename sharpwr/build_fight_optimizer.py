@@ -6,7 +6,7 @@ from .combat_validation import benchmark, integer
 from .champion_database import level_stats
 from .fight_engine import replay_samira, champion_ranks
 from .marksman_kits import PRIORITIES
-from .marksman_damage_components import jhin_attack_damage
+from .build_stats import awe_bonus, build_stats, build_totals
 
 SPELLBLADE = frozenset({"Trinity Force", "Essence Reaver", "Iceborn Gauntlet", "Sheen"})
 EXCLUSIVE = (
@@ -139,7 +139,9 @@ class BuildFightEvaluator:
         dragon_stacks=0,
         retain_traces=False,
         simulation_overrides=None,
+        runes=None,
     ):
+        """runes: a sharpwr.rune_pages.RuneLoadout for this level, or None for the no-rune model."""
         benchmark(
             champion,
             level,
@@ -173,6 +175,9 @@ class BuildFightEvaluator:
         self.retain_traces = retain_traces
         self.traces = {}
         self.simulation_overrides = dict(simulation_overrides or {})
+        if runes is not None and runes.unmodeled:
+            raise ValueError("Runes without a modeled damage effect: " + ", ".join(runes.unmodeled))
+        self.runes = runes
 
     def evaluate(self, items, boot=None, refine=False):
         items = tuple(sorted(items))
@@ -187,17 +192,22 @@ class BuildFightEvaluator:
         l = self.level
         core = level_stats(n, l)
         s = ns["stats"](n, l, self.mist)
-        stats = [ns["dct"](ns["F"][x]) for x in items] + [
-            ns["dct"](ns["B"][boot]) if boot else ns["dct"](())
-        ]
-        total = {k: sum(q[k] for q in stats) for k in ns["K"]}
+        total = build_totals(items, boot)
         base_mana = core["mana"] if core["mana"] is not None else self.base_mana
-        maxmana = None if base_mana is None else base_mana + total["mana"]
-        awe = 0.02 * (maxmana or 0) if any(x in items for x in ("Manamune", "Muramana")) else 0
+        summary = build_stats(
+            n,
+            l,
+            items,
+            boot,
+            mist=self.mist,
+            yuntal_stacks=self.yuntal_stacks,
+            base_mana=self.base_mana,
+            runes=self.runes,
+        )
+        maxmana = summary["mana"]
+        awe = awe_bonus(items, maxmana)
         radius = core["attack_range"] or 550
-        ms = (core["movement_speed"] or 0) * (
-            1 + sum(ns["dct"](ns["F"][x])["ms"] for x in items)
-        ) + (ns["dct"](ns["B"][boot])["ms"] if boot else 0)
+        ms = summary["movement_speed"]
         deep = refine is True
         default = tuple(PRIORITIES[n])
         priorities = list(permutations("QWE")) if refine else [default]
@@ -237,7 +247,7 @@ class BuildFightEvaluator:
                         radius,
                         self.aa_reduction,
                         self.yuntal_stacks,
-                        base_mana or 0,
+                        (base_mana or 0) + (self.runes.persistent["mana"] if self.runes else 0),
                         False,
                         self.energized,
                         False,
@@ -272,6 +282,8 @@ class BuildFightEvaluator:
                         bonus = (
                             s["bba"] + s["lvbas"] + total["as"] + dyn + state["bonus_as"] + fiend
                         )
+                        if self.runes:
+                            bonus += self.runes.bonus_as
                         expiry = [
                             v
                             for v in (last.get("yuntal_until", -1), ult + 8 if fiend else -1)
@@ -284,6 +296,12 @@ class BuildFightEvaluator:
                         }
 
                     def aa(state):
+                        if self.runes:
+                            state = dict(state)
+                            state["bonus_as"] = state.get("bonus_as", 0.0) + self.runes.bonus_as
+                            state["bonus_ad"] = (
+                                state.get("bonus_ad", 0.0) + self.runes.persistent["ad"]
+                            )
                         hit = kernel.send(state)
                         last.update(hit)
                         last["ult_seen"] = state.get("ultimate_cast_time")
@@ -292,7 +310,10 @@ class BuildFightEvaluator:
                     fight_args = dict(
                         champion=n,
                         level=l,
-                        ad=s["ad"] + total["ad"] + awe,
+                        ad=s["ad"]
+                        + total["ad"]
+                        + awe
+                        + (self.runes.persistent["ad"] if self.runes else 0),
                         base_ad=s["ad"],
                         ap=total["ap"],
                         attack_speed=s["baseas"],
@@ -306,7 +327,8 @@ class BuildFightEvaluator:
                         armor=self.armor,
                         mr=self.mr,
                         **{k.lower() + "_rank": v for k, v in champion_ranks(n, l).items()},
-                        ability_haste=total["ah"],
+                        ability_haste=total["ah"]
+                        + (self.runes.persistent["ah"] if self.runes else 0),
                         pct_pen=total["pctpen"],
                         flat_pen=total["flatpen"],
                         pct_mpen=total["pctmpen"],
@@ -358,6 +380,13 @@ class BuildFightEvaluator:
                             else 1
                         ),
                     )
+                    if self.runes:
+                        fight_args.update(
+                            keystone=self.runes.keystone,
+                            sub_runes=self.runes.runes,
+                            transcendence=self.runes.transcendence,
+                            dark_harvest_souls=self.runes.dark_harvest_souls,
+                        )
                     fight_args.update(self.simulation_overrides)
                     r = replay_samira([], **fight_args)
                     self.simulations += 1
@@ -366,26 +395,6 @@ class BuildFightEvaluator:
                     duration = max(0.05, r.killed_at if r.killed_at is not None else 60)
                     # Separate command-based AA damage from ability/passive/DoT events.
                     aa_damage = sum(x["damage"] for x in r.log if x["action"].startswith("AA"))
-                    start_raw = s["baseas"] + s["ratio"] * (s["bba"] + s["lvbas"] + total["as"])
-                    cap = 1.5 if n == "Zeri" else 3
-                    starting_ad = s["ad"] + total["ad"] + awe
-                    if n == "Jhin":
-                        starting_ad = jhin_attack_damage(
-                            starting_ad,
-                            l,
-                            s["bba"] + s["lvbas"] + total["as"],
-                            min(
-                                1,
-                                total["crit"]
-                                + (
-                                    min(0.25, self.yuntal_stacks * 0.002)
-                                    if "Yun Tal Wildarrows" in items
-                                    else 0
-                                ),
-                            ),
-                        )
-                    if n == "Jhin":
-                        start_raw = s["baseas"] + s["ratio"] * (s["bba"] + s["lvbas"])
                     results.append(
                         {
                             "Items": items,
@@ -395,38 +404,13 @@ class BuildFightEvaluator:
                             "Damage": r.total_damage,
                             "AA damage": aa_damage,
                             "Other damage": max(0.0, r.total_damage - aa_damage),
-                            "Gold": total["gold"],
-                            "AD": starting_ad
-                            + (
-                                0.5
-                                * max(
-                                    0.0,
-                                    (
-                                        s["bba"]
-                                        + s["lvbas"]
-                                        + total["as"]
-                                        - max(0.0, (1.5 - s["baseas"]) / s["ratio"])
-                                    )
-                                    * 100,
-                                )
-                                if n == "Zeri"
-                                else 0.0
-                            ),
-                            "AP": total["ap"],
-                            "Crit %": 100
-                            * min(
-                                1.0,
-                                total["crit"]
-                                + (self.mist // 20 * 0.1 if n == "Senna" else 0.0)
-                                + (
-                                    min(0.25, self.yuntal_stacks * 0.002)
-                                    if "Yun Tal Wildarrows" in items
-                                    else 0.0
-                                ),
-                            ),
-                            "AH": total["ah"],
-                            "Starting AS": min(cap, start_raw),
-                            "AS over cap": max(0, start_raw - cap),
+                            "Gold": summary["gold"],
+                            "AD": summary["attack_damage"],
+                            "AP": summary["ability_power"],
+                            "Crit %": 100 * summary["crit_chance"],
+                            "AH": summary["ability_haste"],
+                            "Starting AS": summary["attack_speed"],
+                            "AS over cap": summary["attack_speed_over_cap"],
                             "Rotation": " → ".join(priority),
                             "Movement": movement,
                             "Ultimate timing": ultimate_policy,
@@ -477,6 +461,7 @@ class BuildFightEvaluator:
             dragon_stacks=self.dragon_stacks,
             retain_traces=True,
             simulation_overrides=override,
+            runes=self.runes,
         )
         result = ev.evaluate(row["Items"], row["Boots"])
         trace = ev.traces[(tuple(sorted(row["Items"])), row["Boots"], False)]
@@ -510,25 +495,40 @@ def explain_ties(rows):
 
 
 def search_builds(
-    evaluator, pool, boots, *, beam_width=80, refine_count=40, progress=None, max_items=5
+    evaluator,
+    pool,
+    boots,
+    *,
+    beam_width=80,
+    refine_count=40,
+    progress=None,
+    max_items=5,
+    required=(),
 ):
-    """All singles/pairs; diverse beam, rotation screening, then deeper policy validation."""
+    """All singles/pairs; diverse beam, rotation screening, then deeper policy validation.
+
+    required: items every build holds (a build style); the search fills the other slots.
+    """
     if isinstance(max_items, bool) or not isinstance(max_items, int) or not 1 <= max_items <= 5:
         raise ValueError("Item budget must be 1–5")
     integer(beam_width, "beam width", 1)
     integer(refine_count, "refine count", 1)
-    if any(x not in evaluator.ns["F"] for x in pool):
+    if any(x not in evaluator.ns["F"] for x in (*pool, *required)):
         raise ValueError("Unknown search item")
     if any(x not in evaluator.ns["B"] for x in boots):
         raise ValueError("Unknown search boots")
-    pool = tuple(sorted(set(pool)))
+    required = tuple(sorted(set(required)))
+    if not legal(required) or len(required) > max_items:
+        raise ValueError("Required items must form a legal build within the item budget")
+    pool = tuple(sorted(set(pool) - set(required)))
     boots = tuple(sorted(set(boots)))
-    if not pool or not boots:
+    if (not pool and len(required) < max_items) or not boots:
         raise ValueError("Search requires items and boots")
     stages = {}
-    beam = [()]
+    beam = [required]
     tested = {}
-    for stage in range(1, max_items + 1):
+    first = len(required) + 1
+    for stage in range(first, max_items + 1):
         candidates = {
             tuple(sorted((*seed, item)))
             for seed in beam
@@ -542,7 +542,7 @@ def search_builds(
         beam = [
             x["Items"]
             for x in diverse_shortlist(
-                evaluator, rows, max(beam_width, len(pool)) if stage == 1 else beam_width
+                evaluator, rows, max(beam_width, len(pool)) if stage == first else beam_width
             )
         ]
         if stage < max_items:
@@ -558,7 +558,7 @@ def search_builds(
                 for x in diverse_shortlist(
                     evaluator,
                     [refined_by_items.get(x["Items"], x) for x in rows],
-                    max(beam_width, len(pool)) if stage == 1 else beam_width,
+                    max(beam_width, len(pool)) if stage == first else beam_width,
                 )
             ]
         if progress:
@@ -609,6 +609,7 @@ def search_builds(
         "simulations": evaluator.simulations,
         "beam_width": beam_width,
         "max_items": max_items,
+        "required": list(required),
         "pool_size": len(pool),
         "boot_count": len(boots),
         "search_status": "bounded diverse beam; not globally exhaustive",

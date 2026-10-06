@@ -39,6 +39,13 @@ export function trimNumber(value: number, digits = 2): string {
   return String(Number(value.toFixed(digits)));
 }
 
+/** Values per ability rank as "7.5/6/4.5/3", or one number when every rank is equal; null when absent or all 0. */
+export function perRank(values: number[] | null): string | null {
+  if (!values || values.every((value) => value === 0)) return null;
+  const texts = values.map((value) => trimNumber(value));
+  return texts.every((text) => text === texts[0]) ? texts[0] : texts.join("/");
+}
+
 /** "attack_damage" -> "Attack damage". */
 export function humanize(identifier: string): string {
   const words = identifier.replace(/_/g, " ").trim();

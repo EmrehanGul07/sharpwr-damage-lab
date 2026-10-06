@@ -1,15 +1,17 @@
 # SharpWR Android app
 
-An English Wild Rift marksman Database for Android: champions with stats at every level, items, components, boots and runes, plus SharpWR's published item tier list and each champion's saved core-item results (core item, item ranking, Top 3 builds per level and target). The app shows saved results; it does not calculate. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
+An English Wild Rift marksman Database for Android: champions with stats at every level and their abilities (icon, cooldown and mana per rank, SharpWR's English summary), items, components, boots and runes, plus SharpWR's published item tier list, each champion's saved build results (SharpWR's core item pick beside the engine's, the rune page with a keystone check, Top 3 builds per level and target from every item, build styles and the item ranking) and Build Lab, which calculates a build's stats on the phone. It reads the same data as the web app, works offline, downloads data updates when the phone is online and installs new screens by itself (live updates). Free fan project; the Riot Games notice is on the About screen and under every list.
 
 ## Layout
 
 | Path | Content |
 |---|---|
 | `mobile/src/` | TypeScript UI (no framework): data loader, data updates (`online.ts`), live updates (`live-update.ts`), formatting, search, hash router, views |
-| `mobile/tests/` | Vitest unit tests, including checks against the real `app-data/database.json` |
+| `mobile/src/engine/` | TypeScript port of engine functions, checked against Python golden outputs (`app-data/golden/`) |
+| `mobile/tests/` | Vitest unit tests, including checks against the real `app-data/database.json` and the golden outputs |
 | `mobile/scripts/sync-data.mjs` | Copies `app-data/database.json` and `assets/riot/` into `mobile/public/` before every build |
 | `mobile/android/` | Capacitor Android project |
+| `scripts/make_app_icons.py` | Draws the app icon (gold arrow through a crosshair ring on navy) and the splash screens into `mobile/android/.../res/`, plus `mobile/resources/icon-512.png` for store listings. Android 12+ shows the launcher icon on `values/colors.xml` `splash_background` |
 | `mobile/native.json` | Oldest APK that can run the current screens, and the fingerprint of the Android shell |
 | `.github/workflows/mobile-android.yml` | Tests, builds and packs the preview APK and the live update |
 
@@ -26,6 +28,10 @@ cd android && ./gradlew assembleDebug   # needs JDK 21 and the Android SDK
 ```
 
 When champion, item or rune data changes, run `python scripts/export_app_data.py` at the repository root first; the next build picks the new file up.
+
+## Build Lab
+
+The Build tab picks a champion, level, five items and boots (plus Senna's Mist and Yun Tal stacks) and shows the stats at the start of a fight. `src/engine/build.ts` ports `sharpwr/build_stats.py` operation by operation; `tests/build.test.ts` compares it with `app-data/golden/build-stats.json`: exact where no level stat is involved, within 1e-6 where the exported 4-decimal level stats are (health, mana, armor, MR, and AD with Manamune/Muramana). Pickers disable items that make a build illegal and say why (`build_rules`). The build is saved on the phone; champion pages open their builds in Build Lab with "Try in Build Lab". A switch counts the champion's SharpWR rune page (`rune_stats`: attack speed, AD, ability haste, mana at the level), as the saved build results do; golden cases cover builds with and without it. Fight damage is the next step (roadmap).
 
 ## Online updates
 

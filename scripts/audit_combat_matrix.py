@@ -50,7 +50,7 @@ def check(result,maxhp,name):
   if x['action']=='AA' and x.get('attack_id') in attack_map:
    verify(math.isclose(x['time'],attack_map[x['attack_id']]['impact_time'],abs_tol=1e-7),'AA arrival mismatch')
  casts=[x['time'] for x in result.timeline if x['kind']=='cast']
- for labels,cd in [(('Nightstalker',),10.),(('Trinity','ER','Iceborn','Sheen'),1.5),(('Cloudburst active; 50s cooldown','Cloudburst active; dash up to 325; target range 600; 50s cooldown'),50.)]:
+ for labels,cd in [(('Nightstalker',),10.),(('Trinity','ER','Iceborn','Sheen'),1.5),(('Cloudburst active; 60s cooldown','Cloudburst active; dash up to 325; target range 600; 60s cooldown'),60.)]:
   proc_times=[x['time'] for x in result.log if any(e in labels for e in x['effects'])]
   verify(all(b-a>=cd-1e-7 for a,b in zip(proc_times,proc_times[1:])),'item cooldown '+str(labels))
   if cd==1.5:

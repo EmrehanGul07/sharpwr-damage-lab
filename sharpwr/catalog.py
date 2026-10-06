@@ -142,3 +142,13 @@ def dct(v):
     """Item tuple -> dict keyed by K; missing trailing fields are 0."""
     v = tuple(v) + (0,) * (len(K) - len(v))
     return dict(zip(K, v))
+
+
+# Galeforce's Cloudburst active, from the Wild Rift item tooltip (user screenshot, 2026-10-05):
+# dash, then physical damage equal to 40-125 by level plus 35% bonus AD; 60 s cooldown.
+GALEFORCE_COOLDOWN = 60
+
+
+def galeforce_damage(level, bonus_ad):
+    """Cloudburst physical damage before resistances."""
+    return 40 + (level - 1) / 14 * 85 + 0.35 * max(0.0, bonus_ad)

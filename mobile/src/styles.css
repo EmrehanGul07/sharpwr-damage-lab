@@ -45,6 +45,25 @@ a {
   backdrop-filter: blur(10px);
 }
 
+.topbar-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 -8px 0 auto;
+  color: var(--muted);
+}
+
+.topbar-action svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
 .topbar h1 {
   margin: 0;
   font-size: 19px;
@@ -476,6 +495,29 @@ a {
   margin-top: 0;
 }
 
+.rune-card {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.rune-card .eyebrow {
+  margin-top: 0;
+}
+
+.rune-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.rune-icons .icon {
+  border-radius: 50%;
+}
+
 .core-items {
   display: flex;
   gap: 16px;
@@ -538,6 +580,52 @@ a {
   font-size: 12px;
 }
 
+.ability {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.ability .icon {
+  flex: none;
+  border-radius: 10px;
+}
+
+.ability-text {
+  min-width: 0;
+}
+
+.ability-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+.ability-slot {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.ability-facts {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ability-description {
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -571,6 +659,111 @@ a {
   padding-left: 18px;
   color: var(--muted);
   font-size: 13px;
+}
+
+.select {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 12px;
+}
+
+.stepper .muted {
+  flex: 1;
+}
+
+.stepper .button {
+  flex: none;
+  width: 44px;
+  padding: 6px 0;
+  font-size: 20px;
+}
+
+.stepper .level-value {
+  min-width: 48px;
+  text-align: center;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+}
+
+.slot > :first-child {
+  width: 56px;
+  height: 56px;
+  max-width: 100%;
+}
+
+.slot-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 26px;
+}
+
+.slot.filled {
+  color: var(--text);
+}
+
+.slot span:last-child {
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.button.clear {
+  width: 100%;
+  margin: 14px 0 0;
+}
+
+.row.pick {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+}
+
+.row.pick.disabled {
+  opacity: 0.45;
+}
+
+.try {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  text-decoration: none;
 }
 
 .tabbar {

@@ -1,6 +1,6 @@
 """Shared auto-attack (AA) engine: level formulas, build validation and the multi-item hit kernel."""
 
-from .catalog import B, C, K, dct
+from .catalog import B, C, GALEFORCE_COOLDOWN, K, dct, galeforce_damage
 
 
 def gu(l):
@@ -429,10 +429,9 @@ def combat_hits(
             and not skill_on_hit
             and t >= galeforce_ready
         ):
-            bonus_ad = max(0, current_ad - s["basead"])
-            onp += 40 + (l - 1) / 14 * 80 + 0.45 * bonus_ad
+            onp += galeforce_damage(l, current_ad - s["basead"])
             note.append("Cloudburst")
-            galeforce_ready = t + 50
+            galeforce_ready = t + GALEFORCE_COOLDOWN
         if "Blade of the Ruined King" in items:
             onp += max(15, botrk_ratio * hp)
         if "Terminus" in items and item_proc:

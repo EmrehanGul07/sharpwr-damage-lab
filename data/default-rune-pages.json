@@ -1,0 +1,259 @@
+{
+ "source": "SharpWR editor, entered with the rune page picker on 2026-10-05",
+ "rules": "One keystone; the primary tree's rows 1-3 (one rune each); one rune from a different tree.",
+ "pages": {
+  "Kalista": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Tristana": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Twitch": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Draven": {
+   "keystone": "Conqueror",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Bloodline"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Kog'Maw": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Battle Zeal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Vayne": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Ashe": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Varus": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Xayah": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Samira": {
+   "keystone": "Conqueror",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Coup de Grace",
+    "Legend: Bloodline"
+   ],
+   "secondary_tree": "Domination",
+   "secondary": "Sudden Impact"
+  },
+  "Miss Fortune": {
+   "keystone": "Conqueror",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Yunara": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Kai'Sa": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Corki": {
+   "keystone": "Conqueror",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Lucian": {
+   "keystone": "Empowerment",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Domination",
+   "secondary": "Sudden Impact"
+  },
+  "Smolder": {
+   "keystone": "Phase Rush",
+   "primary_tree": "Precision",
+   "primary": [
+    "Battle Zeal",
+    "Cut Down",
+    "Legend: Bloodline"
+   ],
+   "secondary_tree": "Sorcery",
+   "secondary": "Transcendence"
+  },
+  "Caitlyn": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Jinx": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Ezreal": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Zeri": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Jhin": {
+   "keystone": "Dark Harvest",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Sivir": {
+   "keystone": "Lethal Tempo",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  },
+  "Senna": {
+   "keystone": "Fleet Footwork",
+   "primary_tree": "Precision",
+   "primary": [
+    "Brutal",
+    "Cut Down",
+    "Legend: Alacrity"
+   ],
+   "secondary_tree": "Resolve",
+   "secondary": "Bone Plating"
+  }
+ }
+}

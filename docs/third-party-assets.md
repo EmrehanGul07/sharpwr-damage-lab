@@ -16,6 +16,7 @@ Hepsi `riot/` adlı klasörlerde tutulur. Uygulamanın gösterdiği her ikon, do
 | `assets/riot/rune-trees/` | 4 rün ağacı ikonu | Community Dragon |
 | `assets/riot/champions/` | 23 şampiyon portresi | Riot Data Dragon 15.15.1 (PC) |
 | `data/riot/marksman-skill-icons.json` | 23 şampiyon için 115 yetenek ikonu (base64) | 20 şampiyon kullanıcının Wild Rift ekran görüntülerinden kırpıldı, 3 şampiyon Riot Data Dragon'dan. Her şampiyonun `source` alanı kaynağı belirtir. |
+| `assets/riot/abilities/` | Aynı 115 yetenek ikonu, telefon uygulaması için dosya olarak | `scripts/export_app_data.py` yukarıdaki JSON'dan üretir; elle düzenlenmez. |
 
 ## Site çalışırken dışarıdan yüklenenler
 
