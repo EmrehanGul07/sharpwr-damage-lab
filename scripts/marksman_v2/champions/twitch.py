@@ -143,6 +143,11 @@ def build():
         "fx_cask": (C.join([C.cyl("FX cask", "olive", 0.04, 0.08, (0, 0, 0), (0.4, 0, 0), 12), ball_mesh("FX cask glow", "toxic", (0, 0, 0.045), (0.02, 0.02, 0.01), 10, 6)], "FX cask"), None, None),
         "fx_cloud": (C.join([ball_mesh(f"FX venom {k}", "cloud", (math.cos(k * 1.4) * 0.25, math.sin(k * 1.4) * 0.25, 0.1 * (k % 2)), (0.22, 0.22, 0.16), 14, 7) for k in range(6)], "FX venom cloud"), None, None),
         "fx_mist": (C.join([ball_mesh(f"FX ambush {k}", "cloud", (math.cos(k * 1.1) * 0.25, math.sin(k * 1.1) * 0.25, 0.25 * (k % 3)), (0.25, 0.25, 0.25), 14, 7) for k in range(6)], "FX ambush mist"), Matrix.Translation(B(0, 0, 0.4)), "root"),
+        # Spray and Pray is a buff: the crossbow takes on a toxic glow and its bolts grow long and pierce.
+        "fx_charged": (C.fx_orb("charged crossbow", 0.06, "cloud", 2), HOLD @ Matrix.Translation((0, -0.12, 0.03)), "crossbow"),
+        "fx_ring": (C.torus("FX spray ring", "toxic", 0.32, 0.012, (0, 0, 0), (0, 0, 0), (1, 1, 1), 40), Matrix.Translation(B(0, 0, 0.04)), "root"),
+        "fx_pierce": (C.fx_bolt("piercing bolt", 0.6, 0.022, "toxic", "cloud", 1), None, None),
+        "fx_pierce2": (C.fx_bolt("piercing bolt 2", 0.6, 0.022, "toxic", "cloud", 1), None, None),
     }
     grip = HOLD @ Vector((0, 0.06, -0.05))
     fore = HOLD @ Vector((0, -0.16, -0.02))
@@ -160,7 +165,7 @@ def build():
     define_clips()
 
 
-FX = ["fx_flash", "fx_bolt", "fx_bolt2", "fx_bolt3", "fx_cask", "fx_cloud", "fx_mist"]
+FX = ["fx_flash", "fx_bolt", "fx_bolt2", "fx_bolt3", "fx_cask", "fx_cloud", "fx_mist", "fx_charged", "fx_ring", "fx_pierce", "fx_pierce2"]
 
 
 def define_clips():
@@ -301,19 +306,38 @@ def define_clips():
         size("fx_cloud", 16, 0.0)
         stance(28)
 
-    @clip("R", 52)
+    @clip("R", 48)
     def spray_and_pray():
         start()
-        # Cackling, he sprays long piercing bolts in rapid succession.
-        brace(4)
-        k = 0
-        for f in range(7, 43, 4):
-            fire(f, ("fx_bolt", "fx_bolt2", "fx_bolt3")[k % 3], 6.0, 1.2)
-            weapon_matrix("crossbow", Matrix.Translation(B(0, 0.03, 0.02)) @ aim, f + 1)
-            weapon_matrix("crossbow", aim, f + 3)
-            rot("head", f, x=-12 + (4 if k % 2 else 0), z=10)
-            k += 1
-        stance(52)
+        # A buff, not a volley: he throws his head back cackling and hugs the crossbow up to his
+        # chest while it charges with venom (a toxic ring rises around him). Then the empowered
+        # autos: two long glowing bolts that pierce straight through.
+        rot("chest", 5, x=-4, z=-4)
+        rot("neck", 5, x=-26)
+        rot("head", 5, x=-34, z=-6)
+        weapon_matrix("crossbow", placement("crossbow", B(-0.06, -0.16, 1.18), rx=55, rz=12), 6)
+        for k, f in enumerate(range(7, 18, 2)):  # shoulders shaking with laughter
+            rot("chest", f, x=-4 + (3 if k % 2 else -1), z=-4 + (2 if k % 2 else -2))
+            rot("head", f, x=-34 + (5 if k % 2 else 0), z=-6)
+        size("fx_charged", 6, 0.0)
+        size("fx_charged", 10, 1.3)
+        size("fx_charged", 18, 1.0)
+        size("fx_charged", 46, 1.0)
+        size("fx_charged", 48, 0.0)
+        for f, s_ in ((6, 0.0), (9, 0.8), (16, 1.2), (20, 0.0)):
+            size("fx_ring", f, s_)
+        loc("fx_ring", 9)
+        loc("fx_ring", 20, z=0.6)
+        rot("neck", 18, x=-14)
+        brace(20)
+        fire(24, "fx_pierce", 8.0, 1.5)
+        weapon_matrix("crossbow", Matrix.Translation(B(0, 0.04, 0.02)) @ aim, 25)
+        brace(29)
+        fire(33, "fx_pierce2", 8.0, 1.5)
+        weapon_matrix("crossbow", Matrix.Translation(B(0, 0.04, 0.02)) @ aim, 34)
+        brace(38)
+        rot("head", 36, x=-12, z=14)  # a snicker
+        stance(48)
 
     @clip("Recall", 48, loop=True)
     def recall():
