@@ -1,7 +1,7 @@
 {
   "champion": "Sivir",
   "id": "sivir",
-  "bones": 19,
+  "bones": 37,
   "animations": {
     "Idle": 3,
     "Walk": 1.2,
@@ -12,11 +12,12 @@
     "E": 0.95,
     "R": 1.4
   },
-  "full_triangles": 27080,
-  "preview_triangles": 7582,
-  "materials": 11,
+  "full_triangles": 31158,
+  "preview_triangles": 7998,
+  "materials": 12,
   "silhouette": "Dark hair, gold tiara, teal armor, red sash and broad four-point crossblade",
   "weapon": "crossblade",
-  "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+  "source": "scripts/marksman_v2/champions/sivir.py",
+  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
   "status": "original authored stylized asset; not extracted Wild Rift game art"
 }

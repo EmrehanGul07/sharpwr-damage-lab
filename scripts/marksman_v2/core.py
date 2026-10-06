@@ -1698,9 +1698,70 @@ def reduce_to(budget, keep=("body",)):
         ratio = max(0.15, (budget - fixed) / flexible)
         for o in rest:
             if triangles(o) > 64:
-                d = o.modifiers.new("Decimate", "DECIMATE")
-                d.ratio = ratio
-                apply_modifiers(o)
+                decimate_first(o, ratio)
+
+
+def decimate_first(obj, ratio):
+    """Collapse-decimate a mesh's base shape only: the decimation goes first in the stack and
+    is the only modifier applied, so a skinned mesh keeps its armature and weights."""
+    d = obj.modifiers.new("Decimate", "DECIMATE")
+    d.ratio = ratio
+    activate(obj)
+    bpy.ops.object.modifier_move_to_index(modifier=d.name, index=0)
+    bpy.ops.object.modifier_apply(modifier=d.name)
+
+
+def skin_parts():
+    """One skinned mesh for the app: every rigid part (parented to a bone) becomes geometry
+    weighted fully to that bone and is joined, with the other skinned meshes, into the body
+    (one skin and one draw call per material instead of one per part)."""
+    rig.data.pose_position = "REST"
+    bpy.context.view_layer.update()
+    meshes = [o for o in rig.children_recursive if o.type == "MESH"]
+    skinned = [o for o in meshes if any(m.type == "ARMATURE" for m in o.modifiers)]
+    body = max(skinned, key=triangles)
+    for o in meshes:
+        if o.parent_type == "BONE":
+            bone, world = o.parent_bone, o.matrix_world.copy()
+            o.parent = None
+            o.matrix_world = world
+            activate(o)
+            bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+            group = o.vertex_groups.new(name=bone)
+            group.add(list(range(len(o.data.vertices))), 1.0, "REPLACE")
+            rig.data.bones[bone].use_deform = True
+    others = [o for o in meshes if o is not body]
+    if others:
+        body = join([body] + others, body.name)
+    body.data.validate()
+    rig.data.pose_position = "POSE"
+    bpy.context.view_layer.update()
+
+
+def prune_bones():
+    """Remove leaf bones the app never needs (effect, flash and prop helpers): non-deforming,
+    childless, carrying no object (sockets) and not an IK target or pole."""
+    used = {"root"}
+    for pb in rig.pose.bones:
+        for c in pb.constraints:
+            used.update(n for n in (getattr(c, "subtarget", ""), getattr(c, "pole_subtarget", "")) if n)
+    used.update(o.parent_bone for o in rig.children if o.parent_type == "BONE")
+    activate(rig)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bones = rig.data.edit_bones
+    pruned = True
+    while pruned:
+        pruned = False
+        for b in list(bones):
+            if not b.use_deform and not b.children and b.name not in used:
+                bones.remove(b)
+                pruned = True
+    bpy.ops.object.mode_set(mode="OBJECT")
+    names = {b.name for b in rig.data.bones}
+    for action in bpy.data.actions:
+        for fc in list(action.fcurves):
+            if fc.data_path.startswith('pose.bones["') and fc.data_path.split('"')[1] not in names:
+                action.fcurves.remove(fc)
 
 
 def drop_fx():

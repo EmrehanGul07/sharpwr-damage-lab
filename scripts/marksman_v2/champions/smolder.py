@@ -492,12 +492,13 @@ def define_clips():
         for prefix, sx, kind in LEGS:
             loc(f"ik_{prefix}", 5)
         loc("root", 5)
-        reach = -1.6
+        moving = bool(C.OPTIONS.get("root_motion"))
+        reach = -1.6 if moving else 0.0
         for f in range(9, 39):
             t = (f - 9) / 29
             rise = math.sin(0.5 * math.pi * min(1.0, t / 0.3))
             fall = min(1.0, (1 - t) / 0.25)
-            loc("root", f, y=-0.15 + (reach + 0.15) * t, z=(0.5 + 0.04 * math.sin(2 * math.pi * (f - 9) / 5)) * rise * fall)
+            loc("root", f, y=(-0.15 + (reach + 0.15) * t) if moving else 0.0, z=(0.5 + 0.04 * math.sin(2 * math.pi * (f - 9) / 5)) * rise * fall)
         for k, f in enumerate(range(9, 39, 5)):
             wings(f, up=-38, fold=-10, sweep=-5)
             wings(f + 2, up=46, fold=15, sweep=5)

@@ -1,11 +1,11 @@
 {
-  "schema": 1,
-  "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+  "schema": 2,
+  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
   "champions": {
     "Ashe": {
       "champion": "Ashe",
       "id": "ashe",
-      "bones": 19,
+      "bones": 48,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -16,18 +16,19 @@
         "E": 0.95,
         "R": 1.45
       },
-      "full_triangles": 27832,
-      "preview_triangles": 7791,
-      "materials": 10,
+      "full_triangles": 33273,
+      "preview_triangles": 8000,
+      "materials": 16,
       "silhouette": "Ivory hood, layered navy mantle, frost crystal longbow and pale braided hair",
       "weapon": "bow",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/ashe.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Caitlyn": {
       "champion": "Caitlyn",
       "id": "caitlyn",
-      "bones": 19,
+      "bones": 52,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -38,18 +39,19 @@
         "E": 0.95,
         "R": 1.35
       },
-      "full_triangles": 27948,
-      "preview_triangles": 7825,
-      "materials": 10,
+      "full_triangles": 32713,
+      "preview_triangles": 7999,
+      "materials": 18,
       "silhouette": "Tall structured hat, tailored violet jacket, copper rifle with scope and side braid",
       "weapon": "rifle",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/caitlyn.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Corki": {
       "champion": "Corki",
       "id": "corki",
-      "bones": 6,
+      "bones": 29,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -60,18 +62,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 4224,
-      "preview_triangles": 1182,
-      "materials": 6,
+      "full_triangles": 29979,
+      "preview_triangles": 7998,
+      "materials": 14,
       "silhouette": "Yordle aviator, moustache, goggles, twin-wing hextech aircraft, rotor and exhaust",
       "weapon": "aircraft",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/corki.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Draven": {
       "champion": "Draven",
       "id": "draven",
-      "bones": 19,
+      "bones": 32,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -82,35 +85,42 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 25296,
-      "preview_triangles": 7081,
-      "materials": 10,
+      "full_triangles": 32316,
+      "preview_triangles": 8000,
+      "materials": 13,
       "silhouette": "Broad bare arms, angular moustache, high black crest, fur collar and two crescent axes",
       "weapon": "axes",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/draven.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Ezreal": {
       "champion": "Ezreal",
       "id": "ezreal",
-      "bones": 17,
+      "bones": 34,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
         "AA": 0.9,
-        "P": 2,
+        "P": 2.0,
         "Q": 0.95,
         "W": 0.95,
         "E": 0.95,
         "R": 1.4
       },
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
-      "status": "existing Blender Ezreal v2 retained"
+      "full_triangles": 32529,
+      "preview_triangles": 7999,
+      "materials": 19,
+      "silhouette": "Blond swept hair, blue explorer jacket, leather belts, scarf and luminous left-hand gauntlet",
+      "weapon": "gauntlet",
+      "source": "scripts/marksman_v2/champions/ezreal.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
+      "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Jhin": {
       "champion": "Jhin",
       "id": "jhin",
-      "bones": 19,
+      "bones": 41,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -121,18 +131,19 @@
         "E": 0.95,
         "R": 2.4
       },
-      "full_triangles": 25532,
-      "preview_triangles": 7148,
-      "materials": 10,
+      "full_triangles": 30048,
+      "preview_triangles": 7999,
+      "materials": 11,
       "silhouette": "Porcelain half-mask, asymmetrical gold shoulder shell, white coat tails and ornate four-shot rifle",
       "weapon": "rifle",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/jhin.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Jinx": {
       "champion": "Jinx",
       "id": "jinx",
-      "bones": 19,
+      "bones": 58,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -143,18 +154,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 28452,
-      "preview_triangles": 7965,
-      "materials": 11,
+      "full_triangles": 35380,
+      "preview_triangles": 7994,
+      "materials": 22,
       "silhouette": "Long cyan twin braids, magenta top, striped stockings, minigun and shark-shaped rocket launcher",
       "weapon": "launcher",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/jinx.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kai'Sa": {
       "champion": "Kai'Sa",
       "id": "kaisa",
-      "bones": 21,
+      "bones": 30,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -165,18 +177,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 24888,
-      "preview_triangles": 6968,
-      "materials": 11,
+      "full_triangles": 34359,
+      "preview_triangles": 7997,
+      "materials": 10,
       "silhouette": "Sculpted violet void carapace, dark hair, glowing eyes and articulated shoulder missile pods",
       "weapon": "void_cannons",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/kaisa.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kalista": {
       "champion": "Kalista",
       "id": "kalista",
-      "bones": 19,
+      "bones": 46,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -187,18 +200,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 27848,
-      "preview_triangles": 7796,
-      "materials": 11,
+      "full_triangles": 30127,
+      "preview_triangles": 7999,
+      "materials": 13,
       "silhouette": "Translucent teal armored revenant, spear, torn floating hair and angular spirit crown",
       "weapon": "spear",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/kalista.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Kog'Maw": {
       "champion": "Kog'Maw",
       "id": "kogmaw",
-      "bones": 8,
+      "bones": 31,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -209,18 +223,19 @@
         "E": 0.95,
         "R": 1.2
       },
-      "full_triangles": 19728,
-      "preview_triangles": 5523,
-      "materials": 8,
+      "full_triangles": 29988,
+      "preview_triangles": 8000,
+      "materials": 10,
       "silhouette": "Low six-limbed void creature, large glowing mouth, ridged carapace, tusks and bulbous acid sacs",
       "weapon": "maw",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/kogmaw.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Lucian": {
       "champion": "Lucian",
       "id": "lucian",
-      "bones": 19,
+      "bones": 36,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -231,18 +246,19 @@
         "E": 0.95,
         "R": 2.5
       },
-      "full_triangles": 25496,
-      "preview_triangles": 7138,
-      "materials": 10,
+      "full_triangles": 29982,
+      "preview_triangles": 7999,
+      "materials": 17,
       "silhouette": "Dark skin, close-cropped hair, long black split coat and paired ivory relic pistols",
       "weapon": "pistols",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/lucian.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Miss Fortune": {
       "champion": "Miss Fortune",
       "id": "miss-fortune",
-      "bones": 19,
+      "bones": 42,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -253,18 +269,19 @@
         "E": 0.95,
         "R": 2.5
       },
-      "full_triangles": 28940,
-      "preview_triangles": 8103,
-      "materials": 10,
+      "full_triangles": 30704,
+      "preview_triangles": 8000,
+      "materials": 16,
       "silhouette": "Copper-red flowing hair, broad pirate hat, navy/red corset coat and two brass flintlocks",
       "weapon": "pistols",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/miss_fortune.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Samira": {
       "champion": "Samira",
       "id": "samira",
-      "bones": 19,
+      "bones": 39,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -275,18 +292,19 @@
         "E": 0.95,
         "R": 2.3
       },
-      "full_triangles": 28652,
-      "preview_triangles": 8022,
-      "materials": 10,
+      "full_triangles": 30263,
+      "preview_triangles": 7999,
+      "materials": 13,
       "silhouette": "Dark swept hair, eyepatch, red scarf, armored leather suit, curved blade and compact pistol",
       "weapon": "blade_pistol",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/samira.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Senna": {
       "champion": "Senna",
       "id": "senna",
-      "bones": 19,
+      "bones": 47,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -297,18 +315,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 27112,
-      "preview_triangles": 7591,
-      "materials": 11,
+      "full_triangles": 30053,
+      "preview_triangles": 7999,
+      "materials": 14,
       "silhouette": "Dark skin, white long coat, flowing dark locks and oversized spectral relic cannon",
       "weapon": "relic_cannon",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/senna.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Sivir": {
       "champion": "Sivir",
       "id": "sivir",
-      "bones": 19,
+      "bones": 37,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -319,18 +338,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 27080,
-      "preview_triangles": 7582,
-      "materials": 11,
+      "full_triangles": 31158,
+      "preview_triangles": 7998,
+      "materials": 12,
       "silhouette": "Dark hair, gold tiara, teal armor, red sash and broad four-point crossblade",
       "weapon": "crossblade",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/sivir.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Smolder": {
       "champion": "Smolder",
       "id": "smolder",
-      "bones": 10,
+      "bones": 32,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -341,18 +361,19 @@
         "E": 1.8,
         "R": 1.4
       },
-      "full_triangles": 13088,
-      "preview_triangles": 3664,
-      "materials": 7,
+      "full_triangles": 30246,
+      "preview_triangles": 7999,
+      "materials": 12,
       "silhouette": "Orange young dragon, large expressive muzzle, curved horns, membranous wings and tapered tail",
       "weapon": "breath",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/smolder.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Tristana": {
       "champion": "Tristana",
       "id": "tristana",
-      "bones": 19,
+      "bones": 31,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -363,18 +384,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 24612,
-      "preview_triangles": 6891,
-      "materials": 10,
+      "full_triangles": 29956,
+      "preview_triangles": 7999,
+      "materials": 15,
       "silhouette": "Blue-skinned yordle, oversized ears, silver hair, pilot goggles and oversized brass cannon",
       "weapon": "cannon",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/tristana.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Twitch": {
       "champion": "Twitch",
       "id": "twitch",
-      "bones": 20,
+      "bones": 40,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -385,18 +407,19 @@
         "E": 0.95,
         "R": 2.2
       },
-      "full_triangles": 22740,
-      "preview_triangles": 6367,
-      "materials": 10,
+      "full_triangles": 30061,
+      "preview_triangles": 7998,
+      "materials": 14,
       "silhouette": "Hunched rat marksman, long snout, pink ears, articulated tail, ragged hood and chem crossbow",
       "weapon": "crossbow",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/twitch.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Varus": {
       "champion": "Varus",
       "id": "varus",
-      "bones": 19,
+      "bones": 42,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -407,18 +430,19 @@
         "E": 0.95,
         "R": 1.45
       },
-      "full_triangles": 28160,
-      "preview_triangles": 7884,
-      "materials": 11,
+      "full_triangles": 30146,
+      "preview_triangles": 7999,
+      "materials": 15,
       "silhouette": "Pale archer, white flowing hair, black-violet corrupted lower body and sculptural living bow",
       "weapon": "bow",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/varus.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Vayne": {
       "champion": "Vayne",
       "id": "vayne",
-      "bones": 19,
+      "bones": 38,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -429,18 +453,19 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 26608,
-      "preview_triangles": 7449,
-      "materials": 11,
+      "full_triangles": 30031,
+      "preview_triangles": 8000,
+      "materials": 14,
       "silhouette": "Dark ponytail, red-lensed goggles, navy armor, crimson cape and wrist-mounted crossbows",
       "weapon": "crossbows",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/vayne.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Xayah": {
       "champion": "Xayah",
       "id": "xayah",
-      "bones": 19,
+      "bones": 32,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -451,18 +476,19 @@
         "E": 0.95,
         "R": 1.3
       },
-      "full_triangles": 27488,
-      "preview_triangles": 7696,
-      "materials": 11,
+      "full_triangles": 30998,
+      "preview_triangles": 7999,
+      "materials": 13,
       "silhouette": "Magenta hair and hood, feather cape, gold-edged armor, bird feet and twin feather blades",
       "weapon": "feathers",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/xayah.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Yunara": {
       "champion": "Yunara",
       "id": "yunara",
-      "bones": 19,
+      "bones": 47,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -473,18 +499,19 @@
         "E": 0.95,
         "R": 1.5
       },
-      "full_triangles": 29848,
-      "preview_triangles": 8357,
-      "materials": 11,
+      "full_triangles": 30015,
+      "preview_triangles": 7999,
+      "materials": 12,
       "silhouette": "Ivory/teal ceremonial robes, black flowing hair, golden headdress and orbiting prayer beads",
       "weapon": "spirit_orbs",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/yunara.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     },
     "Zeri": {
       "champion": "Zeri",
       "id": "zeri",
-      "bones": 19,
+      "bones": 29,
       "animations": {
         "Idle": 3,
         "Walk": 1.2,
@@ -495,12 +522,13 @@
         "E": 0.95,
         "R": 1.4
       },
-      "full_triangles": 24600,
-      "preview_triangles": 6887,
-      "materials": 11,
+      "full_triangles": 29970,
+      "preview_triangles": 7998,
+      "materials": 13,
       "silhouette": "Bright green twin hair knots, yellow jacket, teal shirt, articulated electric rifle and battery pack",
       "weapon": "electric_rifle",
-      "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+      "source": "scripts/marksman_v2/champions/zeri.py",
+      "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
       "status": "original authored stylized asset; not extracted Wild Rift game art"
     }
   }

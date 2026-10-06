@@ -14,5 +14,5 @@ build/
 !docs/art-review/
 !docs/art-review/*.png
 
-!docs/art-review/roster-v7/
-!docs/art-review/roster-v7/*.png
+!docs/art-review/roster-v8/
+!docs/art-review/roster-v8/*.png

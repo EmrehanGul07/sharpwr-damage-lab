@@ -1,7 +1,7 @@
 {
   "champion": "Xayah",
   "id": "xayah",
-  "bones": 19,
+  "bones": 32,
   "animations": {
     "Idle": 3,
     "Walk": 1.2,
@@ -12,11 +12,12 @@
     "E": 0.95,
     "R": 1.3
   },
-  "full_triangles": 27488,
-  "preview_triangles": 7696,
-  "materials": 11,
+  "full_triangles": 30998,
+  "preview_triangles": 7999,
+  "materials": 13,
   "silhouette": "Magenta hair and hood, feather cape, gold-edged armor, bird feet and twin feather blades",
   "weapon": "feathers",
-  "source_sha256": "4c80f3e3eb97a4cf3ba505b97b4e68d2a29762b9f912ae3f11b6d90a9d85de90",
+  "source": "scripts/marksman_v2/champions/xayah.py",
+  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
   "status": "original authored stylized asset; not extracted Wild Rift game art"
 }
