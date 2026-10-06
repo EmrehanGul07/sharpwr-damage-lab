@@ -73,9 +73,9 @@ function timeAtProgress(e,p){return p<=e.release?e.start+(e.launch-e.start)*p/Ma
 function effectProgress(e,t){if(t<e.launch)return e.release*clamp((t-e.start)/Math.max(.001,e.launch-e.start),0,1);if(t<e.arrive)return e.release+(IMPACT_AT-e.release)*(t-e.launch)/Math.max(.001,e.arrive-e.launch);return clamp(IMPACT_AT+(1-IMPACT_AT)*(t-e.arrive)/TAIL,0,1);}
 function locking(state,t=state.time){return state.events.find(e=>t>=e.start&&t<e.lockEnd);}
 function animating(state,t=state.time){return state.events.find(e=>t>=e.start&&t<e.animEnd);}
-// Movement input during a cast: cancels an attack still winding up, waits for a locked cast or
-// dash, and cuts the follow-through animation once the cast has fired.
-function interrupt(state,to){state.pending=null;const lock=locking(state);if(lock){if(lock.slot==='AA'&&state.time<lock.launch){cancelAttack(state,lock);return true;}state.queued=to;return false;}const anim=animating(state);if(anim)anim.animEnd=state.time;return true;}
+// Movement input during an attack windup, a cast or a dash waits for it (the attack still fires) and
+// then moves the hero where the input points at that moment; after that it cuts the follow-through.
+function interrupt(state,to){state.pending=null;if(locking(state)){state.queued=to;return false;}const anim=animating(state);if(anim)anim.animEnd=state.time;return true;}
 function cancelAttack(state,e){state.events=state.events.filter(x=>x!==e);state.hits=state.hits.filter(h=>h.event!==e);state.deadlines.AA=e.previousDeadline;if(e.consumed)state.nextAttack=e.consumed;}
 function inReach(state,slot,from=state.hero){const s=tool(state).slots[slot],reach=at(s.reach,rankOf(state,slot)-1),spec=Geo.spec(state.profile,slot,{rank:rankOf(state,slot),level:state.level}),r=spec.range??(reach==null?null:reach/UNITS);return r===null||length(from,state.target)<=r+DUMMY_RADIUS;}
 function segmentDistance(p,a,b){const dx=b[0]-a[0],dz=b[2]-a[2],len2=dx*dx+dz*dz||1e-9,u=clamp(((p[0]-a[0])*dx+(p[2]-a[2])*dz)/len2,0,1);return Math.hypot(a[0]+dx*u-p[0],a[2]+dz*u-p[2]);}
