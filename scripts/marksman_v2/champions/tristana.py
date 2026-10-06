@@ -8,8 +8,8 @@ from mathutils import Matrix, Vector
 import core as C
 from core import M, ball, ball_mesh, box, clip, cyl, fk_arm, flash, ik, lathe, loc, material, metaball_object, placement, rot, size, torus, tube, weapon_matrix
 
-S = 0.74
-VIEW_SCALE = 0.72
+S = 0.66
+VIEW_SCALE = 0.85
 RIM = (1.0, 0.65, 0.35)
 EXPOSURE = -0.15
 CLIP_VIEWS = {"W": dict(angle_deg=28, distance=4.2, height=1.6, target_z=1.0), "Death": dict(angle_deg=40, distance=3.6, height=1.5, target_z=0.55)}
@@ -28,7 +28,7 @@ def materials():
         brass=material("Brass", "#bc9658", rough=0.3, metal=1.0),
         iron=material("Cannon iron", (0.08, 0.08, 0.09), rough=0.35, metal=0.9),
         boot=material("Boots", (0.08, 0.045, 0.025), rough=0.45),
-        hair=material("Silver hair", (0.85, 0.85, 0.9), rough=0.4),
+        hair=material("Silver hair", (0.62, 0.64, 0.72), rough=0.4),
         hair_dark=material("Grey hair", (0.5, 0.52, 0.6), rough=0.45),
         lens=material("Goggle lens", (0.95, 0.55, 0.15), rough=0.05, emission=0.6),
         fire=material("Cannon fire", "#ffbc68", emission=9.0),
@@ -40,7 +40,7 @@ def materials():
 def build_body():
     meta = metaball_object("Tristana body")
     C.torso_female(meta, S, bust=0.85, hips=1.05, waist=1.0)
-    C.limbs(meta, dict(neck=(0.05, 0.045), thigh=(0.075, 0.05), calf=(0.05, 0.056, 0.036), foot=(0.05, 0.045), arm=(0.05, 0.04), forearm=(0.042, 0.034), palm=0.048), hands="mitten")
+    C.limbs(meta, dict(neck=(0.06, 0.055), thigh=(0.095, 0.065), calf=(0.065, 0.07, 0.045), foot=(0.06, 0.05), arm=(0.065, 0.052), forearm=(0.055, 0.045), palm=0.06), hands="mitten")
     for side in ("L", "R"):
         toe = C.J[f"toe.{side}"]
         ball(meta, toe + Vector((0, -0.005, 0.01)), 0.05 * S, (1.0, 1.4, 0.8))  # big boots
@@ -128,12 +128,12 @@ def build_cannon():
 
 
 def build():
-    C.make_joints(scale=S, shoulder_x=0.19, hip_x=0.10, leg_length=0.85, arm_length=0.92)
+    C.make_joints(scale=S, shoulder_x=0.20, hip_x=0.11, leg_length=0.78, arm_length=0.9)
     materials()
     body = build_body()
     tail_pts, tail = build_gear()
     build_head()
-    C.scale_parts("head", 1.75, C.J["head_bone"])
+    C.scale_parts("head", 1.95, C.J["head_bone"])
     cannon = build_cannon()
     # Rest: carried on the right shoulder, bore forward, gripped with both hands below.
     sh = C.J["shoulder.R"]

@@ -1592,7 +1592,7 @@ def render_clip(camera, actions, name, out, view=CLIP_VIEW, every=1, scale=1.0):
         scene.frame_set(f)
         # Follow root motion (preview videos) so the character stays framed.
         follow = PB["root"].head.copy()
-        follow.z = 0.0
+        follow.z *= 0.5  # half of any jump, so leaps stay in frame but still read as height
         frame_camera(camera, scale=scale, **view)
         camera.location += follow
         look_at(camera, Vector((0, 0, view.get("target_z", 0.9) * scale)) + follow)
