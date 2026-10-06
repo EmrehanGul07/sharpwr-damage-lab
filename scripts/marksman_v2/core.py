@@ -1026,6 +1026,74 @@ def build_rig(name, chains=(), extra=(), arm_iks=()):
     return rig
 
 
+def build_creature_rig(name, bones, legs=(), chains=(), extra=()):
+    """A free-form skeleton for creatures (dragons, six-legged beasts):
+    bones: (name, head, tail, parent, deform) rows (a root bone is added first);
+    legs: (prefix, upper, lower, ankle point, pole point) -> an IK control 'ik_<prefix>' and a
+    pole 'pole_<prefix>' (both under root) with a 2-bone 'Leg IK' on the lower bone;
+    chains and extra as in build_rig."""
+    global rig, PB, REST, REST3
+    data = bpy.data.armatures.new(name)
+    rig = bpy.data.objects.new(name, data)
+    scene.collection.objects.link(rig)
+    activate(rig)
+    bpy.ops.object.mode_set(mode="EDIT")
+    eb = data.edit_bones
+
+    def bone(bname, head, tail, parent=None, deform=True):
+        b = eb.new(bname)
+        b.head, b.tail = Vector(head), Vector(tail)
+        b.use_deform = deform
+        if parent:
+            b.parent = eb[parent]
+        return b
+
+    bone("root", (0, 0, 0), (0, 0.25, 0), deform=False)
+    for bname, head, tail, parent, deform in bones:
+        bone(bname, head, tail, parent or "root", deform)
+    for prefix, upper, lower, ankle, pole in legs:
+        ankle, pole = Vector(ankle), Vector(pole)
+        bone(f"ik_{prefix}", ankle, ankle + Vector((0, 0.08, 0)), "root", deform=False)
+        bone(f"pole_{prefix}", pole, pole + Vector((0, 0.08, 0)), "root", deform=False)
+    for cname, points, parent, options in chains:
+        pts = [Vector(p) for p in points]
+        names, prev = [], parent
+        for i in range(len(pts) - 1):
+            bname = f"{cname}.{i}"
+            bone(bname, pts[i], pts[i + 1], prev, deform=options.get("deform", False))
+            prev = bname
+            names.append(bname)
+        CHAINS[cname] = dict(
+            bones=names,
+            points=pts,
+            parent=parent,
+            stiffness=options.get("stiffness", 70.0),
+            damping=options.get("damping", 7.0),
+            gain=options.get("gain", 0.9),
+            limit=options.get("limit", (35.0, 25.0)),
+            sway=options.get("sway", 0.0),
+            scale=options.get("scale", 0.5),
+            skin=options.get("skin", False),
+        )
+    for bname, head, tail, parent in extra:
+        bone(bname, head, tail, parent, deform=False)
+    bpy.ops.object.mode_set(mode="POSE")
+    PB = rig.pose.bones
+    for p in PB:
+        p.rotation_mode = "QUATERNION"
+    for prefix, upper, lower, ankle, pole in legs:
+        ik = PB[lower].constraints.new("IK")
+        ik.name = "Leg IK"
+        ik.target, ik.subtarget = rig, f"ik_{prefix}"
+        ik.pole_target, ik.pole_subtarget = rig, f"pole_{prefix}"
+        ik.pole_angle = math.radians(-90)
+        ik.chain_count = 2
+    bpy.ops.object.mode_set(mode="OBJECT")
+    REST = {b.name: b.matrix_local.to_quaternion() for b in rig.data.bones}
+    REST3 = {b.name: b.matrix_local.to_3x3() for b in rig.data.bones}
+    return rig
+
+
 def bone_frame(head, direction, length=0.1):
     """(head, tail) for a bone at `head` pointing along a world direction."""
     head = Vector(head)
@@ -1195,9 +1263,9 @@ def iks_off(frame, side=None):
 
 def leg_ik(frame, value=1.0):
     """Blend the leg IK on or off (off: the legs follow the hips in FK, e.g. tucked in a roll)."""
-    for side in ("L", "R"):
-        for c in PB[f"shin.{side}"].constraints:
-            if c.type == "IK":
+    for pb in PB:
+        for c in pb.constraints:
+            if c.type == "IK" and (pb.name.startswith("shin") or c.name == "Leg IK"):
                 c.influence = value
                 c.keyframe_insert("influence", frame=frame)
 
@@ -1222,7 +1290,7 @@ def reset_pose():
         for c in pb.constraints:
             if c.name.startswith("IK ") and pb.name.startswith("forearm"):
                 c.influence = 0.0
-            elif c.type == "IK" and pb.name.startswith("shin"):
+            elif c.type == "IK" and (pb.name.startswith("shin") or c.name == "Leg IK"):
                 c.influence = 1.0
 
 
@@ -1468,7 +1536,7 @@ def complete_channels(action):
             if c.type == "IK" or c.name.startswith("IK "):
                 path = f'{base}.constraints["{c.name}"].influence'
                 if (path, 0) not in have:
-                    rest = 1.0 if pb.name.startswith("shin") else 0.0
+                    rest = 1.0 if pb.name.startswith("shin") or c.name == "Leg IK" else 0.0
                     action.fcurves.new(path, index=0, action_group=pb.name).keyframe_points.insert(0, rest)
 
 
