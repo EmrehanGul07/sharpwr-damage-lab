@@ -152,6 +152,7 @@ def build():
         "fx_hunt": (C.join([C.torus("FX on the hunt", "glow", 0.5, 0.01, (0, 0, 0.05 * k), (0, 0, 0), (1, 1, 1), 40) for k in range(3)], "FX on the hunt"), Matrix.Translation(B(0, 0, 0.1)), "root"),
         "fx_dust": (C.fx_flash("dash dust", 0.12, "sand", 6), None, None),
         "fx_hand": (C.fx_orb("blade glow", 0.06, "glow", 1), grip, "hand.R"),
+        "fx_ring": (C.torus("FX ricochet ring", "glow", 0.3, 0.01, (0, 0, 0), (0, 0, 0), (1, 1, 1), 40), Matrix.Translation(B(0, 0, 0.04)), "root"),
     }
     extra = [C.point_bone("blade_hold", grip, "hand.R", 0.05)]
     extra += C.fx_bones(fx, Matrix.Translation(B(-0.3, -0.4, 1.2)))
@@ -167,7 +168,7 @@ def build():
     define_clips(grip, blade)
 
 
-FX = ["fx_blade", "fx_spark", "fx_shield", "fx_hunt", "fx_dust", "fx_hand"]
+FX = ["fx_blade", "fx_spark", "fx_shield", "fx_hunt", "fx_dust", "fx_hand", "fx_ring"]
 
 
 def define_clips(grip, blade):
@@ -287,23 +288,31 @@ def define_clips(grip, blade):
         stance(48)
         size("blade_hold", 48, 1.0)
 
-    @clip("W", 34)
+    @clip("W", 44)
     def ricochet():
         start()
-        size("fx_hand", 2, 0.0)
-        size("fx_hand", 6, 1.2)
-        size("fx_hand", 9, 0.0)
-        windup(5)
-        release(8)
-        home = throw(8, 3.2, True, 0.15, 7, 3)
-        for f, co in ((15, B(-0.2, -3.2, 1.2)), (17, B(0.8, -3.6, 1.1))):
+        # A buff, not a throw: she lifts the crossblade and it flares with sand-gold light (a ring
+        # rises around her); the empowered auto after it ricochets between targets.
+        fk_arm("R", 6, up=110, swing=-20, bend=40, out=10, hand=-30)
+        rot("head", 6, x=-10, z=10)
+        rot("chest", 6, x=-6)
+        for f, s_ in ((2, 0.0), (7, 1.8), (12, 1.3), (17, 0.0)):
+            size("fx_hand", f, s_)
+        for f, s_ in ((5, 0.0), (8, 1.0), (15, 1.2), (18, 0.0)):
+            size("fx_ring", f, s_)
+        loc("fx_ring", 8)
+        loc("fx_ring", 18, z=0.5)
+        windup(15)
+        release(18)
+        home = throw(18, 3.2, True, 0.15, 7, 3)
+        for f, co in ((25, B(-0.2, -3.2, 1.2)), (27, B(0.8, -3.6, 1.1))):
             size("fx_spark", f - 1, 0.0)
             C.put("fx_spark", f, co)
             size("fx_spark", f, 1.3)
             size("fx_spark", f + 2, 0.0)
         windup(home + 1)
-        stance(34)
-        size("blade_hold", 34, 1.0)
+        stance(44)
+        size("blade_hold", 44, 1.0)
 
     @clip("E", 36)
     def spell_shield():

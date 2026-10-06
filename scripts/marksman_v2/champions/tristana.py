@@ -149,6 +149,9 @@ def build():
         "fx_blast": (C.fx_flash("rocket jump", 0.16, "fire", 8), None, None),
         "fx_bomb": (C.join([C.fx_orb("charge", 0.05, "red", 0), C.fx_flash("charge spark", 0.03, "fire", 4)], "FX charge"), None, None),
         "fx_boom": (C.fx_flash("explosion", 0.2, "fire", 10), None, None),
+        # Rapid Fire is a buff: Boomer glows hot along the barrel and a ring of embers circles her.
+        "fx_rapid": (C.fx_orb("rapid fire", 0.07, "fire", 2), HOLD @ Matrix.Translation((0, -0.2, 0.13)), "cannon"),
+        "fx_ring": (torus("FX rapid ring", "fire", 0.3, 0.01, (0, 0, 0), (0, 0, 0), (1, 1, 1), 40), Matrix.Translation(B(0, 0, 0.04)), "root"),
     }
     grip = HOLD @ Vector((0, 0.0, 0.0))
     fore = HOLD @ Vector((0, -0.20, 0.01))
@@ -165,7 +168,7 @@ def build():
     define_clips()
 
 
-FX = ["fx_muzzle", "fx_ball", "fx_ball2", "fx_buster", "fx_smoke", "fx_blast", "fx_bomb", "fx_boom"]
+FX = ["fx_muzzle", "fx_ball", "fx_ball2", "fx_buster", "fx_smoke", "fx_blast", "fx_bomb", "fx_boom", "fx_rapid", "fx_ring"]
 
 
 def define_clips():
@@ -254,12 +257,28 @@ def define_clips():
         rot("head", 18, x=-6, z=-4)
         stance(30)
 
-    @clip("Q", 30)
+    @clip("Q", 40)
     def rapid_fire():
         start()
-        for k, f in enumerate((4, 9, 14, 19)):
-            fire(f, "fx_ball" if k % 2 == 0 else "fx_ball2", 4.0, 1.2, 0.035)
-        stance(30)
+        # A buff, not a volley: she slaps Boomer's barrel with a grin and it glows hot (embers
+        # circle her), then the empowered autos come out fast.
+        ik("L", "cannon", 2, 1.0)
+        ik("L", "cannon", 4, 0.0)
+        fk_arm("L", 6, up=95, swing=-10, bend=70, out=-25)
+        fk_arm("L", 9, up=80, swing=-20, bend=90, out=-30)
+        rot("head", 7, x=-6, z=-16)
+        rot("chest", 8, x=-4, z=8)
+        ik("L", "cannon", 12, 0.0)
+        ik("L", "cannon", 14, 1.0)
+        for f, s_ in ((7, 0.0), (9, 1.4), (14, 1.0), (38, 1.0), (40, 0.0)):
+            size("fx_rapid", f, s_)
+        for f, s_ in ((7, 0.0), (10, 1.0), (18, 1.2), (21, 0.0)):
+            size("fx_ring", f, s_)
+        loc("fx_ring", 10)
+        loc("fx_ring", 21, z=0.5)
+        for k, f in enumerate((17, 21, 25, 29)):
+            fire(f, "fx_ball" if k % 2 == 0 else "fx_ball2", 4.0, 1.1, 0.03)
+        stance(40)
 
     @clip("W", 34)
     def rocket_jump():
