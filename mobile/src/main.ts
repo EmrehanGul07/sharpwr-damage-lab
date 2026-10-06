@@ -20,6 +20,7 @@ import { about } from "./views/about";
 import { type BuildStore, buildView, pickView } from "./views/build";
 import { championDetail, championList } from "./views/champions";
 import { itemDetail, itemList } from "./views/items";
+import { leaveFullScreen, practiceView } from "./views/practice";
 import { runeDetail, runeList } from "./views/runes";
 import { tierList } from "./views/tiers";
 import type { View } from "./views/shared";
@@ -54,6 +55,8 @@ function resolve(state: DataState, route: Route): View {
       return first && second ? itemDetail(db, first, second) : itemList(db, route.params);
     case "runes":
       return first ? runeDetail(db, first) : runeList(db, route.params);
+    case "practice":
+      return practiceView(route.params.get("champion"));
     case "about":
       return about(state);
   }
@@ -84,6 +87,7 @@ async function start(): Promise<void> {
   back.addEventListener("click", goBack);
   // Android back button: return to the previous page, or leave the app from a top-level list.
   await App.addListener("backButton", ({ canGoBack }) => {
+    if (leaveFullScreen()) return;
     if (canGoBack) history.back();
     else void App.exitApp();
   });

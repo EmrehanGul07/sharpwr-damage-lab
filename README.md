@@ -15,6 +15,7 @@ The model covers a stationary target that does not attack back. Authorized PC ti
 - Saved build results (`scripts/build_core_items.py`, [docs/core-item-protocol.md](docs/core-item-protocol.md)): a core-item search that leaves out Infinity Edge, Lord Dominik's Regards, Mortal Reminder, Serylda's Grudge and Terminus; Top builds and the editor's build styles from every item; a keystone check. SharpWR's own core pick (`data/editor-core-items.json`) is shown first with the engine's core beside it. Bounded searches, not exhaustive/global optimization. Source fingerprints and each champion's rune page guard saved results.
 - Galeforce's Cloudburst follows the Wild Rift tooltip: 40–125 by level plus 35% bonus AD physical damage, 60 s cooldown.
 - Animation Studio is presentation only: original stylized skinned models for all 23 marksmen, practice mode and range-aware skill indicators. It does not calculate damage.
+- Practice Tool (web tab and Android Practice tab, [docs/practice-tool.md](docs/practice-tool.md)): walk around with any champion, cast every skill at a training dummy with the engine's numbers (no items or runes) and keep notes on what differs from Wild Rift.
 
 ## Run and validate
 
@@ -52,6 +53,7 @@ The integrity audit writes `data/combat-audit-current.json` and `data/combat-aud
 - [Current adapters and runtime assumptions](docs/all-marksman-fight-engine.md)
 - [Core-item protocol](docs/core-item-protocol.md)
 - [Skinned roster V8](docs/roster-v8.md)
+- [Practice Tool](docs/practice-tool.md)
 
 ## Deploy
 

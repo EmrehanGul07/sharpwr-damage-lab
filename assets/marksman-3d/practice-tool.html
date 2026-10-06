@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"}}</script><style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#1c332b,#07100f 60%);color:#e1eeea;font:13px system-ui,-apple-system,sans-serif}
+.shell{max-width:1500px;margin:auto;padding:14px}.eyebrow{font-size:9px;letter-spacing:.22em;color:#dcc58e}h1{font:600 26px Georgia,serif;margin:6px 0 4px}.subtitle{color:#87a6a8;font-size:12px;line-height:1.6;margin:0 0 12px}.bottom{margin-top:16px;padding-top:10px;border-top:1px solid #203940;color:#668b79;font-size:10px;line-height:1.7}
+@media(max-width:600px){.shell{padding:7px}h1{font-size:21px}}
+__PRACTICE_CSS__
+</style></head><body><div class="shell"><div class="eyebrow">SHARPWR / PRACTICE TOOL</div><h1>Practice Tool</h1><p class="subtitle">Pick a champion, walk around, cast every skill and hit the training dummy. Write down what feels different from Wild Rift; your notes stay in this browser.</p><div id="practice-root"></div><p class="bottom">Original stylized SharpWR models and animations, not Riot game art. Damage numbers come from the SharpWR engine without items or runes. Champion identities belong to Riot Games.</p></div>
+<script id="practice-data" type="application/json">__PRACTICE_DATA__</script><script>globalThis.MarksmanStudyAssets=__STUDY_DATA__;</script><script>__BAKED_SCRIPT__</script><script>__RIG_SCRIPT__</script><script>__FX_SCRIPT__</script><script>__ARENA_SCRIPT__</script><script>__SCENE_SCRIPT__</script><script>__FIGHT_SCRIPT__</script><script>__GEOMETRY_SCRIPT__</script><script>__PRACTICE_SCRIPT__</script><script>__TOOL_SCRIPT__</script><script>
+(async()=>{'use strict';const data=JSON.parse(document.getElementById('practice-data').textContent);
+ await MarksmanPracticeTool.mount(document.getElementById('practice-root'),{catalogue:data,champion:'Ezreal',compact:matchMedia('(max-width:700px)').matches});
+})();
+</script></body></html>

@@ -79,6 +79,12 @@ def _ability_icon(champion, slot, data_url):
     return f"{ABILITY_ICON_DIR}/{stem}-{slot}.{extension}"
 
 
+def ability_icon_path(champion, slot):
+    """Repository-relative file of a champion's bundled ability icon."""
+    icons = json.loads(SKILL_ICONS.read_text())["champions"][champion]["icons"]
+    return _ability_icon(champion, slot, icons[slot])
+
+
 def ability_icon_files():
     """Every ability icon as {repository-relative path: image bytes}."""
     icons = json.loads(SKILL_ICONS.read_text())["champions"]

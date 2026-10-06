@@ -6,6 +6,7 @@
 import type { AbilitySlot, Champion } from "../data";
 import { h } from "../dom";
 import { remoteAsset } from "../online";
+import { href } from "../router";
 
 export interface ClipSpec {
   clip: string;
@@ -97,6 +98,7 @@ export function modelTab(champion: Champion): HTMLElement[] {
     caption,
     h("div", { class: "segments model-clips", role: "group", "aria-label": "Animations" }, ...buttons),
     h("p", { class: "note" }, "Drag to turn the model. Original stylized SharpWR model and animations, not Riot game art."),
+    h("a", { class: "button", href: href("practice", [], { champion: champion.name }) }, `Practice with ${champion.name}`),
   ];
 }
 
