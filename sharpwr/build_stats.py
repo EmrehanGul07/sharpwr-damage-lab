@@ -13,10 +13,20 @@ from .marksman_damage_components import jhin_attack_damage
 MANA_ITEMS = ("Manamune", "Muramana")
 
 
+def ordered_sum(values):
+    """Floats added left to right. Python 3.12's sum() compensates rounding, which can move
+    the last digit; the saved build results, the golden outputs and the app's TypeScript
+    port all add in order, so every Python version must too."""
+    total = 0
+    for value in values:
+        total += value
+    return total
+
+
 def build_totals(items, boot=None):
     """Every item tuple field (K) summed over the items, then the boots."""
     rows = [dct(F[x]) for x in items] + [dct(B[boot]) if boot else dct(())]
-    return {k: sum(q[k] for q in rows) for k in K}
+    return {k: ordered_sum(q[k] for q in rows) for k in K}
 
 
 def awe_bonus(items, max_mana):
@@ -91,6 +101,6 @@ def build_stats(
         "mana": max_mana,
         "armor": plus("armor", core["armor"]),
         "magic_resist": plus("mr", core["mr"]),
-        "movement_speed": (core["movement_speed"] or 0) * (1 + sum(dct(F[x])["ms"] for x in items))
+        "movement_speed": (core["movement_speed"] or 0) * (1 + ordered_sum(dct(F[x])["ms"] for x in items))
         + (dct(B[boot])["ms"] if boot else 0),
     }
