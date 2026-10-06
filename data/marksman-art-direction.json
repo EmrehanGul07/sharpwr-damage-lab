@@ -32,7 +32,15 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Ranger’s Focus",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "empowered_attack": "focus_flurry"
         },
         "W": {
           "effect": "fan",
@@ -266,7 +274,15 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Spinning Axe ek",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            6,
+            6,
+            6,
+            6
+          ],
+          "empowered_attack": "spinning_axe"
         },
         "W": {
           "effect": "rush",
@@ -276,7 +292,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Blood Rush",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            3,
+            3,
+            3,
+            3
+          ]
         },
         "E": {
           "effect": "axe_pair",
@@ -760,7 +783,15 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Bio-Arcane Barrage ek",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            8,
+            8,
+            8,
+            8
+          ],
+          "empowered_attack": "bio_spit"
         },
         "E": {
           "effect": "ooze",
@@ -916,7 +947,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Strut",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            4,
+            4,
+            4,
+            4
+          ]
         },
         "E": {
           "effect": "rain",
@@ -1150,7 +1188,15 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Ricochet F/bounce",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            4,
+            4,
+            4,
+            4
+          ],
+          "empowered_attack": "ricochet_shot"
         },
         "E": {
           "effect": "spell_shield",
@@ -1170,7 +1216,13 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "On the Hunt",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            8,
+            10,
+            12
+          ]
         }
       },
       "passive": {
@@ -1296,7 +1348,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Rapid Fire",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            7,
+            7,
+            7,
+            7
+          ]
         },
         "W": {
           "effect": "rocket_jump",
@@ -1374,7 +1433,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Ambush",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            6,
+            6,
+            6,
+            6
+          ]
         },
         "W": {
           "effect": "cask",
@@ -1404,7 +1470,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Spray and Pray",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            6,
+            6,
+            6
+          ],
+          "empowered_attack": "spray_bolt"
         }
       },
       "passive": {
@@ -1462,7 +1535,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Blighted Quiver on-hit büyü",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            5.5,
+            5.5,
+            5.5,
+            5.5
+          ]
         },
         "E": {
           "effect": "arrow_rain",
@@ -1540,7 +1620,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Silver Bolts",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            3,
+            3,
+            3,
+            3
+          ]
         },
         "E": {
           "effect": "condemn",
@@ -1560,7 +1647,13 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Final Hour",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            8,
+            10,
+            12
+          ]
         }
       },
       "passive": {
@@ -1618,7 +1711,15 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Deadly Plumage",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            4,
+            4,
+            4,
+            4
+          ],
+          "empowered_attack": "plumage_shot"
         },
         "E": {
           "effect": "recall",
@@ -1686,7 +1787,14 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Cultivation of Spirit",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            5,
+            5,
+            5,
+            5
+          ]
         },
         "W": {
           "effect": "spirit_arc",
@@ -1716,7 +1824,13 @@
           "release": 0.46,
           "recovery": 0.26,
           "label": "Transcend One’s Self",
-          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps."
+          "design_note": "Authored visual study. Replay uses recorded command/lock/impact timestamps.",
+          "cast": "instant",
+          "buff_seconds": [
+            15,
+            15,
+            15
+          ]
         }
       },
       "passive": {

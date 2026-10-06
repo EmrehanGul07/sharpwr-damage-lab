@@ -15,14 +15,16 @@ const STYLE={
  ricochet:['ricochet',1,2,'powder'],strut:['speed',.8,1,'powder'],rain:['rain',1.5,10,'powder'],bullet_cone:['cone_barrage',1.8,12,'powder'],
  flair:['slash_bullet',1,1,'steel'],blade_whirl:['blade_ring',1.1,2,'steel'],wild_rush:['dash_slash',1.1,1,'steel'],inferno:['radial_barrage',1.55,12,'blood'],
  dark_beam:['dark_beam',1.3,1,'mist'],root:['root',1.1,1,'mist'],mist:['mist',1.2,1,'mist'],dawning:['wide_beam',1.9,1,'mist'],
- boomerang:['boomerang',1.2,1,'sand'],ricochet_blade:['disc',.9,3,'sand'],spell_shield:['shield',1.15,1,'sand'],hunt:['rally',1.15,1,'sand'],
+ boomerang:['boomerang',1.2,1,'sand'],ricochet_blade:['weapon_aura',.9,1,'sand'],spell_shield:['shield',1.15,1,'sand'],hunt:['rally',1.15,1,'sand'],
  fire_breath:['flame',1.15,1,'ember'],sneeze:['sneeze',1.3,1,'ember'],wing_flight:['flight',1,1,'ember'],mother_flame:['dragon_shadow',2,1,'ember'],
  rapid:['weapon_aura',.8,1,'powder'],rocket_jump:['jump',1.25,1,'powder'],charge:['charge',1,1,'powder'],buster:['cannon_ball',1.55,1,'powder'],
- ambush:['stealth',1,1,'toxic'],cask:['cask',1.2,1,'toxic'],contaminate:['poison_burst',1.2,6,'toxic'],spray:['pierce',1.2,4,'toxic'],
+ ambush:['stealth',1,1,'toxic'],cask:['cask',1.2,1,'toxic'],contaminate:['poison_burst',1.2,6,'toxic'],spray:['weapon_aura',1.1,1,'toxic'],
  charged_arrow:['charged_arrow',1.45,1,'corruption'],blight:['aura',.8,1,'corruption'],arrow_rain:['arrow_rain',1.5,8,'corruption'],corruption:['chains',1.5,1,'corruption'],
- tumble:['roll_trail',.85,1,'silver'],silver_rings:['rings',1,3,'silver'],condemn:['heavy_bolt',1.2,1,'silver'],final_hour:['stealth',1.15,1,'silver'],
+ tumble:['roll_trail',.85,1,'silver'],silver_rings:['rings',1,3,'silver'],condemn:['heavy_bolt',1.2,1,'silver'],final_hour:['aura',1.15,1,'silver'],
  feather_pair:['feather',1,2,'feather'],plumage:['feather_orbit',1,5,'feather'],recall:['recall_feathers',1.35,7,'feather'],feather_fan:['feather_fan',1.6,9,'feather'],
  cultivate:['beads',1,8,'spirit'],spirit_arc:['spirit_arc',1.3,1,'spirit'],kanmei:['glide',1.15,1,'spirit'],transcend:['ascend',1.7,1,'spirit'],
+ // Empowered basic attacks while an instant buff is up (art direction: empowered_attack).
+ spray_bolt:['pierce',1.5,1,'toxic'],focus_flurry:['fan',.55,4,'frost'],spinning_axe:['axe',1.1,1,'blood'],plumage_shot:['feather',1,2,'feather'],bio_spit:['acid',1.35,1,'acid'],ricochet_shot:['disc',.9,1,'sand'],
  spark:['spark_bolt',1,5,'electric'],laser:['lightning_beam',1.35,1,'electric'],surge:['rail',1.2,1,'electric'],lightning:['lightning_storm',1.7,8,'electric']
 };
 // Base-skin color direction, with separate spell colors instead of one model-wide tint.
@@ -67,12 +69,12 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
  }
  function draw(profile,slot,frame={}){
   const spec=slot==='AA'?profile.attack:slot==='P'?profile.passive:profile.skills[slot];if(!spec)return;
-  const effect=slot==='AA'?({bow:'arrow',rifle:'pierce',pistols:'barrage',axes:'axe',spear:'spear',cannon:'cannon_ball',maw:'acid',breath:'flame',aircraft:'barrage',relic_cannon:'dark_beam',void_cannons:'swarm',crossbows:'heavy_bolt',crossblade:'disc',feathers:'feather',spirit_orbs:'spirit_arc',electric_rifle:'spark_bolt',launcher:'pierce',blade_pistol:'barrage',crossbow:'heavy_bolt'}[profile.weapon]||'arcane_arrow'):slot==='P'?'passive':spec.effect;
+  const effect=slot==='AA'?frame.empowered||({bow:'arrow',rifle:'pierce',pistols:'barrage',axes:'axe',spear:'spear',cannon:'cannon_ball',maw:'acid',breath:'flame',aircraft:'barrage',relic_cannon:'dark_beam',void_cannons:'swarm',crossbows:'heavy_bolt',crossblade:'disc',feathers:'feather',spirit_orbs:'spirit_arc',electric_rifle:'spark_bolt',launcher:'pierce',blade_pistol:'barrage',crossbow:'heavy_bolt'}[profile.weapon]||'arcane_arrow'):slot==='P'?'passive':spec.effect;
   // Ezreal's basic bolt and Mystic Shot deliberately have separate silhouettes and rhythms.
   if(profile.name==='Ezreal'&&['AA','Q','W','R'].includes(slot)){
    drawArcane(slot,spec,frame);return;
   }
-  const style=STYLE[effect]||[effect,1,1,profile.theme],kind=style[0],scale=style[1],count=style[2],u=clamp(frame.progress??0),age=frame.age??u*(spec.study_duration||1),active=frame.active??true,source=frame.source||new T.Vector3(-3,1.5,0),target=frame.target||new T.Vector3(0,1.2,0),hero=frame.hero||source.clone().setY(0),color=effectColor(profile,slot),accent=['W','E','R'].includes(slot)&&profile.name==='Ezreal'?'#fff0a6':profile.palette.metal;
+  const style=STYLE[effect]||[effect,1,1,profile.theme],kind=style[0],scale=style[1],count=style[2],u=clamp(frame.progress??0),age=frame.age??u*(spec.study_duration||1),active=frame.active??true,source=frame.source||new T.Vector3(-3,1.5,0),target=frame.target||new T.Vector3(0,1.2,0),hero=frame.hero||source.clone().setY(0),color=effectColor(profile,frame.colorSlot||slot),accent=['W','E','R'].includes(slot)&&profile.name==='Ezreal'?'#fff0a6':profile.palette.metal;
   const direction=target.clone().sub(source).normalize(),side=new T.Vector3(-direction.z,0,direction.x),ground=target.clone().setY(.06),release=frame.release??.35,travel=clamp((u-release)/Math.max(.01,.74-release)),impact=frame.impact??u>=.74,origin=source.clone(),head=origin.clone().lerp(target,travel),fade=1-clamp((u-.74)/.26),seed=(frame.seed||1)*83;
   const trails=(v,dir,c,n=7,r=.065)=>{for(let i=1;i<=n;i++)sphere(v.clone().addScaledVector(dir,-i*.09),r*(1-i/(n+1)),c,(1-i/(n+1))*.8);};
   // Anticipation: socket charge tracks the articulated hand or muzzle.
