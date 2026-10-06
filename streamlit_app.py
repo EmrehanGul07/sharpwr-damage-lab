@@ -665,7 +665,7 @@ div[data-testid="stColumn"]:has(.wr-pick-marker) .stButton button:disabled{curso
 @media(prefers-reduced-motion:reduce){.stButton button,.tier-rank-card,.pair-rank-card,.triple-rank-card,.boot3-rank-card,.boot4-rank-card,.full-rank-card{transition:none!important;transform:none!important}}
 </style>""",unsafe_allow_html=True)
 
-tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database","🎙️ Live Tier List","🎬 Animation Studio"])
+tabs=st.tabs(["⚔️ Item Tier List","🔥 Build Lab","💰 Item Value","📚 Database","🎙️ Live Tier List","🎬 Animation Studio","🎯 Practice Tool"])
 
 with tabs[0]:
     _tab_hero("SHARPWR • ITEM BENCHMARKS","Item Tier List","Compare AA + ability fights. Full build Top 3 first, then 1–4 item Top 10 rankings.")
@@ -1794,6 +1794,12 @@ with tabs[5]:
     if _ezreal_glb.is_file():
         st.download_button("Download Ezreal Blender v2 GLB",_ezreal_glb.read_bytes(),file_name="sharpwr-ezreal-v2.glb",mime="model/gltf-binary",key="ezreal_v2_glb")
     st.link_button("Download editable Blender study",release_asset_url("sharpwr-ezreal-v2-source.zip"))
+
+with tabs[6]:
+    _tab_hero("SHARPWR • PRACTICE","Practice Tool","Walk around with any of the 23 champions, cast every skill on a training dummy and note what differs from Wild Rift.")
+    from marksman_art import practice_tool_html
+    components.html(practice_tool_html(),height=1750,scrolling=True)
+    st.caption("Damage numbers: SharpWR engine, no items or runes, after the dummy's armor and magic resistance. Notes are saved in this browser; use Copy all notes to send them on.")
 
 st.caption(f"Web V{APP_VERSION} | 23 champion fight adapters • Shared AA engine • Squishy benchmark tier list • 51-rune database • Item Tier List • Build Lab: 5 items + 1 Boots • Item Value • 23 components • 14 Boots | Ability-aware item rankings • Best tested builds.")
 st.caption(RIOT_NOTICE)

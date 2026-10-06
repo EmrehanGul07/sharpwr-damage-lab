@@ -9,6 +9,9 @@ on:
       - "mobile/**"
       - "app-data/**"
       - "assets/riot/**"
+      # The Practice tab runs the web Practice Tool scripts.
+      - "assets/marksman-3d/*.js"
+      - "assets/marksman-3d/practice-tool.css"
       - ".github/workflows/mobile-android.yml"
   workflow_dispatch:
 permissions:

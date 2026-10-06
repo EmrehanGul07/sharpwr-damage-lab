@@ -4,6 +4,11 @@ on:
     branches: [main]
     paths:
       - "assets/marksman-3d/*.js"
+      - "assets/marksman-3d/practice-tool.*"
+      - "sharpwr/practice_data.py"
+      - "app-data/practice.json"
+      - "tests/test_practice_tool.cjs"
+      - "tests/test_practice_data.py"
       - "data/marksman-art-direction.json"
       - "data/riot/marksman-skill-icons.json"
       - "assets/marksman-3d/studio.html"
@@ -78,6 +83,7 @@ jobs:
       - run: node tests/test_visual_v6.cjs
       - run: node tests/test_replay_state.cjs
       - run: pip install -r requirements.txt
+      - run: node tests/test_practice_tool.cjs
       - run: python -m unittest discover -s tests -q
       - name: Publish download packages to the release
         run: |
