@@ -12,12 +12,12 @@
     "E": 0.95,
     "R": 1.4
   },
-  "full_triangles": 30053,
-  "preview_triangles": 7999,
+  "full_triangles": 30054,
+  "preview_triangles": 7998,
   "materials": 14,
   "silhouette": "Dark skin, white long coat, flowing dark locks and oversized spectral relic cannon",
   "weapon": "relic_cannon",
   "source": "scripts/marksman_v2/champions/senna.py",
-  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
+  "source_sha256": "3fbeb0f7aa69dbe57d8946c085cf52f7f577f212a3d0feb910c4fc841efa2861",
   "status": "original authored stylized asset; not extracted Wild Rift game art"
 }
