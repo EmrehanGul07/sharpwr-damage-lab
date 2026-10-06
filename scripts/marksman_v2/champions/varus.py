@@ -160,6 +160,9 @@ def build():
     fx["fx_blight"] = (C.fx_flash("blight burst", 0.10, "glow", 7), None, None)
     fx["fx_rain"] = (C.join([C.fx_orb(f"hail {k}", 0.4 - 0.1 * k, "glow", 1) for k in range(2)], "FX hail"), None, None)
     fx["fx_chain"] = (C.fx_bolt("chain of corruption", 0.9, 0.06, "glow", "violet", rings=3), None, None)
+    # Blighted Quiver's active is a buff: corruption flares along the bow and rises around her.
+    fx["fx_quiver"] = (C.fx_orb("blighted quiver", 0.09, "glow", 2), REST_BOW, "bow")
+    fx["fx_ring"] = (C.torus("FX blight ring", "glow", 0.32, 0.01, (0, 0, 0), (0, 0, 0), (1, 1, 1), 40), Matrix.Translation(B(0, 0, 0.04)), "root")
     extra = [
         C.weapon_bones("bow", REST_BOW, (0, 0, 0), "hips", 0.2),
         C.grip_bone("grip_bow.L", REST_BOW.translation, "bow"),
@@ -190,7 +193,7 @@ def build():
 
 
 ARROWS = [f"fx_arrow.{k}" for k in range(3)]
-FX = ARROWS + ["fx_charge", "fx_blight", "fx_rain", "fx_chain"]
+FX = ARROWS + ["fx_charge", "fx_blight", "fx_rain", "fx_chain", "fx_quiver", "fx_ring"]
 
 
 def define_clips():
@@ -319,17 +322,27 @@ def define_clips():
         rot("chest", 36, x=-8, z=-14)
         stance(56)
 
-    @clip("W", 28)
+    @clip("W", 40)
     def blighted_quiver():
         start()
-        nock_arrow(4)
-        full_draw(9)
-        loose(11, ARROWS[1])
-        size("fx_blight", 16, 0.0)
-        C.put("fx_blight", 17, B(0.1, -4.5, 1.4))
-        size("fx_blight", 17, 1.6)
-        size("fx_blight", 22, 0.0)
-        stance(28)
+        # The bow raised before her, corruption flares along it and a violet ring rises; the
+        # empowered shot after it bursts with blight.
+        rot("head", 6, x=4, z=-8)
+        rot("chest", 6, x=-4, z=-6)
+        for f, s_ in ((2, 0.0), (7, 1.6), (12, 1.1), (20, 0.0)):
+            size("fx_quiver", f, s_)
+        for f, s_ in ((4, 0.0), (8, 1.0), (15, 1.2), (18, 0.0)):
+            size("fx_ring", f, s_)
+        loc("fx_ring", 8)
+        loc("fx_ring", 18, z=0.5)
+        nock_arrow(16)
+        full_draw(21)
+        loose(23, ARROWS[1])
+        size("fx_blight", 28, 0.0)
+        C.put("fx_blight", 29, B(0.1, -4.5, 1.4))
+        size("fx_blight", 29, 1.6)
+        size("fx_blight", 34, 0.0)
+        stance(40)
 
     @clip("E", 34)
     def hail_of_arrows():

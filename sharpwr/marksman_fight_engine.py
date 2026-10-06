@@ -124,6 +124,7 @@ def replay_marksman(events, **p):
     attack_sequence = 0
     timeline = []
     motion = []
+    buff_windows = []
     aa_count = skill_count = 0
     log = []
     rejected = []
@@ -212,6 +213,18 @@ def replay_marksman(events, **p):
 
     def buff(key, duration, value):
         kit.buff(key, t + duration, value)
+        # Presentation record: which cast (if any, at this instant) started the buff, and its window.
+        last = timeline[-1] if timeline else None
+        cast = last if last and last["kind"] == "cast" and abs(last["time"] - t) < 1e-9 else None
+        buff_windows.append(
+            {
+                "key": key,
+                "start": t,
+                "end": t + duration,
+                "action": cast["action"] if cast else None,
+                "order": cast["order"] if cast else None,
+            }
+        )
 
     def add(key, count=1, cap=None, duration=None):
         kit.state[key] = kit.state.get(key, 0) + count
@@ -1981,4 +1994,5 @@ def replay_marksman(events, **p):
         assumptions=sorted(kit.unresolved),
         timeline=timeline,
         motion=motion,
+        buffs=buff_windows,
     )

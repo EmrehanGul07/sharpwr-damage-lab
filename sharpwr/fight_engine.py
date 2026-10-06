@@ -45,6 +45,7 @@ class FightResult:
     assumptions: list = field(default_factory=list)
     timeline: list = field(default_factory=list)
     motion: list = field(default_factory=list)
+    buffs: list = field(default_factory=list)  # timed self buffs (presentation only)
 
 
 SAMIRA_SKILL_ORDER = ("Q", "E", "W", "Q", "R", "Q", "Q", "E", "R", "E", "E", "W", "R", "W", "W")

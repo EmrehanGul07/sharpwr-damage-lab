@@ -12,7 +12,7 @@ for(const name of Object.keys(profiles)){
   for(const actor of[state,state.opponent]){assert.ok(actor.progress>=0&&actor.progress<=1);assert.ok(Number.isFinite(actor.speed));}
   assert.ok([...state.hero,...state.target].every(Number.isFinite));
   assert.ok(Math.hypot(state.hero[0]-state.target[0],state.hero[2]-state.target[2])>3,'models stay separated');
-  assert.equal(state.showTarget,false);slots.add(state.action);enemySlots.add(state.opponent.action);frames++;
+  assert.equal(state.showTarget,false);slots.add(state.action);enemySlots.add(state.opponent.action);for(const e of state.effects)if(e.persistent)slots.add(e.slot);for(const e of state.opponent.effects)if(e.persistent)enemySlots.add(e.slot);frames++;
  }
  for(const slot of['Walk','AA','P','Q','W','E','R']){assert.ok(slots.has(slot),name+' shows '+slot);assert.ok(enemySlots.has(slot),'opponent shows '+slot);}
  const hidden=Fight.frame(profiles,name,'Ashe',13.7,{particles:false});
@@ -34,6 +34,7 @@ for(const [name,moves]of Object.entries(Fight.MOVEMENT))for(const [slot,move]of 
 const e=profiles.Ezreal.skills.E.study_duration;
 const before=Fight.worldPosition(profiles,'Ezreal',7.8+e*.37,1),after=Fight.worldPosition(profiles,'Ezreal',7.8+e*.39,1);
 assert.ok(Math.hypot(...before.map((v,i)=>v-after[i]))>1.5,'blink must teleport at release');
-const grounded=Fight.worldPosition(profiles,'Ashe',2.3,1),firing=Fight.worldPosition(profiles,'Ashe',2.6,1);
+const grounded=Fight.worldPosition(profiles,'Ashe',5.0,1),firing=Fight.worldPosition(profiles,'Ashe',5.3,1);
 assert.deepEqual(grounded,firing,'planted casts must not slide');
+assert.notDeepEqual(Fight.worldPosition(profiles,'Ashe',2.3,1),Fight.worldPosition(profiles,'Ashe',2.6,1),'an instant buff (Ashe Q) never plants the hero');
 console.log('PASS: 9 champion movement profiles / physical displacement / blink release / grounded casting');

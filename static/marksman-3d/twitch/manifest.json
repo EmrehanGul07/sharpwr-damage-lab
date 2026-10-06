@@ -18,6 +18,6 @@
   "silhouette": "Hunched rat marksman, long snout, pink ears, articulated tail, ragged hood and chem crossbow",
   "weapon": "crossbow",
   "source": "scripts/marksman_v2/champions/twitch.py",
-  "source_sha256": "1174a94f863bd62af1d225f4d7f7d8f44d37930dc7d96bb8b2f71150074fa6a7",
+  "source_sha256": "4cbd0b438a701e6da6b998bae719cec94eb80fd62511c3515c240b1f056429b8",
   "status": "original authored stylized asset; not extracted Wild Rift game art"
 }
