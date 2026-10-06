@@ -28,8 +28,12 @@ for(const[name,p]of Object.entries(catalogue.champions)){
 }
 // Tristana Q: attack speed from the engine's Rapid Fire while it lasts.
 {const p={...catalogue.champions.Tristana,name:'Tristana'},s=Practice.create(p,{movements:Fight.MOVEMENT}),base=Practice.stats(s).as;assert(Practice.cast(s,'Q'));const buffed=Practice.stats(s).as;assert.ok(Math.abs(buffed-base-p.practice.as_ratio*p.practice.slots.Q.buff.as[3])<1e-9);run(s,p.practice.slots.Q.buff.duration[3]+.1);assert.equal(Practice.stats(s).as,base);}
-// Moving during an attack windup cancels the attack; a skill pressed during a cast waits for it.
-{const p={...catalogue.champions.Ezreal,name:'Ezreal'},s=Practice.create(p,{movements:Fight.MOVEMENT});assert(Practice.cast(s,'AA'));run(s,.05);Practice.move(s,[-5,0,3]);run(s,2);assert(!s.log.some(l=>l.slot==='AA'),'cancelled windup deals no damage');
+// Joystick input during an attack windup does not cancel it: the attack fires, then the hero moves
+// the way the joystick points; a skill pressed during a cast waits for it.
+{const p={...catalogue.champions.Ezreal,name:'Ezreal'},s=Practice.create(p,{movements:Fight.MOVEMENT});const start=s.hero.slice();assert(Practice.cast(s,'AA'));const launch=s.events[0].launch;
+ while(s.time<launch-1/60){Practice.move(s,[s.hero[0]-1.5,0,s.hero[2]+1]);Practice.step(s,1/60);assert.deepEqual(s.hero,start,'the hero stands still during the windup');}
+ for(let i=0;i<12;i++){Practice.move(s,[s.hero[0]-1.5,0,s.hero[2]+1]);Practice.step(s,1/60);}assert(s.hero[0]<start[0]-.1&&s.hero[2]>start[2]+.05,'then it moves the way the joystick points');
+ run(s,1);assert.equal(s.log.filter(l=>l.slot==='AA').length,1,'the attack still lands');
  assert(Practice.cast(s,'R'));run(s,.6);assert(!Practice.cast(s,'Q'),'R is still casting');run(s,1.5);assert(s.events.some(e=>e.slot==='Q'),'buffered Q casts after R');}
 // Ezreal W marks the dummy; the next other hit detonates it.
 {const p={...catalogue.champions.Ezreal,name:'Ezreal'},s=Practice.create(p,{movements:Fight.MOVEMENT});Practice.setDummy(s,{hp:9999,armor:0,mr:0});Practice.cast(s,'W');run(s,1.2);assert.equal(s.dummy.mark.slot,'W');Practice.cast(s,'AA');run(s,1.5);assert.deepEqual(s.log.filter(l=>l.dealt).map(l=>l.slot),['AA','W detonation']);}
@@ -40,4 +44,4 @@ for(const[name,p]of Object.entries(catalogue.champions)){
 // The committed export matches the engine.
 const fresh=execFileSync('python3',['-c','import sys;sys.path.insert(0,".");from marksman_art import practice_catalogue;from sharpwr.practice_data import render_practice_json;sys.stdout.write(render_practice_json(practice_catalogue(icon_files=True)))'],{maxBuffer:1<<26}).toString();
 assert.equal(fresh,fs.readFileSync('app-data/practice.json','utf8'),'Run: python scripts/export_app_data.py');
-console.log(`PASS: practice tool / ${Object.keys(catalogue.champions).length} champions / ${casts} casts / ${numbers} engine damage numbers / attack rhythm / buffs / windup cancel / input buffer / mark detonation / dummy reset / notes export`);
+console.log(`PASS: practice tool / ${Object.keys(catalogue.champions).length} champions / ${casts} casts / ${numbers} engine damage numbers / attack rhythm / buffs / attack not cancelled by movement / input buffer / mark detonation / dummy reset / notes export`);

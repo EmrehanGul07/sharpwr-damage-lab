@@ -148,7 +148,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
 
  // ---- scene
  async function loadScene(){scene?.dispose();scene=null;stage.replaceChildren(status);status.textContent='Loading the arena…';qualitySelect.disabled=true;
-  try{scene=await scope.MarksmanScene.createScene(stage,P,{studio:true,quality:qualitySelect.value,study:true,...sceneOptions});if(disposed){scene.dispose();return;}status.remove();scene.setCamera(cameraButtons.find(b=>b.classList.contains('active')).dataset.camera);
+  try{scene=await scope.MarksmanScene.createScene(stage,P,{studio:true,quality:qualitySelect.value,study:true,followHero:true,...sceneOptions});if(disposed){scene.dispose();return;}status.remove();scene.setCamera(cameraButtons.find(b=>b.classList.contains('active')).dataset.camera);
    scene.setInteraction(point=>{if(!state)return;if(placing){Practice.placeDummy(state,point);placing=false;placeButton.classList.remove('active');placeButton.textContent='Move dummy';return;}Practice.move(state,point);});}
   catch(error){console.error(error);status.textContent='The 3D arena could not load. Check the connection and try again.';stage.append(status);}finally{qualitySelect.disabled=false;}}
  selectChampion(champion);await loadScene();
