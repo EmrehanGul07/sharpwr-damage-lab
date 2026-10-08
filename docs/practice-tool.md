@@ -2,6 +2,8 @@
 
 A training lane on the web (the "🎯 Practice Tool" tab) and in the Android app (the Practice tab): pick any of the 23 marksmen, walk around, cast every skill at a training dummy and note what differs from Wild Rift. Both use the same code.
 
+Select **1v1 bot** to play against any marksman on Easy, Medium, Hard or Impossible. Difficulty changes decisions, never combat stats. See [duel-bot.md](duel-bot.md) for policies, collision rules and the base-kit sandbox's supported mechanics.
+
 ## Files
 
 | Path | Role |

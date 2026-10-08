@@ -52,3 +52,7 @@
 .pt-stage .art-hit-numbers>span{position:absolute;transform:translateX(-50%);pointer-events:none;z-index:2;white-space:nowrap}
 .pt-stage .aim-range-label{position:absolute;z-index:6;padding:5px 9px;background:#071c22e8;border:1px solid #7bc2bd80;border-radius:6px;color:#bdf6ed;font-size:9px;letter-spacing:.06em;pointer-events:none;transform:translateX(-30%)}
 .pt-stage .aim-range-label[hidden]{display:none}
+
+.pt [hidden]{display:none!important}.pt-duel-settings{padding:10px;border:1px solid #6b5c36;border-radius:8px;background:#161e20}.pt-skill:disabled{opacity:.5}.pt-compact .pt-combo{max-width:calc(100% - 12px);font-size:10px;white-space:normal}
+
+.pt-stage-wrap{scroll-margin-top:62px}

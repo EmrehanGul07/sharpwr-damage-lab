@@ -30,8 +30,9 @@ function slotSummary(profile,slot,ranks){const rank=ranks[slot]||1,s=profile.pra
 async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),quality=null,sceneOptions={},allowDownload=true,compact=false,nativeFullscreen=true}={}){
  const P=catalogue.champions,Practice=scope.MarksmanPractice,Fight=scope.MarksmanFight,names=Object.keys(P);
  if(!P[champion])champion=names[0];
- let state=null,scene=null,raf=0,last=0,disposed=false,joystick=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx';
+ let state=null,duel=null,duelRunning=false,scene=null,raf=0,last=0,disposed=false,joystick=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx';
  const profileOf=name=>({...P[name],name});
+ const inputYaw=()=>duel&&stage.clientWidth<stage.clientHeight?Math.PI/2:CAMERA_YAW;
  // ---- layout
  const stage=el('div',{class:'pt-stage','aria-label':'Practice arena'});
  const status=el('div',{class:'pt-loading',text:'Loading the arena…'});stage.append(status);
@@ -43,6 +44,11 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const championSelect=el('select',{'aria-label':'Champion'},names.map(n=>el('option',{value:n,text:n})));championSelect.value=champion;
  const levelSelect=el('select',{'aria-label':'Champion level'},Array.from({length:15},(_,i)=>el('option',{value:String(i+1),text:'Level '+(i+1)})));levelSelect.value='15';
  const qualitySelect=el('select',{'aria-label':'Render quality'},[['high','High quality'],['balanced','Balanced'],['low','Lightweight']].map(([v,t])=>el('option',{value:v,text:t})));qualitySelect.value=quality||(compact?'balanced':'high');
+ const modeSelect=el('select',{'aria-label':'Arena mode'},[['practice','Training dummy'],['duel','1v1 bot']].map(([value,text])=>el('option',{value,text})));
+ const opponentSelect=el('select',{'aria-label':'Bot champion'},names.map(n=>el('option',{value:n,text:n})));opponentSelect.value='Jinx';
+ const difficultySelect=el('select',{'aria-label':'Bot difficulty'},['easy','medium','hard','impossible'].map(v=>el('option',{value:v,text:v[0].toUpperCase()+v.slice(1)})));difficultySelect.value='medium';
+ const duelStart=el('button',{type:'button',text:'Start 1v1'}),duelPause=el('button',{type:'button',text:'Pause'});
+ const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,duelStart,duelPause,el('span',{class:'pt-small',text:'Same stats in every mode · no items/runes · base-kit sandbox'}));duelSettings.hidden=true;
  const rankSelects=Object.fromEntries(['Q','W','E','R'].map(slot=>[slot,el('select',{'aria-label':slot+' rank'},Array.from({length:slot==='R'?4:5},(_,r)=>el('option',{value:String(r),text:r?slot+' '+r:slot+' –'})))]));
  const noCd=el('input',{type:'checkbox'}),effectsBox=el('input',{type:'checkbox',checked:true}),rangeBox=el('input',{type:'checkbox'});
  const presetSelect=el('select',{'aria-label':'Dummy'},[...Object.keys(catalogue.practice_targets||{}),'Custom'].map(n=>el('option',{value:n,text:n==='Custom'?'Custom dummy':n+' (by level)'})));presetSelect.value=preset;
@@ -50,7 +56,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const placeButton=el('button',{type:'button',text:'Move dummy'}),resetButton=el('button',{type:'button',text:'Reset dummy'}),resetCd=el('button',{type:'button',text:'Reset cooldowns'});
  const cameraButtons=[['rift','Rift'],['tactical','Tactical'],['portrait','Character']].map(([v,t])=>el('button',{type:'button','data-camera':v,class:v==='rift'?'active':'',text:t}));
  const controls=el('div',{class:'pt-controls'},
-  el('div',{class:'pt-row'},championSelect,levelSelect,qualitySelect),
+  el('div',{class:'pt-row'},modeSelect,championSelect,levelSelect,qualitySelect),duelSettings,
   el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'Skill ranks'}),...Object.values(rankSelects),el('label',{class:'pt-check'},noCd,'No cooldowns'),resetCd),
   el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'Dummy'}),presetSelect,el('label',{class:'pt-field'},'HP',hpInput),el('label',{class:'pt-field'},'Armor',armorInput),el('label',{class:'pt-field'},'MR',mrInput),resetButton,placeButton),
   el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'View'}),...cameraButtons,el('label',{class:'pt-check'},effectsBox,'Effects'),el('label',{class:'pt-check'},rangeBox,'Attack range')));
@@ -84,23 +90,29 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cast(slot);}});}
  // Drag from a skill button: the drag direction on screen becomes the aim direction on the ground
  // (as on the Wild Rift HUD); AIM_PIXELS of drag reaches the skill's full range.
- function aimPoint(slot,dx,dy){const ind=Practice.aim(state,slot,state.target),range=ind.range||Practice.stats(state).range/100,len=Math.hypot(dx,dy),scale=Math.min(1,len/AIM_PIXELS)*range/(len||1),wx=(dx*Math.cos(CAMERA_YAW)+dy*Math.sin(CAMERA_YAW))*scale,wz=(-dx*Math.sin(CAMERA_YAW)+dy*Math.cos(CAMERA_YAW))*scale;return[state.hero[0]+wx,0,state.hero[2]+wz];}
- function cast(slot,point){if(!state)return;Practice.cast(state,slot,point||undefined);}
+ function aimPoint(slot,dx,dy){const ind=Practice.aim(state,slot,state.target),range=ind.range||Practice.stats(state).range/100,len=Math.hypot(dx,dy),scale=Math.min(1,len/AIM_PIXELS)*range/(len||1),wx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))*scale,wz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))*scale;return[state.hero[0]+wx,0,state.hero[2]+wz];}
+ function cast(slot,point){if(!state||duel&&(!duelRunning||duel.finished)||duel&&slot==='P')return;Practice.cast(state,slot,point||undefined);}
 
  // ---- champion / settings
  function dummyValues(){if(presetSelect.value==='Custom')return null;const row=catalogue.practice_targets[presetSelect.value][state.level-1];return{hp:Math.round(row.hp),armor:Math.round(row.armor),mr:Math.round(row.mr),aaReduction:row.aa_reduction||0,label:presetSelect.value.split(' • ')[0]+' dummy'};}
  function applyDummy(){const v=dummyValues();if(v){Practice.setDummy(state,v);hpInput.value=v.hp;armorInput.value=v.armor;mrInput.value=v.mr;}else Practice.setDummy(state,{hp:clampNumber(hpInput.value,1,99999,2000),armor:clampNumber(armorInput.value,0,999,0),mr:clampNumber(mrInput.value,0,999,0),aaReduction:0,label:'Custom dummy'});}
  function clampNumber(v,a,b,fallback){const n=Number(v);return Number.isFinite(n)?Math.max(a,Math.min(b,n)):fallback;}
  // Hero and dummy start a few steps apart; on a portrait screen the dummy stands "up" the screen.
- function startPositions(){const up=[-Math.sin(CAMERA_YAW),0,-Math.cos(CAMERA_YAW)];return stage.clientWidth&&stage.clientWidth<stage.clientHeight?{hero:[up[0]*-2,0,up[2]*-2],target:[up[0]*2,0,up[2]*2]}:{hero:[-2,0,0],target:[2,0,0]};}
- function selectChampion(name){champion=name;const keep=state?{hero:state.hero.slice(),target:state.target.slice()}:startPositions();keep.hero[1]=0;state=Practice.create(profileOf(name),{movements:Fight.MOVEMENT});state.hero=keep.hero;state.destination=keep.hero.slice();state.target=keep.target;Practice.setLevel(state,Number(levelSelect.value));state.noCooldowns=noCd.checked;syncRanks();applyDummy();refreshIcons();refreshSimulated();loadChampionNotes();}
+ function startPositions(){const up=[-Math.sin(inputYaw()),0,-Math.cos(inputYaw())];return stage.clientWidth&&stage.clientWidth<stage.clientHeight?{hero:[up[0]*-2,0,up[2]*-2],target:[up[0]*2,0,up[2]*2]}:{hero:[-2,0,0],target:[2,0,0]};}
+ function selectChampion(name){champion=name;const keep=state?{hero:state.hero.slice(),target:state.target.slice()}:startPositions();keep.hero[1]=0;state=Practice.create(profileOf(name),{movements:Fight.MOVEMENT});state.hero=keep.hero;state.destination=keep.hero.slice();state.target=keep.target;Practice.setLevel(state,Number(levelSelect.value));state.noCooldowns=noCd.checked;if(modeSelect.value==='duel')prepareDuel();else{duel=null;applyDummy();}syncRanks();refreshIcons();refreshSimulated();loadChampionNotes();}
+ function prepareDuel(){duel=scope.MarksmanDuel.create(profileOf(champion),profileOf(opponentSelect.value),{level:Number(levelSelect.value),difficulty:difficultySelect.value,movements:Fight.MOVEMENT,seed:1});state=duel.player;duelRunning=false;placing=false;joystick=null;keys.clear();aiming=null;last=0;duelPause.textContent='Pause';duelStart.textContent='Start 1v1';syncRanks();}
+ function setMode(){const on=modeSelect.value==='duel';duelSettings.hidden=!on;controls.children[3].hidden=on;noCd.parentElement.hidden=on;resetCd.hidden=on;help.textContent=on?'1v1: move with the joystick, ground taps or arrow keys. Hold Attack; tap a skill at the bot or drag to aim. Both sides use normal cooldowns.':'Joystick or tap the ground to move. Tap a skill to cast it at the dummy, or drag from the skill to aim. Hold Attack to keep attacking.';for(const input of[...Object.values(rankSelects),noCd,resetCd,presetSelect,hpInput,armorInput,mrInput,resetButton,placeButton])input.disabled=on;selectChampion(champion);if(on){scene?.setCamera('tactical');for(const b of cameraButtons)b.classList.toggle('active',b.dataset.camera==='tactical');}}
+ modeSelect.addEventListener('change',setMode);
+ for(const input of[opponentSelect,difficultySelect])input.addEventListener('change',()=>{if(duel)prepareDuel();});
+ duelStart.addEventListener('click',()=>{prepareDuel();duelRunning=true;duelStart.textContent='Restart 1v1';wrap.scrollIntoView({block:'start'});});
+ duelPause.addEventListener('click',()=>{if(!duel||duel.finished)return;duelRunning=!duelRunning;duelPause.textContent=duelRunning?'Pause':'Resume';Practice.holdAttack(state,false);keys.clear();joystick=null;});
  function syncRanks(){for(const[slot,select]of Object.entries(rankSelects))select.value=String(state.ranks[slot]);}
  function refreshIcons(){const p=P[champion];for(const slot of SLOTS){const b=buttons[slot],img=b.querySelector('img'),name=slot==='AA'?'Basic attack':p.hud?.abilities?.[slot]?.name||slot;if(img){img.src=p.hud?.icons?.[slot]||'';}b.title=slot+' · '+name;b.setAttribute('aria-label',slot==='AA'?'Basic attack (hold to keep attacking)':slot+' · '+name);}}
  function refreshSimulated(){const p=profileOf(champion),T=p.practice,rows=[el('p',{class:'pt-small',text:'Numbers come from the SharpWR engine for this champion with no items or runes, after the dummy’s armor and magic resistance. Mana costs are not simulated.'}),el('div',{class:'pt-sim-row'},el('strong',{text:'Basic attack'}),el('span',{text:`windup ${T.attack.windup[0].toFixed(2)} s · ${T.attack.speed?'projectile '+Math.round(T.attack.speed)+' u/s':'instant hit'} · AD as physical damage; on-hit passives are not simulated.${T.attack.note?' '+T.attack.note:''}`}))];
   for(const slot of['Q','W','E','R']){const s=slotSummary(p,slot,state.ranks);rows.push(el('div',{class:'pt-sim-row'},el('strong',{text:s.title}),el('span',{text:s.text})));}
   rows.push(el('div',{class:'pt-sim-row'},el('strong',{text:'P · '+(p.hud?.abilities?.P?.name||'Passive')}),el('span',{text:'Plays the passive animation; passive effects are not simulated.'})));simulated.replaceChildren(...rows);}
  championSelect.addEventListener('change',()=>{selectChampion(championSelect.value);});
- levelSelect.addEventListener('change',()=>{Practice.setLevel(state,Number(levelSelect.value));syncRanks();applyDummy();refreshSimulated();});
+ levelSelect.addEventListener('change',()=>{if(duel)prepareDuel();else{Practice.setLevel(state,Number(levelSelect.value));syncRanks();applyDummy();}refreshSimulated();});
  for(const[slot,select]of Object.entries(rankSelects))select.addEventListener('change',()=>{Practice.setRank(state,slot,Number(select.value));refreshSimulated();});
  noCd.addEventListener('change',()=>{state.noCooldowns=noCd.checked;if(noCd.checked)for(const slot of['Q','W','E','R'])delete state.deadlines[slot];});
  resetCd.addEventListener('click',()=>{for(const slot of['Q','W','E','R'])delete state.deadlines[slot];});
@@ -111,7 +123,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  for(const b of cameraButtons)b.addEventListener('click',()=>{scene?.setCamera(b.dataset.camera);for(const x of cameraButtons)x.classList.toggle('active',x===b);});
  qualitySelect.addEventListener('change',()=>loadScene());
  // After picking from a list, give the keys back to the arena (Q W E R would otherwise change the list).
- for(const select of[championSelect,levelSelect,qualitySelect,presetSelect,...Object.values(rankSelects)])select.addEventListener('change',()=>select.blur());
+ for(const select of[modeSelect,opponentSelect,difficultySelect,championSelect,levelSelect,qualitySelect,presetSelect,...Object.values(rankSelects)])select.addEventListener('change',()=>select.blur());
  // Full screen: the browser's own full screen where it works (web pages, also inside the Streamlit
  // frame); otherwise (the phone app) the arena covers the window.
  const isFull=()=>wrap.classList.contains('pt-full')||document.fullscreenElement===wrap;
@@ -133,7 +145,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
 
  // ---- movement input
  stick.addEventListener('pointerdown',e=>{e.preventDefault();capture(stick,e);joystick={x:e.clientX,y:e.clientY,dx:0,dz:0};});
- stick.addEventListener('pointermove',e=>{if(!joystick)return;const dx=e.clientX-joystick.x,dy=e.clientY-joystick.y,len=Math.hypot(dx,dy),f=Math.min(1,30/(len||1));stick.firstChild.style.transform=`translate(${dx*f}px,${dy*f}px)`;joystick.dx=(dx*Math.cos(CAMERA_YAW)+dy*Math.sin(CAMERA_YAW))/Math.max(30,len);joystick.dz=(-dx*Math.sin(CAMERA_YAW)+dy*Math.cos(CAMERA_YAW))/Math.max(30,len);});
+ stick.addEventListener('pointermove',e=>{if(!joystick)return;const dx=e.clientX-joystick.x,dy=e.clientY-joystick.y,len=Math.hypot(dx,dy),f=Math.min(1,30/(len||1));stick.firstChild.style.transform=`translate(${dx*f}px,${dy*f}px)`;joystick.dx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))/Math.max(30,len);joystick.dz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))/Math.max(30,len);});
  const stopStick=()=>{joystick=null;stick.firstChild.style.transform='';if(state)Practice.move(state,state.hero.slice());};stick.addEventListener('pointerup',stopStick);stick.addEventListener('pointercancel',stopStick);
  stage.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};});stage.addEventListener('pointerleave',()=>{cursor=null;});
  const typing=e=>{const t=e.target;return t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.tagName==='INPUT'&&!['checkbox','radio','button','range'].includes(t.type);};
@@ -157,19 +169,20 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const ARROWS={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
  function tick(ts){if(disposed)return;if(!root.isConnected){dispose();return;}raf=requestAnimationFrame(tick);const dt=last?Math.min(.1,(ts-last)/1000):0;last=ts;if(!state||document.hidden)return;
   if(joystick&&(joystick.dx||joystick.dz))Practice.move(state,[state.hero[0]+joystick.dx*1.5,0,state.hero[2]+joystick.dz*1.5]);
-  if(keys.size){let dy=0,dx=0;for(const k of keys){const a=ARROWS[k];if(a){dy+=a[0];dx+=a[1];}}if(dx||dy){const len=Math.hypot(dx,dy),sx=dx/len*40,sy=dy/len*40,wx=(sx*Math.cos(CAMERA_YAW)+sy*Math.sin(CAMERA_YAW))/40,wz=(-sx*Math.sin(CAMERA_YAW)+sy*Math.cos(CAMERA_YAW))/40;Practice.move(state,[state.hero[0]+wx*1.5,0,state.hero[2]+wz*1.5]);}}
-  Practice.step(state,dt);const f=Practice.frame(state,{particles:effectsBox.checked,range:rangeBox.checked});scene?.render(f);updateHud(f);}
+  if(keys.size){let dy=0,dx=0;for(const k of keys){const a=ARROWS[k];if(a){dy+=a[0];dx+=a[1];}}if(dx||dy){const len=Math.hypot(dx,dy),sx=dx/len*40,sy=dy/len*40,wx=(sx*Math.cos(inputYaw())+sy*Math.sin(inputYaw()))/40,wz=(-sx*Math.sin(inputYaw())+sy*Math.cos(inputYaw()))/40;Practice.move(state,[state.hero[0]+wx*1.5,0,state.hero[2]+wz*1.5]);}}
+  const options={particles:effectsBox.checked,range:rangeBox.checked};if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);updateHud(f);}
  let lastLog=null,lastSummary='';
  function updateHud(f){const s=Practice.stats(state);statsLine.textContent=`${champion} · Lv ${state.level} · AD ${s.ad.toFixed(1)}${s.bonusAD?' (+'+s.bonusAD+')':''} · AS ${s.as.toFixed(3)} · Range ${Math.round(s.range)} · MS ${s.ms}`;
   buffLine.replaceChildren(...f.buffs.map(b=>el('span',{class:'pt-chip',text:`${b.slot} ${b.remaining.toFixed(1)}s`})));
-  const sum=Practice.summary(state),show=sum.count?sum:state.lastCombo,text=show?`${sum.count?'Combo':'Last combo'} ${Math.round(show.total)} damage · ${show.count} hits · ${show.seconds.toFixed(2)} s · ${Math.round(show.dps)} DPS`:'Hit the dummy to start a combo';if(text!==lastSummary){combo.textContent=text;lastSummary=text;}
+  if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT'}[duel.result]:duelRunning?'FIGHT':duel.time?'PAUSED':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP`;}
+  const sum=Practice.summary(state),show=sum.count?sum:state.lastCombo,text=show?`${sum.count?'Combo':'Last combo'} ${Math.round(show.total)} damage · ${show.count} hits · ${show.seconds.toFixed(2)} s · ${Math.round(show.dps)} DPS`:'Hit the dummy to start a combo';if(!duel&&text!==lastSummary){combo.textContent=text;lastSummary=text;}
   for(const slot of SLOTS){const b=buttons[slot],learned=slot==='AA'||slot==='P'||state.ranks[slot]>0,left=Math.max(0,(state.deadlines[slot]||0)-state.time),T=state.profile.practice,total=slot==='AA'?1/s.as:slot==='P'?0:T.slots[slot].cooldown?.[Math.max(0,state.ranks[slot]-1)]||0,cd=b.querySelector('.pt-cd'),shade=b.querySelector('.pt-shade'),shown=slot!=='AA'&&left>.05;
-   b.classList.toggle('locked',!learned);b.classList.toggle('cooling',shown);shade.style.setProperty('--cd',shown&&total?String(Math.min(1,left/total)):'0');cd.textContent=shown?(left>=1?Math.ceil(left):left.toFixed(1)):'';b.classList.toggle('active',f.action===slot||state.buffs.some(x=>x.slot===slot&&x.end>state.time));}
+   b.disabled=!!duel&&(!duelRunning||duel.finished||slot==='P');b.classList.toggle('locked',!learned||!!duel&&slot==='P');b.classList.toggle('cooling',shown);shade.style.setProperty('--cd',shown&&total?String(Math.min(1,left/total)):'0');cd.textContent=shown?(left>=1?Math.ceil(left):left.toFixed(1)):'';b.classList.toggle('active',f.action===slot||state.buffs.some(x=>x.slot===slot&&x.end>state.time));}
   const latest=state.log.at(-1);if(latest!==lastLog){lastLog=latest;logList.replaceChildren(...state.log.slice(-14).reverse().map(logRow));}}
  function logRow(l){const parts=l.parts?Object.entries(l.parts).map(([k,v])=>`${Math.round(v.raw)} → ${Math.round(v.dealt)} ${k}`).join(' + '):(l.text||'');return el('li',{},el('span',{class:'pt-time',text:l.t.toFixed(2)+'s'}),el('strong',{text:l.slot}),el('span',{text:parts}),l.note?el('em',{text:l.note}):null);}
  raf=requestAnimationFrame(tick);
  function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onKey);window.removeEventListener('blur',clearKeys);document.removeEventListener('fullscreenchange',onFullscreen);scene?.dispose();scene=null;}
- return{dispose,get state(){return state;},get scene(){return scene;},select:name=>{championSelect.value=name;selectChampion(name);}};
+ return{dispose,get state(){return state;},get duel(){return duel;},get scene(){return scene;},select:name=>{championSelect.value=name;selectChampion(name);}};
 }
 const API={mount,notesMarkdown,loadNotes,NOTES_KEY,NOTE_FIELDS,slotSummary};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanPracticeTool=API;
 })(typeof globalThis!=='undefined'?globalThis:this);

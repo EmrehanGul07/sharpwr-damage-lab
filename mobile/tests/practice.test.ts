@@ -64,7 +64,7 @@ describe("Practice tab", () => {
 
   it("runs the shared web scripts in order and defines their globals", () => {
     expect(SCRIPTS.map(([name]) => name).indexOf("geometry.js")).toBeLessThan(SCRIPTS.map(([name]) => name).indexOf("practice.js"));
-    for (const name of ["MarksmanScene", "MarksmanPractice", "MarksmanGeometry", "MarksmanFight", "MarksmanPracticeTool"])
+    for (const name of ["MarksmanScene", "MarksmanPractice", "MarksmanGeometry", "MarksmanFight", "MarksmanDuelBot", "MarksmanDuel", "MarksmanPracticeTool"])
       expect(typeof (globalThis as Record<string, unknown>)[name], name).toBe("object");
   });
 

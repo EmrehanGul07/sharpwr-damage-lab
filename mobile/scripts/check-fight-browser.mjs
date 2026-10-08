@@ -194,6 +194,51 @@ try {
     );
     await page.close();
   }
+  for (const width of [390, 1280]) {
+    const page = await browser.newPage({ viewport: { width, height: 900 } });
+    const errors = [], external = [], models = [];
+    page.on('pageerror', e => errors.push(e.message));
+    page.on('response', r => { if (r.ok() && r.url().includes('/assets/models/')) models.push(r.url()); });
+    await page.route('**/*', route => {
+      if (new URL(route.request().url()).hostname === '127.0.0.1') return route.continue();
+      external.push(route.request().url()); return route.abort();
+    });
+    await page.goto(`${base}#/practice?champion=Ezreal`);
+    await page.getByLabel('Arena mode', { exact: true }).waitFor();
+    await page.locator('.pt-stage canvas').waitFor({ timeout: 30000 });
+    await page.getByLabel('Arena mode', { exact: true }).selectOption('duel');
+    await page.getByLabel('Bot champion', { exact: true }).selectOption('Jinx');
+    assert.ok(await page.getByLabel('No cooldowns', { exact: true }).isDisabled());
+    assert.ok(await page.getByLabel('Q rank', { exact: true }).isDisabled());
+    let initialStats;
+    for (const difficulty of ['easy', 'medium', 'hard', 'impossible']) {
+      await page.getByLabel('Bot difficulty', { exact: true }).selectOption(difficulty);
+      await page.getByRole('button', { name: 'Start 1v1', exact: true }).click();
+      await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('FIGHT'));
+      const stats = await page.locator('.pt-stats').textContent();
+      if (!initialStats) initialStats = stats;
+      assert.equal(stats, initialStats, 'Difficulty must not change player stats');
+      await page.getByRole('button', { name: 'Pause', exact: true }).click();
+      await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('PAUSED'));
+      const paused = await page.locator('.pt-combo').textContent();
+      await page.waitForTimeout(200);
+      assert.equal(await page.locator('.pt-combo').textContent(), paused, 'Pause freezes both actors');
+      await page.getByRole('button', { name: 'Resume', exact: true }).click();
+      await page.locator('.pt-skill[data-slot="AA"]').dispatchEvent('pointerdown', { pointerId: 1 });
+      await page.waitForFunction(() => document.querySelector('.pt-log').textContent.includes('AA'), null, { timeout: 10000 });
+      await page.locator('.pt-skill[data-slot="AA"]').dispatchEvent('pointerup', { pointerId: 1 });
+    }
+    assert.ok(models.some(x => x.includes('/ezreal/')) && models.some(x => x.includes('/jinx/')), 'Both champion models load offline');
+    if (screenshots) await page.screenshot({ path: resolve(screenshots, `duel-${width}.png`), fullPage: true });
+    await page.getByLabel('Arena mode', { exact: true }).selectOption('practice');
+    assert.ok(await page.getByLabel('Q rank', { exact: true }).isEnabled());
+    assert.deepEqual(errors, []);
+    assert.deepEqual(external.filter(x => !x.endsWith('/app-data/database.json')), []);
+    await page.locator('nav a').first().click();
+    await page.waitForFunction(() => document.querySelectorAll('.pt-stage canvas').length === 0);
+    await page.close();
+    console.log(`PASS offline 1v1: four modes, equal stats, controls, pause, two GLBs, navigation (${width}px)`);
+  }
 } finally {
   await browser?.close();
   await new Promise((resolve) => server.close(resolve));

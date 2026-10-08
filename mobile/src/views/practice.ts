@@ -49,7 +49,7 @@ async function start(root: HTMLElement, champion: string | null): Promise<void> 
     const [catalogue, { loadPracticeScripts }] = await Promise.all([loadCatalogue(), import("../practice-scripts")]);
     loadPracticeScripts();
     const api = (globalThis as unknown as { MarksmanPracticeTool: PracticeToolApi }).MarksmanPracticeTool;
-    current = await api.mount(root, {
+    const tool = await api.mount(root, {
       catalogue,
       champion: champion ?? undefined,
       compact: true,
@@ -59,6 +59,9 @@ async function start(root: HTMLElement, champion: string | null): Promise<void> 
       quality: "balanced",
       sceneOptions: { three: loadThree, loadModel },
     });
+    if (!root.isConnected) { tool.dispose(); return; }
+    current?.dispose();
+    current = tool;
   } catch (error) {
     root.replaceChildren(h("p", { class: "status" }, `The Practice Tool could not start: ${(error as Error).message}`));
   }

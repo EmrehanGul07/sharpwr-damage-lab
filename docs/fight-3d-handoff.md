@@ -1,4 +1,4 @@
-# Fight Lab handoff — web 7.1.2 / mobile 0.8.1
+# Fight Lab handoff — web 7.1.3 / mobile 0.8.2
 
 Base main: 8157af9. Branch: codex/fight-3d-replay. PR: #20.
 
@@ -43,4 +43,4 @@ The web bundle is about 65 MB uncompressed, including roughly 13 MB WASM/Python 
 
 ## Follow-up completed (0.8.1)
 
-Persistent manual fight controls, warm worker, lighter rendering option, selected-profile-only replay data and skill icons/cooldown sweeps are implemented. The native shell is unchanged; publishing main produces the automatic live update. Duel/1v1 remains deliberately deferred. Explicit overrides are labeled at the mobile adapter boundary; the reference optimizer source and its cached-ranking fingerprint are unchanged.
+Persistent manual fight controls, warm worker, lighter rendering option, selected-profile-only replay data and skill icons/cooldown sweeps are implemented. The native shell is unchanged; publishing main produces the automatic live update. The separate Practice 1v1 base-kit sandbox is now implemented (see docs/duel-bot.md); Build Lab remains the audited stationary-target calculation. Explicit overrides are labeled at the mobile adapter boundary; the reference optimizer source and its cached-ranking fingerprint are unchanged.

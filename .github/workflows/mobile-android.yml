@@ -47,6 +47,8 @@ jobs:
           cache: gradle
       - run: npm ci
       - run: npm test
+      - name: Check 1v1 bot fairness and moving collision
+        run: node ../tests/test_duel_bot.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

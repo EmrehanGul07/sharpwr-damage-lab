@@ -93,6 +93,7 @@ function reaches(state,slot,ind,landing){const d=state.target,hero=ind.hero,spec
  }}
 function startBuff(state,slot,start){const T=tool(state),s=T.slots[slot],b=s.buff,mode=s.mode==='attack'&&s.attacks==='buff'?slot:null,rank=rankOf(state,b?.by||slot)||1,seconds=b?at(b.duration,rank-1):buffSeconds(state.profile,slot,rankOf(state,slot)||1);if(!seconds)return;state.buffs=state.buffs.filter(x=>x.slot!==slot);state.buffs.push({slot,start,end:start+seconds,seed:301+state.events.length+state.buffs.length,as:b?at(b.as,rank-1)||0:0,ad:b?at(b.ad,rank-1)||0:0,range:b?at(b.range,rank-1)||0:0,attackBonus:mode});}
 function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=state.time,S=['AA','P'].includes(slot)?null:T.slots[slot];
+ if(state.duel&&(state.health.hp<=0||state.duel.finished))return false;
  if(S&&!rankOf(state,slot))return false;
  if((slot==='AA'||!state.noCooldowns)&&(state.deadlines[slot]||0)>t+1e-9)return false;
  if(S&&profile.skills[slot]?.cast==='instant'){startBuff(state,slot,t);setCooldown(state,slot,S);log(state,{t,slot,text:'buff'});return true;}
@@ -111,9 +112,15 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  if(landing){landing[0]=clamp(landing[0],-BOUNDS[0],BOUNDS[0]);landing[2]=clamp(landing[2],-BOUNDS[1],BOUNDS[1]);}
  const e={slot,start:t,duration:total,release,hero,landing,motion,indicator,seed,launch:t+wind,lockEnd:t+lock,animEnd:t+total,previousDeadline:state.deadlines[slot]||0,...(slot==='AA'?empowered(state):{})};
  if(motion){const end=timeAtProgress(e,motion.kind==='blink'?.38:.62);e.lockEnd=Math.max(e.lockEnd,end);e.dashEnd=end;}
- const hit=slot==='AA'||(slot!=='P'&&S.mode!=='none'&&reaches(state,slot,indicator,landing)),from=indicator.shape==='blink'&&landing?landing:hero;
+ const hit=slot==='AA'||(slot!=='P'&&S.mode!=='none'&&(state.duel||reaches(state,slot,indicator,landing))),from=indicator.shape==='blink'&&landing?landing:hero;
  e.hit=hit;e.target=hit?state.target.slice():Geo.castTarget(indicator,state.target);
  const distance=length(from,e.target);e.arrive=e.launch+(slot==='AA'?(T.attack.speed?distance*UNITS/T.attack.speed:0):slot==='P'?0:travelTime(S.travel,distance));e.fxEnd=Math.max(t+total,e.arrive+TAIL);
+ // Duel skillshots keep the cast direction and travel to full range. Hit tests happen during
+ // flight against the moving opponent; targeted attacks remain homing.
+ if(state.duel&&S&&['line','recoil'].includes(indicator.shape)){
+  e.target=Geo.castTarget({...indicator,shape:'line',endpoint:Geo.point(hero,indicator.aim,indicator.range||30)},[-999,0,-999]);
+  e.arrive=e.launch+travelTime(S.travel,length(hero,e.target));e.fxEnd=Math.max(t+total,e.arrive+TAIL);
+ }
  const direction=point||state.target;state.facing=Math.atan2(direction[0]-hero[0],direction[2]-hero[2]);state.destination=hero.slice();
  if(slot==='AA'){const consumed=state.nextAttack;state.hits.push({at:e.arrive,slot,event:e,attack:true,raw:attackDamage(state),seed});e.consumed=consumed;}
  else if(S&&hit&&S.mode==='hit')state.hits.push({at:e.arrive,slot,event:e,raw:rawDamage(state,slot),seed});
@@ -137,9 +144,10 @@ function land(state,h){const d=state.dummy,t=h.at;if(d.defeatedAt!==null)return;
 function apply(state,t,slot,raw,attack){const d=state.dummy;let dealt=0;const parts={};for(const[kind,value]of Object.entries(raw||{})){if(!value)continue;const v=mitigate(state,kind,value,attack);parts[kind]={raw:value,dealt:v};dealt+=v;number(state,t,slot,kind,v);}
  if(d.first===null)d.first=t;d.total+=dealt;d.count++;d.lastHit=t;d.hp=Math.max(0,d.hp-dealt);if(d.hp<=0)d.defeatedAt=t;log(state,{t,slot,parts,dealt});}
 function stepTool(state,dt,movements){const previous=state.time;state.time+=dt;const t=state.time,d=state.dummy;
- for(const h of state.hits.filter(h=>h.at<=t).sort((a,b)=>a.at-b.at))land(state,h);state.hits=state.hits.filter(h=>h.at>t);
+ if(state.duel){for(const h of state.hits){if(state.duel.resolveHit(state,h,previous,t)){land(state,h);h.done=true;}else if(t>=h.at)h.done=true;}state.hits=state.hits.filter(h=>!h.done);}
+ else{for(const h of state.hits.filter(h=>h.at<=t).sort((a,b)=>a.at-b.at))land(state,h);state.hits=state.hits.filter(h=>h.at>t);}
  if(d.mark&&t>d.mark.until)d.mark=null;
- if(d.defeatedAt!==null&&t>=d.defeatedAt+RESPAWN_AFTER||d.defeatedAt===null&&d.first!==null&&t>=d.lastHit+HEAL_AFTER)resetDummy(state);
+ if(!state.duel&&(d.defeatedAt!==null&&t>=d.defeatedAt+RESPAWN_AFTER||d.defeatedAt===null&&d.first!==null&&t>=d.lastHit+HEAL_AFTER))resetDummy(state);
  for(const e of state.events)if(e.landing&&!e.landed&&t>=e.dashEnd){e.landed=true;state.hero=outside(state,e.landing.slice());state.hero[1]=0;state.destination=state.hero.slice();}
  const active=animating(state),lock=locking(state);state.moving=false;
  if(lock&&lock.landing&&!lock.landed){const move=lock.motion,to=lock.landing;dashPosition(state,lock,move,to,animProgress(lock,t));}
@@ -155,5 +163,5 @@ function frameTool(state,{particles,range}){const t=state.time,active=animating(
  return{champion:state.profile.name,time:t,hero:state.hero.slice(),target:state.target.slice(),turntable:state.facing,action,progress,speed:state.moving?1:0,gaitPhase:t/walkLoop*Math.PI*2,loopDuration:action==='Walk'?walkLoop:action==='Idle'?3:0,effects,impacts,showTarget:true,showRange:range,range:attackRange(state)*UNITS,attackCursor:action==='AA',practice:true,buffs:state.buffs.map(b=>({slot:b.slot,remaining:Math.max(0,b.end-t)})),aim:state.aim,indicator,destination:state.destination.slice(),
   dummy:{hp:d.hp,max:d.max,label:d.label,defeated:d.defeatedAt!==null,mark:d.mark?{slot:d.mark.slot,remaining:d.mark.until-t}:null},numbers:state.numbers.map(n=>({slot:n.slot,kind:n.kind,amount:n.amount,note:n.note,seq:n.seq,age:t-n.t}))};}
 function summary(state){const d=state.dummy,seconds=d.first===null?0:d.lastHit-d.first;return{total:d.total,count:d.count,seconds,dps:seconds>.25?d.total/seconds:d.total};}
-const API={create,move,aim,cast,step,frame,buffSeconds,stats,setDummy,resetDummy,placeDummy,setLevel,setRank,holdAttack,summary,rawDamage,DUMMY_RADIUS};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanPractice=API;
+const API={create,move,aim,cast,step,frame,buffSeconds,stats,setDummy,resetDummy,placeDummy,setLevel,setRank,holdAttack,summary,rawDamage,reaches,DUMMY_RADIUS};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanPractice=API;
 })(typeof globalThis!=='undefined'?globalThis:this);
