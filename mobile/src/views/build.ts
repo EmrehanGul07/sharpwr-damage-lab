@@ -6,6 +6,7 @@ import { type BuildStats, buildProblems, buildStats } from "../engine/build";
 import { formatGold, itemStatLines, trimNumber } from "../format";
 import { href } from "../router";
 import { matches } from "../search";
+import { buildFightPanel } from './build-fight';
 import { type View, choiceChips, currentQuery, emptyState, notFound, searchField, statTable, tierBadge } from "./shared";
 
 /** The build behind the Build screen (main.ts): set() redraws the screen, replace() does not. */
@@ -90,9 +91,11 @@ export function buildView(db: Database, store: BuildStore): View {
   const problems = buildProblems(db, input.items, input.boots);
   const hasYuntal = input.items.includes("Yun Tal Wildarrows");
   const filled = input.items.length + (input.boots ? 1 : 0);
+  const fight = buildFightPanel(db, input, !problems.length);
   return {
     title: "Build Lab",
     back: false,
+    dispose: fight.dispose,
     body: h(
       "section",
       { class: "detail" },
@@ -127,8 +130,9 @@ export function buildView(db: Database, store: BuildStore): View {
       h(
         "p",
         { class: "note" },
-        "Champion stats plus items, boots and runes, before stacks, procs and ability effects, from the same formulas as SharpWR's damage engine. Fight damage comes in the next Build Lab step.",
+        "Champion stats plus items, boots and runes before stacks, procs and ability effects.",
       ),
+      fight.root,
     ),
   };
 }

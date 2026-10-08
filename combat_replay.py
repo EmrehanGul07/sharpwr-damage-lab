@@ -42,9 +42,9 @@ def replay_payload(result,*,champion,level,target,hp,build):
     return dict(animation_windows=animation_windows,visual_flights=visual_flights,buff_windows=[b for b in getattr(result,'buffs',[]) if b.get('action')],skill_flights=flights,schema=2,champion=champion,level=level,target=target,max_hp=hp,duration=duration,build=list(build['Items'])+[build['Boots']],policy={k:build[k] for k in ('Rotation','Movement','Ultimate timing','Attack weaving','Weapon','E enabled')},events=events,attacks=result.timeline,motion=list(unique.values()),assumptions=result.assumptions,damage=result.total_damage,ttk=result.killed_at,notice='Recorded engine events. Lateral position is a representative projection of recorded distance/kite arc; effects and unit sizes are illustrative. This is not validated Wild Rift footage.')
 
 def replay_html(payload):
-    from marksman_art import art_catalogue, art_scripts, _safe_json
+    from marksman_art import studio_catalogue, art_scripts, _safe_json
     root=Path(__file__).resolve().parent
-    profiles=art_catalogue()['champions']
+    profiles=studio_catalogue()['champions']
     art='window.MarksmanArtProfiles='+_safe_json({payload['champion']:profiles[payload['champion']]} if payload['champion'] in profiles else {})+';\n'+art_scripts()+'\n'+(root/'assets/marksman-3d/replay.js').read_text()
     data=json.dumps(payload,ensure_ascii=False,allow_nan=False).replace('<','\\u003c').replace('>','\\u003e').replace('&','\\u0026')
     return (Path(__file__).resolve().parent/'assets/combat_replay.html').read_text().replace('__REPLAY_DATA__',data).replace('__REPLAY_STATE_SCRIPT__',(Path(__file__).resolve().parent/'assets/replay_state.js').read_text()).replace('__EZREAL_3D_SCRIPT__',art)

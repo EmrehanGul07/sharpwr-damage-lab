@@ -36,9 +36,9 @@ data/ (JSON, sayıların tek kaynağı)
 **Karar (5 Ekim 2026):** İlk sürüm yalnız **Database** içerir: şampiyonlar, eşyalar, parçalar, botlar, rünler. Hesap yapmaz; veriyi motorun ürettiği `app-data/database.json` dosyasından okur ([app-data.md](app-data.md)). 0.3.0 sürümüyle Tier List sekmesi ve şampiyon sayfalarında kayıtlı en iyi eşya sonuçları eklendi; bunlar da hazır sonuçtur, telefonda hesaplanmaz. Uygulama internetsiz çalışır; internet varsa her açılışta güncel veriyi GitHub'dan indirir ve telefona kaydeder. Böylece veri değişiklikleri yeni APK gerektirmez. 0.4.0'dan beri yeni ekranlar da kendiliğinden gelir (canlı güncelleme): uygulama yeni web kısmını arka planda indirir ve bir sonraki açılışta kullanır. Yeni APK yalnız Android kabuğu değiştiğinde gerekir; o zaman önizleme sürümü indirme uyarısı gösterir ([mobile.md](mobile.md#online-updates)). Build Lab ve motorun telefona taşınması ikinci sürümdedir. Play Store hazırlığı (T4) uygulama son sürümüne geldiğinde yapılır.
 
 - **Kabuk:** Capacitor. Aynı web kodu Android'de (ileride iOS'ta) çalışır. 3D stüdyo zaten JavaScript/Three.js olduğu için doğrudan taşınır.
-- **Motor:** Telefonda çalışır: internet ve sunucu gerekmez, sunucu masrafı yoktur. Bunun için motorun TypeScript'e taşınması gerekir.
+- **Motor:** Telefonda çalışır: internet ve sunucu gerekmez, sunucu masrafı yoktur. 0.8.0 sürümünde build değerleri ve AA motoru TypeScript; tam fight motoru paketlenmiş Pyodide/WASM worker içinde aynı Python kaynaklarını kullanır. Hesap sırasında ana ekran bloke olmaz; iptal worker’ı sonlandırır.
 - **Doğruluk:** Taşınan motor, Python motorundan üretilen referans (golden) çıktılara karşı birebir test edilir. Kaynak olarak mevcut entegrasyon matrisi (3.312 senaryo / 6.912 dövüş) kullanılır. İki motor sürümü yan yana durduğu sürece Python sürümü referanstır.
-- **Değerlendirilen alternatifler:** Sunucuda Python (FastAPI) internet ve sunucu maliyeti gerektirir. Pyodide (Python'ı telefonda çalıştırmak) uygulamayı büyütür ve açılışı yavaşlatır.
+- **Karar güncellemesi (8 Ekim 2026):** Tam fight için Pyodide seçildi: 23 şampiyonun Python mantığını ikinci kez yazmadan aynı sonuçları korur. Runtime ve Python kaynakları yaklaşık 13 MB; yalnız fight istendiğinde yüklenir. GLB modeller de uygulamaya dahil edilir. TypeScript tam scheduler portu tamamlandı diye işaretlenmez; ileride performans için ayrı iş olabilir.
 
 ## Mobil boyut ölçümü (5 Ekim 2026)
 
@@ -88,11 +88,11 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | BL1 | Build Lab 1: telefonda build hesaplayıcı (şampiyon, seviye, 5 eşya + bot → değerler), Python'la golden karşılaştırmalı TypeScript portu, şampiyon sayfasından "Try in Build Lab" | Tamamlandı (uygulama 0.5.0) |
 | BL2 | Varsayılan rün sayfaları ve rünlerin hesaba girmesi (karar: sayfaları editör verir, motor anahtar rün alternatiflerini dener ve raporlar); rün sayfası değişince o şampiyonun kayıtlı sonuçları yeniden hesaplanır; telefonda Build Lab rünleri sayar | Tamamlandı (motor 7.1.0, uygulama 0.5.0) |
 | BL3 | Top build'ler tüm eşya havuzundan (IE, LDR vb. dahil); kısıtlama yalnız core item seçiminde; SharpWR'ın core seçimi gerekçesiyle, motorun core'u yanında; editörün build stilleri; anahtar rün kontrolü. BL2 ile birlikte tek seferde yeniden hesaplama | Tamamlandı (motor 7.1.0, uygulama 0.5.0) |
-| BL4 | Telefonda normal saldırı hasarı (DPS), sonra yeteneklerle tam dövüş (TTK) | |
+| BL4 | Telefonda normal saldırı hasarı (DPS), sonra yeteneklerle tam dövüş (TTK) | Tamamlandı (0.8.0): TypeScript AA + offline Python/WASM tam fight; 23 şampiyon. |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
-| 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
-| 6 | Mobil ikinci sürüm: Build Lab, TypeScript motor (3b-2 referanslarıyla doğrulanmış) | |
+| 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | Web (7.1.1) ve mobil (0.8.0) tamamlandı: gerçek trace, HP barı, stack snapshot, seek ve ortak 3D sahne. |
+| 6 | Mobil ikinci sürüm: Build Lab, TypeScript AA ve offline Python/WASM fight motoru | 0.8.0 uygulandı; fiziksel cihaz performansı ayrıca ölçülecek. |
 | 7 | Görsel kalite (telefon performans bütçesiyle) | |
 | 8 | Gerçek 1v1 düello (hedefin karşılık vermesi) | |
 

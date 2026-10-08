@@ -20,6 +20,17 @@ class AllMarksmanUI(unittest.TestCase):
                 self.assertFalse(a.exception,[x.message for x in a.exception])
                 self.assertFalse(a.error,[x.value for x in a.error])
                 table=next(x.value for x in a.dataframe if 'Stacks after' in x.value.columns)
+                import json,re
+                frames=a.get('iframe')
+                replay=next(frame.proto.srcdoc for frame in frames if 'Your build replay' in frame.proto.srcdoc)
+                payload=json.loads(re.search(r"const D=(.*?), \$=id",replay).group(1))
+                self.assertEqual(payload['champion'],name)
+                self.assertEqual(payload['source'],'build_lab')
+                self.assertTrue(payload['motion'])
+                impacts=[e for e in payload['events'] if e['phase']=='impact']
+                self.assertAlmostEqual(sum(e['damage'] for e in impacts),payload['damage'])
+                self.assertEqual(len(impacts),len(table))
+                self.assertAlmostEqual(impacts[-1]['hp_after'],table['Target HP'].iloc[-1],places=2)
                 self.assertGreater(len(table),0)
                 self.assertTrue((table['Damage']>=0).all())
                 self.assertEqual(table['Target HP'].iloc[-1],0)

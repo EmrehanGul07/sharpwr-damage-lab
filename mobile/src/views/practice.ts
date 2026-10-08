@@ -71,16 +71,18 @@ async function loadCatalogue(): Promise<unknown> {
 }
 
 /** The bundled Three.js for the shared scene (the web page loads it from a CDN). */
-async function loadThree() {
-  const [T, { GLTFLoader }, { clone }] = await Promise.all([
+export async function loadThree() {
+  const [T, { GLTFLoader }, { clone }, { SVGRenderer }] = await Promise.all([
     import("three"),
     import("three/examples/jsm/loaders/GLTFLoader.js"),
     import("three/examples/jsm/utils/SkeletonUtils.js"),
+    import("three/examples/jsm/renderers/SVGRenderer.js"),
   ]);
   return {
     T,
     GLTFLoader,
     cloneSkeleton: clone,
+    SVGRenderer,
     // Glow for "High quality" only.
     post: () =>
       Promise.all([
@@ -93,6 +95,8 @@ async function loadThree() {
 }
 
 /** Champion models from this repository, kept for offline use (same cache as the 3D tab). */
-async function loadModel(loader: GltfLoader, id: string, file: string): Promise<Gltf> {
+export async function loadModel(loader: GltfLoader, id: string, file: string): Promise<Gltf> {
+  const bundled = await fetch(`assets/models/${id}/${file}`).catch(() => null);
+  if (bundled?.ok) return loader.parseAsync(await bundled.arrayBuffer(), '');
   return loader.parseAsync(await fetchModel(remoteAsset(`static/marksman-3d/${id}/${file}`)), "");
 }

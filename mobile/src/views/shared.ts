@@ -8,6 +8,7 @@ export interface View {
   /** Detail pages show a back button. */
   back: boolean;
   body: HTMLElement;
+  dispose?: () => void;
 }
 
 export const RIOT_NOTICE =

@@ -3,6 +3,7 @@
 import { cpSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import './sync-engine.mjs';
 
 const mobile = join(dirname(fileURLToPath(import.meta.url)), "..");
 const repo = join(mobile, "..");
@@ -17,4 +18,8 @@ cpSync(join(repo, "assets", "riot"), join(publicDir, "assets", "riot"), {
   recursive: true,
   filter: (source) => !source.endsWith(".md"),
 });
+cpSync(join(repo, 'static', 'marksman-3d'), join(publicDir, 'assets', 'models'), {
+  recursive: true,
+});
+cpSync(join(repo, 'assets', 'combat_replay.html'), join(publicDir, 'assets', 'replay-template.html'));
 console.log("Synced app-data/database.json, app-data/practice.json and assets/riot into mobile/public");
