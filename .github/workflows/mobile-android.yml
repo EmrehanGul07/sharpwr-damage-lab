@@ -12,6 +12,11 @@ on:
       # The Practice tab runs the web Practice Tool scripts.
       - "assets/marksman-3d/*.js"
       - "assets/marksman-3d/practice-tool.css"
+      - "assets/combat_replay.html"
+      - "assets/replay_state.js"
+      - "combat_replay.py"
+      - "sharpwr/**"
+      - "data/*.json"
       - ".github/workflows/mobile-android.yml"
   workflow_dispatch:
 permissions:
@@ -64,6 +69,10 @@ jobs:
           ' "$version" "$url" "$checksum" > sharpwr-web.json
           echo "WEB_ZIP=$zip_name" >> "$GITHUB_ENV"
           echo "Live update $(du -h "$zip_name" | cut -f1):" && cat sharpwr-web.json
+      - name: Check offline fight and 3D replay in Chromium
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:browser
       - run: npx cap sync android
       - name: Build preview APK
         working-directory: mobile/android
@@ -76,6 +85,10 @@ jobs:
           unzip -l "$APK" > apk-contents.txt
           grep -q "assets/public/index.html" apk-contents.txt
           grep -q "assets/public/data/database.json" apk-contents.txt
+          grep -q "assets/public/engine/pyodide.asm.wasm" apk-contents.txt
+          grep -q "assets/public/engine/sources.json" apk-contents.txt
+          models=$(grep -c "assets/public/assets/models/.*/character.glb" apk-contents.txt)
+          test "$models" -eq 23
           icons=$(grep -c "assets/public/assets/riot/.*\.\(png\|webp\|jpg\)$" apk-contents.txt)
           echo "APK size: $(du -h "$APK" | cut -f1), bundled icons: $icons"
           test "$icons" -ge 128

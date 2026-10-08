@@ -8,7 +8,7 @@
  let scene=null;
  function fallback(){canvas.style.display='block';stage.style.display='none';tools.style.display='none';window.render3d=null;scene?.dispose();}
  try{
- scene=await MarksmanScene.createScene(stage,profiles);canvas.style.display='none';
+ scene=await MarksmanScene.createScene(stage,profiles,window.MarksmanReplaySceneOptions||{});canvas.style.display='none';
  const banner=document.createElement('div');banner.className='action-banner';stage.append(banner);const skillHud=document.createElement('div');skillHud.className='skill-hud';for(const slot of ['Q','W','E','R']){const cell=document.createElement('div'),label=document.createElement('b'),value=document.createElement('span');label.textContent=slot;cell.append(label,value);cell.dataset.slot=slot;skillHud.append(cell);}stage.append(skillHud);
  tools.querySelectorAll('[data-camera]').forEach(b=>b.onclick=()=>{scene.setCamera(b.dataset.camera);tools.querySelectorAll('[data-camera]').forEach(x=>x.classList.toggle('active',x===b));});$('cameraReset').onclick=()=>scene.resetCamera();
  const commands=D.attacks.filter(e=>['attack','cast'].includes(e.kind)),impacts=D.events.filter(e=>e.phase==='impact');

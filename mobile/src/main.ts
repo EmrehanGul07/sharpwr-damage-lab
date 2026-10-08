@@ -63,9 +63,12 @@ function resolve(state: DataState, route: Route): View {
 }
 
 /** keepScroll: redraw in place after a change on the same screen. */
+let disposeView: (() => void) | undefined;
 function render(state: DataState, keepScroll = false): void {
+  disposeView?.();
   const route = parseRoute(location.hash);
   const view = resolve(state, route);
+  disposeView = view.dispose;
   title.textContent = view.title;
   back.hidden = !view.back;
   viewRoot.replaceChildren(view.body);
