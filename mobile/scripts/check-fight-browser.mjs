@@ -62,11 +62,13 @@ try {
     ["Kai'Sa", 1280, 900],
   ]) {
     const page = await browser.newPage({ viewport: { width, height } });
+    let wasmLoads = 0;
     const errors = [],
       external = [],
       modelLoads = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("response", (response) => {
+      if (response.url().endsWith("/pyodide.asm.wasm")) wasmLoads++;
       if (response.url().includes("/assets/models/") && response.ok())
         modelLoads.push(response.url());
     });
@@ -83,6 +85,21 @@ try {
       boots: "Immortal Treads",
     });
     await page.goto(`${base}#/build?${params}`);
+    if (champion === "Ezreal") {
+      await page
+        .getByLabel("Skill priority", { exact: true })
+        .selectOption("EWQ");
+      await page
+        .getByLabel("Movement", { exact: true })
+        .selectOption("aa_envelope");
+      await page
+        .getByLabel("Ultimate timing", { exact: true })
+        .selectOption("after_basics");
+      await page.getByLabel("Starting distance", { exact: true }).fill("850");
+      await page
+        .getByLabel("Replay quality", { exact: true })
+        .selectOption("low");
+    }
     const run = page.getByRole("button", {
       name: "Simulate fight + 3D",
       exact: true,
@@ -112,11 +129,26 @@ try {
       events: D.events.length,
       status: document.querySelector(".render-status").textContent,
       stack: document.querySelector("#stackSnapshot").textContent,
+      policy: D.policy,
+      initialDistance: D.motion[0].distance,
     }));
     assert.equal(trace.champion, champion);
     assert.equal(trace.source, "build_lab");
     assert.ok(trace.motion > 0 && trace.events > 0);
     assert.equal(trace.status, "PBR • WEBGL");
+    if (champion === "Ezreal") {
+      assert.equal(trace.policy.Rotation, "E → W → Q");
+      assert.equal(trace.policy.Movement, "aa_envelope");
+      assert.equal(trace.policy["Ultimate timing"], "after_basics");
+      assert.equal(trace.initialDistance, 850);
+    }
+    await frame.waitForFunction(
+      () =>
+        [...document.querySelectorAll(".skill-hud img")].length === 4 &&
+        [...document.querySelectorAll(".skill-hud img")].every(
+          (i) => i.naturalWidth > 0,
+        ),
+    );
     await frame.getByRole("button", { name: "❚❚ Pause", exact: true }).click();
     await frame.locator("#reset").click();
     await frame.waitForFunction(
@@ -125,7 +157,9 @@ try {
         "Stacks: no impact yet",
     );
     assert.ok(
-      modelLoads.some((url) => url.endsWith("/character.glb")),
+      modelLoads.some((url) =>
+        url.endsWith(champion === "Ezreal" ? "/preview.glb" : "/character.glb"),
+      ),
       "Bundled GLB must load offline",
     );
     assert.deepEqual(
@@ -142,9 +176,17 @@ try {
         ),
         fullPage: true,
       });
+    // A second completed calculation reuses the initialized WASM worker.
+    const loadedBefore = wasmLoads;
+    await run.click();
+    await page
+      .getByText("Ready. Press Play to watch.", { exact: true })
+      .waitFor({ timeout: 180000 });
+    assert.equal(wasmLoads, loadedBefore, "Warm fight must not reload WASM");
     // Navigation removes the replay and cancels a new fight.
     await run.click();
     await page.locator("nav a").first().click();
+    await page.waitForFunction(()=>location.hash.startsWith('#/champions') && document.querySelectorAll('iframe').length===0);
     assert.equal(page.frames().length, 1);
     assert.deepEqual(errors, []);
     console.log(

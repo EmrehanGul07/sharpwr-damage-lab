@@ -33,6 +33,8 @@ export function replayDocument(
 export async function mountReplay(
   root: HTMLElement,
   payload: Record<string, unknown>,
+  quality: "low" | "balanced" = "balanced",
+  signal?: AbortSignal,
 ): Promise<void> {
   const [response, html] = await Promise.all([
     fetch("data/practice.json"),
@@ -44,16 +46,15 @@ export async function mountReplay(
   (window as Host).SharpWRReplayScene = {
     three: loadThree,
     loadModel,
-    quality: "balanced",
+    quality,
   };
-  if (!root.isConnected) return;
+  const template = await html.text();
+  if (!root.isConnected || signal?.aborted) return;
   const frame = document.createElement("iframe");
   frame.title = "Recorded build fight";
   frame.style.cssText = "width:100%;height:1020px;border:0;border-radius:12px";
-  frame.srcdoc = replayDocument(
-    await html.text(),
-    payload,
-    catalogue.champions,
-  );
+  frame.srcdoc = replayDocument(template, payload, {
+    [String(payload.champion)]: catalogue.champions[String(payload.champion)],
+  });
   root.replaceChildren(frame);
 }

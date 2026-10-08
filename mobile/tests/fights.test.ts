@@ -41,6 +41,9 @@ describe("offline mobile fight engine", () => {
       expect(actual.summary.Rotation, context).toEqual(
         fixture.summary.Rotation,
       );
+      expect(actual.summary.Movement,context).toEqual(fixture.summary.Movement);
+      expect(actual.summary['Ultimate timing'],context).toEqual(fixture.summary['Ultimate timing']);
+      if(fixture.request.settings?.distance!==undefined) expect(actual.replay.motion[0].distance,context).toEqual(fixture.request.settings.distance);
       expect(actual.replay.events.length, context).toBe(fixture.events.length);
       expect(actual.replay.motion.length, context).toBe(fixture.motionCount);
       expect(actual.replay.motion.length, context).toBeGreaterThan(0);
