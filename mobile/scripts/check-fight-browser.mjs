@@ -232,6 +232,7 @@ try {
     if (screenshots) await page.screenshot({ path: resolve(screenshots, `duel-${width}.png`), fullPage: true });
     await page.getByLabel('Arena mode', { exact: true }).selectOption('practice');
     assert.ok(await page.getByLabel('Q rank', { exact: true }).isEnabled());
+    await page.waitForFunction(() => document.querySelector('.pt-combo').textContent === 'Hit the dummy to start a combo');
     assert.deepEqual(errors, []);
     assert.deepEqual(external.filter(x => !x.endsWith('/app-data/database.json')), []);
     await page.locator('nav a').first().click();
