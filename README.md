@@ -1,4 +1,4 @@
-# SharpWR Damage Lab — V7.1.0
+# SharpWR Damage Lab — V7.1.1
 
 Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`; the UI-independent damage engine lives in `sharpwr/`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 
@@ -8,6 +8,7 @@ The model covers a stationary target that does not attack back. Authorized PC ti
 
 - Published 7.3a tier board is read-only. Public build searches remain disabled, including synthetic clicks.
 - Build Lab supports 5 distinct completed items and one boots slot. Replay uses champion skills and persistent rune stats; the separate “Calculate build” action is the legacy AA-only calculation.
+- Build Lab’s “Replay fight” also plays the selected build’s recorded fight in 3D, with movement, timed casts, damage, target HP and event inspection.
 - Replay supports Conqueror, Lethal Tempo, initial-engagement First Strike, Dark Harvest, Empowerment, Phase Rush, Fleet Footwork and the supported damage/stat runes (Sudden Impact included). Defensive and utility runes (Bone Plating, Second Wind, …) have no effect on the stationary benchmark. Unsupported offensive loadouts block replay instead of silently dropping their effects.
 - Each champion has a default rune page chosen by the SharpWR editor (`data/default-rune-pages.json`, `sharpwr/rune_pages.py`): stacking runes fill with level (empty to 5, full from 9) and Dark Harvest has one soul per level. Every saved build result uses it (`BuildFightEvaluator(runes=...)`).
 - First Strike models only the explicitly ready initial three-second engagement; rearming and gold are excluded. Adaptive damage procs retain the existing ADC physical assumption.

@@ -14,3 +14,9 @@ assert.equal(S.markActive(casts,hits,1,5),false);
 assert.equal(S.markActive(casts,[],4.5),false);
 assert.equal(S.markActive([...casts,{time:2,order:9,impact_time:2.5}],hits,3),true);
 console.log('Replay state: event ordering, W application/consumption/expiry/reapplication passed.');
+
+const stackEvents=[{phase:'impact',time:1,order:2,after:{conqueror:1,items:{rage:1}}},{phase:'impact',time:1,order:3,after:{conqueror:2,items:{rage:2}}}];
+assert.equal(S.stackSnapshot(stackEvents,0),null);
+assert.deepEqual(S.stackSnapshot(stackEvents,1,2).values,[['conqueror',1],['rage',1]]);
+assert.deepEqual(S.stackSnapshot(stackEvents,1).values,[['conqueror',2],['rage',2]]);
+assert.equal(S.stackSnapshot(stackEvents,.5),null); // seeking backwards clears the HUD

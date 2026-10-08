@@ -91,7 +91,7 @@ Riot'un standart feragat metni README'de ve sitenin alt bilgisinde gösterilir; 
 | BL4 | Telefonda normal saldırı hasarı (DPS), sonra yeteneklerle tam dövüş (TTK) | |
 | 3c | Arayüzü sekme modüllerine bölmek | |
 | 4 | 3D stüdyoyu bağımsız web modülü yapmak | |
-| 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | |
+| 5 | Build Lab dövüşünü 3D'de izlemek (hasar sayıları, HP, stack göstergeleri) | Web Build Lab bağlantısı tamamlandı (7.1.1): gerçek trace, HP barı ve son-vuruş stack snapshot. Mobil tam dövüş portu ayrı iş. |
 | 6 | Mobil ikinci sürüm: Build Lab, TypeScript motor (3b-2 referanslarıyla doğrulanmış) | |
 | 7 | Görsel kalite (telefon performans bütçesiyle) | |
 | 8 | Gerçek 1v1 düello (hedefin karşılık vermesi) | |
