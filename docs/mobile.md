@@ -74,3 +74,7 @@ Skill priority (all six Q/W/E permutations), starting distance (0–2500 or cham
 Replay quality offers Smooth (8k-triangle preview meshes, fewer particles and no dynamic shadows) and Detailed (full meshes). Only the selected champion profile is embedded into the iframe. Skill HUD uses the champion's actual bundled icons, ability tooltips, a cooldown sweep and numeric countdown, with casting glow. The web renderer gets embedded icon data from studio_catalogue too. Existing champion-specific cast/projectile/impact effects remain synchronized to recorded events.
 
 Checks cover warm-worker reuse/release, 81 CPython/WASM full-fight fixtures (69 baseline + 12 custom-policy cases), offline GLBs in both quality modes, all four skill icons, and explicit controls in the played trace. Native Android shell fingerprint/minimum APK version remain unchanged, so this release can travel through the live screen update channel.
+
+## 0.8.2: playable 1v1 bot
+
+Practice now offers **1v1 bot**, with Easy/Medium/Hard/Impossible decision policies and any of the 23 marksmen. Opponent selection, pause/restart, two-way damage and health bars are available offline. Mode changes affect reaction, aim, prediction, spacing and dodging only. This uses the Practice base-kit numbers, without items/runes or unresolved stateful mechanics; see [duel-bot.md](duel-bot.md). Native shell requirements remain unchanged, so it ships as an automatic live screen update.

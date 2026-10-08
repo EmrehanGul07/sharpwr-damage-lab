@@ -107,12 +107,14 @@ def _rank_limit(slot):
 
 
 def _levels(name):
-    out = {"ad": [], "as": [], "ms": [], "range": []}
+    out = {"ad": [], "as": [], "ms": [], "range": [], "hp": [], "armor": [], "mr": []}
     for level in LEVELS:
         row = champion_level_stats(name, level)
         out["ad"].append(_round(row["attack_damage"]))
         out["as"].append(_round(row["attack_speed"]))
         out["ms"].append(row["movement_speed"])
+        for field in ("hp", "armor", "mr"):
+            out[field].append(_round(row[field]))
         out["range"].append(_round(_kit(name, default_ranks(name, level), level).attack_range(0.0)))
     return out
 

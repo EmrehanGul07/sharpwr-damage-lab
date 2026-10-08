@@ -43,6 +43,8 @@ class PracticeDataTests(unittest.TestCase):
                 self.assertAlmostEqual(record["levels"]["ad"][level - 1], stats["attack_damage"], delta=6e-4)
                 self.assertAlmostEqual(record["levels"]["as"][level - 1], stats["attack_speed"], delta=6e-4)
                 self.assertEqual(record["levels"]["ms"][level - 1], stats["movement_speed"])
+                for field in ("hp", "armor", "mr"):
+                    self.assertAlmostEqual(record["levels"][field][level - 1], stats[field], delta=6e-4)
                 self.assertEqual(record["ranks"][level - 1], default_ranks(name, level))
 
     def test_hit_damage_is_damage_component(self):

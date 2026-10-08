@@ -8,6 +8,8 @@ import effects from "../../assets/marksman-3d/effects.js?raw";
 import fight from "../../assets/marksman-3d/fight.js?raw";
 import geometry from "../../assets/marksman-3d/geometry.js?raw";
 import practice from "../../assets/marksman-3d/practice.js?raw";
+import bot from "../../assets/marksman-3d/duel-bot.js?raw";
+import duel from "../../assets/marksman-3d/duel.js?raw";
 import tool from "../../assets/marksman-3d/practice-tool.js?raw";
 import css from "../../assets/marksman-3d/practice-tool.css?inline";
 import arena from "../../assets/marksman-3d/rift-arena.js?raw";
@@ -24,6 +26,8 @@ export const SCRIPTS: ReadonlyArray<[string, string]> = [
   ["fight.js", fight],
   ["geometry.js", geometry],
   ["practice.js", practice],
+  ["duel-bot.js", bot],
+  ["duel.js", duel],
   ["practice-tool.js", tool],
 ];
 
