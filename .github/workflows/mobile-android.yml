@@ -83,6 +83,8 @@ jobs:
           echo "WEB_ZIP=$zip_name" >> "$GITHUB_ENV"
           echo "Live update $(du -h "$zip_name" | cut -f1):" && cat sharpwr-web.json
       - name: Check offline fight and 3D replay in Chromium
+        env:
+          BROWSER_SCREENSHOTS: browser-shots
         run: |
           npx playwright install --with-deps chromium
           npm run test:browser
@@ -112,6 +114,7 @@ jobs:
             mobile/${{ env.APK }}
             mobile/${{ env.WEB_ZIP }}
             mobile/sharpwr-web.json
+            mobile/browser-shots/
       - name: Publish to the mobile-preview release
         if: github.ref == 'refs/heads/main'
         run: |
