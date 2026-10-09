@@ -64,6 +64,7 @@ jobs:
           node tests/test_day2_quality.cjs
           node tests/test_arena_expansion.cjs
           node tests/test_caitlyn_arena.cjs
+          node tests/test_kaisa_arena.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

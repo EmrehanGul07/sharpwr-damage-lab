@@ -357,6 +357,11 @@ def _duel_mechanics(name):
         return {**common, "passive_as": values, "passive_duration": 8,
                 "q_refund": 1.5, "flux_refund": [60, 70, 80, 90],
                 "bolt_speed": _round(1000 / kit.travel("E", 1000))}
+    if name == "Kai'Sa":
+        return {**common, "ultimate_shield": [100, 125, 150],
+                "ultimate_shield_ad": [0.8, 1.2, 1.6],
+                "ultimate_shield_duration": 2,
+                "status": "D091/D092 shield and marked champion eligibility; R target range and dash speed unresolved"}
     if name == "Caitlyn":
         return {**common, "trap_capacity": [2, 3, 4, 5],
                 "trap_recharge": [25, 20, 15, 10], "trap_duration": 30,
