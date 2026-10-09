@@ -49,7 +49,9 @@ jobs:
       - run: npm test
       - name: Check 1v1 bot fairness and moving collision
         working-directory: .
-        run: node tests/test_duel_bot.cjs
+        run: |
+          node tests/test_duel_bot.cjs
+          node tests/test_duel_mechanics.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

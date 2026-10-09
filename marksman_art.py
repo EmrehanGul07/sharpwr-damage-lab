@@ -116,12 +116,13 @@ PRACTICE_SCRIPTS=(
     ('__PRACTICE_SCRIPT__','practice.js'),
     ('__TOOL_SCRIPT__','practice-tool.js'),
     ('__BOT_SCRIPT__','duel-bot.js'),
+    ('__MECHANICS_SCRIPT__','duel-mechanics.js'),
     ('__DUEL_SCRIPT__','duel.js'),
 )
 
 def _practice_stamp():
     # The practice numbers come from the engine, so engine and data changes rebuild the page too.
-    paths=[*_studio_inputs(),STUDIO_ROOT/'practice-tool.html',STUDIO_ROOT/'practice-tool.css',STUDIO_ROOT/'practice-tool.js',STUDIO_ROOT/'duel-bot.js',STUDIO_ROOT/'duel.js',
+    paths=[*_studio_inputs(),STUDIO_ROOT/'practice-tool.html',STUDIO_ROOT/'practice-tool.css',STUDIO_ROOT/'practice-tool.js',STUDIO_ROOT/'duel-bot.js',STUDIO_ROOT/'duel.js',STUDIO_ROOT/'duel-mechanics.js',
            *sorted((ROOT/'sharpwr').glob('*.py')),*sorted((ROOT/'data').glob('*.json'))]
     return tuple((str(p),p.stat().st_mtime_ns,p.stat().st_size) if p.is_file() else (str(p),None,None) for p in paths)
 
