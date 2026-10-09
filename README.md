@@ -1,4 +1,11 @@
-# SharpWR Damage Lab — V7.1.22
+# SharpWR Damage Lab — V7.1.23
+
+### Kai’Sa marked R and shield (mobile 0.8.22)
+
+- Killer Instinct requires a living Plasma-marked champion; invalid casts spend neither mana nor cooldown.
+- Rank/total-AD/AP shield lasts 2 seconds and absorbs mitigated champion, minion and tower damage. Shield amount is visible in the arena HUD.
+- Landing stays within the existing target-centered region. WR target acquisition range and dash speed remain unverified.
+
 
 ### Caitlyn live kit (mobile 0.8.21)
 

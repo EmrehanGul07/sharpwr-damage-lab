@@ -146,7 +146,7 @@ function land(state,h){const d=state.dummy,t=h.landAt??h.at;if(d.defeatedAt!==nu
  if(resolved&&h.attack&&state.health)state.health.hp=Math.min(state.health.max,state.health.hp+Math.min(hpBefore,resolved.physical||0)*(state.loadout.stats.lifesteal||0));
  let flux=false;if(d.mark&&d.mark.slot!==h.slot&&t<=d.mark.until){const m=d.mark;d.mark=null;apply(state,t,m.slot+' detonation',m.raw,false);flux=true;}if(!h.secondary||state.duel?.hitVictim?.kind==='champion')state.duel?.mechanics?.onHit(state,h,flux);}
 function apply(state,t,slot,raw,attack,resolved=false){const d=state.dummy;let dealt=0;const parts={};for(const[kind,value]of Object.entries(raw||{})){if(!value)continue;const v=resolved?value:mitigate(state,kind,value,attack);parts[kind]={raw:value,dealt:v};dealt+=v;number(state,t,slot,kind,v);}
- if(d.first===null)d.first=t;d.total+=dealt;d.count++;d.lastHit=t;d.hp=Math.max(0,d.hp-dealt);if(d.hp<=0)d.defeatedAt=t;log(state,{t,slot,parts,dealt,point:state.target.slice()});}
+ if(d.first===null)d.first=t;d.total+=dealt;d.count++;d.lastHit=t;d.hp=Math.max(0,d.hp-(state.duel?.mechanics?.absorb(d,dealt,t)??dealt));if(d.hp<=0)d.defeatedAt=t;log(state,{t,slot,parts,dealt,point:state.target.slice()});}
 function stepTool(state,dt,movements){const previous=state.time;state.time+=dt;const t=state.time,d=state.dummy;
  if(state.duel){for(const h of state.hits){if(state.duel.resolveHit(state,h,previous,t)){if(state.duel.withHitTarget)state.duel.withHitTarget(state,h,()=>land(state,h));else land(state,h);h.done=!h.keepAlive||t>=h.at;}else if(t>=h.at)h.done=true;}state.hits=state.hits.filter(h=>!h.done);}
  else{for(const h of state.hits.filter(h=>h.at<=t).sort((a,b)=>a.at-b.at))land(state,h);state.hits=state.hits.filter(h=>h.at>t);}
