@@ -76,6 +76,18 @@ function createEffects(T,scene,{software=false,budget=1400}={}){
  function draw(profile,slot,frame={}){
   const spec=slot==='AA'?profile.attack:slot==='P'?profile.passive:profile.skills[slot];if(!spec)return;
   const effect=slot==='AA'?frame.empowered||WEAPON_AA[profile.weapon]||'arcane_arrow':slot==='P'?'passive':spec.effect;
+  if(profile.name==='Ezreal'&&slot==='E'){
+   const u=frame.progress||0,release=frame.release??.35,start=frame.start||frame.hero,end=frame.end||frame.hero,source=frame.source,target=frame.target;
+   if(start&&end&&u<release+.12){for(const p of[start,end]){const v=p.clone().setY(.09);ring(v,.45,'#ffe576',.7);ring(v,.28,'#fff0ad',.7);emit(v.clone().setY(.6),18,'#ffe576',frame.seed||1,Math.max(0,u-release)*2,{radius:.24,speed:.5,up:.7,gravity:0,lifetime:.3,size:.055});}}
+   if(source&&target&&u>=release&&u<(frame.impactAt??.74)){const dir=target.clone().sub(source).normalize(),v=source.clone().lerp(target,clamp((u-release)/((frame.impactAt??.74)-release)));projectile(v,dir,.075,'#fff0a7','ball');segment(v.clone().addScaledVector(dir,-.32),v,.025,'#ffcf52',.8);}return;
+  }
+  if(profile.name==='Jinx'&&['AA','W','R'].includes(slot)){
+   const u=frame.progress||0,release=frame.release??.35,impactAt=frame.impactAt??.74,source=frame.source,target=frame.target;if(!source||!target)return;const dir=target.clone().sub(source).normalize(),v=source.clone().lerp(target,clamp((u-release)/(impactAt-release))),rocket=slot==='R'||frame.empowered==='rocket',color=slot==='W'?'#67d1ff':rocket?'#ff9655':'#ffe2a4';
+   if(u<release){sphere(source,.06+(u/release)*.05,color,.6);return;}if(u>=impactAt)return;
+   if(rocket){const scale=slot==='R'?1.65:.7,body=projectile(v,dir,.12*scale,'#dce0d6');body.scale.set(.11*scale,.45*scale,.11*scale);sphere(v.clone().addScaledVector(dir,-.28*scale),.11*scale,color,.8);const side=new T.Vector3(-dir.z,0,dir.x).normalize();for(const sign of[-1,1])segment(v.clone().addScaledVector(dir,-.17*scale),v.clone().addScaledVector(dir,-.30*scale).addScaledVector(side,sign*.18*scale),.035*scale,'#df5176',.85);for(let i=1;i<9;i++)sphere(v.clone().addScaledVector(dir,-i*.085*scale),.065*scale*(1-i/10),i%2?color:'#ffcb82',.55*(1-i/10));}
+   else if(slot==='W'){projectile(v,dir,.065,'#c6f7ff');segment(v.clone().addScaledVector(dir,-.55),v,.033,color,.7);ring(v,.11,color,.8,dir);}
+   else{sphere(v,.028,color);segment(v.clone().addScaledVector(dir,-.25),v,.013,color,.9);}return;
+  }
   // Ezreal's basic bolt and Mystic Shot deliberately have separate silhouettes and rhythms.
   if(profile.name==='Ezreal'&&['AA','Q','W','R'].includes(slot)){
    drawArcane(slot,spec,frame);return;

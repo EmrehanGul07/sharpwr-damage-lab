@@ -203,7 +203,7 @@ try {
       if (new URL(route.request().url()).hostname === '127.0.0.1') return route.continue();
       external.push(route.request().url()); return route.abort();
     });
-    await page.addInitScript(()=>{let api;Object.defineProperty(window,'MarksmanPractice',{configurable:true,get:()=>api,set:value=>{api=value;const frame=value.frame;value.frame=(state,...args)=>{window.__practiceState=state;return frame(state,...args);};}});});
+    await page.addInitScript(()=>{let api;Object.defineProperty(window,'MarksmanPractice',{configurable:true,get:()=>api,set:value=>{api=value;const frame=value.frame;value.frame=(state,...args)=>{window.__practiceState=state;return frame(state,...args);};}});let sceneAPI;Object.defineProperty(window,'MarksmanScene',{configurable:true,get:()=>sceneAPI,set:value=>{sceneAPI=value;const create=value.createScene;value.createScene=async(...args)=>{const scene=await create(...args),render=scene.render;scene.render=(...frames)=>{const m=render(...frames);window.__practiceMetrics=m;return m;};return scene;};}});});
     await page.goto(`${base}#/practice?champion=Ezreal`);
     await page.getByLabel('Arena mode', { exact: true }).waitFor();
     await page.locator('.pt-stage canvas').waitFor({ timeout: 30000 });
@@ -243,6 +243,11 @@ try {
         await page.waitForFunction(t=>window.__practiceState.duel.time>t+.3,markedTime,{timeout:10000});
         assert.deepEqual(errors,[],'Ezreal W mark HUD must render without errors');
       }
+      const laneMetrics=await page.evaluate(()=>window.__practiceMetrics);
+      assert(laneMetrics.laneActors>=0&&laneMetrics.laneActors<=64,'bounded articulated lane actor pool');
+      if(difficulty==='easy')assert(laneMetrics.laneActors>0,'first-wave articulated models render');
+      assert(laneMetrics.laneModelGeometries<=5&&laneMetrics.laneModelMaterials<=10,'shared model resources');
+      assert(laneMetrics.drawCalls<1500&&laneMetrics.geometryCount<800,'lane renderer stays within regression budget');
       if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-fight-${width}.png`) });
       if(difficulty==='easy'){
         await page.waitForFunction(()=>window.__practiceState.duel.lane.units.length>0);
