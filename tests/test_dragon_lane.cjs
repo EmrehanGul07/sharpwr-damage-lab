@@ -1,5 +1,5 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),T=require('three');
+const assert=require('node:assert/strict'),fs=require('node:fs'),T=require(require.resolve('three',{paths:[__dirname,require('node:path').join(__dirname,'../mobile')]}));
 const A=require('../assets/marksman-3d/rift-arena.js'),P=require('../assets/marksman-3d/practice.js'),D=require('../assets/marksman-3d/duel.js'),F=require('../assets/marksman-3d/fight.js');
 const C=JSON.parse(fs.readFileSync('app-data/practice.json')).champions,profile=name=>({...C[name],name}),N=A.navigation;
 assert(N.passable([0,0,0]));assert(N.passable([0,0,6]));assert(!N.passable([8,0,6]));assert(!N.passable([-9.5,0,0]));
