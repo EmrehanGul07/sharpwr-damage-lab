@@ -1,8 +1,8 @@
-# SharpWR Damage Lab — V7.1.14
+# SharpWR Damage Lab — V7.1.15
 
-### Lane training (mobile 0.8.13)
+### Lane training (mobile 0.8.14)
 
-1v1 now optionally includes symmetric four-minion waves every 25 seconds, melee/caster minions, champion-damage minion/tower aggro, tower projectiles and destructible tower health. Hold **Farm** to attack an in-range enemy minion (lowest health first), or an enemy tower when no minion is in range. **Attack** defaults to the champion; drag its cursor toward an enemy minion, champion or tower to persistently lock it. The thick yellow target ring and target label identify the lock; **Clear target** restores champion targeting. Farm clears the lock. Holding Attack approaches an out-of-range target; joystick or keyboard movement takes priority and releasing Attack stops the approach. Skill aiming and Farm do not create movement. Ezreal Q/Jinx W can be blocked by enemy minions. Turn off **Minions and towers** for the original pure duel.
+1v1 now optionally includes symmetric four-minion waves every 25 seconds, melee/caster minions, champion-damage minion/tower aggro, tower projectiles and destructible tower health. Hold **Farm** to attack an in-range enemy minion (lowest health first), or an enemy tower when no minion is in range. **Attack** defaults to the champion; drag its cursor toward an enemy minion, champion or tower to persistently lock it. The thick yellow target ring and target label identify the lock; **Clear target** restores champion targeting. Farm clears the lock. Attack, target selection, skill aiming and Farm do not command movement. Move with the joystick or arrow keys independently while selecting/attacking a target. Ezreal Q/Jinx W can be blocked by enemy minions. Turn off **Minions and towers** for the original pure duel.
 
 Harder bots use delayed public lane observations for last hits, cover, clear skillshot angles and tower retreat. Champion stats do not vary by difficulty. Gold is a score only, not an item/stat purchase system. **Finish session**, champion death, a destroyed tower or the time limit displays damage, damaging-skill accuracy, CS/gold, attack-ready idle time, movement while recently under attack, and tower hits taken.
 
