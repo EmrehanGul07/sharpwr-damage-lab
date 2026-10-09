@@ -4,6 +4,7 @@
  * 3D scripts and the practice data (data/practice.json, from scripts/export_app_data.py) load only
  * when this tab opens; models use the 3D tab's offline cache.
  */
+import { arenaOrientation } from "../arena-orientation";
 import { h } from "../dom";
 import { remoteAsset } from "../online";
 import { fetchModel } from "./model3d";
@@ -56,6 +57,7 @@ async function start(root: HTMLElement, champion: string | null): Promise<void> 
       allowDownload: false,
       // The app's window is the screen; the arena covers it instead of asking the WebView for full screen.
       nativeFullscreen: false,
+      orientation: arenaOrientation,
       quality: "balanced",
       sceneOptions: { three: loadThree, loadModel },
     });

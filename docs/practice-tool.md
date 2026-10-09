@@ -37,3 +37,13 @@ The notes panel keeps notes per champion (general, basic attack, P, Q, W, E, R) 
 ## Controls
 
 Web: click or tap the ground or use the arrow keys to move; Q, W, E and R cast toward the mouse (or at the dummy); Space attacks, held to keep attacking. Touch screens: joystick, tap a skill to cast at the dummy, drag from a skill to aim (the drag direction becomes the aim direction), hold Attack. "Move dummy" places the dummy with the next tap; "No cooldowns" and "Reset cooldowns" help with testing.
+
+## Landscape arena (mobile 0.8.4 / web 7.1.5)
+
+Practice opens a 16:9 preview with Ezreal–Jinx 1v1 selected. Choose the champions/settings, then **Start Practice** opens a landscape full-screen surface. Both actors and the clock wait until the first joystick, attack, skill, keyboard or ground input. Restart returns to that ready state; Exit returns to the preview. There is no Pause/Resume button. Hidden-app time is not simulated; focus loss clears held inputs.
+
+Android uses the official Screen Orientation plugin to lock the session to landscape and unlock it on exit. Because this adds a native plugin, 0.8.4 requires a one-time APK update; the normal update notice offers it. Browsers or platforms refusing orientation lock (including large Android 16 screens) use a rotated landscape surface with matching joystick/aim/ground coordinate conversion. There is no portrait combat layout.
+
+The original dragon-lane environment includes irregular worn paving, lane brush pockets, river entrance, dragon-pit floor, jungle cliffs/trees and decorative blue/red outer tower platforms. The same terrain layout drives movement and skill indicators. Walking and grounded dashes stop at solid terrain; blink/jump can cross it with a legal in-range landing. Projectiles retain their direction and pass terrain as before. Brush is scenery, without vision/stealth mechanics. Towers and dragon scenery do not attack; no minions or monsters are simulated. It is a Wild Rift-inspired lane, not an exact imported Riot map. The Animation Studio keeps its existing environment.
+
+Checks: `tests/test_dragon_lane.cjs`, orientation unit tests, and offline browser scenarios at portrait-phone, landscape-phone and desktop sizes cover waiting, first-input start, restart/exit, two GLBs, navigation cleanup and shared terrain collisions.

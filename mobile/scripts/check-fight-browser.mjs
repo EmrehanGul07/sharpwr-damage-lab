@@ -56,7 +56,7 @@ try {
       "--enable-unsafe-swiftshader",
     ],
   });
-  for (const [champion, width, height] of [
+  for (const [champion, width, height] of process.env.PRACTICE_ONLY ? [] : [
     ["Ezreal", 390, 844],
     ["Samira", 390, 844],
     ["Kai'Sa", 1280, 900],
@@ -194,8 +194,8 @@ try {
     );
     await page.close();
   }
-  for (const width of [390, 1280]) {
-    const page = await browser.newPage({ viewport: { width, height: 900 } });
+  for (const [width,height] of [[390,844],[844,390],[1280,800]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
     const errors = [], external = [], models = [];
     page.on('pageerror', e => errors.push(e.message));
     page.on('response', r => { if (r.ok() && r.url().includes('/assets/models/')) models.push(r.url()); });
@@ -206,6 +206,9 @@ try {
     await page.goto(`${base}#/practice?champion=Ezreal`);
     await page.getByLabel('Arena mode', { exact: true }).waitFor();
     await page.locator('.pt-stage canvas').waitFor({ timeout: 30000 });
+    assert.equal(await page.locator('.pt-stage-wrap').getAttribute('data-phase'), 'preview');
+    assert.equal(await page.getByRole('button', {name:'Pause',exact:true}).count(),0);
+    assert.equal(await page.getByRole('button', {name:'Resume',exact:true}).count(),0);
     await page.getByLabel('Arena mode', { exact: true }).selectOption('duel');
     await page.getByLabel('Bot champion', { exact: true }).selectOption('Jinx');
     assert.ok(await page.getByLabel('No cooldowns', { exact: true }).isDisabled());
@@ -213,34 +216,53 @@ try {
     let initialStats;
     for (const difficulty of ['easy', 'medium', 'hard', 'impossible']) {
       await page.getByLabel('Bot difficulty', { exact: true }).selectOption(difficulty);
-      await page.getByRole('button', { name: 'Start 1v1', exact: true }).click();
-      await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('FIGHT'));
-      assert.ok((await page.locator('.pt-buffs').textContent()).includes('MANA'), 'Pilot mana HUD is visible');
+      await page.getByRole('button', { name: 'Start Practice', exact: true }).click();
+      await page.waitForFunction(() => document.querySelector('.pt-stage-wrap').dataset.phase==='ready' && !document.querySelector('.pt-skill[data-slot="AA"]').disabled);
+      assert.ok((await page.locator('.pt-buffs').textContent()).includes('MANA'));
+      const size = await page.locator('.pt-stage').evaluate(e=>[e.clientWidth,e.clientHeight]);
+      assert.ok(size[0]>size[1], 'Combat always has a landscape viewport');
       const stats = await page.locator('.pt-stats').textContent();
       if (!initialStats) initialStats = stats;
       assert.equal(stats, initialStats, 'Difficulty must not change player stats');
-      await page.getByRole('button', { name: 'Pause', exact: true }).click();
-      await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('PAUSED'));
-      const paused = await page.locator('.pt-combo').textContent();
-      await page.waitForTimeout(200);
-      assert.equal(await page.locator('.pt-combo').textContent(), paused, 'Pause freezes both actors');
-      await page.getByRole('button', { name: 'Resume', exact: true }).click();
+      const idle = await page.locator('.pt-combo').textContent();
+      await page.waitForTimeout(250);
+      assert.equal(await page.locator('.pt-combo').textContent(), idle, 'Both actors wait for first gameplay input');
+      if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-ready-${width}.png`) });
       await page.locator('.pt-skill[data-slot="AA"]').dispatchEvent('pointerdown', { pointerId: 1 });
+      await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('FIGHT'));
       await page.waitForFunction(() => document.querySelector('.pt-log').textContent.includes('AA'), null, { timeout: 10000 });
       await page.locator('.pt-skill[data-slot="AA"]').dispatchEvent('pointerup', { pointerId: 1 });
+      if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-fight-${width}.png`) });
+      await page.getByRole('button',{name:'Restart practice',exact:true}).click();
+      await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready'&&document.querySelector('.pt-combo').textContent.startsWith('READY'));
+      const reset = await page.locator('.pt-combo').textContent();
+      await page.waitForTimeout(150);
+      assert.equal(await page.locator('.pt-combo').textContent(),reset,'Restart waits for input');
+      await page.locator('.pt-joystick').dispatchEvent('pointerdown',{pointerId:2,clientX:50,clientY:50});
+      await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:2,clientX:80,clientY:50});
+      await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='playing');
+      await page.locator('.pt-joystick').dispatchEvent('pointerup',{pointerId:2});
+      await page.getByRole('button',{name:'Exit practice',exact:true}).click();
+      await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='preview');
     }
     assert.ok(models.some(x => x.includes('/ezreal/')) && models.some(x => x.includes('/jinx/')), 'Both champion models load offline');
-    if (screenshots) await page.screenshot({ path: resolve(screenshots, `duel-${width}.png`), fullPage: true });
     await page.getByLabel('Arena mode', { exact: true }).selectOption('practice');
     assert.ok(await page.getByLabel('Q rank', { exact: true }).isEnabled());
-    await page.waitForFunction(() => document.querySelector('.pt-combo').textContent === 'Hit the dummy to start a combo');
+    await page.getByRole('button',{name:'Start Practice',exact:true}).click();
+    await page.waitForFunction(()=>!document.querySelector('.pt-skill[data-slot="Q"]').disabled);
+    await page.locator('.pt-skill[data-slot="Q"]').dispatchEvent('pointerdown',{pointerId:3});
+    await page.locator('.pt-skill[data-slot="Q"]').dispatchEvent('pointerup',{pointerId:3});
+    await page.waitForFunction(()=>document.querySelector('.pt-log').textContent.includes('Q'));
+    await page.getByRole('button',{name:'Exit practice',exact:true}).click();
     assert.deepEqual(errors, []);
     assert.deepEqual(external.filter(x => !x.endsWith('/app-data/database.json')), []);
     await page.locator('nav a').first().click();
     await page.waitForFunction(() => document.querySelectorAll('.pt-stage canvas').length === 0);
+    assert.equal(await page.evaluate(()=>document.body.style.overflow),'');
     await page.close();
-    console.log(`PASS offline 1v1: four modes, equal stats, controls, pause, two GLBs, navigation (${width}px)`);
+    console.log(`PASS offline landscape arena: preview, idle gate, four equal-stat modes, AA/joystick/skill start, restart/exit, two GLBs, navigation (${width}x${height})`);
   }
+
 } finally {
   await browser?.close();
   await new Promise((resolve) => server.close(resolve));
