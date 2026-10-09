@@ -91,6 +91,7 @@ jobs:
       - run: node tests/test_duel_bot.cjs
       - run: node tests/test_duel_mechanics.cjs
       - run: node tests/test_lane_training.cjs
+      - run: node tests/test_lane_multihit.cjs
       - run: node tests/test_dragon_lane.cjs
       - run: python -m unittest discover -s tests -q
       - name: Publish download packages to the release

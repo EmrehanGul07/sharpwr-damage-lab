@@ -77,7 +77,7 @@ async function createScene(container,profiles,{quality='high',studio=false,study
 
   trail.visible=!!frame.trail?.length;if(trail.visible){const vertices=trailGeometry.attributes.position;frame.trail.slice(-17).forEach((v,i)=>vertices.setXYZ(i,...v));trailGeometry.setDrawRange(0,Math.min(17,frame.trail.length));vertices.needsUpdate=true;}
   range.position.copy(hero).setY(.025);range.scale.setScalar((frame.range||550)/100);range.visible=!!frame.showRange;
-  attackCursor.position.set(...(frame.attackTarget||target.toArray())).setY(.075);attackCursor.visible=!!frame.attackCursor||!!frame.demo;
+  attackCursor.position.set(...(frame.attackTarget||target.toArray())).setY(.075);attackCursor.visible=!!frame.targetLock||!!frame.attackCursor||!!frame.demo;cursorMat.color.set(frame.targetLock?'#ff735e':'#ffd67c');if(frame.targetLock)attackCursor.position.set(...frame.targetLock.position).setY(.075);
   effects.begin();const hitPoint=target.clone().setY(1.12);
   for(const f of (frame.effects||[]).slice(-16))effects.draw(rig.profile,f.slot,prepareEffectFrame(T,rig,f,hero,target,{live:!!frame.practice,blendSeconds:frame.blendSeconds,time:frame.time||0,action:frame.action||'Idle',progress:frame.progress||0,speed:frame.speed||0,gaitPhase:frame.gaitPhase,loopDuration:frame.loopDuration}));
   for(const hit of(frame.impacts||[]).slice(-8))effects.impact(rig.profile,hit.action,hit.age,hit.point?new T.Vector3(...hit.point).setY(1.12):hitPoint,hit.seed||1,hit);
