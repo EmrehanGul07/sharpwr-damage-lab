@@ -246,6 +246,7 @@ try {
       await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='preview');
     }
     assert.ok(models.some(x => x.includes('/ezreal/')) && models.some(x => x.includes('/jinx/')), 'Both champion models load offline');
+    for (const name of ['stone','grass','rock','foliage']) assert.ok(models.some(x=>x.endsWith('/terrain/'+name+'-v1.webp')), name+' terrain texture loads offline');
     await page.getByLabel('Arena mode', { exact: true }).selectOption('practice');
     assert.ok(await page.getByLabel('Q rank', { exact: true }).isEnabled());
     await page.getByRole('button',{name:'Start Practice',exact:true}).click();
