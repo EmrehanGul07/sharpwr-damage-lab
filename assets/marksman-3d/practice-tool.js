@@ -27,28 +27,33 @@ function slotSummary(profile,slot,ranks){const rank=ranks[slot]||1,s=profile.pra
  return{title:`${slot} · ${name}`,text:parts.join(' · ')+' · '+mode+buff};}
 
 // ---------------------------------------------------------------- mount
-async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),quality=null,sceneOptions={},allowDownload=true,compact=false,nativeFullscreen=true}={}){
+async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),quality=null,sceneOptions={},allowDownload=true,compact=false,nativeFullscreen=true,orientation=null}={}){
  const P=catalogue.champions,Practice=scope.MarksmanPractice,Fight=scope.MarksmanFight,names=Object.keys(P);
  if(!P[champion])champion=names[0];
- let state=null,duel=null,duelRunning=false,scene=null,raf=0,last=0,disposed=false,joystick=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx',lastLog=null,lastSummary='';
+ let state=null,duel=null,duelRunning=false,active=false,started=false,entering=false,scene=null,raf=0,last=0,disposed=false,joystick=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx',lastLog=null,lastSummary='';
  const profileOf=name=>({...P[name],name});
- const inputYaw=()=>duel&&stage.clientWidth<stage.clientHeight?Math.PI/2:CAMERA_YAW;
+ const inputYaw=()=>CAMERA_YAW;
+ const screenDelta=(dx,dy)=>wrap.dataset.rotated==='true'?[dy,-dx]:[dx,dy];
+ function begin(){if(!active||entering||disposed||duel?.finished)return false;if(!started){started=true;duelRunning=true;last=0;wrap.dataset.phase='playing';}return true;}
  // ---- layout
  const stage=el('div',{class:'pt-stage','aria-label':'Practice arena'});
  const status=el('div',{class:'pt-loading',text:'Loading the arena…'});stage.append(status);
  const statsLine=el('div',{class:'pt-stats'}),buffLine=el('div',{class:'pt-buffs'}),combo=el('div',{class:'pt-combo'});
  const stick=el('div',{class:'pt-joystick',role:'button','aria-label':'Movement joystick',tabindex:'0'},el('i'));
  const hud=el('div',{class:'pt-hud',role:'group','aria-label':'Attack and skills'});
- const focusButton=el('button',{class:'pt-focus',type:'button',text:'⤢ Full screen','aria-pressed':'false'});
- const wrap=el('div',{class:'pt-stage-wrap'},stage,el('div',{class:'pt-overlay-top'},statsLine,buffLine),combo,stick,hud,focusButton);
+ const focusButton=el('button',{class:'pt-focus',type:'button',text:'✕ Exit practice','aria-label':'Exit practice','aria-pressed':'false'});
+ const restartButton=el('button',{class:'pt-restart',type:'button',text:'↻ Restart','aria-label':'Restart practice'});
+ const readyHint=el('div',{class:'pt-ready-hint',text:'Touch the joystick or a skill to begin'});
+ const previewLabel=el('div',{class:'pt-preview-label',text:'DRAGON LANE · ARENA PREVIEW'});
+ const wrap=el('div',{class:'pt-stage-wrap','data-phase':'preview'},stage,el('div',{class:'pt-overlay-top'},statsLine,buffLine),combo,stick,hud,focusButton,restartButton,readyHint,previewLabel);
  const championSelect=el('select',{'aria-label':'Champion'},names.map(n=>el('option',{value:n,text:n})));championSelect.value=champion;
  const levelSelect=el('select',{'aria-label':'Champion level'},Array.from({length:15},(_,i)=>el('option',{value:String(i+1),text:'Level '+(i+1)})));levelSelect.value='15';
  const qualitySelect=el('select',{'aria-label':'Render quality'},[['high','High quality'],['balanced','Balanced'],['low','Lightweight']].map(([v,t])=>el('option',{value:v,text:t})));qualitySelect.value=quality||(compact?'balanced':'high');
  const modeSelect=el('select',{'aria-label':'Arena mode'},[['practice','Training dummy'],['duel','1v1 bot']].map(([value,text])=>el('option',{value,text})));
  const opponentSelect=el('select',{'aria-label':'Bot champion'},names.map(n=>el('option',{value:n,text:n})));opponentSelect.value='Jinx';
  const difficultySelect=el('select',{'aria-label':'Bot difficulty'},['easy','medium','hard','impossible'].map(v=>el('option',{value:v,text:v[0].toUpperCase()+v.slice(1)})));difficultySelect.value='medium';
- const duelStart=el('button',{type:'button',text:'Start 1v1'}),duelPause=el('button',{type:'button',text:'Pause'});
- const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,duelStart,duelPause,el('span',{class:'pt-small',text:'Same stats in every mode · no items/runes · base-kit sandbox'}));duelSettings.hidden=true;
+ const startButton=el('button',{class:'pt-start',type:'button',text:'Start Practice',disabled:true});
+ const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,el('span',{class:'pt-small',text:'Same stats in every mode · no items/runes · base-kit sandbox'}));duelSettings.hidden=true;
  const rankSelects=Object.fromEntries(['Q','W','E','R'].map(slot=>[slot,el('select',{'aria-label':slot+' rank'},Array.from({length:slot==='R'?4:5},(_,r)=>el('option',{value:String(r),text:r?slot+' '+r:slot+' –'})))]));
  const noCd=el('input',{type:'checkbox'}),effectsBox=el('input',{type:'checkbox',checked:true}),rangeBox=el('input',{type:'checkbox'});
  const presetSelect=el('select',{'aria-label':'Dummy'},[...Object.keys(catalogue.practice_targets||{}),'Custom'].map(n=>el('option',{value:n,text:n==='Custom'?'Custom dummy':n+' (by level)'})));presetSelect.value=preset;
@@ -76,36 +81,36 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const panels=el('div',{class:'pt-panels'},
   el('section',{class:'pt-panel'},el('h3',{text:'Damage log'}),el('p',{class:'pt-small',text:'Newest first. Raw damage → after the dummy’s armor or magic resistance.'}),logList),
   el('section',{class:'pt-panel'},el('h3',{text:'What this practice simulates'}),simulated),notesPanel);
- root.replaceChildren(el('div',{class:'pt'+(compact?' pt-compact':'')},wrap,help,controls,panels));
+ root.replaceChildren(el('div',{class:'pt'+(compact?' pt-compact':'')},wrap,startButton,help,controls,panels));
 
  // ---- HUD buttons
  const buttons={};
  for(const slot of SLOTS){const b=el('button',{type:'button',class:'pt-skill','data-slot':slot},slot==='AA'?el('span',{class:'pt-aa',text:'Attack'}):el('img',{alt:'',draggable:'false'}),el('span',{class:'pt-shade'}),el('span',{class:'pt-cd'}),slot==='AA'?null:el('span',{class:'pt-key',text:slot}));buttons[slot]=b;hud.append(b);bindSkill(b,slot);}
  function bindSkill(b,slot){
   b.addEventListener('contextmenu',e=>e.preventDefault());
-  b.addEventListener('pointerdown',e=>{if(!state)return;e.preventDefault();capture(b,e);if(slot==='AA'){Practice.holdAttack(state,true);cast('AA');return;}aiming={slot,x:e.clientX,y:e.clientY,moved:false};Practice.aim(state,slot,state.target);});
-  b.addEventListener('pointermove',e=>{if(!aiming||aiming.slot!==slot)return;const dx=e.clientX-aiming.x,dy=e.clientY-aiming.y;if(Math.hypot(dx,dy)>8){aiming.moved=true;Practice.aim(state,slot,aimPoint(slot,dx,dy));}});
+  b.addEventListener('pointerdown',e=>{if(!state||!begin())return;e.preventDefault();capture(b,e);if(slot==='AA'){Practice.holdAttack(state,true);cast('AA');return;}aiming={slot,x:e.clientX,y:e.clientY,moved:false};Practice.aim(state,slot,state.target);});
+  b.addEventListener('pointermove',e=>{if(!aiming||aiming.slot!==slot)return;const [dx,dy]=screenDelta(e.clientX-aiming.x,e.clientY-aiming.y);if(Math.hypot(dx,dy)>8){aiming.moved=true;Practice.aim(state,slot,aimPoint(slot,dx,dy));}});
   const end=e=>{if(slot==='AA'){if(state)Practice.holdAttack(state,false);return;}if(!aiming||aiming.slot!==slot)return;const point=aiming.moved?state.aim:null;aiming=null;state.aim=null;state.aimSlot=null;if(e.type==='pointerup')cast(slot,point);};
   b.addEventListener('pointerup',end);b.addEventListener('pointercancel',end);
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cast(slot);}});}
  // Drag from a skill button: the drag direction on screen becomes the aim direction on the ground
  // (as on the Wild Rift HUD); AIM_PIXELS of drag reaches the skill's full range.
  function aimPoint(slot,dx,dy){const ind=Practice.aim(state,slot,state.target),range=ind.range||Practice.stats(state).range/100,len=Math.hypot(dx,dy),scale=Math.min(1,len/AIM_PIXELS)*range/(len||1),wx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))*scale,wz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))*scale;return[state.hero[0]+wx,0,state.hero[2]+wz];}
- function cast(slot,point){if(!state||duel&&(!duelRunning||duel.finished)||duel&&slot==='P')return;Practice.cast(state,slot,point||undefined);}
+ function cast(slot,point){if(!state||!begin()||duel&&slot==='P')return;Practice.cast(state,slot,point||undefined);}
 
  // ---- champion / settings
  function dummyValues(){if(presetSelect.value==='Custom')return null;const row=catalogue.practice_targets[presetSelect.value][state.level-1];return{hp:Math.round(row.hp),armor:Math.round(row.armor),mr:Math.round(row.mr),aaReduction:row.aa_reduction||0,label:presetSelect.value.split(' • ')[0]+' dummy'};}
  function applyDummy(){const v=dummyValues();if(v){Practice.setDummy(state,v);hpInput.value=v.hp;armorInput.value=v.armor;mrInput.value=v.mr;}else Practice.setDummy(state,{hp:clampNumber(hpInput.value,1,99999,2000),armor:clampNumber(armorInput.value,0,999,0),mr:clampNumber(mrInput.value,0,999,0),aaReduction:0,label:'Custom dummy'});}
  function clampNumber(v,a,b,fallback){const n=Number(v);return Number.isFinite(n)?Math.max(a,Math.min(b,n)):fallback;}
  // Hero and dummy start a few steps apart; on a portrait screen the dummy stands "up" the screen.
- function startPositions(){const up=[-Math.sin(inputYaw()),0,-Math.cos(inputYaw())];return stage.clientWidth&&stage.clientWidth<stage.clientHeight?{hero:[up[0]*-2,0,up[2]*-2],target:[up[0]*2,0,up[2]*2]}:{hero:[-2,0,0],target:[2,0,0]};}
- function selectChampion(name){lastLog=undefined;lastSummary='';champion=name;const keep=state?{hero:state.hero.slice(),target:state.target.slice()}:startPositions();keep.hero[1]=0;state=Practice.create(profileOf(name),{movements:Fight.MOVEMENT});state.hero=keep.hero;state.destination=keep.hero.slice();state.target=keep.target;Practice.setLevel(state,Number(levelSelect.value));state.noCooldowns=noCd.checked;if(modeSelect.value==='duel')prepareDuel();else{duel=null;applyDummy();}syncRanks();refreshIcons();refreshSimulated();loadChampionNotes();}
- function prepareDuel(){duel=scope.MarksmanDuel.create(profileOf(champion),profileOf(opponentSelect.value),{level:Number(levelSelect.value),difficulty:difficultySelect.value,movements:Fight.MOVEMENT,seed:1});state=duel.player;duelRunning=false;placing=false;joystick=null;keys.clear();aiming=null;last=0;duelPause.textContent='Pause';duelStart.textContent='Start 1v1';syncRanks();}
- function setMode(){const on=modeSelect.value==='duel';duelSettings.hidden=!on;controls.children[3].hidden=on;noCd.parentElement.hidden=on;resetCd.hidden=on;help.textContent=on?'1v1: move with the joystick, ground taps or arrow keys. Hold Attack; tap a skill at the bot or drag to aim. Both sides use normal cooldowns.':'Joystick or tap the ground to move. Tap a skill to cast it at the dummy, or drag from the skill to aim. Hold Attack to keep attacking.';for(const input of[...Object.values(rankSelects),noCd,resetCd,presetSelect,hpInput,armorInput,mrInput,resetButton,placeButton])input.disabled=on;selectChampion(champion);if(on){scene?.setCamera('tactical');for(const b of cameraButtons)b.classList.toggle('active',b.dataset.camera==='tactical');}}
+ function startPositions(){return{hero:[-3,0,0],target:[3,0,0]};}
+ function selectChampion(name){lastLog=undefined;lastSummary='';champion=name;const keep=state?{hero:state.hero.slice(),target:state.target.slice()}:startPositions();keep.hero[1]=0;state=Practice.create(profileOf(name),{movements:Fight.MOVEMENT});state.arena=scope.MarksmanArena.navigation;state.hero=state.arena.project(keep.hero);state.destination=state.hero.slice();state.target=state.arena.project(keep.target);Practice.setLevel(state,Number(levelSelect.value));state.noCooldowns=noCd.checked;if(modeSelect.value==='duel')prepareDuel();else{duel=null;applyDummy();}syncRanks();refreshIcons();refreshSimulated();loadChampionNotes();}
+ function prepareDuel(){duel=scope.MarksmanDuel.create(profileOf(champion),profileOf(opponentSelect.value),{level:Number(levelSelect.value),difficulty:difficultySelect.value,movements:Fight.MOVEMENT,arena:scope.MarksmanArena.navigation,seed:1});state=duel.player;duelRunning=false;placing=false;joystick=null;keys.clear();aiming=null;last=0;started=false;wrap.dataset.phase=active?'ready':'preview';syncRanks();}
+ function setMode(){const on=modeSelect.value==='duel';duelSettings.hidden=!on;controls.children[3].hidden=on;noCd.parentElement.hidden=on;resetCd.hidden=on;help.textContent=on?'1v1: move with the joystick, ground taps or arrow keys. Hold Attack; tap a skill at the bot or drag to aim. Both sides use normal cooldowns.':'Joystick or tap the ground to move. Tap a skill to cast it at the dummy, or drag from the skill to aim. Hold Attack to keep attacking.';for(const input of[...Object.values(rankSelects),noCd,resetCd,presetSelect,hpInput,armorInput,mrInput,resetButton,placeButton])input.disabled=on;selectChampion(champion);if(on){scene?.setCamera('rift');for(const b of cameraButtons)b.classList.toggle('active',b.dataset.camera==='rift');}}
  modeSelect.addEventListener('change',setMode);
  for(const input of[opponentSelect,difficultySelect])input.addEventListener('change',()=>{if(duel)prepareDuel();});
- duelStart.addEventListener('click',()=>{prepareDuel();duelRunning=true;duelStart.textContent='Restart 1v1';wrap.scrollIntoView({block:'start'});});
- duelPause.addEventListener('click',()=>{if(!duel||duel.finished)return;duelRunning=!duelRunning;duelPause.textContent=duelRunning?'Pause':'Resume';Practice.holdAttack(state,false);keys.clear();joystick=null;});
+ startButton.addEventListener('click',enterPractice);
+ restartButton.addEventListener('click',resetRound);
  function syncRanks(){for(const[slot,select]of Object.entries(rankSelects))select.value=String(state.ranks[slot]);}
  function refreshIcons(){const p=P[champion];for(const slot of SLOTS){const b=buttons[slot],img=b.querySelector('img'),name=slot==='AA'?'Basic attack':p.hud?.abilities?.[slot]?.name||slot;if(img){img.src=p.hud?.icons?.[slot]||'';}b.title=slot+' · '+name;b.setAttribute('aria-label',slot==='AA'?'Basic attack (hold to keep attacking)':slot+' · '+name);}}
  function refreshSimulated(){const p=profileOf(champion),T=p.practice,rows=[el('p',{class:'pt-small',text:'Numbers come from the SharpWR engine for this champion with no items or runes, after the target’s armor and magic resistance. '+(duel&&T.duel?'Mana, regeneration, stack/weapon mechanics and crowd control are active for this champion.':'Mana costs are not simulated.')}),el('div',{class:'pt-sim-row'},el('strong',{text:'Basic attack'}),el('span',{text:`windup ${T.attack.windup[0].toFixed(2)} s · ${T.attack.speed?'projectile '+Math.round(T.attack.speed)+' u/s':'instant hit'} · AD as physical damage; ${duel&&T.duel?'weapon/passive stacks are active':'on-hit passives are not simulated'}.${T.attack.note?' '+T.attack.note:''}`}))];
@@ -124,13 +129,18 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  qualitySelect.addEventListener('change',()=>loadScene());
  // After picking from a list, give the keys back to the arena (Q W E R would otherwise change the list).
  for(const select of[modeSelect,opponentSelect,difficultySelect,championSelect,levelSelect,qualitySelect,presetSelect,...Object.values(rankSelects)])select.addEventListener('change',()=>select.blur());
- // Full screen: the browser's own full screen where it works (web pages, also inside the Streamlit
- // frame); otherwise (the phone app) the arena covers the window.
- const isFull=()=>wrap.classList.contains('pt-full')||document.fullscreenElement===wrap;
- const fullLabel=()=>{const on=isFull();focusButton.textContent=on?'✕ Exit full screen':'⤢ Full screen';focusButton.setAttribute('aria-pressed',String(on));};
- focusButton.addEventListener('click',async()=>{if(isFull()){if(document.fullscreenElement===wrap)await document.exitFullscreen().catch(()=>{});wrap.classList.remove('pt-full');fullLabel();return;}
-  if(nativeFullscreen&&document.fullscreenEnabled&&wrap.requestFullscreen){try{await wrap.requestFullscreen();fullLabel();return;}catch{}}wrap.classList.add('pt-full');fullLabel();});
- const onFullscreen=()=>fullLabel();document.addEventListener('fullscreenchange',onFullscreen);
+ // Landscape session: true native lock where supported, rotated landscape surface elsewhere.
+ const priorOverflow=document.body.style.overflow;
+ function resizeArena(){if(!active)return;const w=window.innerWidth,h=window.innerHeight,rotate=w<h;wrap.dataset.rotated=String(rotate);wrap.style.width=(rotate?h:w)+'px';wrap.style.height=(rotate?w:h)+'px';wrap.style.left=(rotate?w:0)+'px';wrap.style.transform=rotate?'rotate(90deg)':'';}
+ function resetRound(){clearKeys();stopStick();aiming=null;cursor=null;started=false;last=0;lastLog=undefined;lastSummary='';if(modeSelect.value==='duel')prepareDuel();else{state=null;selectChampion(champion);}wrap.dataset.phase=active?'ready':'preview';if(state)updateHud(duel?scope.MarksmanDuel.frame(duel,{particles:true}):Practice.frame(state,{particles:true}));}
+ async function enterPractice(){if(active||entering||!scene)return;active=true;entering=true;wrap.classList.add('pt-full');document.body.style.overflow='hidden';focusButton.setAttribute('aria-pressed','true');resizeArena();resetRound();
+  // Call browser fullscreen before awaiting anything to preserve the initiating user gesture.
+  const full=nativeFullscreen&&document.fullscreenEnabled&&wrap.requestFullscreen?wrap.requestFullscreen().catch(()=>{}):Promise.resolve();
+  try{await full;if(orientation)await orientation.enter();else await screen.orientation?.lock?.('landscape').catch(()=>{});}catch{}finally{entering=false;if(!active||disposed){void orientation?.leave();return;}resizeArena();last=0;}}
+ async function exitPractice(){if(!active)return;active=false;started=false;duelRunning=false;clearKeys();stopStick();aiming=null;state.aim=null;state.aimSlot=null;wrap.classList.remove('pt-full');wrap.dataset.phase='preview';wrap.dataset.rotated='false';for(const key of['width','height','left','transform'])wrap.style[key]='';document.body.style.overflow=priorOverflow;focusButton.setAttribute('aria-pressed','false');
+  if(document.fullscreenElement===wrap)await document.exitFullscreen().catch(()=>{});if(orientation)await orientation.leave().catch(()=>{});else screen.orientation?.unlock?.();resetRound();}
+ focusButton.addEventListener('click',exitPractice);
+ const onFullscreen=()=>{if(active&&nativeFullscreen&&!document.fullscreenElement)void exitPractice();};document.addEventListener('fullscreenchange',onFullscreen);window.addEventListener('resize',resizeArena);
 
  // ---- notes
  function entry(name=champion){return notes.champions[name]||(notes.champions[name]={tested:false});}
@@ -144,44 +154,44 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  showButton.addEventListener('click',()=>{exportArea.hidden=!exportArea.hidden;showButton.textContent=exportArea.hidden?'Show all notes':'Hide all notes';if(!exportArea.hidden){exportArea.value=notesMarkdown(notes,catalogue);exportArea.focus();exportArea.select();}});
 
  // ---- movement input
- stick.addEventListener('pointerdown',e=>{e.preventDefault();capture(stick,e);joystick={x:e.clientX,y:e.clientY,dx:0,dz:0};});
- stick.addEventListener('pointermove',e=>{if(!joystick)return;const dx=e.clientX-joystick.x,dy=e.clientY-joystick.y,len=Math.hypot(dx,dy),f=Math.min(1,30/(len||1));stick.firstChild.style.transform=`translate(${dx*f}px,${dy*f}px)`;joystick.dx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))/Math.max(30,len);joystick.dz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))/Math.max(30,len);});
+ stick.addEventListener('pointerdown',e=>{if(!begin())return;e.preventDefault();capture(stick,e);joystick={x:e.clientX,y:e.clientY,dx:0,dz:0};});
+ stick.addEventListener('pointermove',e=>{if(!joystick)return;const [dx,dy]=screenDelta(e.clientX-joystick.x,e.clientY-joystick.y),len=Math.hypot(dx,dy),f=Math.min(1,30/(len||1));stick.firstChild.style.transform=`translate(${dx*f}px,${dy*f}px)`;joystick.dx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))/Math.max(30,len);joystick.dz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))/Math.max(30,len);});
  const stopStick=()=>{joystick=null;stick.firstChild.style.transform='';if(state)Practice.move(state,state.hero.slice());};stick.addEventListener('pointerup',stopStick);stick.addEventListener('pointercancel',stopStick);
  stage.addEventListener('pointermove',e=>{cursor={x:e.clientX,y:e.clientY};});stage.addEventListener('pointerleave',()=>{cursor=null;});
  const typing=e=>{const t=e.target;return t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.tagName==='INPUT'&&!['checkbox','radio','button','range'].includes(t.type);};
  const onKey=e=>{if(disposed||!state||typing(e))return;const key=e.key.length===1?e.key.toUpperCase():e.key;
   if(e.type==='keyup'){keys.delete(key);if(e.code==='Space')Practice.holdAttack(state,false);return;}
-  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key)){e.preventDefault();keys.add(key);return;}
-  if(e.repeat)return;if(e.code==='Space'){e.preventDefault();Practice.holdAttack(state,true);cast('AA');return;}
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key)){if(!begin())return;e.preventDefault();keys.add(key);return;}
+  if(e.repeat)return;if(e.code==='Space'){if(!begin())return;e.preventDefault();Practice.holdAttack(state,true);cast('AA');return;}
   if('QWER'.includes(key)&&key.length===1){if(!root.isConnected||!wrap.getBoundingClientRect().height)return;e.preventDefault();const point=cursor&&scene?scene.pickGround(cursor.x,cursor.y):null;cast(key,point);}
   if(key==='Escape'&&wrap.classList.contains('pt-full'))focusButton.click();};
- const clearKeys=()=>{keys.clear();if(state)Practice.holdAttack(state,false);};
+ const clearKeys=()=>{keys.clear();joystick=null;stick.firstChild.style.transform='';aiming=null;if(state){Practice.holdAttack(state,false);state.pending=null;state.buffered=null;state.queued=null;state.destination=state.hero.slice();state.aim=null;state.aimSlot=null;}};
  document.addEventListener('keydown',onKey);document.addEventListener('keyup',onKey);window.addEventListener('blur',clearKeys);
 
  // ---- scene
  async function loadScene(){scene?.dispose();scene=null;stage.replaceChildren(status);status.textContent='Loading the arena…';qualitySelect.disabled=true;
-  try{scene=await scope.MarksmanScene.createScene(stage,P,{studio:true,quality:qualitySelect.value,study:true,followHero:true,...sceneOptions});if(disposed){scene.dispose();return;}status.remove();scene.setCamera(cameraButtons.find(b=>b.classList.contains('active')).dataset.camera);
-   scene.setInteraction(point=>{if(!state)return;if(placing){Practice.placeDummy(state,point);placing=false;placeButton.classList.remove('active');placeButton.textContent='Move dummy';return;}Practice.move(state,point);});}
-  catch(error){console.error(error);status.textContent='The 3D arena could not load. Check the connection and try again.';stage.append(status);}finally{qualitySelect.disabled=false;}}
- selectChampion(champion);await loadScene();
+  try{scene=await scope.MarksmanScene.createScene(stage,P,{studio:true,quality:qualitySelect.value,study:true,followHero:true,terrain:'dragon-lane',...sceneOptions});if(disposed){scene.dispose();return;}status.remove();scene.setCamera(cameraButtons.find(b=>b.classList.contains('active')).dataset.camera);
+   scene.setInteraction(point=>{if(!state||!begin())return;if(placing){Practice.placeDummy(state,point);placing=false;placeButton.classList.remove('active');placeButton.textContent='Move dummy';return;}Practice.move(state,point);});}
+  catch(error){console.error(error);status.textContent='The 3D arena could not load. Check the connection and try again.';stage.append(status);}finally{qualitySelect.disabled=false;startButton.disabled=!scene||disposed;}}
+ modeSelect.value='duel';setMode();await loadScene();
 
  // ---- loop
  const ARROWS={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
  function tick(ts){if(disposed)return;if(!root.isConnected){dispose();return;}raf=requestAnimationFrame(tick);const dt=last?Math.min(.1,(ts-last)/1000):0;last=ts;if(!state||document.hidden)return;
   if(joystick&&(joystick.dx||joystick.dz))Practice.move(state,[state.hero[0]+joystick.dx*1.5,0,state.hero[2]+joystick.dz*1.5]);
   if(keys.size){let dy=0,dx=0;for(const k of keys){const a=ARROWS[k];if(a){dy+=a[0];dx+=a[1];}}if(dx||dy){const len=Math.hypot(dx,dy),sx=dx/len*40,sy=dy/len*40,wx=(sx*Math.cos(inputYaw())+sy*Math.sin(inputYaw()))/40,wz=(-sx*Math.sin(inputYaw())+sy*Math.cos(inputYaw()))/40;Practice.move(state,[state.hero[0]+wx*1.5,0,state.hero[2]+wz*1.5]);}}
-  const options={particles:effectsBox.checked,range:rangeBox.checked};if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);updateHud(f);}
+  const options={particles:effectsBox.checked,range:rangeBox.checked};if(active&&started){if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);}const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);updateHud(f);}
  function updateHud(f){const s=Practice.stats(state);statsLine.textContent=`${champion} · Lv ${state.level} · AD ${s.ad.toFixed(1)}${s.bonusAD?' (+'+s.bonusAD+')':''} · AS ${s.as.toFixed(3)} · Range ${Math.round(s.range)} · MS ${s.ms}`;
   buffLine.replaceChildren(...f.buffs.map(b=>el('span',{class:'pt-chip',text:b.label||`${b.slot} ${b.remaining.toFixed(1)}s`})));
-  if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT'}[duel.result]:duelRunning?'FIGHT':duel.time?'PAUSED':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP`;}
+  if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT'}[duel.result]:started?'FIGHT':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP`;}
   const sum=Practice.summary(state),show=sum.count?sum:state.lastCombo,text=show?`${sum.count?'Combo':'Last combo'} ${Math.round(show.total)} damage · ${show.count} hits · ${show.seconds.toFixed(2)} s · ${Math.round(show.dps)} DPS`:'Hit the dummy to start a combo';if(!duel&&text!==lastSummary){combo.textContent=text;lastSummary=text;}
   for(const slot of SLOTS){const b=buttons[slot],learned=slot==='AA'||slot==='P'||state.ranks[slot]>0,left=Math.max(0,(state.deadlines[slot]||0)-state.time),T=state.profile.practice,total=slot==='AA'?1/s.as:slot==='P'?0:T.slots[slot].cooldown?.[Math.max(0,state.ranks[slot]-1)]||0,cd=b.querySelector('.pt-cd'),shade=b.querySelector('.pt-shade'),shown=slot!=='AA'&&left>.05;
-   b.disabled=!!duel&&(!duelRunning||duel.finished||slot==='P');b.classList.toggle('locked',!learned||!!duel&&slot==='P');b.classList.toggle('cooling',shown);shade.style.setProperty('--cd',shown&&total?String(Math.min(1,left/total)):'0');cd.textContent=shown?(left>=1?Math.ceil(left):left.toFixed(1)):'';b.classList.toggle('active',f.action===slot||state.buffs.some(x=>x.slot===slot&&x.end>state.time));}
+   b.disabled=!active||entering||!!duel&&(duel.finished||slot==='P');b.classList.toggle('locked',!learned||!!duel&&slot==='P');b.classList.toggle('cooling',shown);shade.style.setProperty('--cd',shown&&total?String(Math.min(1,left/total)):'0');cd.textContent=shown?(left>=1?Math.ceil(left):left.toFixed(1)):'';b.classList.toggle('active',f.action===slot||state.buffs.some(x=>x.slot===slot&&x.end>state.time));}
   const latest=state.log.at(-1);if(latest!==lastLog){lastLog=latest;logList.replaceChildren(...state.log.slice(-14).reverse().map(logRow));}}
  function logRow(l){const parts=l.parts?Object.entries(l.parts).map(([k,v])=>`${Math.round(v.raw)} → ${Math.round(v.dealt)} ${k}`).join(' + '):(l.text||'');return el('li',{},el('span',{class:'pt-time',text:l.t.toFixed(2)+'s'}),el('strong',{text:l.slot}),el('span',{text:parts}),l.note?el('em',{text:l.note}):null);}
  raf=requestAnimationFrame(tick);
- function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onKey);window.removeEventListener('blur',clearKeys);document.removeEventListener('fullscreenchange',onFullscreen);scene?.dispose();scene=null;}
- return{dispose,get state(){return state;},get duel(){return duel;},get scene(){return scene;},select:name=>{championSelect.value=name;selectChampion(name);}};
+ function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onKey);window.removeEventListener('blur',clearKeys);document.removeEventListener('fullscreenchange',onFullscreen);window.removeEventListener('resize',resizeArena);void exitPractice();scene?.dispose();scene=null;}
+ return{dispose,get state(){return state;},get duel(){return duel;},get scene(){return scene;},get phase(){return wrap.dataset.phase;},select:name=>{championSelect.value=name;selectChampion(name);}};
 }
 const API={mount,notesMarkdown,loadNotes,NOTES_KEY,NOTE_FIELDS,slotSummary};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanPracticeTool=API;
 })(typeof globalThis!=='undefined'?globalThis:this);

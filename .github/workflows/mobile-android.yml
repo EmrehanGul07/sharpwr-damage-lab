@@ -52,6 +52,7 @@ jobs:
         run: |
           node tests/test_duel_bot.cjs
           node tests/test_duel_mechanics.cjs
+          node tests/test_dragon_lane.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

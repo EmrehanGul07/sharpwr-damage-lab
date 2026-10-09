@@ -4,9 +4,9 @@
 const node=typeof module!=='undefined'&&module.exports,P=node?require('./practice.js'):scope.MarksmanPractice,G=node?require('./geometry.js'):scope.MarksmanGeometry,Bot=node?require('./duel-bot.js'):scope.MarksmanDuelBot,Mechanics=node?require('./duel-mechanics.js'):scope.MarksmanDuelMechanics;
 const DT=1/120,dist=(a,b)=>Math.hypot(a[0]-b[0],a[2]-b[2]),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function health(p,level){const l=p.practice.levels,i=level-1;for(const k of['hp','armor','mr'])if(!Number.isFinite(l[k]?.[i]))throw Error('Missing duel stat: '+p.name+' '+k);return{label:p.name,max:l.hp[i],hp:l.hp[i],armor:l.armor[i],mr:l.mr[i],aaReduction:0,mark:null,lastHit:-Infinity,defeatedAt:null,first:null,total:0,count:0};}
-function create(playerProfile,botProfile,{level=15,difficulty='medium',seed=1,movements={},distance=600,duration=180}={}){
+function create(playerProfile,botProfile,{level=15,difficulty='medium',seed=1,movements={},arena=null,distance=600,duration=180}={}){
  if(!Number.isInteger(level)||level<1||level>15||!Number.isFinite(distance)||distance<100||distance>2000||!Number.isFinite(duration)||duration<=0)throw Error('Invalid duel settings');
- const d={time:0,accumulator:0,finished:false,result:null,duration,bot:Bot.create(difficulty,seed),player:P.create(playerProfile,{movements}),enemy:P.create(botProfile,{movements}),resolveHit,mechanics:Mechanics};
+ const d={time:0,accumulator:0,finished:false,result:null,duration,bot:Bot.create(difficulty,seed),player:P.create(playerProfile,{movements,arena}),enemy:P.create(botProfile,{movements,arena}),resolveHit,mechanics:Mechanics};
  for(const s of[d.player,d.enemy]){P.setLevel(s,level);s.health=health(s.profile,level);s.duel=d;Mechanics.init(s);}
  d.player.hero=[-distance/200,0,0];d.enemy.hero=[distance/200,0,0];d.player.dummy=d.enemy.health;d.enemy.dummy=d.player.health;
  for(const s of[d.player,d.enemy]){s.destination=s.hero.slice();s.previous=s.hero.slice();}sync(d);Bot.observe(d.bot,{time:0,enemy:publicActor(d.player)});return d;
