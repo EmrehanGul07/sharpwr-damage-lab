@@ -8,6 +8,7 @@ on:
       - "sharpwr/practice_data.py"
       - "app-data/practice.json"
       - "tests/test_practice_tool.cjs"
+      - "tests/test_dragon_lane.cjs"
       - "tests/test_practice_data.py"
       - "data/marksman-art-direction.json"
       - "data/riot/marksman-skill-icons.json"

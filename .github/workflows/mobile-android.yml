@@ -7,6 +7,9 @@ on:
   push:
     paths:
       - "mobile/**"
+      - "tests/test_duel_bot.cjs"
+      - "tests/test_duel_mechanics.cjs"
+      - "tests/test_dragon_lane.cjs"
       - "app-data/**"
       - "assets/riot/**"
       # The Practice tab runs the web Practice Tool scripts.
