@@ -61,3 +61,13 @@ This reproduces the supplied dragon-lane composition approximately; it does not 
 The prior 40.8 camera radius undersized champions relative to the supplied reference. Radius is now 18.8, keeping yaw/elevation/FOV and fixed player tracking. The reference Ezreal body occupies approximately 12–13% of image height; this is the visual calibration target, rather than the earlier mistaken 5% estimate. This remains an approximate calibration across poses and aspect ratios.
 
 Paving, grass, rock and evergreen foliage now have separate bundled original imagegen albedo maps (see static/marksman-3d/terrain/README.md). No shared stone map is applied to other instance batches. Trees use an irregular layered radial profile, rocks use smoother higher-detail geometry, and brush uses curved double-sided leaf cards. Texture completion invalidates the paused preview render, and disposal releases image textures. Gameplay distances and native shell are unchanged; min APK stays 0.8.4.
+
+## Control ownership and locomotion correction (mobile 0.8.7 / web 7.1.8)
+
+Each joystick, AA and skill gesture owns its pointer ID. Foreign pointers cannot steer, release or replace a held joystick or skill aim. Joystick gestures must start inside the circular control; dragging onto it from AA, a skill or the ground cannot activate it. Cancellation and lost capture release only the owner. Ground taps no longer start a session or move the champion; the explicit Move dummy tool still accepts ground taps. Desktop arrow keys remain supported.
+
+Human Practice/1v1 actors disable implicit approach on out-of-range AA and targeted skills. Bots and core callers keep the existing approach default. Holding a joystick while attacking remains an independent movement command; dash/blink/jump abilities retain their own movement. Releasing the joystick clears queued movement, including during cast locks.
+
+Walking gait accumulates from actual ground distance and freezes at rest, rather than resampling global time divided by a changing movement speed. The GLB adapter uses that phase. Projectile launch sockets are cached per immutable launch signature, avoiding repeated live-skeleton switches to old cast poses every frame; cache size is bounded to 64 entries per rig. The previous adapter already activated one clip at a time, so this is not a fix for five simultaneous active mixer clips.
+
+Tests include genuine Chromium touch capture on all three viewports, simultaneous joystick/AA and independent release, foreign pointer rejection, outside-control drag, stationary out-of-range casting, and GLB gait stability across time/speed changes and idle/resume. No native changes; min APK remains 0.8.4.

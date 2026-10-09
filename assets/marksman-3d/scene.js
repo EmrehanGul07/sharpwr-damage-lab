@@ -93,12 +93,15 @@ async function createScene(container,profiles,{quality='high',studio=false,study
  return{render,setCamera,resetCamera,dispose,useModel,pickGround,setInteraction:callback=>{onGround=callback;},renderer,software,get rig(){return rig;}};
 }
  // Re-sample the launch pose deterministically. Playback/seek never depend on prior frames.
+ const launchSourceCache=new WeakMap();
  function prepareEffectFrame(T,model,f,pos,destination,animation){
   let source=f.source?new T.Vector3(...f.source):model.sockets.muzzle?.getWorldPosition(new T.Vector3())||pos.clone().setY(1.2),target=f.target?new T.Vector3(...f.target):destination.clone().setY(1.12);
   if(!f.source&&f.progress>=(f.release??.35)&&Number.isFinite(f.launchTime)){
+   let cache=launchSourceCache.get(model);if(!cache){cache=new Map();launchSourceCache.set(model,cache);}const key=JSON.stringify([f.slot,f.launchTime,f.seed,f.launchHero,f.launchTarget]);
+   if(cache.has(key))source=cache.get(key).clone();else{
    const savedPosition=model.root.position.clone(),savedQuaternion=model.root.quaternion.clone(),launch=new T.Vector3(...f.launchHero),aim=new T.Vector3(...f.launchTarget).sub(launch);model.root.position.copy(launch);model.root.rotation.y=Math.atan2(aim.x,aim.z);
    MarksmanRig.animateRig(model,{time:f.launchTime,action:f.slot,progress:f.release??.35,speed:0});model.root.updateMatrixWorld(true);source=model.sockets.muzzle?.getWorldPosition(new T.Vector3())||launch.clone().setY(1.2);
-   model.root.position.copy(savedPosition);model.root.quaternion.copy(savedQuaternion);MarksmanRig.animateRig(model,animation);model.root.updateMatrixWorld(true);
+   model.root.position.copy(savedPosition);model.root.quaternion.copy(savedQuaternion);MarksmanRig.animateRig(model,animation);model.root.updateMatrixWorld(true);cache.set(key,source.clone());if(cache.size>64)cache.delete(cache.keys().next().value);}
    target=new T.Vector3(...f.launchTarget);target.y=source.y;
   }
   return {...f,hero:pos,source,target,start:f.start?new T.Vector3(...f.start):undefined,end:f.end?new T.Vector3(...f.end):undefined};
