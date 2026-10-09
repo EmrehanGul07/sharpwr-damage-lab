@@ -40,9 +40,13 @@ function trace(from,to,kind='walk'){if(kind==='blink'||kind==='jump'){const leng
  for(let i=1;i<=steps;i++){const u=i/steps,p=[from[0]+(to[0]-from[0])*u,0,from[2]+(to[2]-from[2])*u];if(passable(p)){out=p;continue;}
   if(kind!=='walk')break;const x=[p[0],0,out[2]],z=[out[0],0,p[2]];if(passable(x))out=x;else if(passable(z))out=z;else break;}
  out[1]=0;return out;}
+// Reference scale: long tower-to-tower lane; game distances remain 100 units/metre.
+for(const zone of LANE.zones)for(let i=0;i<4;i++)zone[i]*=2;
+for(const obstacle of LANE.obstacles)for(let i=0;i<3;i++)obstacle[i]*=2;
+LANE.bounds=LANE.bounds.map(v=>v*2);
 const navigation={passable,project:projectPoint,trace,layout:LANE};
 function createDragonArena(T,scene,{software=false,quality='high'}={}){
- const root=new T.Group();root.name='SharpWR_Dragon_Lane';scene.add(root);const geos=new Map(),mats=new Map(),textures=[],water=[],crystals=[];
+ const root=new T.Group();root.scale.setScalar(2);root.name='SharpWR_Dragon_Lane';scene.add(root);const geos=new Map(),mats=new Map(),textures=[],water=[],crystals=[];
  const hash=n=>{const x=Math.sin(n*127.1+81.2)*43758.5453;return x-Math.floor(x);};
  function material(color,roughness=.95){const key=color+roughness;if(!mats.has(key))mats.set(key,new T.MeshStandardMaterial({color,roughness,metalness:roughness<.55?.25:0}));return mats.get(key);}
  function geometry(kind){if(!geos.has(kind))geos.set(kind,kind==='plane'?new T.PlaneGeometry(1,1):kind==='slab'?(()=>{const shape=new T.Shape();shape.moveTo(-.5,-.28);for(const[x,y]of[[-.3,-.5],[.4,-.46],[.5,.15],[.32,.5],[-.47,.4]])shape.lineTo(x,y);shape.closePath();const g=new T.ExtrudeGeometry(shape,{depth:.045,bevelEnabled:true,bevelThickness:.004,bevelSize:.008,bevelSegments:1,steps:1});g.rotateX(Math.PI/2);return g;})():kind==='rock'?new T.DodecahedronGeometry(1,0):kind==='leaf'?new T.IcosahedronGeometry(1,1):kind==='cylinder'?new T.CylinderGeometry(1,1,1,12):kind==='cone'?new T.ConeGeometry(1,1,8):kind==='ring'?new T.TorusGeometry(1,.018,4,48):new T.BoxGeometry(1,1,1));return geos.get(kind);}
@@ -53,35 +57,52 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
   for(let i=0;i<3400;i++){const x=hash(i+seed)*256,y=hash(i+seed+7)*256,v=hash(i+seed+31);ctx.fillStyle=v>.5?'rgba(195,206,129,.12)':'rgba(16,40,24,.15)';ctx.fillRect(x,y,1+v*3,1+v*2);}
   for(let i=0;i<130;i++){const x=hash(i+seed+60)*256,y=hash(i+seed+80)*256;ctx.strokeStyle=grass?'rgba(154,177,91,.18)':'rgba(49,67,42,.17)';ctx.lineWidth=grass?1:.6;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3,y-(grass?7:2));ctx.lineTo(x+5,y-4);ctx.stroke();}
   const tex=new T.CanvasTexture(canvas);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(5,4);tex.colorSpace=T.SRGBColorSpace;textures.push(tex);return tex;}
- const turf=noiseTexture('#c1c5b1',340,true),stone=noiseTexture('#d3d1bd',690);if(turf)for(const color of['#304c31','#476b3a','#63764b'])material(color).map=turf;if(stone){stone.repeat.set(1,1);material('#ffffff').map=stone;}
+ const turf=noiseTexture('#c1c5b1',340,true),stone=noiseTexture('#d3d1bd',690);if(turf)for(const color of['#304c31','#476b3a','#63764b','#356849','#6d7860'])material(color).map=turf;if(stone){stone.repeat.set(1,1);material('#ffffff').map=stone;}
  // Hand-authored palette: blue-green river, sage grass, warm limestone, cool slate cliffs.
- flat('#304c31',0,0,29,22,-.12);flat('#476b3a',0,0,24,8,-.105);flat('#63764b',0,0,23.1,4.85,-.085);
+ flat('#173e39',0,0,72,64,-.14);
+ // Broad organic surfaces rather than a rectangular tiled arena.
+ function patch(name,color,points,y){const shape=new T.Shape();shape.moveTo(points[0][0],-points[0][1]);for(const[x,z]of points.slice(1))shape.lineTo(x,-z);shape.closePath();const g=new T.ShapeGeometry(shape);g.rotateX(-Math.PI/2);geos.set(name,g);const m=new T.Mesh(g,material(color));m.position.y=y;m.receiveShadow=true;root.add(m);return m;}
+ patch('lane-meadow','#356849',[[-15,-6],[-8,-5.5],[-3,-4.3],[5,-5.6],[14,-5],[15,5],[8,5.4],[2,3.8],[-4,4.4],[-12,5.6],[-15,3]],-.105);
+ patch('lane-earth','#6d7860',[[-12,-1.9],[-8,-2.4],[-3,-1.7],[2,-2.2],[7,-1.8],[12,-2.4],[12,1.9],[8,2.2],[4,1.6],[0,2.3],[-5,1.8],[-9,2.4],[-12,2]],-.085);
  for(const[x,z,w,h]of LANE.brush)flat('#253e28',x,z,w+.3,h+.25,-.078);
  // The river meets the lane, then opens into the dragon-pit basin.
- const riverShape=new T.Shape();const banks=[[-3.8,1.7],[-2.8,2.1],[-1.7,2.25],[.35,2.1],[1,3],[.8,4.8],[1.1,6.8],[-1.1,8.3],[-6.5,8.5],[-7.1,6],[-3.9,5.8],[-3.5,4.3]];riverShape.moveTo(banks[0][0],-banks[0][1]);for(const[x,z]of banks.slice(1))riverShape.lineTo(x,-z);riverShape.closePath();const riverGeo=new T.ShapeGeometry(riverShape);riverGeo.rotateX(-Math.PI/2);geos.set('river-bank',riverGeo);const river=new T.Mesh(riverGeo,material('#427d78',.5));river.position.y=-.062;root.add(river);
- const waterDetail=noiseTexture('#91afa0',1034);if(waterDetail){waterDetail.repeat.set(.15,.15);river.material.map=waterDetail;}
+ const riverShape=new T.Shape();const banks=[[-3.8,1.7],[-2.8,2.1],[-1.7,2.25],[.35,2.1],[1,3],[.8,4.8],[1.1,6.8],[-1.1,8.3],[-6.5,8.5],[-7.1,6],[-3.9,5.8],[-3.5,4.3]];riverShape.moveTo(banks[0][0],-banks[0][1]);for(const[x,z]of banks.slice(1))riverShape.lineTo(x,-z);riverShape.closePath();const riverGeo=new T.ShapeGeometry(riverShape);riverGeo.rotateX(-Math.PI/2);geos.set('river-bank',riverGeo);const river=new T.Mesh(riverGeo,material('#245e66',.5));river.position.y=-.062;root.add(river);
+ const waterDetail=noiseTexture('#76a69c',1034);if(waterDetail){waterDetail.repeat.set(.15,.15);river.material.map=waterDetail;}
  for(let i=0;i<banks.length;i++){const[x,z]=banks[i];mesh('rock','#7d8a64',x,.015,z,.27,.07,.25);}
  for(let i=0;i<14;i++){const m=flat('#79b8a5',-3+hash(i+2)*3.7,2.9+hash(i+5)*4.6,.3+hash(i+4)*.55,.022,-.047);m.rotation.z=.1;water.push({m,x:m.position.x});}
- // Lane paving: offset, irregular slabs and a lighter central worn footpath.
- const tileRows=[];for(let x=-22;x<=22;x++)for(let z=-4;z<=4;z++){const seed=(x+25)*19+z+5,px=x*.5+(z%2)*.23,pz=z*.46;if(Math.abs(px)>11.2||hash(seed+203)<(Math.abs(z)>2?.48:.12))continue;tileRows.push({p:[px+(hash(seed+63)-.5)*.09,-.027,pz+(hash(seed+37)-.5)*.08],s:[.44+hash(seed+22)*.045,1,.39+hash(seed+18)*.04],r:[0,hash(seed+9)*.55,0],color:Math.abs(z)<2?(hash(seed)>.5?'#979981':'#848c72'):hash(seed)>.45?'#828e6e':'#6b7d58'});}
+ // Large fractured flagstone ribbons, with open grassy seams and varied edges.
+ const tileRows=[];
+ for(let i=0;i<45;i++){const x=-11.4+i*.51,z=Math.sin(x*.37)*.25,seed=i*29;
+  if(i%7!==3)tileRows.push({p:[x,-.025,z+(hash(seed)-.5)*.38],s:[1.05+hash(seed+3)*.8,1,.8+hash(seed+5)*.65],r:[0,(hash(seed+9)-.5)*.65,0],color:i%3?'#929789':'#a2a28e'});
+  for(const sign of[-1,1])if(hash(seed+sign+30)>.34)tileRows.push({p:[x,-.029,z+sign*(1.15+hash(seed+14)*.33)],s:[.75+hash(seed+6)*.65,1,.52+hash(seed+12)*.62],r:[0,(hash(seed+20)-.5)*1.2,0],color:sign<0?'#788879':'#899383'});
+ }
  function batch(kind,rows){if(software){for(const row of rows){const m=mesh(kind,row.color,...row.p,...row.s);if(row.r)m.rotation.set(...row.r);if(kind==='slab')m.renderOrder=-9;}return;}
   const geo=geometry(kind),mat=material('#ffffff'),b=new T.InstancedMesh(geo,mat,rows.length),dummy=new T.Object3D();for(const[i,row]of rows.entries()){dummy.position.set(...row.p);dummy.scale.set(...row.s);dummy.rotation.set(...(row.r||[0,0,0]));dummy.updateMatrix();b.setMatrixAt(i,dummy.matrix);b.setColorAt(i,new T.Color(row.color));}b.receiveShadow=true;b.castShadow=quality==='high'&&kind!=='slab';root.add(b);}
  batch('slab',software?tileRows.filter((_,i)=>i%2===0):tileRows);
  // Low stone shoulders and continuous cliff boundaries follow the same walkable rectangles.
- const rockRows=[];for(let i=0;i<62;i++){const x=-12.6+i*.41,z=-4.0-(hash(i+9)*.38);rockRows.push({p:[x,.23,z],s:[.42,.38+hash(i)*.32,.47],r:[.1,hash(i)*Math.PI,.08],color:i%3?'#596a59':'#758271'});}
- for(let i=0;i<47;i++){const x=-12.5+i*.54;if(x>-4.1&&x<1.6)continue;rockRows.push({p:[x,.3,4.23],s:[.6,.62+hash(i+7)*.38,.63],r:[.08,hash(i+5)*Math.PI,.03],color:i%3?'#556857':'#718575'});}
- for(const[x,z,r]of LANE.obstacles.slice(2))rockRows.push({p:[x,.5,z],s:[r*1.1,.8,r*1.15],r:[0,hash(x+z)*3,0],color:'#627769'});
+ const rockRows=[];for(let i=0;i<62;i++){const x=-12.6+i*.41,z=-4.0-Math.sin(x*.4)*.25-(hash(i+9)*.38);rockRows.push({p:[x,.23,z],s:[.42,.38+hash(i)*.32,.47],r:[.1,hash(i)*Math.PI,.08],color:i%3?'#3c5958':'#60716b'});}
+ for(let i=0;i<47;i++){const x=-12.5+i*.54;if(x>-4.1&&x<1.6)continue;rockRows.push({p:[x,.3,4.23],s:[.6,.62+hash(i+7)*.38,.63],r:[.08,hash(i+5)*Math.PI,.03],color:i%3?'#3b585c':'#5b716e'});}
+ for(const[x,z,r]of LANE.obstacles.slice(2).map(row=>row.map(v=>v/2)))rockRows.push({p:[x,.5,z],s:[r*1.1,.8,r*1.15],r:[0,hash(x+z)*3,0],color:'#627769'});
  batch('rock',rockRows);
  // Tall lane brush, clustered grass blades: readable silhouettes and dark centres.
- const blades=[],smallGrass=[];for(const[x,z,w,h]of LANE.brush){for(let i=0;i<(software?12:quality==='low'?42:85);i++){const px=x+(hash(i+x*17)-.5)*w,pz=z+(hash(i+z*11)-.5)*h,height=.45+hash(i+13)*.35;blades.push({p:[px,height*.46,pz],s:[.09,height,.07],r:[(hash(i)-.5)*.15,hash(i+3)*6,.15],color:i%4?'#668a3d':'#92a453'});}}
+ const blades=[],smallGrass=[];for(const[x,z,w,h]of LANE.brush){for(let i=0;i<(software?12:quality==='low'?42:85);i++){const px=x+(hash(i+x*17)-.5)*w,pz=z+(hash(i+z*11)-.5)*h,height=.45+hash(i+13)*.35;blades.push({p:[px,height*.46,pz],s:[.09,height,.07],r:[(hash(i)-.5)*.15,hash(i+3)*6,.15],color:i%4?'#34665c':'#608775'});}}
  batch('cone',blades);
- for(let i=0;i<(software?30:120);i++){const x=(hash(i+802)*2-1)*11.5,z=(i%2?1:-1)*(2.08+hash(i+408)*.45);smallGrass.push({p:[x,.12,z],s:[.07,.24,.065],color:'#638849'});}batch('cone',smallGrass);
- // Jungle canopy stays beyond the playable walls so actors remain visible.
- const treeLeaves=[],trunks=[];for(let i=0;i<(software?10:quality==='low'?15:25);i++){const x=-12.8+hash(i+110)*25.6,z=i%2?-5.6-hash(i+140)*2.9:5.3+hash(i+150)*3.2;if(x>-4.6&&x<1.8&&z>0)continue;const h=1.65+hash(i+900)*1.0;
-  trunks.push({p:[x,h*.35,z],s:[.14,h*.7,.14],color:'#5e6244'});for(let k=0;k<3;k++)treeLeaves.push({p:[x+(hash(i+k)-.5)*.45,h*(.65+k*.2),z],s:[.86-k*.12,.63,.83-k*.1],color:['#244b37','#346746','#53804b'][k]});}
- batch('cylinder',trunks);batch('leaf',treeLeaves);
+ for(let i=0;i<(software?30:120);i++){const x=(hash(i+802)*2-1)*11.5,z=(i%2?1:-1)*(2.08+hash(i+408)*.45);smallGrass.push({p:[x,.12,z],s:[.07,.24,.065],color:'#4d8769'});}batch('cone',smallGrass);
+ // Evergreen silhouettes and dense forest mass from the supplied lane views.
+ const treeLeaves=[],trunks=[];for(let i=0;i<(software?24:quality==='low'?65:120);i++){
+  const x=-23+hash(i+110)*46,z=(i%2?-1:1)*(5.3+hash(i+140)*13);
+  if(x>-7.8&&x<2.3&&z>0&&z<10)continue;const h=1.6+hash(i+900)*1.7;
+  trunks.push({p:[x,h*.32,z],s:[.10,h*.64,.10],color:'#4f5344'});
+  for(let k=0;k<4;k++)treeLeaves.push({p:[x,h*(.43+k*.17),z],s:[.85-k*.16,h*.58,.80-k*.15],r:[0,hash(i+k)*6,0],color:['#244f49','#326456','#477861','#729077'][k]});
+ }
+ batch('cylinder',trunks);batch('cone',treeLeaves);
+ // The outer lane wall uses connected dressed stone, with worn buttresses.
+ const wallRows=[];for(let i=0;i<31;i++){const x=-12+i*.8;
+  wallRows.push({p:[x,.30,-4.65],s:[.84,.60,.35],r:[0,0,.015*Math.sin(i)],color:i%3?'#607771':'#819087'});
+  if(i%4===0)wallRows.push({p:[x,.42,-4.52],s:[.42,.86,.58],color:'#6e827a'});
+ }batch('box',wallRows);
  // Two outer tower platforms: decorative only, with physical footprints.
- for(const[x,z]of LANE.obstacles.slice(0,2)){const color=x<0?'#69c9dd':'#e79081';mesh('cylinder','#758276',x,-.035,z,1.3,.10,1.3);mesh('cylinder','#53665f',x,.18,z,.76,.35,.76);mesh('cylinder','#8a9687',x,.55,z,.53,.72,.53);mesh('cylinder','#b0b5a0',x,1.15,z,.35,.65,.35);
+ for(const[x,z]of LANE.obstacles.slice(0,2).map(row=>row.map(v=>v/2))){const color=x<0?'#69c9dd':'#e79081';mesh('cylinder','#758276',x,-.035,z,1.3,.10,1.3);mesh('cylinder','#53665f',x,.18,z,.76,.35,.76);mesh('cylinder','#8a9687',x,.55,z,.53,.72,.53);mesh('cylinder','#b0b5a0',x,1.15,z,.35,.65,.35);
   for(let k=0;k<4;k++){const a=k*Math.PI/2;mesh('box','#7c9084',x+Math.cos(a)*.34,1.56,z+Math.sin(a)*.34,.16,.46,.16);}
   const c=mesh('rock',color,x,1.83,z,.22,.43,.22,.4);c.material.emissive=new T.Color(color);c.material.emissiveIntensity=.65;crystals.push(c);
   const ring=mesh('ring','#b4a775',x,.032,z,1.2,1.2,1.2,.4);ring.rotation.x=-Math.PI/2;}
@@ -89,7 +110,7 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
  const emblem=mesh('ring','#699484',-5,-.041,7,1.14,1.14,1.14);emblem.rotation.x=-Math.PI/2;for(let i=0;i<3;i++){const m=flat('#8aa791',-5+(i-1)*.32,7,.16,.6,-.038);m.rotation.z=(i-1)*.35;}
  function animate(t){for(const w of water)w.m.position.x=w.x+Math.sin(t*.2+w.x)*.065;for(const c of crystals)c.material.emissiveIntensity=.6+Math.sin(t*1.5)*.08;}
  function dispose(){scene.remove(root);geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());}
- return{root,animate,dispose,metrics:()=>({arenaMeshes:root.children.filter(o=>o.isMesh).length,arenaInstances:software?0:tileRows.length+rockRows.length+blades.length+smallGrass.length+treeLeaves.length+trunks.length,terrain:'dragon-lane'})};
+ return{root,animate,dispose,metrics:()=>({arenaMeshes:root.children.filter(o=>o.isMesh).length,arenaInstances:software?0:tileRows.length+rockRows.length+blades.length+smallGrass.length+treeLeaves.length+trunks.length+wallRows.length,terrain:'dragon-lane'})};
 }
 
 function createArena(T,scene,options={}){return options.terrain==='dragon-lane'?createDragonArena(T,scene,options):createLegacyArena(T,scene,options);}
