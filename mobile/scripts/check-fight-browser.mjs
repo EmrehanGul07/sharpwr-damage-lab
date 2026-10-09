@@ -246,7 +246,7 @@ try {
       if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-fight-${width}.png`) });
       if(difficulty==='easy'){
         await page.waitForFunction(()=>window.__practiceState.duel.lane.units.length>0);
-        const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1);m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.range=4;m.next=Infinity;return d.player.hero.slice();});
+        const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1);d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.range=4;m.next=Infinity;return d.player.hero.slice();});
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerdown',{pointerId:33});
         await page.waitForFunction(()=>window.__practiceState.duel.player.training.cs>0,null,{timeout:10000});
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerup',{pointerId:33});
