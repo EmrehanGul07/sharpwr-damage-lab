@@ -1,6 +1,6 @@
-# SharpWR Damage Lab — V7.1.20
+# SharpWR Damage Lab — V7.1.21
 
-### Live arena expansion (mobile 0.8.19)
+### Live arena expansion (mobile 0.8.20)
 
 AA and Ezreal E now travel towards their acquired target each simulation tick, and their rendered head follows that same path. Jinx uses three separate trap collision points, first-second ultimate damage growth, and recent-contribution champion/tower takedown triggers. The mobile arena reads the matching saved Build Lab loadout each round, applies equipment/rune stats, scales resolved skills by AD/AP, and runs the existing item attack scheduler at impact. Four 60-second drills cover kiting, skillshot dodging, last hitting and tower trades.
 

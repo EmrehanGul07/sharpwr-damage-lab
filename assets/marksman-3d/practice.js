@@ -97,8 +97,8 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  if(S&&!rankOf(state,slot))return false;
  if((slot==='AA'||!state.noCooldowns)&&(state.deadlines[slot]||0)>t+1e-9)return false;
  if(state.duel?.mechanics?.canCast(state,slot,true)===false)return false;
- const special=state.duel?.mechanics?.specialCast(state,slot);if(special!=null)return special;
- if(S&&profile.skills[slot]?.cast==='instant'){startBuff(state,slot,t);setCooldown(state,slot,S);log(state,{t,slot,text:'buff'});return true;}
+ const special=state.duel?.mechanics?.specialCast(state,slot);if(special!=null){if(special)state.loadout?.cast(slot,t);return special;}
+ if(S&&profile.skills[slot]?.cast==='instant'){state.duel?.mechanics?.onCast(state,{slot,start:t,launch:t,fxEnd:t});state.loadout?.cast(slot,t);startBuff(state,slot,t);setCooldown(state,slot,S);log(state,{t,slot,text:'buff'});return true;}
  // A skill pressed during an attack windup cancels the attack; during another cast it waits (input buffer).
  const busy=locking(state);if(busy){if(slot!=='AA'&&busy.slot==='AA'&&t<busy.launch)cancelAttack(state,busy);else{if(slot!=='AA')state.buffered={slot,point,until:t+BUFFER};return false;}}
  const indicator=indicatorFor(state,slot,point||state.target);

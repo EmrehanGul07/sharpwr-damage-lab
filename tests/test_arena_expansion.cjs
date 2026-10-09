@@ -16,6 +16,7 @@ function run(d,t){for(let i=0;i<Math.ceil(t/D.DT);i++)D.step(d,D.DT);}
 {const d=round('Jinx'),s=d.player;for(const kind of['champion','tower']){s.time=2;s.combat.excitedUntil=0;d.mechanics.takedown(s,{kind,health:{contributors:{0:0}}});assert.equal(s.combat.excitedUntil,8);s.time=4;s.combat.excitedUntil=0;d.mechanics.takedown(s,{kind,health:{contributors:{0:0}}});assert.equal(s.combat.excitedUntil,0);}}
 // All database marksmen obey resource and manual control rules, regardless of difficulty.
 for(const name of Object.keys(C)){const d=round(name),s=d.player;assert(s.resource);assert(Number.isFinite(s.resource.mana));s.autoApproach=false;const start=s.hero.slice();P.holdAttack(s,true);run(d,1);assert.deepEqual(s.hero,start,name);}
+for(const name of Object.keys(C))for(const slot of ['Q','W','E','R']){const d=round(name),s=d.player,before=s.resource.mana,cost=d.mechanics.cost(s,slot);if(P.cast(s,slot))assert(Math.abs(s.resource.mana-(before-cost))<1e-7,`${name} ${slot} pays its resource cost, including instant buffs`);}
 // Third-hit and five-stack mechanics are attached to the victim, not another locked target.
 {const d=round('Vayne'),s=d.player;P.holdAttack(s,true);run(d,4);assert(s.log.some(h=>h.parts?.true?.raw>0));}
 {const d=round("Kai'Sa"),s=d.player;P.holdAttack(s,true);run(d,5);assert(s.log.some(h=>h.parts?.magic?.raw>20));}
