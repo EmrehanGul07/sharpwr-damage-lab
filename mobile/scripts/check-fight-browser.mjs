@@ -290,6 +290,10 @@ try {
       await page.locator('.pt-joystick').dispatchEvent('pointerdown',{pointerId:2,clientX:sx,clientY:sy});
       await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:2,clientX:sx+30,clientY:sy});
       await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='playing');
+      await page.evaluate(()=>{const d=window.__practiceState.duel;d.bot.next=Infinity;d.player.health.hp=0;});
+      await page.getByLabel('Training results',{exact:true}).waitFor({state:'visible'});
+      assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'','death clears joystick pointer before release');
+      assert.ok(await page.locator('.pt-skill[data-slot="Q"]').isDisabled(),'dead actor cannot cast');
       await page.locator('.pt-joystick').dispatchEvent('pointerup',{pointerId:2});
       await page.getByRole('button',{name:'Exit practice',exact:true}).click();
       await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='preview');
