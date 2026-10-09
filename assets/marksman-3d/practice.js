@@ -32,7 +32,7 @@ function step(state,dt,movements=state.movements){if(!Number.isFinite(dt)||dt<0)
  state.events=state.events.filter(e=>state.time<e.start+e.duration+.45);state.buffs=state.buffs.filter(b=>state.time<b.end);return state;}
 function dashPosition(state,e,move,to,u){const f=move.kind==='blink'?(u>=.38?1:0):clamp((u-.16)/.46,0,1),ease=move.kind==='blink'?f:f*f*(3-2*f);state.hero=e.hero.map((v,i)=>v+(to[i]-v)*ease);state.hero[1]=move.kind==='jump'?Math.sin(clamp((u-.16)/.62,0,1)*Math.PI)*.65:0;state.destination=state.hero.slice();state.destination[1]=0;}
 function walk(state,dt,speed){state.hero[1]=0;const dist=length(state.hero,state.destination);if(dist>.015){const distance=Math.min(dist,dt*speed),dx=(state.destination[0]-state.hero[0])/dist,dz=(state.destination[2]-state.hero[2])/dist;state.hero[0]+=dx*distance;state.hero[2]+=dz*distance;state.facing=Math.atan2(dx,dz);state.moving=true;}}
-function frame(state,{particles=true,range=false}={}){if(tool(state))return frameTool(state,{particles,range});const active=state.events.find(e=>state.time>=e.start&&state.time<e.start+e.duration),action=active?.slot||(state.moving?'Walk':'Idle'),progress=active?clamp((state.time-active.start)/active.duration,0,1):state.time%1.2/1.2,effects=particles?state.events.filter(e=>state.time>=e.start&&state.time<e.start+e.duration).map(e=>({slot:e.slot,progress:(state.time-e.start)/e.duration,age:state.time-e.start,seed:e.seed,release:e.release,launchTime:e.start+e.release*e.duration,launchHero:e.hero,launchTarget:e.target,start:e.hero,end:e.landing||undefined,empowered:e.empowered,colorSlot:e.colorSlot})).concat(buffEffects(state)):[],impacts=state.events.filter(e=>['AA','Q','R'].includes(e.slot)).map(e=>({action:e.slot,point:e.target.slice(),age:state.time-e.start-e.duration*(state.profile.presentation?.impact?.[e.slot]??.74),seed:e.seed})).filter(e=>e.age>=0&&e.age<.35),indicator=state.aimSlot?Geo.indicator(state.profile,state.aimSlot,state.hero,state.aim||state.target,state.target,{rank:state.rank,level:state.level},state.movements):null;
+function frame(state,{particles=true,range=false}={}){if(tool(state))return frameTool(state,{particles,range});const active=state.events.find(e=>state.time>=e.start&&state.time<e.start+e.duration),action=active?.slot||(state.moving?'Walk':'Idle'),progress=active?clamp((state.time-active.start)/active.duration,0,1):state.time%1.2/1.2,effects=particles?state.events.filter(e=>state.time>=e.start&&state.time<e.start+e.duration).map(e=>({slot:e.slot,progress:(state.time-e.start)/e.duration,age:state.time-e.start,seed:e.seed,release:e.release,launchTime:e.start+e.release*e.duration,launchHero:e.boltOrigin||e.hero,launchTarget:e.target,start:e.hero,end:e.landing||undefined,empowered:e.empowered,colorSlot:e.colorSlot})).concat(buffEffects(state)):[],impacts=state.events.filter(e=>['AA','Q','R'].includes(e.slot)).map(e=>({action:e.slot,point:e.target.slice(),age:state.time-e.start-e.duration*(state.profile.presentation?.impact?.[e.slot]??.74),seed:e.seed})).filter(e=>e.age>=0&&e.age<.35),indicator=state.aimSlot?Geo.indicator(state.profile,state.aimSlot,state.hero,state.aim||state.target,state.target,{rank:state.rank,level:state.level},state.movements):null;
  return{champion:state.profile.name,time:state.time,hero:state.hero.slice(),target:state.target.slice(),turntable:state.facing,action,progress,speed:state.moving?1:0,gaitPhase:state.time/1.2*Math.PI*2,loopDuration:action==='Walk'?1.2:action==='Idle'?3:0,effects,impacts,showTarget:true,showRange:range,range:(Geo.spec(state.profile,'AA',{level:state.level}).range||0)*Geo.UNITS,attackCursor:action==='AA',practice:true,buffs:state.buffs.map(b=>({slot:b.slot,remaining:Math.max(0,b.end-state.time)})),aim:state.aim,indicator,destination:state.destination.slice()};}
 function buffEffects(state){return state.buffs.filter(b=>state.time>=b.start&&state.time<b.end).map(b=>({slot:b.slot,progress:.5,age:state.time-b.start,seed:b.seed,persistent:true}));}
 
@@ -42,21 +42,21 @@ function at(list,i){return Array.isArray(list)&&list.length?list[clamp(i,0,list.
 function levelIndex(state){return clamp(state.level,1,15)-1;}
 function rankOf(state,slot){return state.ranks?.[slot]??state.rank;}
 function activeBuffs(state,t=state.time){return state.buffs.filter(b=>t>=b.start&&t<b.end);}
-function bonusAS(state,t=state.time){let v=0;for(const b of activeBuffs(state,t))v+=b.as||0;for(const[slot,values]of Object.entries(tool(state).rank_as||{})){const r=rankOf(state,slot);if(r)v+=at(values,r-1);}return v;}
+function bonusAS(state,t=state.time){let v=state.duel?.mechanics?.bonusAS(state,t)||0;for(const b of activeBuffs(state,t))v+=b.as||0;for(const[slot,values]of Object.entries(tool(state).rank_as||{})){const r=rankOf(state,slot);if(r)v+=at(values,r-1);}return v;}
 function attackSpeed(state,t=state.time){const T=tool(state);return T.levels.as[levelIndex(state)]+T.as_ratio*bonusAS(state,t);}
 function bonusAD(state,t=state.time){return activeBuffs(state,t).reduce((v,b)=>v+(b.ad||0),0);}
-function attackRange(state,t=state.time){return(tool(state).levels.range[levelIndex(state)]+activeBuffs(state,t).reduce((v,b)=>v+(b.range||0),0))/UNITS;}
-function moveSpeed(state){return tool(state).levels.ms[levelIndex(state)]/UNITS;}
+function attackRange(state,t=state.time){return(tool(state).levels.range[levelIndex(state)]+(state.duel?.mechanics?.rangeBonus(state)||0)+activeBuffs(state,t).reduce((v,b)=>v+(b.range||0),0))/UNITS;}
+function moveSpeed(state){return tool(state).levels.ms[levelIndex(state)]/UNITS*(state.duel?.mechanics?.moveMultiplier(state)??1);}
 // Windup by bonus attack speed, interpolated in the engine's 0.1 steps.
 function windup(state,t=state.time){const w=tool(state).attack.windup,x=clamp(bonusAS(state,t),0,(w.length-1)/10)*10,i=Math.floor(x),f=x-i;return w[i]*(1-f)+w[Math.min(i+1,w.length-1)]*f;}
 // Projectile travel from the engine's table (seconds every 250 units).
 function travelTime(table,distance){if(!table)return 0;const x=clamp(distance*UNITS/250,0,table.length-1),i=Math.floor(x),f=x-i;return table[i]*(1-f)+table[Math.min(i+1,table.length-1)]*f;}
-function stats(state){const T=tool(state),i=levelIndex(state);return{ad:T.levels.ad[i]+bonusAD(state),bonusAD:bonusAD(state),as:attackSpeed(state),bonusAS:bonusAS(state),range:attackRange(state)*UNITS,ms:T.levels.ms[i]};}
+function stats(state){const T=tool(state),i=levelIndex(state);return{ad:T.levels.ad[i]+bonusAD(state),bonusAD:bonusAD(state),as:attackSpeed(state),bonusAS:bonusAS(state),range:attackRange(state)*UNITS,ms:moveSpeed(state)*UNITS};}
 function rawDamage(state,slot){const s=tool(state).slots[slot],r=rankOf(state,slot);if(!s?.damage||!r)return null;const out={};for(const[kind,rows]of Object.entries(s.damage))out[kind]=at(at(rows,r-1),levelIndex(state));return out;}
 function attackDamage(state){const T=tool(state),raw={physical:at(T.attack.damage.physical,levelIndex(state))+bonusAD(state)},bonus=[];
  for(const b of activeBuffs(state))if(b.attackBonus){const extra=rawDamage(state,b.attackBonus);if(extra)bonus.push(extra);}
  if(state.nextAttack){bonus.push(state.nextAttack.raw);state.nextAttack=null;}
- for(const extra of bonus)for(const[kind,v]of Object.entries(extra))raw[kind]=(raw[kind]||0)+v;return raw;}
+ for(const extra of bonus)for(const[kind,v]of Object.entries(extra))raw[kind]=(raw[kind]||0)+v;return state.duel?.mechanics?.attackDamage(state,raw)||raw;}
 function dummy({hp,armor,mr,aaReduction=0,label='Custom'}){return{label,max:hp,hp,armor,mr,aaReduction,mark:null,lastHit:-Infinity,defeatedAt:null,first:null,total:0,count:0};}
 function setDummy(state,values){const d=state.dummy;state.dummy=dummy({hp:values.hp??d.max,armor:values.armor??d.armor,mr:values.mr??d.mr,aaReduction:values.aaReduction??d.aaReduction,label:values.label??d.label});state.hits=state.hits.filter(h=>h.at>state.time+1e9);}
 function resetDummy(state){if(state.dummy.count)state.lastCombo=summary(state);setDummy(state,{});}
@@ -76,7 +76,7 @@ function animating(state,t=state.time){return state.events.find(e=>t>=e.start&&t
 // Movement input during an attack windup, a cast or a dash waits for it (the attack still fires) and
 // then moves the hero where the input points at that moment; after that it cuts the follow-through.
 function interrupt(state,to){state.pending=null;if(locking(state)){state.queued=to;return false;}const anim=animating(state);if(anim)anim.animEnd=state.time;return true;}
-function cancelAttack(state,e){state.events=state.events.filter(x=>x!==e);state.hits=state.hits.filter(h=>h.event!==e);state.deadlines.AA=e.previousDeadline;if(e.consumed)state.nextAttack=e.consumed;}
+function cancelAttack(state,e){state.duel?.mechanics?.onCancel(state,e);state.events=state.events.filter(x=>x!==e);state.hits=state.hits.filter(h=>h.event!==e);state.deadlines.AA=e.previousDeadline;if(e.consumed)state.nextAttack=e.consumed;}
 function inReach(state,slot,from=state.hero){const s=tool(state).slots[slot],reach=at(s.reach,rankOf(state,slot)-1),spec=Geo.spec(state.profile,slot,{rank:rankOf(state,slot),level:state.level}),r=spec.range??(reach==null?null:reach/UNITS);return r===null||length(from,state.target)<=r+DUMMY_RADIUS;}
 function segmentDistance(p,a,b){const dx=b[0]-a[0],dz=b[2]-a[2],len2=dx*dx+dz*dz||1e-9,u=clamp(((p[0]-a[0])*dx+(p[2]-a[2])*dz)/len2,0,1);return Math.hypot(a[0]+dx*u-p[0],a[2]+dz*u-p[2]);}
 // Does the cast reach the dummy? Shapes follow the indicator the player saw.
@@ -96,6 +96,8 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  if(state.duel&&(state.health.hp<=0||state.duel.finished))return false;
  if(S&&!rankOf(state,slot))return false;
  if((slot==='AA'||!state.noCooldowns)&&(state.deadlines[slot]||0)>t+1e-9)return false;
+ if(state.duel?.mechanics?.canCast(state,slot)===false)return false;
+ const special=state.duel?.mechanics?.specialCast(state,slot);if(special!=null)return special;
  if(S&&profile.skills[slot]?.cast==='instant'){startBuff(state,slot,t);setCooldown(state,slot,S);log(state,{t,slot,text:'buff'});return true;}
  // A skill pressed during an attack windup cancels the attack; during another cast it waits (input buffer).
  const busy=locking(state);if(busy){if(slot!=='AA'&&busy.slot==='AA'&&t<busy.launch)cancelAttack(state,busy);else{if(slot!=='AA')state.buffered={slot,point,until:t+BUFFER};return false;}}
@@ -107,7 +109,7 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  let wind,lock,total,cooldown;
  if(slot==='AA'){const interval=1/attackSpeed(state);wind=windup(state);total=Math.max(wind+.12,Math.min(study,interval));lock=wind;cooldown=interval;}
  else if(slot==='P'){wind=Math.max(.06,study*release);total=study;lock=0;cooldown=0;}
- else{const channel=S.channel;wind=Math.max(S.cast||0,.06);if(channel){lock=channel.mobile?wind:channel.seconds;total=channel.seconds+.25;}else{lock=S.cast||0;total=wind+(1-release)*study;}cooldown=null;}
+ else{const channel=S.channel;let castTime=S.cast||0;if(state.duel&&S.cast_by_as){const x=Math.min(S.cast_by_as.length-1,bonusAS(state)*10),i=Math.floor(x);castTime=S.cast_by_as[i]+(S.cast_by_as[Math.min(i+1,S.cast_by_as.length-1)]-S.cast_by_as[i])*(x-i);}wind=Math.max(castTime,.06);if(channel){lock=channel.mobile?wind:channel.seconds;total=channel.seconds+.25;}else{lock=castTime;total=wind+(1-release)*study;}cooldown=null;}
  const hero=state.hero.slice(),motion=state.movements[profile.name]?.[slot],landing=motion?indicator.endpoint.slice():null,seed=state.events.length+71+Math.floor(t*7)%97;
  if(landing){landing[0]=clamp(landing[0],-BOUNDS[0],BOUNDS[0]);landing[2]=clamp(landing[2],-BOUNDS[1],BOUNDS[1]);}
  const e={slot,start:t,duration:total,release,hero,landing,motion,indicator,seed,launch:t+wind,lockEnd:t+lock,animEnd:t+total,previousDeadline:state.deadlines[slot]||0,...(slot==='AA'?empowered(state):{})};
@@ -129,7 +131,7 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  if(S&&S.mode==='attack'&&S.attacks==='next')state.nextAttack={slot,raw:rawDamage(state,slot)};
  if(S&&(S.buff||profile.skills[slot]?.buff_seconds))startBuff(state,slot,e.launch);
  if(slot==='AA')state.deadlines.AA=t+cooldown;else if(S)setCooldown(state,slot,S);
- state.events.push(e);return true;}
+ state.events.push(e);state.duel?.mechanics?.onCast(state,e);return true;}
 function setCooldown(state,slot,S){const cd=at(S.cooldown,rankOf(state,slot)-1);if(!state.noCooldowns&&Number.isFinite(cd))state.deadlines[slot]=state.time+cd;}
 // The dummy is solid: the hero stops at its edge (dashes may pass through, but never land inside).
 function outside(state,p){const d=length(p,state.target),min=DUMMY_RADIUS+HERO_RADIUS;if(d>=min)return p;const dx=d>1e-6?(p[0]-state.target[0])/d:-1,dz=d>1e-6?(p[2]-state.target[2])/d:0;p[0]=state.target[0]+dx*min;p[2]=state.target[2]+dz*min;return p;}
@@ -138,9 +140,10 @@ function log(state,entry){state.log.push(entry);if(state.log.length>40)state.log
 function number(state,t,slot,kind,amount,extra={}){state.numberSeq=(state.numberSeq||0)+1;state.numbers.push({t,slot,kind,amount,seq:state.numberSeq,...extra});}
 function land(state,h){const d=state.dummy,t=h.at;if(d.defeatedAt!==null)return;
  if(h.skip){number(state,t,h.slot,'none',0,{note:h.skip});log(state,{t,slot:h.slot,text:'hit · damage not simulated',note:h.skip});return;}
- if(h.mark){d.mark={slot:h.slot,raw:h.mark.raw,until:t+h.mark.window};number(state,t,h.slot,'none',0,{note:'mark'});log(state,{t,slot:h.slot,text:'mark applied'});return;}
+ if(h.mark){d.mark={slot:h.slot,raw:h.mark.raw,until:t+h.mark.window};number(state,t,h.slot,'none',0,{note:'mark'});log(state,{t,slot:h.slot,text:'mark applied'});state.duel?.mechanics?.onHit(state,h,false);return;}
+ state.duel?.mechanics?.beforeHit(state,h);
  apply(state,t,h.slot,h.raw,h.attack);
- if(d.mark&&d.mark.slot!==h.slot&&t<=d.mark.until){const m=d.mark;d.mark=null;apply(state,t,m.slot+' detonation',m.raw,false);}}
+ let flux=false;if(d.mark&&d.mark.slot!==h.slot&&t<=d.mark.until){const m=d.mark;d.mark=null;apply(state,t,m.slot+' detonation',m.raw,false);flux=true;}state.duel?.mechanics?.onHit(state,h,flux);}
 function apply(state,t,slot,raw,attack){const d=state.dummy;let dealt=0;const parts={};for(const[kind,value]of Object.entries(raw||{})){if(!value)continue;const v=mitigate(state,kind,value,attack);parts[kind]={raw:value,dealt:v};dealt+=v;number(state,t,slot,kind,v);}
  if(d.first===null)d.first=t;d.total+=dealt;d.count++;d.lastHit=t;d.hp=Math.max(0,d.hp-dealt);if(d.hp<=0)d.defeatedAt=t;log(state,{t,slot,parts,dealt});}
 function stepTool(state,dt,movements){const previous=state.time;state.time+=dt;const t=state.time,d=state.dummy;
@@ -158,7 +161,7 @@ function stepTool(state,dt,movements){const previous=state.time;state.time+=dt;c
  if(!(lock&&lock.landing&&!lock.landed))outside(state,state.hero);
  state.events=state.events.filter(e=>t<e.fxEnd+.45);state.buffs=state.buffs.filter(b=>t<b.end);state.numbers=state.numbers.filter(n=>t-n.t<NUMBER_LIFE);return state;}
 function frameTool(state,{particles,range}){const t=state.time,active=animating(state),action=active?.slot||(state.moving?'Walk':'Idle'),walkLoop=1.2*2.3/moveSpeed(state),progress=active?animProgress(active,t):action==='Walk'?t%walkLoop/walkLoop:t%3/3;
- const effects=particles?state.events.filter(e=>t>=e.start&&t<e.fxEnd).map(e=>({slot:e.slot,progress:effectProgress(e,t),impactAt:IMPACT_AT,age:t-e.start,seed:e.seed,release:e.release,launchTime:e.launch,launchHero:e.hero,launchTarget:e.target,start:e.hero,end:e.landing||undefined,empowered:e.empowered,colorSlot:e.colorSlot})).concat(buffEffects(state)):[];
+ const effects=particles?state.events.filter(e=>t>=e.start&&t<e.fxEnd).map(e=>({slot:e.slot,progress:effectProgress(e,t),impactAt:IMPACT_AT,age:t-e.start,seed:e.seed,release:e.release,launchTime:e.launch,launchHero:e.boltOrigin||e.hero,launchTarget:e.target,start:e.hero,end:e.landing||undefined,empowered:e.empowered,colorSlot:e.colorSlot})).concat(buffEffects(state)):[];
  const impacts=state.events.filter(e=>e.hit&&e.slot!=='P').map(e=>({action:e.slot,point:e.target.slice(),age:t-e.arrive,seed:e.seed,empowered:e.empowered,colorSlot:e.colorSlot})).filter(e=>e.age>=0&&e.age<TAIL),indicator=state.aimSlot?indicatorFor(state,state.aimSlot,state.aim||state.target):null,d=state.dummy;
  return{champion:state.profile.name,time:t,hero:state.hero.slice(),target:state.target.slice(),turntable:state.facing,action,progress,speed:state.moving?1:0,gaitPhase:t/walkLoop*Math.PI*2,loopDuration:action==='Walk'?walkLoop:action==='Idle'?3:0,effects,impacts,showTarget:true,showRange:range,range:attackRange(state)*UNITS,attackCursor:action==='AA',practice:true,buffs:state.buffs.map(b=>({slot:b.slot,remaining:Math.max(0,b.end-t)})),aim:state.aim,indicator,destination:state.destination.slice(),
   dummy:{hp:d.hp,max:d.max,label:d.label,defeated:d.defeatedAt!==null,mark:d.mark?{slot:d.mark.slot,remaining:d.mark.until-t}:null},numbers:state.numbers.map(n=>({slot:n.slot,kind:n.kind,amount:n.amount,note:n.note,seq:n.seq,age:t-n.t}))};}

@@ -192,6 +192,8 @@ def _slot(name, slot):
     buff = _buffs(name).get(slot)
     if buff:
         out["buff"] = buff
+    if name == "Jinx" and slot == "W":
+        out["cast_by_as"] = [_round(kits[-1].cast_time(slot, 0, bonus)) for bonus in WINDUP_STEPS]
     return out
 
 
@@ -330,7 +332,49 @@ def champion(name):
     rank_as = _rank_attack_speed(name)
     if rank_as:
         record["rank_as"] = rank_as
+    if name in ("Ezreal", "Jinx"):
+        record["duel"] = _duel_mechanics(name)
     return record
+
+
+def _duel_mechanics(name):
+    """Pilot mechanics from repository observations and the reference Kit, not difficulty knobs."""
+    kit = _kit(name, _max_ranks(), 15)
+    resources = {k: [_round(champion_level_stats(name, level)[k]) for level in LEVELS]
+                 for k in ("mana", "hp_regen_per_5s", "mana_regen_per_5s")}
+    costs = {s: [_kit(name, dict(_max_ranks(), **{s: r})).cost(s, 0)
+                 for r in range(1, _rank_limit(s) + 1)] for s in SLOTS}
+    common = {"resources": resources, "costs": costs,
+              "source": "data/marksman-ability-catalogue.json; sharpwr/marksman_kits.py"}
+    if name == "Ezreal":
+        values = []
+        for stack in range(5):
+            kit.state["rising_spell_force"] = stack
+            values.append(_round(kit.bonus_as(0)))
+        return {**common, "passive_as": values, "passive_duration": 8,
+                "q_refund": 1.5, "flux_refund": [60, 70, 80, 90],
+                "bolt_speed": _round(1000 / kit.travel("E", 1000))}
+    rows = []
+    for rank in range(1, 5):
+        k = _kit(name, dict(_max_ranks(), Q=rank))
+        values = []
+        for stack in range(4):
+            k.state["minigun"] = stack
+            values.append(_round(k.bonus_as(0)))
+        k.weapon = "rockets"
+        rows.append({"as": values, "range": k.attack_range(0) - k.base_range})
+    return {**common, "minigun": rows, "stack_duration": 2.5, "stack_decay": 2,
+            "rocket_multiplier": 1.12,
+            "rocket_speed": _round(1000 / attack_travel(name, 1000, weapon="rockets")),
+            "minigun_speed": _round(1000 / attack_travel(name, 1000, weapon="minigun")),
+            "slow": [0.3, 0.4, 0.5, 0.6], "slow_duration": 2,
+            "root": [1.45, 1.55, 1.65, 1.75], "trap_duration": 5,
+            "trap_arm": 1, "trap_status": "reference provisional 1s; circular envelope geometry",
+            "execute_base": [25, 35, 45], "execute_missing": [0.25, 0.30, 0.35],
+            "execute_bonus_ad": 0.12,
+            "execute_status": "reference minimum-flight damage; distance curve unresolved",
+            "excited_duration": 6, "excited_as": 0.25, "excited_ms": 1.4,
+            "excited_mana": 0.1}
 
 
 def targets():

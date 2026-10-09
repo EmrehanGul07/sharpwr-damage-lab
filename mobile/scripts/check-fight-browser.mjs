@@ -215,6 +215,7 @@ try {
       await page.getByLabel('Bot difficulty', { exact: true }).selectOption(difficulty);
       await page.getByRole('button', { name: 'Start 1v1', exact: true }).click();
       await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('FIGHT'));
+      assert.ok((await page.locator('.pt-buffs').textContent()).includes('MANA'), 'Pilot mana HUD is visible');
       const stats = await page.locator('.pt-stats').textContent();
       if (!initialStats) initialStats = stats;
       assert.equal(stats, initialStats, 'Difficulty must not change player stats');
