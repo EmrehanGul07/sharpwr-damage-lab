@@ -233,6 +233,13 @@ try {
       await page.waitForFunction(() => document.querySelector('.pt-combo').textContent.startsWith('FIGHT'));
       await page.waitForFunction(() => document.querySelector('.pt-log').textContent.includes('AA'), null, { timeout: 10000 });
       await page.locator('.pt-skill[data-slot="AA"]').dispatchEvent('pointerup', { pointerId: 1 });
+      if (difficulty==='easy') {
+        await page.evaluate(()=>{const d=window.__practiceState.duel;d.bot.next=Infinity;for(const s of [d.player,d.enemy]){s.pending=null;s.attackHeld=false;s.destination=s.hero.slice();}d.player.deadlines.W=0;window.MarksmanPractice.cast(d.player,'W',d.enemy.hero);});
+        await page.waitForFunction(()=>document.querySelector('.pt-target-hud')?.textContent.includes('W MARK')||Array.from(document.querySelectorAll('.pt-stage div')).some(e=>e.textContent.includes('W MARK')));
+        const markedTime=await page.evaluate(()=>window.__practiceState.duel.time);
+        await page.waitForFunction(t=>window.__practiceState.duel.time>t+.3,markedTime,{timeout:10000});
+        assert.deepEqual(errors,[],'Ezreal W mark HUD must render without errors');
+      }
       if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-fight-${width}.png`) });
       await page.getByRole('button',{name:'Restart practice',exact:true}).click();
       await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready'&&document.querySelector('.pt-combo').textContent.startsWith('READY'));

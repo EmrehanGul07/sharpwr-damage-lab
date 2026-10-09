@@ -32,3 +32,6 @@ const close=(a,b,msg)=>assert(Math.abs(a-b)<1e-7,`${msg}: ${a} vs ${b}`);
 // No private cooldowns leak into observations; knowledge is learned only after reaction delay.
 {const d=duel();d.bot.next=0;P.cast(d.player,'E',[-7,0,0]);run(d,.1);assert.equal(d.bot.knownCooldowns.E,undefined);run(d,.5);assert(d.bot.knownCooldowns.E>10);const view=D.publicActor(d.player);assert(!('deadlines' in view));assert(!('destination' in view));}
 console.log('PASS Ezreal/Jinx mechanics: resources, Q/W/E, passive stacks, weapons, rockets, decay, slow/root, persistent traps, execute, kill reward, observed cooldowns');
+
+// Both health HUDs receive display-safe mark durations, never raw combat records.
+for(const side of ['player','enemy']){const d=duel(side==='player'?'Ezreal':'Jinx'),s=d[side];assert(P.cast(s,'W'));run(d,1);const victim=side==='player'?d.enemy:d.player,health=D.frame(d)[side==='player'?'dummy':'playerHealth'];assert(victim.health.mark);close(health.mark.remaining,victim.health.mark.until-victim.time,'mark HUD countdown');assert.doesNotThrow(()=>health.mark.remaining.toFixed(1));assert(!('raw' in health.mark));const remaining=health.mark.remaining;run(d,.5);close(D.frame(d)[side==='player'?'dummy':'playerHealth'].mark.remaining,remaining-.5,'countdown advances');run(d,5);assert.equal(D.frame(d)[side==='player'?'dummy':'playerHealth'].mark,null);}

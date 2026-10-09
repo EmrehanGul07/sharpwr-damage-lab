@@ -34,6 +34,7 @@ function step(d,dt){if(!Number.isFinite(dt)||dt<0)throw Error('Invalid duel time
   const a=d.player.health.hp<=0,b=d.enemy.health.hp<=0;if(a||b||d.time>=d.duration){d.finished=true;d.result=a&&b?'draw':a?'defeat':b?'victory':'timeout';for(const s of[d.player,d.enemy]){s.attackHeld=false;s.pending=null;s.destination=s.hero.slice();}}
  }return d;
 }
-function frame(d,options={}){const f=P.frame(d.player,options),enemy=P.frame(d.enemy,options);return{...f,buffs:f.buffs.concat(Mechanics.snapshot(d.player)),showTarget:false,duel:true,opponent:{...enemy,buffs:enemy.buffs.concat(Mechanics.snapshot(d.enemy)),champion:d.enemy.profile.name},playerHealth:{...d.player.health},dummy:{...d.enemy.health,defeated:d.enemy.health.hp<=0},result:d.result,difficulty:d.bot.difficulty};}
+function healthFrame(s){return{...s.health,mark:s.health.mark?{slot:s.health.mark.slot,remaining:Math.max(0,s.health.mark.until-s.time)}:null,defeated:s.health.hp<=0};}
+function frame(d,options={}){const f=P.frame(d.player,options),enemy=P.frame(d.enemy,options);return{...f,buffs:f.buffs.concat(Mechanics.snapshot(d.player)),showTarget:false,duel:true,opponent:{...enemy,buffs:enemy.buffs.concat(Mechanics.snapshot(d.enemy)),champion:d.enemy.profile.name},playerHealth:healthFrame(d.player),dummy:healthFrame(d.enemy),result:d.result,difficulty:d.bot.difficulty};}
 const API={create,step,frame,selfActor,publicActor,DT};if(node)module.exports=API;else scope.MarksmanDuel=API;
 })(typeof globalThis!=='undefined'?globalThis:this);
