@@ -336,6 +336,28 @@ try {
     await touch('touchEnd',[{id:21,...aaPoint}]);
     assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),knob,'AA release preserves joystick');
     await touch('touchEnd',[]);assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'');
+    // Skill cancellation must preserve the independent movement pointer.
+    const stick=page.locator('.pt-joystick'),q=page.locator('.pt-skill[data-slot="Q"]'),aa=page.locator('.pt-skill[data-slot="AA"]');
+    await stick.dispatchEvent('pointerdown',{pointerId:41,clientX:stickPoint.x,clientY:stickPoint.y});
+    await stick.dispatchEvent('pointermove',{pointerId:41,clientX:movingPoint.x,clientY:movingPoint.y});
+    const skillKnob=await stick.locator('i').evaluate(e=>e.style.transform);
+    await q.dispatchEvent('pointerdown',{pointerId:42,clientX:qPoint.x,clientY:qPoint.y});
+    await q.dispatchEvent('pointermove',{pointerId:42,clientX:qPoint.x+30,clientY:qPoint.y});
+    assert.equal(await page.evaluate(()=>window.__practiceState.aimSlot),'Q');
+    await q.dispatchEvent('pointercancel',{pointerId:42});
+    assert.equal(await page.evaluate(()=>window.__practiceState.aimSlot),null);
+    assert.equal(await stick.locator('i').evaluate(e=>e.style.transform),skillKnob,'skill cancel preserves movement pointer');
+    const beforeMove=await page.evaluate(()=>window.__practiceState.hero.slice());
+    await page.waitForTimeout(150);
+    assert.notDeepEqual(await page.evaluate(()=>window.__practiceState.hero.slice()),beforeMove,'movement continues during and after skill aiming');
+    await aa.dispatchEvent('pointerdown',{pointerId:43,clientX:aaPoint.x,clientY:aaPoint.y});
+    await aa.dispatchEvent('pointermove',{pointerId:43,clientX:aaPoint.x+30,clientY:aaPoint.y});
+    await page.evaluate(()=>window.dispatchEvent(new Event('blur')));
+    const cleared=await page.evaluate(()=>{const s=window.__practiceState;return{held:s.attackHeld,pending:s.pending,buffered:s.buffered,queued:s.queued,aim:s.aimSlot,line:s.attackAim,destination:s.destination,hero:s.hero};});
+    assert.equal(cleared.held,false);for(const key of['pending','buffered','queued','aim','line'])assert.equal(cleared[key],null,key);
+    assert.deepEqual(cleared.destination,cleared.hero);assert.equal(await stick.locator('i').evaluate(e=>e.style.transform),'');
+    await aa.dispatchEvent('pointerup',{pointerId:43});await q.dispatchEvent('pointerup',{pointerId:42});
+    assert.equal(await page.evaluate(()=>window.__practiceState.attackHeld),false,'late releases cannot restore cleared input');
     await cdp.detach();
     await page.getByRole('button',{name:'Exit practice',exact:true}).click();
     assert.deepEqual(errors, []);
