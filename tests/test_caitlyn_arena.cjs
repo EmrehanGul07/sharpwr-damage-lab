@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const P=require('../assets/marksman-3d/practice.js'),D=require('../assets/marksman-3d/duel.js'),F=require('../assets/marksman-3d/fight.js');
+const C=JSON.parse(fs.readFileSync('app-data/practice.json')).champions;
+function round(lane=false){const d=D.create({...C.Caitlyn,name:'Caitlyn'},{...C.Ezreal,name:'Ezreal'},{movements:F.MOVEMENT,distance:500,lane,duration:120});d.bot.next=Infinity;d.player.autoApproach=false;d.enemy.health.hp=d.enemy.health.max=20000;d.enemy.resource.hpRegen=0;return d;}
+function run(d,t){for(let i=0;i<Math.ceil(t/D.DT);i++)D.step(d,D.DT);}
+// Traps root without immediate damage; the stored damage belongs to the following Headshot.
+{const d=round(),s=d.player,hp=d.enemy.health.hp;assert(P.cast(s,'W',d.enemy.hero));run(d,1.4);assert.equal(d.enemy.health.hp,hp);assert(d.enemy.combat.rootUntil>d.time);assert(d.enemy.health.trapHeadshot);assert.equal(P.stats(s).range,C.Caitlyn.practice.levels.range[14]*2);const start=s.hero.slice();assert(P.cast(s,'AA'));run(d,1);const hit=s.log.find(x=>x.slot==='AA');assert(hit.parts.physical.raw>P.stats(s).ad*1.5+180);assert.equal(d.enemy.health.trapHeadshot,null);assert.deepEqual(s.hero,start);}
+// Five charges are consumed, placement cooldown gates spam, recharge is sequential, pools bounded.
+{const d=round(),s=d.player;for(let i=0;i<5;i++){assert(P.cast(s,'W',[0,0,5]));run(d,.51);}assert.equal(s.combat.trapCharges,0);const mana=s.resource.mana;assert(!P.cast(s,'W',[0,0,5]));assert.equal(s.resource.mana,mana);run(d,7.6);assert.equal(s.combat.trapCharges,1);assert(P.cast(s,'W',[0,0,4]));assert(s.events.filter(e=>e.slot==='W'&&e.fxEnd>s.time).length<=5);run(d,30.1);assert(!s.events.some(e=>e.slot==='W'&&e.fxEnd>s.time));}
+// A net mark is reserved at AA windup and restored on cancellation; switching targets cannot steal it.
+{const d=round(),s=d.player;d.enemy.health.netUntil=10;s.combat.headshots=2;assert(P.cast(s,'AA'));assert.equal(d.enemy.health.netUntil,0);assert(P.cast(s,'Q',[4,0,4]));assert.equal(d.enemy.health.netUntil,10);run(d,1);s.deadlines.AA=0;assert(P.cast(s,'AA'));run(d,1);assert.equal(s.combat.headshots,3);assert.equal(d.enemy.health.netUntil,0);}
+// R needs a champion, lines up for 1.5s, follows its original target and ignores minion blockers.
+{const d=round(true),s=d.player;run(d,.01);const m=d.lane.units.find(m=>m.side===1);m.position=[0,0,0];m.next=Infinity;D.selectTarget(d,s,m.id);const mana=s.resource.mana;assert(!P.cast(s,'R'));assert.equal(s.resource.mana,mana);D.selectTarget(d,s,'enemy');assert(P.cast(s,'R'));const e=s.events.at(-1);assert.equal(e.launch,e.start+1.5);run(d,1.4);assert(!e.projectile);d.enemy.hero=[4,0,2];d.enemy.destination=d.enemy.hero.slice();run(d,.7);assert.deepEqual(e.impactPoint,[4,0,2]);const h=s.log.find(h=>h.slot==='R');assert.equal(h.parts.physical.raw,650);assert(!h.note);}
+// Rooting a selected minion cannot consume a trap; the opponent must enter its ground position.
+{const d=round(true),s=d.player;run(d,.01);const m=d.lane.units.find(m=>m.side===1);D.selectTarget(d,s,m.id);assert(P.cast(s,'W',[0,0,5]));run(d,2);assert(!d.enemy.health.trapHeadshot);assert(!m.health.trapHeadshot);P.move(d.enemy,[0,0,5]);run(d,3);assert(d.enemy.health.trapHeadshot);}
+console.log('PASS Caitlyn arena: trap charges/recharge/expiry, delayed Headshot damage, target rights/cancellation and champion-only guided R');

@@ -41,6 +41,7 @@ export function arenaBuild(db: Database) {
       step(hero: number[]) { if (previous) path += Math.hypot(hero[0]-previous[0], hero[2]-previous[2])*100; previous = hero.slice(); },
       attackSpeed() { return procAs || stats.attack_speed; },
       resolve(s: any, h: any) {
+        if(champion==='Caitlyn'&&h.trap)return {};
         const d = s.dummy;
         target.health = d.max; target.armor = d.armor; target.magicResist = d.mr; target.attackReduction = d.aaReduction;
         if (!h.secondary && (h.attack || champion === 'Ezreal' && h.slot === 'Q')) {

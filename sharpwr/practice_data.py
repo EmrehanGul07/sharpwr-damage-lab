@@ -357,6 +357,14 @@ def _duel_mechanics(name):
         return {**common, "passive_as": values, "passive_duration": 8,
                 "q_refund": 1.5, "flux_refund": [60, 70, 80, 90],
                 "bolt_speed": _round(1000 / kit.travel("E", 1000))}
+    if name == "Caitlyn":
+        return {**common, "trap_capacity": [2, 3, 4, 5],
+                "trap_recharge": [25, 20, 15, 10], "trap_duration": 30,
+                "trap_arm": 1, "trap_radius": 0.2, "trap_root": 1.5,
+                "headshot_window": 4, "headshot_bonus": 0.6,
+                "ultimate_base": [250, 450, 650], "ultimate_cast": 1.5,
+                "ultimate_speed": 3200,
+                "status": "tooltip charge/root/lifetime/R endpoints; trap arm/radius and Headshot window provisional; baseline Headshot scaling"}
     if name != "Jinx":
         return common
     rows = []
