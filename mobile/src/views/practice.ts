@@ -59,7 +59,7 @@ async function start(root: HTMLElement, champion: string | null): Promise<void> 
       nativeFullscreen: false,
       orientation: arenaOrientation,
       quality: "balanced",
-      sceneOptions: { three: loadThree, loadModel },
+      sceneOptions: { three: loadThree, loadModel, terrainTextureBase: "assets/models/terrain/" },
     });
     if (!root.isConnected) { tool.dispose(); return; }
     current?.dispose();

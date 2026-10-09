@@ -55,3 +55,9 @@ The 9 October Poco F7 recording (2772×1280, 26.8 seconds) and five screenshots 
 The terrain is re-authored with broad fractured stone ribbons, uneven grass margins, evergreen forest, dressed outer wall and cool river/brush colors. Tower spacing and ground are twice the prior authoring scale; champion and skill distances are unchanged. Movement and indicators accept the arena bounds, including casts beyond the old ±11.5 boundary. Health bars are more compact in the reference view.
 
 This reproduces the supplied dragon-lane composition approximately; it does not yet reproduce every curve, prop, texture or the full Rift. The layout still uses unioned walkable rectangles and circular blockers. No native change: min APK remains 0.8.4 and this revision can arrive through the web update.
+
+## Material and scale correction (mobile 0.8.6 / web 7.1.7)
+
+The prior 40.8 camera radius undersized champions relative to the supplied reference. Radius is now 18.8, keeping yaw/elevation/FOV and fixed player tracking. The reference Ezreal body occupies approximately 12–13% of image height; this is the visual calibration target, rather than the earlier mistaken 5% estimate. This remains an approximate calibration across poses and aspect ratios.
+
+Paving, grass, rock and evergreen foliage now have separate bundled original imagegen albedo maps (see static/marksman-3d/terrain/README.md). No shared stone map is applied to other instance batches. Trees use an irregular layered radial profile, rocks use smoother higher-detail geometry, and brush uses curved double-sided leaf cards. Texture completion invalidates the paused preview render, and disposal releases image textures. Gameplay distances and native shell are unchanged; min APK stays 0.8.4.

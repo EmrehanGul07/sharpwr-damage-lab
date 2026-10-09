@@ -13,5 +13,13 @@ for(const name of ['Ezreal','Lucian','Tristana','Vayne']){
  assert(P.cast(s,slot,to));const endpoint=s.events.at(-1).landing.slice();for(let i=0;i<240;i++)P.step(s,1/120);assert(N.passable(s.hero));assert(Math.hypot(s.hero[0]-endpoint[0],s.hero[2]-endpoint[2])<.01,'cast lands where indicator showed');
 }
 for(const software of[false,true])for(const quality of['low','high']){const scene=new T.Scene(),a=A.createArena(T,scene,{terrain:'dragon-lane',software,quality});a.animate(3);assert.equal(a.root.name,'SharpWR_Dragon_Lane');assert(a.metrics().arenaMeshes<650);a.root.traverse(o=>assert(o.position.toArray().every(Number.isFinite)));a.dispose();assert.equal(scene.children.length,0);}
+// Different terrain families must never share the paving material/map.
+{const old=global.document,loaded=[];global.document={baseURI:'https://offline.local/'};
+ const MockT={...T,TextureLoader:class{load(url){loaded.push(url);return new T.Texture();}}};
+ try{const scene=new T.Scene(),a=A.createArena(MockT,scene,{terrain:'dragon-lane',textureBase:'assets/models/terrain/'}),batches=a.root.children.filter(o=>o.isInstancedMesh);
+ assert.equal(loaded.length,4);const families=new Map();for(const o of batches)if(o.material.map)families.set(o.geometry.type,o.material.map);
+ assert.notEqual(families.get('ExtrudeGeometry'),families.get('LatheGeometry'),'paving and pines have different maps');
+ assert.notEqual(families.get('ExtrudeGeometry'),families.get('DodecahedronGeometry'),'paving and rocks have different maps');a.dispose();
+ }finally{if(old===undefined)delete global.document;else global.document=old;}}
 for(const difficulty of['easy','medium','hard','impossible']){const d=D.create(profile('Ezreal'),profile('Jinx'),{arena:N,movements:F.MOVEMENT,difficulty});for(let i=0;i<3600&&!d.finished;i++){D.step(d,1/120);assert(N.passable(d.player.hero));assert(N.passable(d.enemy.hero));}}
 console.log('PASS dragon lane: shared terrain, river/tower collisions, blink/dash indicators and endpoints, renderer budgets, four bot modes');

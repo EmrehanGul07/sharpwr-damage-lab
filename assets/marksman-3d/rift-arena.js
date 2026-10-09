@@ -45,29 +45,27 @@ for(const zone of LANE.zones)for(let i=0;i<4;i++)zone[i]*=2;
 for(const obstacle of LANE.obstacles)for(let i=0;i<3;i++)obstacle[i]*=2;
 LANE.bounds=LANE.bounds.map(v=>v*2);
 const navigation={passable,project:projectPoint,trace,layout:LANE};
-function createDragonArena(T,scene,{software=false,quality='high'}={}){
+function createDragonArena(T,scene,{software=false,quality='high',textureBase=null,onTexturesChanged=()=>{}}={}){
  const root=new T.Group();root.scale.setScalar(2);root.name='SharpWR_Dragon_Lane';scene.add(root);const geos=new Map(),mats=new Map(),textures=[],water=[],crystals=[];
  const hash=n=>{const x=Math.sin(n*127.1+81.2)*43758.5453;return x-Math.floor(x);};
- function material(color,roughness=.95){const key=color+roughness;if(!mats.has(key))mats.set(key,new T.MeshStandardMaterial({color,roughness,metalness:roughness<.55?.25:0}));return mats.get(key);}
- function geometry(kind){if(!geos.has(kind))geos.set(kind,kind==='plane'?new T.PlaneGeometry(1,1):kind==='slab'?(()=>{const shape=new T.Shape();shape.moveTo(-.5,-.28);for(const[x,y]of[[-.3,-.5],[.4,-.46],[.5,.15],[.32,.5],[-.47,.4]])shape.lineTo(x,y);shape.closePath();const g=new T.ExtrudeGeometry(shape,{depth:.045,bevelEnabled:true,bevelThickness:.004,bevelSize:.008,bevelSegments:1,steps:1});g.rotateX(Math.PI/2);return g;})():kind==='rock'?new T.DodecahedronGeometry(1,0):kind==='leaf'?new T.IcosahedronGeometry(1,1):kind==='cylinder'?new T.CylinderGeometry(1,1,1,12):kind==='cone'?new T.ConeGeometry(1,1,8):kind==='ring'?new T.TorusGeometry(1,.018,4,48):new T.BoxGeometry(1,1,1));return geos.get(kind);}
- function mesh(kind,color,x,y,z,sx,sy,sz,rough=.95){const m=new T.Mesh(geometry(kind),material(color,rough));m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=!software&&quality!=='low'&&kind!=='plane';m.receiveShadow=true;root.add(m);return m;}
- function flat(color,x,z,w,h,y=-.075){const m=mesh('plane',color,x,y,z,w,h,1);m.rotation.x=-Math.PI/2;m.renderOrder=y<-.09?-10:-9;return m;}
- // Fine diffuse detail prevents large terrain surfaces from reading as flat colour cards.
- function noiseTexture(base,seed,grass=false){if(software||typeof document==='undefined')return null;const canvas=document.createElement('canvas');canvas.width=canvas.height=256;const ctx=canvas.getContext('2d');if(!ctx)return null;ctx.fillStyle=base;ctx.fillRect(0,0,256,256);
-  for(let i=0;i<3400;i++){const x=hash(i+seed)*256,y=hash(i+seed+7)*256,v=hash(i+seed+31);ctx.fillStyle=v>.5?'rgba(195,206,129,.12)':'rgba(16,40,24,.15)';ctx.fillRect(x,y,1+v*3,1+v*2);}
-  for(let i=0;i<130;i++){const x=hash(i+seed+60)*256,y=hash(i+seed+80)*256;ctx.strokeStyle=grass?'rgba(154,177,91,.18)':'rgba(49,67,42,.17)';ctx.lineWidth=grass?1:.6;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3,y-(grass?7:2));ctx.lineTo(x+5,y-4);ctx.stroke();}
-  const tex=new T.CanvasTexture(canvas);tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.repeat.set(5,4);tex.colorSpace=T.SRGBColorSpace;textures.push(tex);return tex;}
- const turf=noiseTexture('#c1c5b1',340,true),stone=noiseTexture('#d3d1bd',690);if(turf)for(const color of['#304c31','#476b3a','#63764b','#356849','#6d7860'])material(color).map=turf;if(stone){stone.repeat.set(1,1);material('#ffffff').map=stone;}
+ let disposed=false;const surfaces={};
+ if(!software&&typeof document!=='undefined'){const loader=new T.TextureLoader(),base=textureBase||((scope.MarksmanStudyAssets?.modelBase||'app/static/marksman-3d/')+'terrain/');
+  for(const name of ['stone','grass','rock','foliage']){const tex=loader.load(new URL(base+name+'-v1.webp',document.baseURI).href,()=>{if(!disposed)onTexturesChanged();},undefined,error=>console.warn('Terrain texture unavailable',name,error));tex.colorSpace=T.SRGBColorSpace;tex.wrapS=tex.wrapT=T.RepeatWrapping;tex.anisotropy=4;textures.push(tex);surfaces[name]=tex;}
+ }
+ function material(color,roughness=.95,surface=null){const key=color+roughness+surface;if(!mats.has(key)){const tint=new T.Color(color);if(surface)tint.lerp(new T.Color('#ffffff'),.8);mats.set(key,new T.MeshStandardMaterial({color:tint,map:surfaces[surface]||null,side:surface==='foliage'?T.DoubleSide:T.FrontSide,roughness,metalness:roughness<.55?.25:0}));}return mats.get(key);}
+ const family=kind=>kind==='slab'?'stone':kind==='rock'||kind==='box'?'rock':kind==='pine'||kind==='blade'?'foliage':null;
+ function geometry(kind){if(!geos.has(kind))geos.set(kind,kind==='plane'?new T.PlaneGeometry(1,1):kind==='slab'?(()=>{const shape=new T.Shape();shape.moveTo(-.5,-.28);for(const[x,y]of[[-.3,-.5],[.4,-.46],[.5,.15],[.32,.5],[-.47,.4]])shape.lineTo(x,y);shape.closePath();const g=new T.ExtrudeGeometry(shape,{depth:.045,bevelEnabled:true,bevelThickness:.004,bevelSize:.008,bevelSegments:1,steps:1});g.rotateX(Math.PI/2);return g;})():kind==='pine'?(()=>{const pts=[[0,-.5],[.88,-.44],[.56,-.12],[.74,-.09],[.36,.2],[.5,.23],[0,.5]].map(([r,y])=>new T.Vector2(r,y));const g=new T.LatheGeometry(pts,16);const a=g.attributes.position;for(let i=0;i<a.count;i++){const x=a.getX(i),y=a.getY(i),z=a.getZ(i),k=1+.10*Math.sin(Math.atan2(z,x)*7+y*17);a.setXYZ(i,x*k,y+.025*Math.sin(x*18+z*23),z*k);}g.computeVertexNormals();return g;})():kind==='blade'?(()=>{const shape=new T.Shape();shape.moveTo(-.16,-.5);shape.quadraticCurveTo(-.19,.07,.10,.5);shape.quadraticCurveTo(.02,.02,.16,-.5);shape.closePath();return new T.ShapeGeometry(shape);})():kind==='rock'?new T.DodecahedronGeometry(1,1):kind==='leaf'?new T.IcosahedronGeometry(1,1):kind==='cylinder'?new T.CylinderGeometry(1,1,1,12):kind==='cone'?new T.ConeGeometry(1,1,8):kind==='ring'?new T.TorusGeometry(1,.018,4,48):new T.BoxGeometry(1,1,1));return geos.get(kind);}
+ function mesh(kind,color,x,y,z,sx,sy,sz,rough=.95){const m=new T.Mesh(geometry(kind),material(color,rough,family(kind)));m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=!software&&quality!=='low'&&kind!=='plane';m.receiveShadow=true;root.add(m);return m;}
+ function flat(color,x,z,w,h,y=-.075){const m=mesh('plane',color,x,y,z,w,h,1);m.rotation.x=-Math.PI/2;if(['#173e39','#253e28'].includes(color)){m.material=material(color,.95,'grass');const g=m.geometry.clone(),uv=g.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getX(i)*w/3,uv.getY(i)*h/3);geos.set('ground-'+geos.size,g);m.geometry=g;}m.renderOrder=y<-.09?-10:-9;return m;}
  // Hand-authored palette: blue-green river, sage grass, warm limestone, cool slate cliffs.
  flat('#173e39',0,0,72,64,-.14);
  // Broad organic surfaces rather than a rectangular tiled arena.
- function patch(name,color,points,y){const shape=new T.Shape();shape.moveTo(points[0][0],-points[0][1]);for(const[x,z]of points.slice(1))shape.lineTo(x,-z);shape.closePath();const g=new T.ShapeGeometry(shape);g.rotateX(-Math.PI/2);geos.set(name,g);const m=new T.Mesh(g,material(color));m.position.y=y;m.receiveShadow=true;root.add(m);return m;}
+ function patch(name,color,points,y){const shape=new T.Shape();shape.moveTo(points[0][0],-points[0][1]);for(const[x,z]of points.slice(1))shape.lineTo(x,-z);shape.closePath();const g=new T.ShapeGeometry(shape);g.rotateX(-Math.PI/2);const uv=g.attributes.uv,pos=g.attributes.position;for(let i=0;i<uv.count;i++)uv.setXY(i,pos.getX(i)/3,pos.getZ(i)/3);geos.set(name,g);const m=new T.Mesh(g,material(color,.95,'grass'));m.position.y=y;m.receiveShadow=true;root.add(m);return m;}
  patch('lane-meadow','#356849',[[-15,-6],[-8,-5.5],[-3,-4.3],[5,-5.6],[14,-5],[15,5],[8,5.4],[2,3.8],[-4,4.4],[-12,5.6],[-15,3]],-.105);
  patch('lane-earth','#6d7860',[[-12,-1.9],[-8,-2.4],[-3,-1.7],[2,-2.2],[7,-1.8],[12,-2.4],[12,1.9],[8,2.2],[4,1.6],[0,2.3],[-5,1.8],[-9,2.4],[-12,2]],-.085);
  for(const[x,z,w,h]of LANE.brush)flat('#253e28',x,z,w+.3,h+.25,-.078);
  // The river meets the lane, then opens into the dragon-pit basin.
  const riverShape=new T.Shape();const banks=[[-3.8,1.7],[-2.8,2.1],[-1.7,2.25],[.35,2.1],[1,3],[.8,4.8],[1.1,6.8],[-1.1,8.3],[-6.5,8.5],[-7.1,6],[-3.9,5.8],[-3.5,4.3]];riverShape.moveTo(banks[0][0],-banks[0][1]);for(const[x,z]of banks.slice(1))riverShape.lineTo(x,-z);riverShape.closePath();const riverGeo=new T.ShapeGeometry(riverShape);riverGeo.rotateX(-Math.PI/2);geos.set('river-bank',riverGeo);const river=new T.Mesh(riverGeo,material('#245e66',.5));river.position.y=-.062;root.add(river);
- const waterDetail=noiseTexture('#76a69c',1034);if(waterDetail){waterDetail.repeat.set(.15,.15);river.material.map=waterDetail;}
  for(let i=0;i<banks.length;i++){const[x,z]=banks[i];mesh('rock','#7d8a64',x,.015,z,.27,.07,.25);}
  for(let i=0;i<14;i++){const m=flat('#79b8a5',-3+hash(i+2)*3.7,2.9+hash(i+5)*4.6,.3+hash(i+4)*.55,.022,-.047);m.rotation.z=.1;water.push({m,x:m.position.x});}
  // Large fractured flagstone ribbons, with open grassy seams and varied edges.
@@ -77,7 +75,7 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
   for(const sign of[-1,1])if(hash(seed+sign+30)>.34)tileRows.push({p:[x,-.029,z+sign*(1.15+hash(seed+14)*.33)],s:[.75+hash(seed+6)*.65,1,.52+hash(seed+12)*.62],r:[0,(hash(seed+20)-.5)*1.2,0],color:sign<0?'#788879':'#899383'});
  }
  function batch(kind,rows){if(software){for(const row of rows){const m=mesh(kind,row.color,...row.p,...row.s);if(row.r)m.rotation.set(...row.r);if(kind==='slab')m.renderOrder=-9;}return;}
-  const geo=geometry(kind),mat=material('#ffffff'),b=new T.InstancedMesh(geo,mat,rows.length),dummy=new T.Object3D();for(const[i,row]of rows.entries()){dummy.position.set(...row.p);dummy.scale.set(...row.s);dummy.rotation.set(...(row.r||[0,0,0]));dummy.updateMatrix();b.setMatrixAt(i,dummy.matrix);b.setColorAt(i,new T.Color(row.color));}b.receiveShadow=true;b.castShadow=quality==='high'&&kind!=='slab';root.add(b);}
+  const geo=geometry(kind),mat=material('#ffffff',.95,family(kind));if(kind==='blade')mat.side=T.DoubleSide;const b=new T.InstancedMesh(geo,mat,rows.length),dummy=new T.Object3D();for(const[i,row]of rows.entries()){dummy.position.set(...row.p);dummy.scale.set(...row.s);dummy.rotation.set(...(row.r||[0,0,0]));dummy.updateMatrix();b.setMatrixAt(i,dummy.matrix);b.setColorAt(i,new T.Color(row.color).lerp(new T.Color('#ffffff'),family(kind)?.8:0));}b.receiveShadow=true;b.castShadow=quality==='high'&&kind!=='slab';root.add(b);}
  batch('slab',software?tileRows.filter((_,i)=>i%2===0):tileRows);
  // Low stone shoulders and continuous cliff boundaries follow the same walkable rectangles.
  const rockRows=[];for(let i=0;i<62;i++){const x=-12.6+i*.41,z=-4.0-Math.sin(x*.4)*.25-(hash(i+9)*.38);rockRows.push({p:[x,.23,z],s:[.42,.38+hash(i)*.32,.47],r:[.1,hash(i)*Math.PI,.08],color:i%3?'#3c5958':'#60716b'});}
@@ -85,9 +83,9 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
  for(const[x,z,r]of LANE.obstacles.slice(2).map(row=>row.map(v=>v/2)))rockRows.push({p:[x,.5,z],s:[r*1.1,.8,r*1.15],r:[0,hash(x+z)*3,0],color:'#627769'});
  batch('rock',rockRows);
  // Tall lane brush, clustered grass blades: readable silhouettes and dark centres.
- const blades=[],smallGrass=[];for(const[x,z,w,h]of LANE.brush){for(let i=0;i<(software?12:quality==='low'?42:85);i++){const px=x+(hash(i+x*17)-.5)*w,pz=z+(hash(i+z*11)-.5)*h,height=.45+hash(i+13)*.35;blades.push({p:[px,height*.46,pz],s:[.09,height,.07],r:[(hash(i)-.5)*.15,hash(i+3)*6,.15],color:i%4?'#34665c':'#608775'});}}
- batch('cone',blades);
- for(let i=0;i<(software?30:120);i++){const x=(hash(i+802)*2-1)*11.5,z=(i%2?1:-1)*(2.08+hash(i+408)*.45);smallGrass.push({p:[x,.12,z],s:[.07,.24,.065],color:'#4d8769'});}batch('cone',smallGrass);
+ const blades=[],smallGrass=[];for(const[x,z,w,h]of LANE.brush){for(let i=0;i<(software?12:quality==='low'?42:85);i++){const px=x+(hash(i+x*17)-.5)*w,pz=z+(hash(i+z*11)-.5)*h,height=.45+hash(i+13)*.35;blades.push({p:[px,height*.46,pz],s:[.65,height,.65],r:[(hash(i)-.5)*.15,hash(i+3)*6,.15],color:i%4?'#66867d':'#91aa8b'});}}
+ batch('blade',blades);
+ for(let i=0;i<(software?30:120);i++){const x=(hash(i+802)*2-1)*11.5,z=(i%2?1:-1)*(2.08+hash(i+408)*.45);smallGrass.push({p:[x,.12,z],s:[.34,.24,.34],color:'#4d8769'});}batch('blade',smallGrass);
  // Evergreen silhouettes and dense forest mass from the supplied lane views.
  const treeLeaves=[],trunks=[];for(let i=0;i<(software?24:quality==='low'?65:120);i++){
   const x=-23+hash(i+110)*46,z=(i%2?-1:1)*(5.3+hash(i+140)*13);
@@ -95,7 +93,7 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
   trunks.push({p:[x,h*.32,z],s:[.10,h*.64,.10],color:'#4f5344'});
   for(let k=0;k<4;k++)treeLeaves.push({p:[x,h*(.43+k*.17),z],s:[.85-k*.16,h*.58,.80-k*.15],r:[0,hash(i+k)*6,0],color:['#244f49','#326456','#477861','#729077'][k]});
  }
- batch('cylinder',trunks);batch('cone',treeLeaves);
+ batch('cylinder',trunks);batch('pine',treeLeaves);
  // The outer lane wall uses connected dressed stone, with worn buttresses.
  const wallRows=[];for(let i=0;i<31;i++){const x=-12+i*.8;
   wallRows.push({p:[x,.30,-4.65],s:[.84,.60,.35],r:[0,0,.015*Math.sin(i)],color:i%3?'#607771':'#819087'});
@@ -109,7 +107,7 @@ function createDragonArena(T,scene,{software=false,quality='high'}={}){
  // A dragon emblem in the pit floor, no live dragon or artificial damage source.
  const emblem=mesh('ring','#699484',-5,-.041,7,1.14,1.14,1.14);emblem.rotation.x=-Math.PI/2;for(let i=0;i<3;i++){const m=flat('#8aa791',-5+(i-1)*.32,7,.16,.6,-.038);m.rotation.z=(i-1)*.35;}
  function animate(t){for(const w of water)w.m.position.x=w.x+Math.sin(t*.2+w.x)*.065;for(const c of crystals)c.material.emissiveIntensity=.6+Math.sin(t*1.5)*.08;}
- function dispose(){scene.remove(root);geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());}
+ function dispose(){disposed=true;scene.remove(root);geos.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());}
  return{root,animate,dispose,metrics:()=>({arenaMeshes:root.children.filter(o=>o.isMesh).length,arenaInstances:software?0:tileRows.length+rockRows.length+blades.length+smallGrass.length+treeLeaves.length+trunks.length+wallRows.length,terrain:'dragon-lane'})};
 }
 
