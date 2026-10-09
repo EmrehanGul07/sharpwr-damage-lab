@@ -48,19 +48,19 @@ class PracticeDataTests(unittest.TestCase):
                 self.assertEqual(record["ranks"][level - 1], default_ranks(name, level))
 
     def test_duel_resources_and_costs_match_reference(self):
-        for name in ("Ezreal", "Jinx"):
+        for name in self.data:
             duel = self.data[name]["duel"]
             for level in (1, 9, 15):
                 stats = champion_level_stats(name, level)
                 for key, values in duel["resources"].items():
-                    self.assertAlmostEqual(values[level - 1], stats[key], delta=6e-4)
+                    self.assertAlmostEqual(values[level - 1], (stats[key] or 0), delta=6e-4)
             for slot, costs in duel["costs"].items():
                 for rank, cost in enumerate(costs, 1):
                     ranks = {"Q": 4, "W": 4, "E": 4, "R": 3, slot: rank}
                     kit = Kit(name, ranks, 1, CHAMPION_DATABASE[name]["stats"]["attack_range"])
                     self.assertEqual(cost, kit.cost(slot, 0))
         for name, record in self.data.items():
-            self.assertEqual("duel" in record, name in ("Ezreal", "Jinx"))
+            self.assertIn("duel", record)
 
     def test_hit_damage_is_damage_component(self):
         for name, record in self.data.items():

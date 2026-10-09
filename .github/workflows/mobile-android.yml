@@ -62,6 +62,7 @@ jobs:
           node tests/test_lane_multihit.cjs
           node tests/test_dragon_lane.cjs
           node tests/test_day2_quality.cjs
+          node tests/test_arena_expansion.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

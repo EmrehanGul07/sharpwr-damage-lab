@@ -138,14 +138,14 @@ def _attack(name):
     return out
 
 
-def _damage_by_rank(name, slot, **options):
+def _damage_by_rank(name, slot, *, extra_ad=0, extra_ap=0, **options):
     """{damage type: [rank][level] raw damage}, keeping only the types that occur."""
     table = {"physical": [], "magic": [], "true": []}
     for rank in range(1, _rank_limit(slot) + 1):
         rows = {kind: [] for kind in table}
         for level in LEVELS:
             ad = champion_level_stats(name, level)["attack_damage"]
-            raw = damage_component(name, slot, rank, ad=ad, base_ad=ad, level=level, **options)
+            raw = damage_component(name, slot, rank, ad=ad + extra_ad, ap=extra_ap, base_ad=ad, level=level, **options)
             for kind in table:
                 rows[kind].append(_round(getattr(raw, kind)))
         for kind in table:
@@ -163,11 +163,15 @@ def _damage_model(name, slot):
         return {"mode": "skip", "reason": f"Not resolved in the engine: {error}"}
     if not damage:
         return {"mode": "none"}
+    scaling = {}
+    for stat, kwargs in (("ad", {"extra_ad": 100}), ("ap", {"extra_ap": 100})):
+        sampled = _damage_by_rank(name, slot, **kwargs, **HIT_OPTIONS.get(key, {}))
+        scaling[stat] = {kind: [[_round((row[i] - damage.get(kind, [[0]*15]*len(rows))[r][i])/100) for i in range(15)] for r, row in enumerate(rows)] for kind, rows in sampled.items()}
     if key in ON_ATTACK:
-        return {"mode": "attack", "attacks": ON_ATTACK[key], "damage": damage}
+        return {"mode": "attack", "attacks": ON_ATTACK[key], "damage": damage, "scaling": scaling}
     if key in MARKS:
-        return {"mode": "mark", "window": MARKS[key], "damage": damage}
-    return {"mode": "hit", "damage": damage}
+        return {"mode": "mark", "window": MARKS[key], "damage": damage, "scaling": scaling}
+    return {"mode": "hit", "damage": damage, "scaling": scaling}
 
 
 def _finite(value):
@@ -332,15 +336,14 @@ def champion(name):
     rank_as = _rank_attack_speed(name)
     if rank_as:
         record["rank_as"] = rank_as
-    if name in ("Ezreal", "Jinx"):
-        record["duel"] = _duel_mechanics(name)
+    record["duel"] = _duel_mechanics(name)
     return record
 
 
 def _duel_mechanics(name):
     """Pilot mechanics from repository observations and the reference Kit, not difficulty knobs."""
     kit = _kit(name, _max_ranks(), 15)
-    resources = {k: [_round(champion_level_stats(name, level)[k]) for level in LEVELS]
+    resources = {k: [_round(champion_level_stats(name, level)[k] or 0) for level in LEVELS]
                  for k in ("mana", "hp_regen_per_5s", "mana_regen_per_5s")}
     costs = {s: [_kit(name, dict(_max_ranks(), **{s: r})).cost(s, 0)
                  for r in range(1, _rank_limit(s) + 1)] for s in SLOTS}
@@ -354,6 +357,8 @@ def _duel_mechanics(name):
         return {**common, "passive_as": values, "passive_duration": 8,
                 "q_refund": 1.5, "flux_refund": [60, 70, 80, 90],
                 "bolt_speed": _round(1000 / kit.travel("E", 1000))}
+    if name != "Jinx":
+        return common
     rows = []
     for rank in range(1, 5):
         k = _kit(name, dict(_max_ranks(), Q=rank))
@@ -369,10 +374,10 @@ def _duel_mechanics(name):
             "minigun_speed": _round(1000 / attack_travel(name, 1000, weapon="minigun")),
             "slow": [0.3, 0.4, 0.5, 0.6], "slow_duration": 2,
             "root": [1.45, 1.55, 1.65, 1.75], "trap_duration": 5,
-            "trap_arm": 1, "trap_status": "reference provisional 1s; circular envelope geometry",
+            "trap_arm": 1, "trap_status": "three discrete traps; provisional 1s arming, 50u spacing and 20u radius",
             "execute_base": [25, 35, 45], "execute_missing": [0.25, 0.30, 0.35],
             "execute_bonus_ad": 0.12,
-            "execute_status": "reference minimum-flight damage; distance curve unresolved",
+            "execute_status": "reference endpoints over first flight second; linear interpolation provisional",
             "excited_duration": 6, "excited_as": 0.25, "excited_ms": 1.4,
             "excited_mana": 0.1}
 

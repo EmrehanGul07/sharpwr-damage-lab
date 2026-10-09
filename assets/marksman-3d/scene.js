@@ -130,7 +130,7 @@ async function createScene(container,profiles,{quality='high',studio=false,study
    model.root.position.copy(savedPosition);model.root.quaternion.copy(savedQuaternion);MarksmanRig.animateRig(model,animation);model.root.updateMatrixWorld(true);cache.set(key,source.clone());if(cache.size>64)cache.delete(cache.keys().next().value);}
    target=new T.Vector3(...f.launchTarget);target.y=source.y;
   }
-  return {...f,hero:pos,source,target,start:f.start?new T.Vector3(...f.start):undefined,end:f.end?new T.Vector3(...f.end):undefined};
+  return {...f,hero:pos,source,target:f.flightTarget?new T.Vector3(...f.flightTarget).setY(source.y):target,projectile:f.projectile?new T.Vector3(...f.projectile).setY(source.y):undefined,start:f.start?new T.Vector3(...f.start):undefined,end:f.end?new T.Vector3(...f.end):undefined};
  }
 
 const API={createScene,prepareEffectFrame,createLaneModels,faceActor};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanScene=API;
