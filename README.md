@@ -1,6 +1,6 @@
-# SharpWR Damage Lab — V7.1.17
+# SharpWR Damage Lab — V7.1.18
 
-### Day 1 combat audit (mobile 0.8.16)
+### Day 1 combat audit (mobile 0.8.17)
 
 Jinx traps trigger only on champions, regardless of selected minions. Ezreal E acquires the nearest eligible enemy with active W priority and does not redirect after selection changes. Affordability observations do not alter Jinx weapons. Moving-target impact positions and session/death input cleanup are corrected. See [the kit audit](docs/ezreal-jinx-day1-audit.md) for checked behavior and unresolved WR rules.
 
