@@ -341,6 +341,10 @@ try {
     assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),knob,'AA release preserves joystick');
     await touch('touchEnd',[]);assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'');
     // Skill cancellation must preserve the independent movement pointer.
+    // Start on open lane ground rather than inherit a wall collision from the touch scenario.
+    await page.getByRole('button',{name:'Restart practice',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready');
+    await page.evaluate(()=>{const s=window.__practiceState;s.hero=[0,0,0];s.destination=s.hero.slice();window.MarksmanPractice.placeDummy(s,[15,0,0]);});
     const stick=page.locator('.pt-joystick'),q=page.locator('.pt-skill[data-slot="Q"]'),aa=page.locator('.pt-skill[data-slot="AA"]');
     await stick.dispatchEvent('pointerdown',{pointerId:41,clientX:stickPoint.x,clientY:stickPoint.y});
     await stick.dispatchEvent('pointermove',{pointerId:41,clientX:movingPoint.x,clientY:movingPoint.y});
@@ -352,8 +356,7 @@ try {
     assert.equal(await page.evaluate(()=>window.__practiceState.aimSlot),null);
     assert.equal(await stick.locator('i').evaluate(e=>e.style.transform),skillKnob,'skill cancel preserves movement pointer');
     const beforeMove=await page.evaluate(()=>window.__practiceState.hero.slice());
-    await page.waitForTimeout(150);
-    assert.notDeepEqual(await page.evaluate(()=>window.__practiceState.hero.slice()),beforeMove,'movement continues during and after skill aiming');
+    await page.waitForFunction(p=>{const s=window.__practiceState;return Math.hypot(s.hero[0]-p[0],s.hero[2]-p[2])>.02;},beforeMove,{timeout:5000});
     await aa.dispatchEvent('pointerdown',{pointerId:43,clientX:aaPoint.x,clientY:aaPoint.y});
     await aa.dispatchEvent('pointermove',{pointerId:43,clientX:aaPoint.x+30,clientY:aaPoint.y});
     await page.evaluate(()=>window.dispatchEvent(new Event('blur')));
