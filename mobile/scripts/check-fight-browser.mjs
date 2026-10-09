@@ -203,6 +203,7 @@ try {
       if (new URL(route.request().url()).hostname === '127.0.0.1') return route.continue();
       external.push(route.request().url()); return route.abort();
     });
+    await page.addInitScript(()=>{let api;Object.defineProperty(window,'MarksmanPractice',{configurable:true,get:()=>api,set:value=>{api=value;const frame=value.frame;value.frame=(state,...args)=>{window.__practiceState=state;return frame(state,...args);};}});});
     await page.goto(`${base}#/practice?champion=Ezreal`);
     await page.getByLabel('Arena mode', { exact: true }).waitFor();
     await page.locator('.pt-stage canvas').waitFor({ timeout: 30000 });
@@ -238,8 +239,9 @@ try {
       const reset = await page.locator('.pt-combo').textContent();
       await page.waitForTimeout(150);
       assert.equal(await page.locator('.pt-combo').textContent(),reset,'Restart waits for input');
-      await page.locator('.pt-joystick').dispatchEvent('pointerdown',{pointerId:2,clientX:50,clientY:50});
-      await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:2,clientX:80,clientY:50});
+      const stickRect=await page.locator('.pt-joystick').boundingBox(),sx=stickRect.x+stickRect.width/2,sy=stickRect.y+stickRect.height/2;
+      await page.locator('.pt-joystick').dispatchEvent('pointerdown',{pointerId:2,clientX:sx,clientY:sy});
+      await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:2,clientX:sx+30,clientY:sy});
       await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='playing');
       await page.locator('.pt-joystick').dispatchEvent('pointerup',{pointerId:2});
       await page.getByRole('button',{name:'Exit practice',exact:true}).click();
@@ -254,6 +256,40 @@ try {
     await page.locator('.pt-skill[data-slot="Q"]').dispatchEvent('pointerdown',{pointerId:3});
     await page.locator('.pt-skill[data-slot="Q"]').dispatchEvent('pointerup',{pointerId:3});
     await page.waitForFunction(()=>document.querySelector('.pt-log').textContent.includes('Q'));
+    await page.getByRole('button',{name:'Restart practice',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready');
+    await page.evaluate(()=>{window.MarksmanPractice.placeDummy(window.__practiceState,[15,0,0]);});
+    const hero=await page.evaluate(()=>window.__practiceState.hero.slice());
+    const cdp=await page.context().newCDPSession(page);
+    const center=async selector=>{const r=await page.locator(selector).boundingBox();return {x:r.x+r.width/2,y:r.y+r.height/2};};
+    const stickPoint=await center('.pt-joystick'),aaPoint=await center('.pt-skill[data-slot="AA"]'),qPoint=await center('.pt-skill[data-slot="Q"]');
+    const touch=async(type,points)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(p=>({...p,radiusX:2,radiusY:2,force:1}))});
+    // Real touch capture: AA/skill drag into the joystick never takes ownership.
+    for(const [id,point]of[[10,aaPoint],[11,qPoint]]){
+      await touch('touchStart',[{id,...point}]);await touch('touchMove',[{id,...stickPoint}]);await page.waitForTimeout(150);
+      assert.deepEqual(await page.evaluate(()=>window.__practiceState.hero.slice()),hero,'AA/skill drag must not move hero');
+      assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'');await touch('touchEnd',[]);
+    }
+    await page.getByRole('button',{name:'Restart practice',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready');
+    // A new gesture outside the joystick, including a ground drag, cannot start movement.
+    await page.locator('.pt-joystick').dispatchEvent('pointerdown',{pointerId:99,clientX:0,clientY:0});
+    await page.locator('.pt-stage canvas').dispatchEvent('pointerdown',{pointerId:99,clientX:width/2,clientY:height/2});
+    await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:99,...stickPoint});
+    assert.equal(await page.locator('.pt-stage-wrap').getAttribute('data-phase'),'ready');
+    await page.evaluate(()=>window.MarksmanPractice.placeDummy(window.__practiceState,[15,0,0]));
+    // Joystick finger keeps ownership while a second finger attacks and is released.
+    const movingPoint={x:stickPoint.x+18,y:stickPoint.y};
+    await touch('touchStart',[{id:20,...stickPoint}]);await touch('touchMove',[{id:20,...movingPoint}]);
+    const knob=await page.locator('.pt-joystick i').evaluate(e=>e.style.transform);
+    await touch('touchStart',[{id:20,...movingPoint},{id:21,...aaPoint}]);
+    await page.locator('.pt-joystick').dispatchEvent('pointermove',{pointerId:999,clientX:0,clientY:0});
+    await page.locator('.pt-joystick').dispatchEvent('pointerup',{pointerId:999});
+    assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),knob,'Foreign pointer cannot steer or release joystick');
+    await touch('touchEnd',[{id:21,...aaPoint}]);
+    assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),knob,'AA release preserves joystick');
+    await touch('touchEnd',[]);assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'');
+    await cdp.detach();
     await page.getByRole('button',{name:'Exit practice',exact:true}).click();
     assert.deepEqual(errors, []);
     assert.deepEqual(external.filter(x => !x.endsWith('/app-data/database.json')), []);
