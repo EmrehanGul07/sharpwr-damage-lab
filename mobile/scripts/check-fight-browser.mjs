@@ -194,7 +194,7 @@ try {
     );
     await page.close();
   }
-  for (const [width,height] of [[390,844],[844,390],[1280,800]]) {
+  for (const [width,height] of [[390,844],[844,390],[1280,800]].filter(([w])=>!process.env.PRACTICE_VIEWPORT||w===Number(process.env.PRACTICE_VIEWPORT))) {
     const page = await browser.newPage({ viewport: { width, height } });
     const errors = [], external = [], models = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -258,9 +258,16 @@ try {
         assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),lockHero,'target drag never generates movement');
         await page.getByLabel('Clear target lock',{exact:true}).click();
         assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.lockedTarget||null),null);
-        const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1);d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.health.defeatedAt=null;m.rewarded=false;m.range=4;m.next=Infinity;return d.player.hero.slice();});
+        // Farm is a separate scenario: do not inherit pending attacks or defeated units from target-lock checks.
+        await page.getByRole('button',{name:'Restart practice',exact:true}).click();
+        await page.waitForFunction(()=>document.querySelector('.pt-stage-wrap').dataset.phase==='ready');
+        const farmStick=page.locator('.pt-joystick'),farmRect=await farmStick.boundingBox();
+        await farmStick.dispatchEvent('pointerdown',{pointerId:31,clientX:farmRect.x+farmRect.width/2,clientY:farmRect.y+farmRect.height/2});
+        await farmStick.dispatchEvent('pointerup',{pointerId:31});
+        await page.waitForFunction(()=>window.__practiceState.duel.lane.units.length>0);
+        const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel;d.bot.next=Infinity;for(const s of[d.player,d.enemy]){s.pending=null;s.attackHeld=false;s.hits=[];s.events=[];s.destination=s.hero.slice();}d.player.deadlines.AA=0;const m=d.lane.units.find(m=>m.side===1);d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.health.defeatedAt=null;m.rewarded=false;m.range=4;m.next=Infinity;return d.player.hero.slice();});
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerdown',{pointerId:33});
-        await page.waitForFunction(()=>window.__practiceState.duel.player.training.cs>0,null,{timeout:10000});
+        try{await page.waitForFunction(()=>window.__practiceState.duel.player.training.cs>0,null,{timeout:10000});}catch(error){console.error('Farm fixture state',await page.evaluate(()=>{const d=window.__practiceState.duel,s=d.player;return{time:d.time,finished:d.finished,result:d.result,hero:s.hero,targetId:s.targetId,held:s.attackHeld,pending:s.pending,health:s.health.hp,deadlines:s.deadlines,hits:s.hits,events:s.events,units:d.lane.units,phase:document.querySelector('.pt-stage-wrap').dataset.phase,disabled:document.querySelector('[data-slot="Farm"]').disabled};}));throw error;}
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerup',{pointerId:33});
         assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),farmHero,'Farm never generates movement');
         await page.getByLabel('Finish training session',{exact:true}).click();
