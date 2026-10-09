@@ -32,6 +32,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  if(!P[champion])champion=names[0];
  let state=null,duel=null,duelRunning=false,active=false,started=false,entering=false,scene=null,raf=0,last=0,disposed=false,joystick=null,attackPointer=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx',lastLog=null,lastSummary='';
  const audio=scope.MarksmanEffects.createCombatAudio();
+ let farmPointer=null;
  const profileOf=name=>({...P[name],name});
  const inputYaw=()=>CAMERA_YAW;
  const screenDelta=(dx,dy)=>wrap.dataset.rotated==='true'?[dy,-dx]:[dx,dy];
@@ -44,9 +45,10 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const hud=el('div',{class:'pt-hud',role:'group','aria-label':'Attack and skills'});
  const focusButton=el('button',{class:'pt-focus',type:'button',text:'✕ Exit practice','aria-label':'Exit practice','aria-pressed':'false'});
  const restartButton=el('button',{class:'pt-restart',type:'button',text:'↻ Restart','aria-label':'Restart practice'});
+ const finishButton=el('button',{class:'pt-finish',type:'button',text:'Finish session','aria-label':'Finish training session'}),report=el('section',{class:'pt-results','aria-label':'Training results',hidden:true}),farmButton=el('button',{class:'pt-skill','data-slot':'Farm',type:'button',text:'Farm','aria-label':'Farm minions or attack tower',hidden:true});hud.append(farmButton);
  const readyHint=el('div',{class:'pt-ready-hint',text:'Touch the joystick or a skill to begin'});
  const previewLabel=el('div',{class:'pt-preview-label',text:'DRAGON LANE · ARENA PREVIEW'});
- const wrap=el('div',{class:'pt-stage-wrap','data-phase':'preview'},stage,el('div',{class:'pt-overlay-top'},statsLine,buffLine),combo,stick,hud,focusButton,restartButton,readyHint,previewLabel);
+ const wrap=el('div',{class:'pt-stage-wrap','data-phase':'preview'},stage,el('div',{class:'pt-overlay-top'},statsLine,buffLine),combo,stick,hud,focusButton,restartButton,finishButton,report,readyHint,previewLabel);
  const championSelect=el('select',{'aria-label':'Champion'},names.map(n=>el('option',{value:n,text:n})));championSelect.value=champion;
  const levelSelect=el('select',{'aria-label':'Champion level'},Array.from({length:15},(_,i)=>el('option',{value:String(i+1),text:'Level '+(i+1)})));levelSelect.value='15';
  const qualitySelect=el('select',{'aria-label':'Render quality'},[['high','High quality'],['balanced','Balanced'],['low','Lightweight']].map(([v,t])=>el('option',{value:v,text:t})));qualitySelect.value=quality||(compact?'balanced':'high');
@@ -54,7 +56,8 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const opponentSelect=el('select',{'aria-label':'Bot champion'},names.map(n=>el('option',{value:n,text:n})));opponentSelect.value='Jinx';
  const difficultySelect=el('select',{'aria-label':'Bot difficulty'},['easy','medium','hard','impossible'].map(v=>el('option',{value:v,text:v[0].toUpperCase()+v.slice(1)})));difficultySelect.value='medium';
  const startButton=el('button',{class:'pt-start',type:'button',text:'Start Practice',disabled:true});
- const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,el('span',{class:'pt-small',text:'Same stats in every mode · no items/runes · base-kit sandbox'}));duelSettings.hidden=true;
+ const laneBox=el('input',{type:'checkbox',checked:true,'aria-label':'Minions and towers'});
+ const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,el('label',{class:'pt-check'},laneBox,'Minions and towers'),el('span',{class:'pt-small',text:'Equal champion stats · prototype lane rules · gold does not change stats'}));duelSettings.hidden=true;
  const rankSelects=Object.fromEntries(['Q','W','E','R'].map(slot=>[slot,el('select',{'aria-label':slot+' rank'},Array.from({length:slot==='R'?4:5},(_,r)=>el('option',{value:String(r),text:r?slot+' '+r:slot+' –'})))]));
  const soundBox=el('input',{type:'checkbox',checked:true,'aria-label':'Combat sound'});soundBox.addEventListener('change',()=>audio.setEnabled(soundBox.checked));
  const noCd=el('input',{type:'checkbox'}),effectsBox=el('input',{type:'checkbox',checked:true}),rangeBox=el('input',{type:'checkbox'});
@@ -86,11 +89,15 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  root.replaceChildren(el('div',{class:'pt'+(compact?' pt-compact':'')},wrap,startButton,help,controls,panels));
 
  // ---- HUD buttons
+ function selectFarm(){if(!duel?.lane)return false;const D=scope.MarksmanDuel,m=D.farmTarget(duel,state)||duel.lane.towers.find(t=>t.side!==state.side&&t.health.hp>0&&Math.hypot(t.position[0]-state.hero[0],t.position[2]-state.hero[2])<=Practice.stats(state).range/100+.35);return m?D.selectTarget(duel,state,m.id):false;}
+ farmButton.addEventListener('pointerdown',e=>{e.stopPropagation();if(farmPointer!==null||!state||!begin())return;e.preventDefault();capture(farmButton,e);attackPointer=null;farmPointer=e.pointerId;if(selectFarm())Practice.holdAttack(state,true);});
+ const endFarm=e=>{e.stopPropagation();if(e.pointerId!==farmPointer)return;farmPointer=null;Practice.holdAttack(state,false);state.pending=null;if(duel)scope.MarksmanDuel.selectTarget(duel,state,'enemy');};for(const type of['pointerup','pointercancel','lostpointercapture'])farmButton.addEventListener(type,endFarm);
+ finishButton.addEventListener('click',()=>{if(duel){scope.MarksmanDuel.finish(duel);clearKeys();updateHud(scope.MarksmanDuel.frame(duel,{particles:true}));}});
  const buttons={};
  for(const slot of SLOTS){const b=el('button',{type:'button',class:'pt-skill','data-slot':slot},slot==='AA'?el('span',{class:'pt-aa',text:'Attack'}):el('img',{alt:'',draggable:'false'}),el('span',{class:'pt-shade'}),el('span',{class:'pt-cd'}),slot==='AA'?null:el('span',{class:'pt-key',text:slot}));buttons[slot]=b;hud.append(b);bindSkill(b,slot);}
  function bindSkill(b,slot){
   b.addEventListener('contextmenu',e=>e.preventDefault());
-  b.addEventListener('pointerdown',e=>{e.stopPropagation();if(!state||!begin()||(slot==='AA'?attackPointer!==null:!!aiming))return;e.preventDefault();capture(b,e);if(slot==='AA'){attackPointer=e.pointerId;Practice.holdAttack(state,true);cast('AA');return;}aiming={slot,pointerId:e.pointerId,x:e.clientX,y:e.clientY,moved:false};Practice.aim(state,slot,state.target);});
+  b.addEventListener('pointerdown',e=>{e.stopPropagation();if(!state||!begin()||(slot==='AA'?attackPointer!==null:!!aiming))return;e.preventDefault();capture(b,e);if(slot==='AA'){farmPointer=null;if(duel)scope.MarksmanDuel.selectTarget(duel,state,'enemy');attackPointer=e.pointerId;Practice.holdAttack(state,true);cast('AA');return;}aiming={slot,pointerId:e.pointerId,x:e.clientX,y:e.clientY,moved:false};Practice.aim(state,slot,state.target);});
   b.addEventListener('pointermove',e=>{e.stopPropagation();if(!aiming||aiming.slot!==slot||aiming.pointerId!==e.pointerId)return;const [dx,dy]=screenDelta(e.clientX-aiming.x,e.clientY-aiming.y);if(Math.hypot(dx,dy)>8){aiming.moved=true;Practice.aim(state,slot,aimPoint(slot,dx,dy));}});
   const end=e=>{e.stopPropagation();if(slot==='AA'){if(attackPointer!==e.pointerId)return;attackPointer=null;if(state)Practice.holdAttack(state,false);if(state?.pending?.slot==='AA')state.pending=null;return;}if(!aiming||aiming.slot!==slot||aiming.pointerId!==e.pointerId)return;const point=aiming.moved?state.aim:null;aiming=null;state.aim=null;state.aimSlot=null;if(e.type==='pointerup')cast(slot,point);};
   b.addEventListener('pointerup',end);b.addEventListener('pointercancel',end);b.addEventListener('lostpointercapture',end);
@@ -98,7 +105,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  // Drag from a skill button: the drag direction on screen becomes the aim direction on the ground
  // (as on the Wild Rift HUD); AIM_PIXELS of drag reaches the skill's full range.
  function aimPoint(slot,dx,dy){const ind=Practice.aim(state,slot,state.target),range=ind.range||Practice.stats(state).range/100,len=Math.hypot(dx,dy),scale=Math.min(1,len/AIM_PIXELS)*range/(len||1),wx=(dx*Math.cos(inputYaw())+dy*Math.sin(inputYaw()))*scale,wz=(-dx*Math.sin(inputYaw())+dy*Math.cos(inputYaw()))*scale;return[state.hero[0]+wx,0,state.hero[2]+wz];}
- function cast(slot,point){if(!state||!begin()||duel&&slot==='P')return;Practice.cast(state,slot,point||undefined);}
+ function cast(slot,point){if(!state||!begin()||duel&&slot==='P')return;if(duel&&(slot!=='AA'||farmPointer===null))scope.MarksmanDuel.selectTarget(duel,state,'enemy');Practice.cast(state,slot,point||undefined);}
 
  // ---- champion / settings
  function dummyValues(){if(presetSelect.value==='Custom')return null;const row=catalogue.practice_targets[presetSelect.value][state.level-1];return{hp:Math.round(row.hp),armor:Math.round(row.armor),mr:Math.round(row.mr),aaReduction:row.aa_reduction||0,label:presetSelect.value.split(' • ')[0]+' dummy'};}
@@ -107,10 +114,10 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  // Hero and dummy start a few steps apart; on a portrait screen the dummy stands "up" the screen.
  function startPositions(){return{hero:[-3,0,0],target:[3,0,0]};}
  function selectChampion(name){lastLog=undefined;lastSummary='';champion=name;const keep=state?{hero:state.hero.slice(),target:state.target.slice()}:startPositions();keep.hero[1]=0;state=Practice.create(profileOf(name),{movements:Fight.MOVEMENT,autoApproach:false});state.arena=scope.MarksmanArena.navigation;state.hero=state.arena.project(keep.hero);state.destination=state.hero.slice();state.target=state.arena.project(keep.target);Practice.setLevel(state,Number(levelSelect.value));state.noCooldowns=noCd.checked;if(modeSelect.value==='duel')prepareDuel();else{duel=null;applyDummy();}syncRanks();refreshIcons();refreshSimulated();loadChampionNotes();}
- function prepareDuel(){duel=scope.MarksmanDuel.create(profileOf(champion),profileOf(opponentSelect.value),{level:Number(levelSelect.value),difficulty:difficultySelect.value,movements:Fight.MOVEMENT,arena:scope.MarksmanArena.navigation,seed:1});state=duel.player;state.autoApproach=false;attackPointer=null;duelRunning=false;placing=false;joystick=null;keys.clear();aiming=null;last=0;started=false;wrap.dataset.phase=active?'ready':'preview';syncRanks();}
+ function prepareDuel(){duel=scope.MarksmanDuel.create(profileOf(champion),profileOf(opponentSelect.value),{level:Number(levelSelect.value),difficulty:difficultySelect.value,movements:Fight.MOVEMENT,arena:scope.MarksmanArena.navigation,lane:laneBox.checked,seed:1});state=duel.player;state.autoApproach=false;attackPointer=null;farmPointer=null;report.hidden=true;delete report.dataset.done;duelRunning=false;placing=false;joystick=null;keys.clear();aiming=null;last=0;started=false;wrap.dataset.phase=active?'ready':'preview';syncRanks();}
  function setMode(){const on=modeSelect.value==='duel';duelSettings.hidden=!on;controls.children[3].hidden=on;noCd.parentElement.hidden=on;resetCd.hidden=on;help.textContent=on?'1v1: move with the joystick, arrow keys. Hold Attack; tap a skill at the bot or drag to aim. Both sides use normal cooldowns.':'Joystick or arrow keys to move. Tap a skill to cast it at the dummy, or drag from the skill to aim. Hold Attack to keep attacking.';for(const input of[...Object.values(rankSelects),noCd,resetCd,presetSelect,hpInput,armorInput,mrInput,resetButton,placeButton])input.disabled=on;selectChampion(champion);if(on){scene?.setCamera('rift');for(const b of cameraButtons)b.classList.toggle('active',b.dataset.camera==='rift');}}
  modeSelect.addEventListener('change',setMode);
- for(const input of[opponentSelect,difficultySelect])input.addEventListener('change',()=>{if(duel)prepareDuel();});
+ for(const input of[opponentSelect,difficultySelect,laneBox])input.addEventListener('change',()=>{if(duel)prepareDuel();});
  startButton.addEventListener('click',enterPractice);
  restartButton.addEventListener('click',resetRound);
  function syncRanks(){for(const[slot,select]of Object.entries(rankSelects))select.value=String(state.ranks[slot]);}
@@ -167,7 +174,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
   if(e.repeat)return;if(e.code==='Space'){if(!begin())return;e.preventDefault();Practice.holdAttack(state,true);cast('AA');return;}
   if('QWER'.includes(key)&&key.length===1){if(!root.isConnected||!wrap.getBoundingClientRect().height)return;e.preventDefault();const point=cursor&&scene?scene.pickGround(cursor.x,cursor.y):null;cast(key,point);}
   if(key==='Escape'&&wrap.classList.contains('pt-full'))focusButton.click();};
- const clearKeys=()=>{keys.clear();attackPointer=null;joystick=null;stick.firstChild.style.transform='';aiming=null;if(state){Practice.holdAttack(state,false);state.pending=null;state.buffered=null;state.queued=null;state.destination=state.hero.slice();state.aim=null;state.aimSlot=null;}};
+ const clearKeys=()=>{keys.clear();attackPointer=null;farmPointer=null;joystick=null;stick.firstChild.style.transform='';aiming=null;if(state){Practice.holdAttack(state,false);state.pending=null;state.buffered=null;state.queued=null;state.destination=state.hero.slice();state.aim=null;state.aimSlot=null;}};
  document.addEventListener('keydown',onKey);document.addEventListener('keyup',onKey);window.addEventListener('blur',clearKeys);
 
  // ---- scene
@@ -180,12 +187,15 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  // ---- loop
  const ARROWS={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
  function tick(ts){if(disposed)return;if(!root.isConnected){dispose();return;}raf=requestAnimationFrame(tick);const dt=last?Math.min(.1,(ts-last)/1000):0;last=ts;if(!state||document.hidden)return;
+  if(farmPointer!==null){Practice.holdAttack(state,selectFarm());}
   if(joystick&&(joystick.dx||joystick.dz))Practice.move(state,[state.hero[0]+joystick.dx*1.5,0,state.hero[2]+joystick.dz*1.5]);
   if(keys.size){let dy=0,dx=0;for(const k of keys){const a=ARROWS[k];if(a){dy+=a[0];dx+=a[1];}}if(dx||dy){const len=Math.hypot(dx,dy),sx=dx/len*40,sy=dy/len*40,wx=(sx*Math.cos(inputYaw())+sy*Math.sin(inputYaw()))/40,wz=(-sx*Math.sin(inputYaw())+sy*Math.cos(inputYaw()))/40;Practice.move(state,[state.hero[0]+wx*1.5,0,state.hero[2]+wz*1.5]);}}
   const options={particles:effectsBox.checked,range:rangeBox.checked};if(active&&started){if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);}const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);audio.update(duel?[{state:duel.player},{state:duel.enemy,enemy:true}]:[{state}]);updateHud(f);}
  function updateHud(f){const s=Practice.stats(state);statsLine.textContent=`${champion} · Lv ${state.level} · AD ${s.ad.toFixed(1)}${s.bonusAD?' (+'+s.bonusAD+')':''} · AS ${s.as.toFixed(3)} · Range ${Math.round(s.range)} · MS ${s.ms}`;
+  farmButton.hidden=!duel?.lane;farmButton.disabled=!active||!!duel?.finished;finishButton.hidden=!duel;finishButton.disabled=!active||!!duel?.finished;report.hidden=!duel?.finished;
+  if(duel?.finished&&!report.dataset.done){const r=scope.MarksmanDuel.summary(duel),p=r.player;report.dataset.done='true';report.replaceChildren(el('h3',{text:`${r.result.toUpperCase()} · ${r.duration.toFixed(1)}s`}),el('p',{text:`Champion damage: ${Math.round(p.damage)} dealt / ${Math.round(p.taken)} taken · ${p.damagePerSecond.toFixed(1)} DPS`}),el('p',{text:`Skill accuracy: ${p.accuracy===null?'—':p.accuracy+'%'} (${p.hits}/${p.casts}) · CS: ${p.cs} · Gold score: ${p.gold}`}),el('p',{text:`AA-ready idle: ${p.attackIdle.toFixed(1)}s · Moving while recently under attack: ${p.kiteDistance.toFixed(1)}m · Tower hits taken: ${p.towerHits}`}),el('p',{text:p.towerHits?'Tip: back away from enemy tower aggro.':p.attackIdle>2?'Tip: use attack-ready windows while in range.':p.accuracy!==null&&p.accuracy<50?'Tip: lead your skillshots and account for minion blockers.':'Good run: compare another difficulty or champion.'}),el('small',{text:r.rules}));}
   buffLine.replaceChildren(...f.buffs.map(b=>el('span',{class:'pt-chip',text:b.label||`${b.slot} ${b.remaining.toFixed(1)}s`})));
-  if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT'}[duel.result]:started?'FIGHT':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP`;}
+  if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT',stopped:'SESSION COMPLETE'}[duel.result]:started?'FIGHT':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP${duel.lane?' · CS '+state.training.cs+' · Gold '+state.training.gold:''}`;}
   const sum=Practice.summary(state),show=sum.count?sum:state.lastCombo,text=show?`${sum.count?'Combo':'Last combo'} ${Math.round(show.total)} damage · ${show.count} hits · ${show.seconds.toFixed(2)} s · ${Math.round(show.dps)} DPS`:'Hit the dummy to start a combo';if(!duel&&text!==lastSummary){combo.textContent=text;lastSummary=text;}
   for(const slot of SLOTS){const b=buttons[slot],learned=slot==='AA'||slot==='P'||state.ranks[slot]>0,left=Math.max(0,(state.deadlines[slot]||0)-state.time),T=state.profile.practice,total=slot==='AA'?1/s.as:slot==='P'?0:T.slots[slot].cooldown?.[Math.max(0,state.ranks[slot]-1)]||0,cd=b.querySelector('.pt-cd'),shade=b.querySelector('.pt-shade'),shown=slot!=='AA'&&left>.05;
    b.disabled=!active||entering||!!duel&&(duel.finished||slot==='P');b.classList.toggle('locked',!learned||!!duel&&slot==='P');b.classList.toggle('cooling',shown);shade.style.setProperty('--cd',shown&&total?String(Math.min(1,left/total)):'0');cd.textContent=shown?(left>=1?Math.ceil(left):left.toFixed(1)):'';b.classList.toggle('active',f.action===slot||state.buffs.some(x=>x.slot===slot&&x.end>state.time));}

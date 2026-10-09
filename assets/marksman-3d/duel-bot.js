@@ -29,17 +29,27 @@ function decide(bot,self,time){if(time+1e-9<bot.next||self.hp<=0)return null;bot
  if(danger&&time>=bot.dodgeUntil&&bot.random()<c.dodge){bot.dodgeUntil=time+.35;const sign=bot.random()<.5?-1:1,point=[self.position[0]-danger.dz*sign*1.8,0,self.position[2]+danger.dx*sign*1.8],escape=Object.keys(self.skills).find(s=>legal(s)&&self.skills[s].mobility&&!self.skills[s].targeted);
   return remember(bot,{move:point,...(escape&&c.dodge>=.8&&!self.locked?{cast:escape,aim:point}:{}),reason:'dodge'});}
  if(self.locked)return null;
+ const lane=view.lane;if(lane&&c.dodge>=.4){const towers=lane.towers.filter(t=>t.side!==lane.side),home=lane.towers.find(t=>t.side===lane.side),unsafe=towers.find(t=>dist(self.position,t.position)<t.range+.8&&!lane.minions.some(m=>m.side===lane.side&&dist(m.position,t.position)<t.range));
+  if(unsafe||self.hp/self.max<(c.dodge>=.8?.30:.18))return remember(bot,{move:home?Geo.point(home.position,enemy.position,3):away,reason:'tower retreat'});
+  const farm=lane.minions.filter(m=>m.side!==lane.side&&dist(m.position,self.position)<=self.range+.35&&m.hp<=lane.ad*100/115*(c.dodge>=.8?1:.75)).sort((a,b)=>a.hp-b.hp);
+  if(farm.length&&self.attackReady<=time&&!danger)return remember(bot,{cast:'AA',targetId:farm[0].id,aim:farm[0].position.slice(),move:self.position.slice(),reason:'last hit'});
+  // Shelter behind a friendly melee minion against observed line attacks, not hidden input.
+  const cover=lane.minions.find(m=>m.side===lane.side&&dist(m.position,enemy.position)<d&&dist(m.position,self.position)<3);
+  if(cover&&self.attackReady>time&&enemy.casts.some(e=>e.shape==='line'&&e.endTime>time))return remember(bot,{move:Geo.point(enemy.position,cover.position,dist(enemy.position,cover.position)+1),reason:'minion cover'});
+ }
  if(self.champion==='Jinx'&&self.skills.Q?.mode==='toggle'&&ready('Q')){const rocket=d>self.baseRange+.2&&d<=self.rocketRange+1&&(self.mana||0)>=(self.rocketCost||0);if(rocket!==(self.weapon==='rockets'))return remember(bot,{cast:'Q',reason:'weapon'});}
  const punish=c.dodge>=.8&&enemy.champion==='Ezreal'&&(bot.knownCooldowns.E||0)>time&&self.hp/self.max>.5;
  const wanted=self.range*c.spacing*(punish?.85:1),tooClose=d<wanted-.45,tooFar=d>self.range+.45,point=tooClose?Geo.point(enemy.position,self.position,wanted):tooFar?Geo.point(enemy.position,self.position,wanted):Geo.point(enemy.position,self.position,Math.max(1,d));
  // Preserve attack windups; kite in the downtime, never raise the attack rate.
  const cmd={move:point,reason:tooClose?'kite':tooFar?'approach':'spacing'};
+ if(lane){const tower=lane.towers.find(t=>t.side!==lane.side&&dist(point,t.position)<t.range+.3);if(tower&&!lane.minions.some(m=>m.side===lane.side&&dist(m.position,tower.position)<tower.range)){cmd.move=Geo.point(tower.position,self.position,tower.range+1);cmd.reason='tower boundary';}}
  if(bot.random()<c.miss)return remember(bot,cmd);
  const order=punish&&self.champion==='Jinx'?['E','W','R']:self.champion==='Ezreal'?['W','Q','R','E']:self.champion==='Tristana'?['E','Q','R','W']:self.champion==='Varus'?['W','Q','E','R']:['Q','W','E','R'];
  for(const slot of order){const s=self.skills[slot];if(!legal(slot)||s.mode==='toggle'||s.mode==='skip'||s.mode==='none'&&!s.buff)continue;
   if(s.mobility){if(self.hp/self.max>.28||d>self.range||c.dodge<.8)continue;cmd.cast=slot;cmd.aim=away;cmd.reason='escape';break;}
   if(s.buff&&d>self.range+.65)continue;
   if(!s.buff&&d>s.range+.65)continue;
+  if(lane&&c.dodge>=.8&&((self.champion==='Ezreal'&&slot==='Q')||(self.champion==='Jinx'&&slot==='W'))){const a=self.position,b=enemy.position,dx=b[0]-a[0],dz=b[2]-a[2],len=Math.hypot(dx,dz)||1,blocked=lane.minions.some(m=>{if(m.side===lane.side)return false;const u=((m.position[0]-a[0])*dx+(m.position[2]-a[2])*dz)/(len*len);return u>0&&u<1&&Math.abs((m.position[0]-a[0])*dz-(m.position[2]-a[2])*dx)/len<.55;});if(blocked){cmd.move=[a[0]-dz/len,0,a[2]+dx/len];cmd.reason='clear skillshot angle';continue;}}
   if(slot==='R'&&!s.buff&&c.dodge>=.8&&enemy.hp/enemy.max>.4&&self.hp/self.max>.35)continue;
   cmd.cast=slot;cmd.aim=aim(bot,self,enemy,slot);cmd.reason=s.buff?'buff':slot==='R'?'finish':'combo';break;
  }

@@ -68,6 +68,11 @@
 .pt-stage-wrap[data-phase="playing"] .pt-ready-hint{display:none}
 .pt-stage-wrap.pt-full .pt-focus{top:12px;right:max(12px,env(safe-area-inset-right));bottom:auto;padding:6px 10px;font-size:11px;background:#0a191cbe;border-color:#72836b}
 .pt-restart{position:absolute;top:12px;right:132px;z-index:7;padding:6px 10px!important;font-size:11px!important;background:#0a191cbe!important}
+.pt-finish{position:absolute;top:12px;right:225px;z-index:7;padding:6px 10px!important;font-size:11px!important;background:#0a191cbe!important}
+.pt-skill[data-slot=Farm]{right:86px;bottom:95px;width:44px;height:44px;font-size:10px!important;background:#314e32!important}
+.pt-results{position:absolute;z-index:9;left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,75%);max-height:75%;overflow:auto;background:#081c22f5;border:1px solid #c8b86d;border-radius:12px;padding:18px;color:#e8f2ec;box-shadow:0 10px 50px #0009;font-size:12px}
+.pt-results h3{color:#ffe6a1;margin:0 0 12px}.pt-results small{color:#a9bdb5}
+.pt-stage-wrap[data-phase=preview] .pt-finish{display:none}
 .pt-stage-wrap.pt-full .pt-overlay-top{top:12px;left:14px;right:250px;max-width:550px;pointer-events:none}
 .pt-stage-wrap.pt-full .pt-stats{font-size:10px;line-height:1.45;color:#d9e2c4;text-shadow:0 2px 3px #000;background:#061513a8;border:1px solid #81916e40;border-radius:5px;padding:5px 8px}
 .pt-stage-wrap.pt-full .pt-buffs{margin-top:4px}.pt-stage-wrap.pt-full .pt-chip{font-size:9px}
