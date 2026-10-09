@@ -1,4 +1,4 @@
-# Arena expansion — 7.1.20 / mobile 0.8.19
+# Arena expansion — 7.1.21 / mobile 0.8.20
 
 ## Five workstreams
 
