@@ -246,6 +246,18 @@ try {
       if (screenshots && difficulty==='easy') await page.screenshot({ path: resolve(screenshots, `dragon-lane-fight-${width}.png`) });
       if(difficulty==='easy'){
         await page.waitForFunction(()=>window.__practiceState.duel.lane.units.length>0);
+        const lockHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1),r=window.MarksmanPractice.stats(d.player).range/100/3;d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+Math.cos(-.78)*r,0,d.player.hero[2]-Math.sin(-.78)*r];m.health.hp=5000;m.range=4;m.next=Infinity;return d.player.hero.slice();});
+        const aa=page.locator('.pt-skill[data-slot="AA"]'),rotated=await page.locator('.pt-stage-wrap').evaluate(e=>e.dataset.rotated==='true');
+        await aa.dispatchEvent('pointerdown',{pointerId:32,clientX:100,clientY:100});
+        await aa.dispatchEvent('pointermove',{pointerId:99,clientX:rotated?100:130,clientY:rotated?130:100});
+        assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.lockedTarget||null),null,'foreign pointer cannot lock');
+        await aa.dispatchEvent('pointermove',{pointerId:32,clientX:rotated?100:130,clientY:rotated?130:100});
+        await aa.dispatchEvent('pointerup',{pointerId:32});
+        await page.waitForFunction(()=>window.__practiceState.duel.player.lockedTarget?.startsWith('m'));
+        await page.getByLabel('Clear target lock',{exact:true}).waitFor({state:'visible'});
+        assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),lockHero,'target drag never generates movement');
+        await page.getByLabel('Clear target lock',{exact:true}).click();
+        assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.lockedTarget||null),null);
         const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1);d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.range=4;m.next=Infinity;return d.player.hero.slice();});
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerdown',{pointerId:33});
         await page.waitForFunction(()=>window.__practiceState.duel.player.training.cs>0,null,{timeout:10000});
