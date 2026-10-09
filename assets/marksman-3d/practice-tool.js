@@ -31,10 +31,11 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const P=catalogue.champions,Practice=scope.MarksmanPractice,Fight=scope.MarksmanFight,names=Object.keys(P);
  if(!P[champion])champion=names[0];
  let state=null,duel=null,duelRunning=false,active=false,started=false,entering=false,scene=null,raf=0,last=0,disposed=false,joystick=null,attackPointer=null,aiming=null,placing=false,cursor=null,keys=new Set(),notes=loadNotes(storage),preset='Squishy • Jinx',lastLog=null,lastSummary='';
+ const audio=scope.MarksmanEffects.createCombatAudio();
  const profileOf=name=>({...P[name],name});
  const inputYaw=()=>CAMERA_YAW;
  const screenDelta=(dx,dy)=>wrap.dataset.rotated==='true'?[dy,-dx]:[dx,dy];
- function begin(){if(!active||entering||disposed||duel?.finished)return false;if(!started){started=true;duelRunning=true;last=0;wrap.dataset.phase='playing';}return true;}
+ function begin(){if(!active||entering||disposed||duel?.finished)return false;audio.unlock();if(!started){started=true;duelRunning=true;last=0;wrap.dataset.phase='playing';}return true;}
  // ---- layout
  const stage=el('div',{class:'pt-stage','aria-label':'Practice arena'});
  const status=el('div',{class:'pt-loading',text:'Loading the arena…'});stage.append(status);
@@ -55,6 +56,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  const startButton=el('button',{class:'pt-start',type:'button',text:'Start Practice',disabled:true});
  const duelSettings=el('div',{class:'pt-row pt-duel-settings'},opponentSelect,difficultySelect,el('span',{class:'pt-small',text:'Same stats in every mode · no items/runes · base-kit sandbox'}));duelSettings.hidden=true;
  const rankSelects=Object.fromEntries(['Q','W','E','R'].map(slot=>[slot,el('select',{'aria-label':slot+' rank'},Array.from({length:slot==='R'?4:5},(_,r)=>el('option',{value:String(r),text:r?slot+' '+r:slot+' –'})))]));
+ const soundBox=el('input',{type:'checkbox',checked:true,'aria-label':'Combat sound'});soundBox.addEventListener('change',()=>audio.setEnabled(soundBox.checked));
  const noCd=el('input',{type:'checkbox'}),effectsBox=el('input',{type:'checkbox',checked:true}),rangeBox=el('input',{type:'checkbox'});
  const presetSelect=el('select',{'aria-label':'Dummy'},[...Object.keys(catalogue.practice_targets||{}),'Custom'].map(n=>el('option',{value:n,text:n==='Custom'?'Custom dummy':n+' (by level)'})));presetSelect.value=preset;
  const hpInput=el('input',{type:'number',min:'1',max:'99999',step:'1','aria-label':'Dummy health',inputmode:'numeric'}),armorInput=el('input',{type:'number',min:'0',max:'999',step:'1','aria-label':'Dummy armor',inputmode:'numeric'}),mrInput=el('input',{type:'number',min:'0',max:'999',step:'1','aria-label':'Dummy magic resistance',inputmode:'numeric'});
@@ -64,7 +66,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
   el('div',{class:'pt-row'},modeSelect,championSelect,levelSelect,qualitySelect),duelSettings,
   el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'Skill ranks'}),...Object.values(rankSelects),el('label',{class:'pt-check'},noCd,'No cooldowns'),resetCd),
   el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'Dummy'}),presetSelect,el('label',{class:'pt-field'},'HP',hpInput),el('label',{class:'pt-field'},'Armor',armorInput),el('label',{class:'pt-field'},'MR',mrInput),resetButton,placeButton),
-  el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'View'}),...cameraButtons,el('label',{class:'pt-check'},effectsBox,'Effects'),el('label',{class:'pt-check'},rangeBox,'Attack range')));
+  el('div',{class:'pt-row'},el('span',{class:'pt-label',text:'View'}),...cameraButtons,el('label',{class:'pt-check'},effectsBox,'Effects'),el('label',{class:'pt-check'},rangeBox,'Attack range'),el('label',{class:'pt-check'},soundBox,'Combat sound')));
  const help=el('p',{class:'pt-help',text:compact?'Joystick or arrow keys to move. Tap a skill to cast it at the dummy, or drag from the skill to aim. Hold Attack to keep attacking.':'Click or tap the ground (or use the arrow keys) to move. Q W E R cast toward the mouse, or at the dummy; Space attacks (hold to keep attacking). On touch screens use the joystick and drag from a skill to aim.'});
  const logList=el('ol',{class:'pt-log'}),simulated=el('div',{class:'pt-sim'});
  const noteInputs=Object.fromEntries(NOTE_FIELDS.map(f=>[f,el('textarea',{rows:f==='General'?'3':'2','aria-label':f+' notes'})]));
@@ -180,7 +182,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
  function tick(ts){if(disposed)return;if(!root.isConnected){dispose();return;}raf=requestAnimationFrame(tick);const dt=last?Math.min(.1,(ts-last)/1000):0;last=ts;if(!state||document.hidden)return;
   if(joystick&&(joystick.dx||joystick.dz))Practice.move(state,[state.hero[0]+joystick.dx*1.5,0,state.hero[2]+joystick.dz*1.5]);
   if(keys.size){let dy=0,dx=0;for(const k of keys){const a=ARROWS[k];if(a){dy+=a[0];dx+=a[1];}}if(dx||dy){const len=Math.hypot(dx,dy),sx=dx/len*40,sy=dy/len*40,wx=(sx*Math.cos(inputYaw())+sy*Math.sin(inputYaw()))/40,wz=(-sx*Math.sin(inputYaw())+sy*Math.cos(inputYaw()))/40;Practice.move(state,[state.hero[0]+wx*1.5,0,state.hero[2]+wz*1.5]);}}
-  const options={particles:effectsBox.checked,range:rangeBox.checked};if(active&&started){if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);}const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);updateHud(f);}
+  const options={particles:effectsBox.checked,range:rangeBox.checked};if(active&&started){if(duel){if(duelRunning)scope.MarksmanDuel.step(duel,dt);}else Practice.step(state,dt);}const f=duel?scope.MarksmanDuel.frame(duel,options):Practice.frame(state,options);scene?.render(f);audio.update(duel?[{state:duel.player},{state:duel.enemy,enemy:true}]:[{state}]);updateHud(f);}
  function updateHud(f){const s=Practice.stats(state);statsLine.textContent=`${champion} · Lv ${state.level} · AD ${s.ad.toFixed(1)}${s.bonusAD?' (+'+s.bonusAD+')':''} · AS ${s.as.toFixed(3)} · Range ${Math.round(s.range)} · MS ${s.ms}`;
   buffLine.replaceChildren(...f.buffs.map(b=>el('span',{class:'pt-chip',text:b.label||`${b.slot} ${b.remaining.toFixed(1)}s`})));
   if(duel){const result=duel.result?{victory:'VICTORY',defeat:'DEFEAT',draw:'DRAW',timeout:'TIME LIMIT'}[duel.result]:started?'FIGHT':'READY';combo.textContent=`${result} · ${difficultySelect.value.toUpperCase()} · ${duel.time.toFixed(1)}s · YOU ${Math.ceil(state.health.hp)} / ${Math.ceil(state.health.max)} HP · ${opponentSelect.value} ${Math.ceil(duel.enemy.health.hp)} HP`;}
@@ -190,7 +192,7 @@ async function mount(root,{catalogue,champion='Ezreal',storage=localStore(),qual
   const latest=state.log.at(-1);if(latest!==lastLog){lastLog=latest;logList.replaceChildren(...state.log.slice(-14).reverse().map(logRow));}}
  function logRow(l){const parts=l.parts?Object.entries(l.parts).map(([k,v])=>`${Math.round(v.raw)} → ${Math.round(v.dealt)} ${k}`).join(' + '):(l.text||'');return el('li',{},el('span',{class:'pt-time',text:l.t.toFixed(2)+'s'}),el('strong',{text:l.slot}),el('span',{text:parts}),l.note?el('em',{text:l.note}):null);}
  raf=requestAnimationFrame(tick);
- function dispose(){if(disposed)return;disposed=true;cancelAnimationFrame(raf);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onKey);window.removeEventListener('blur',clearKeys);document.removeEventListener('fullscreenchange',onFullscreen);window.removeEventListener('resize',resizeArena);void exitPractice();scene?.dispose();scene=null;}
+ function dispose(){if(disposed)return;disposed=true;audio.dispose();cancelAnimationFrame(raf);document.removeEventListener('keydown',onKey);document.removeEventListener('keyup',onKey);window.removeEventListener('blur',clearKeys);document.removeEventListener('fullscreenchange',onFullscreen);window.removeEventListener('resize',resizeArena);void exitPractice();scene?.dispose();scene=null;}
  return{dispose,get state(){return state;},get duel(){return duel;},get scene(){return scene;},get phase(){return wrap.dataset.phase;},select:name=>{championSelect.value=name;selectChampion(name);}};
 }
 const API={mount,notesMarkdown,loadNotes,NOTES_KEY,NOTE_FIELDS,slotSummary};if(typeof module!=='undefined'&&module.exports)module.exports=API;else scope.MarksmanPracticeTool=API;

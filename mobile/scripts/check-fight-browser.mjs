@@ -210,6 +210,9 @@ try {
     assert.equal(await page.locator('.pt-stage-wrap').getAttribute('data-phase'), 'preview');
     assert.equal(await page.getByRole('button', {name:'Pause',exact:true}).count(),0);
     assert.equal(await page.getByRole('button', {name:'Resume',exact:true}).count(),0);
+    assert.ok(await page.getByLabel('Combat sound',{exact:true}).isChecked());
+    await page.getByLabel('Combat sound',{exact:true}).uncheck();
+    await page.getByLabel('Combat sound',{exact:true}).check();
     await page.getByLabel('Arena mode', { exact: true }).selectOption('duel');
     await page.getByLabel('Bot champion', { exact: true }).selectOption('Jinx');
     assert.ok(await page.getByLabel('No cooldowns', { exact: true }).isDisabled());
