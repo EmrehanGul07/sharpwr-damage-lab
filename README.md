@@ -1,6 +1,10 @@
-# SharpWR Damage Lab — V7.1.16
+# SharpWR Damage Lab — V7.1.17
 
-### Lane training (mobile 0.8.15)
+### Day 1 combat audit (mobile 0.8.16)
+
+Jinx traps trigger only on champions, regardless of selected minions. Ezreal E acquires the nearest eligible enemy with active W priority and does not redirect after selection changes. Affordability observations do not alter Jinx weapons. Moving-target impact positions and session/death input cleanup are corrected. See [the kit audit](docs/ezreal-jinx-day1-audit.md) for checked behavior and unresolved WR rules.
+
+### Lane training
 
 1v1 now optionally includes symmetric four-minion waves every 25 seconds, melee/caster minions, champion-damage minion/tower aggro, tower projectiles and destructible tower health. Hold **Farm** to attack an in-range enemy minion (lowest health first), or an enemy tower when no minion is in range. **Attack** defaults to the champion; drag its cursor toward an enemy minion, champion or tower to persistently lock it. While dragging Attack, a yellow direction line extends from the champion exactly to the current attack-range boundary and disappears on release/cancellation. The thick yellow target ring and target label identify the lock; **Clear target** restores champion targeting. Farm clears the lock. Attack, target selection, skill aiming and Farm do not command movement. Move with the joystick or arrow keys independently while selecting/attacking a target. Ezreal Q/Jinx W can be blocked by enemy minions. Turn off **Minions and towers** for the original pure duel.
 

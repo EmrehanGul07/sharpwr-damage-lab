@@ -7,8 +7,8 @@ function init(s){const c=config(s),i=s.level-1;s.combat={weapon:'minigun',stacks
  if(c)s.resource={mana:c.resources.mana[i],max:c.resources.mana[i],manaRegen:c.resources.mana_regen_per_5s[i]/5,hpRegen:c.resources.hp_regen_per_5s[i]/5};}
 function other(s){if(s.duel.hitVictim)return s.duel.hitVictim.actor||null;return s.duel.player===s?s.duel.enemy:s.duel.player;}
 function cost(s,slot){const c=config(s);return !c?0:slot==='AA'?(s.profile.name==='Jinx'&&s.combat.weapon==='rockets'?c.costs.Q[rank(s,'Q')]:0):slot==='P'?0:s.profile.name==='Jinx'&&slot==='Q'?0:c.costs[slot]?.[rank(s,slot)];}
-function canCast(s,slot){if(s.combat?.rootUntil>s.time&&s.movements[s.profile.name]?.[slot])return false;const c=config(s);if(!c)return true;
- if(slot==='AA'&&s.combat.weapon==='rockets'&&s.resource.mana<cost(s,slot)){s.combat.weapon='minigun';s.combat.carry=false;}
+function canCast(s,slot,commit=false){if(s.combat?.rootUntil>s.time&&s.movements[s.profile.name]?.[slot])return false;const c=config(s);if(!c)return true;
+ if(slot==='AA'&&s.combat.weapon==='rockets'&&s.resource.mana<cost(s,slot)){if(!commit)return true;s.combat.weapon='minigun';s.combat.carry=false;}
  const value=cost(s,slot);return Number.isFinite(value)&&s.resource.mana+1e-9>=value;}
 function specialCast(s,slot){if(s.profile.name!=='Jinx'||!config(s)||slot!=='Q')return null;if(s.events.some(e=>s.time>=e.start&&s.time<e.lockEnd))return false;
  s.combat.weapon=s.combat.weapon==='minigun'?'rockets':'minigun';s.combat.carry=s.combat.weapon==='rockets'&&s.combat.stacks>0;
