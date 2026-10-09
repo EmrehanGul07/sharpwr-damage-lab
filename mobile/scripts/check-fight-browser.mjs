@@ -251,8 +251,14 @@ try {
         await aa.dispatchEvent('pointerdown',{pointerId:32,clientX:100,clientY:100});
         await aa.dispatchEvent('pointermove',{pointerId:99,clientX:rotated?100:130,clientY:rotated?130:100});
         assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.lockedTarget||null),null,'foreign pointer cannot lock');
+        assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.attackAim||null),null,'foreign pointer cannot draw selection line');
         await aa.dispatchEvent('pointermove',{pointerId:32,clientX:rotated?100:130,clientY:rotated?130:100});
+        await page.waitForFunction(()=>!!window.__practiceState.duel.player.attackAim);
+        const aimLine=await page.evaluate(()=>{const s=window.__practiceState.duel.player;return window.MarksmanPractice.frame(s).attackAim;});
+        assert.ok(Math.abs(Math.hypot(aimLine.end[0]-aimLine.start[0],aimLine.end[2]-aimLine.start[2])-await page.evaluate(()=>window.MarksmanPractice.stats(window.__practiceState.duel.player).range/100))<1e-9);
+        if(screenshots)await page.screenshot({path:resolve(screenshots,`aa-selection-line-${width}.png`)});
         await aa.dispatchEvent('pointerup',{pointerId:32});
+        assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.attackAim||null),null,'release clears selection line');
         await page.waitForFunction(()=>window.__practiceState.duel.player.lockedTarget?.startsWith('m'));
         await page.getByLabel('Clear target lock',{exact:true}).waitFor({state:'visible'});
         assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),lockHero,'target drag never generates movement');
