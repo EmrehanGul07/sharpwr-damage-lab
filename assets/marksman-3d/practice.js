@@ -102,7 +102,7 @@ function castTool(state,slot,point){const T=tool(state),profile=state.profile,t=
  // A skill pressed during an attack windup cancels the attack; during another cast it waits (input buffer).
  const busy=locking(state);if(busy){if(slot!=='AA'&&busy.slot==='AA'&&t<busy.launch)cancelAttack(state,busy);else{if(slot!=='AA')state.buffered={slot,point,until:t+BUFFER};return false;}}
  const indicator=indicatorFor(state,slot,point||state.target);
- if(slot==='AA'&&length(state.hero,state.target)>attackRange(state)+DUMMY_RADIUS){if(state.autoApproach!==false||state.attackApproach){state.pending={slot:'AA'};approach(state,attackRange(state));}return false;}
+ if(slot==='AA'&&length(state.hero,state.target)>attackRange(state)+DUMMY_RADIUS){if(state.autoApproach!==false){state.pending={slot:'AA'};approach(state,attackRange(state));}return false;}
  if(S&&indicator.shape==='target'&&!inReach(state,slot)){if(state.autoApproach===false)return false;state.pending={slot};const reach=at(S.reach,rankOf(state,slot)-1);approach(state,(Geo.spec(profile,slot,{rank:rankOf(state,slot),level:state.level}).range??reach/UNITS));return false;}
  const anim=animating(state);if(anim)anim.animEnd=t;state.pending=null;
  const release=profile.presentation?.release?.[slot]??.35,study=slot==='AA'?profile.attack.study_duration:slot==='P'?profile.passive.study_duration:profile.skills[slot].study_duration;
@@ -156,7 +156,7 @@ function stepTool(state,dt,movements){const previous=state.time;state.time+=dt;c
  if(lock&&lock.landing&&!lock.landed){const move=lock.motion,to=lock.landing;dashPosition(state,lock,move,to,animProgress(lock,t));}
  else if(!lock){if(state.buffered){const b=state.buffered;state.buffered=null;if(t<=b.until)cast(state,b.slot,b.point);}
   if(!locking(state)&&state.queued){state.destination=state.queued;state.queued=null;const anim=animating(state);if(anim)anim.animEnd=t;}
-  if(state.attackHeld&&!state.pending)state.pending={slot:'AA'};const want=state.pending;if(want){const ready=(state.deadlines[want.slot]||0)<=t+1e-9||want.slot!=='AA'&&state.noCooldowns;if(ready){state.pending=null;cast(state,want.slot);}else if((state.autoApproach!==false||state.attackApproach)&&want.slot==='AA'&&length(state.hero,state.target)>attackRange(state)+DUMMY_RADIUS)approach(state,attackRange(state));}
+  if(state.attackHeld&&!state.pending)state.pending={slot:'AA'};const want=state.pending;if(want){const ready=(state.deadlines[want.slot]||0)<=t+1e-9||want.slot!=='AA'&&state.noCooldowns;if(ready){state.pending=null;cast(state,want.slot);}else if(state.autoApproach!==false&&want.slot==='AA'&&length(state.hero,state.target)>attackRange(state)+DUMMY_RADIUS)approach(state,attackRange(state));}
   if(!locking(state)){const anim=animating(state);if(!anim||length(state.hero,state.destination)>.015){if(anim&&length(state.hero,state.destination)>.015)anim.animEnd=t;walk(state,dt,moveSpeed(state));}}}
  if(!(lock&&lock.landing&&!lock.landed))outside(state,state.hero);
  state.events=state.events.filter(e=>t<e.fxEnd+.45);state.buffs=state.buffs.filter(b=>t<b.end);state.numbers=state.numbers.filter(n=>t-n.t<NUMBER_LIFE);return state;}

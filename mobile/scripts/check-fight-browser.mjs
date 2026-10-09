@@ -255,29 +255,9 @@ try {
         await aa.dispatchEvent('pointerup',{pointerId:32});
         await page.waitForFunction(()=>window.__practiceState.duel.player.lockedTarget?.startsWith('m'));
         await page.getByLabel('Clear target lock',{exact:true}).waitFor({state:'visible'});
-        if(screenshots)await page.screenshot({path:resolve(screenshots,`yellow-target-lock-${width}.png`)});
         assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),lockHero,'target drag never generates movement');
         await page.getByLabel('Clear target lock',{exact:true}).click();
         assert.equal(await page.evaluate(()=>window.__practiceState.duel.player.lockedTarget||null),null);
-        const chaseStart=await page.evaluate(()=>{const d=window.__practiceState.duel;d.lane.units=[];d.enemy.hero=[d.player.hero[0]+10,0,d.player.hero[2]];d.enemy.destination=d.enemy.hero.slice();d.player.deadlines.AA=0;return d.player.hero.slice();});
-        await aa.dispatchEvent('pointerdown',{pointerId:34,clientX:100,clientY:100});
-        await page.waitForFunction(p=>Math.hypot(window.__practiceState.duel.player.hero[0]-p[0],window.__practiceState.duel.player.hero[2]-p[2])>.3,chaseStart);
-        await aa.dispatchEvent('pointerup',{pointerId:34});
-        await page.waitForFunction(()=>!window.__practiceState.duel.player.attackApproach);
-        const stopped=await page.evaluate(()=>window.__practiceState.duel.player.hero.slice());await page.waitForTimeout(150);
-        assert.deepEqual(await page.evaluate(()=>window.__practiceState.duel.player.hero.slice()),stopped,'AA release stops approach');
-        const stickControl=page.locator('.pt-joystick'),rect=await stickControl.boundingBox(),sx=rect.x+rect.width/2,sy=rect.y+rect.height/2;
-        await aa.dispatchEvent('pointerdown',{pointerId:35,clientX:100,clientY:100});
-        await stickControl.dispatchEvent('pointerdown',{pointerId:36,clientX:sx,clientY:sy});
-        await stickControl.dispatchEvent('pointermove',{pointerId:36,clientX:sx+(rotated?0:-25),clientY:sy+(rotated?-25:0)});
-        await page.waitForFunction(()=>!window.__practiceState.duel.player.attackApproach);
-        const manualStart=await page.evaluate(()=>window.__practiceState.duel.player.hero.slice());
-        await page.waitForFunction(p=>window.__practiceState.duel.player.hero[0]<p[0]-.1,manualStart);
-        await aa.dispatchEvent('pointerup',{pointerId:35});
-        assert.notEqual(await stickControl.locator('i').evaluate(e=>e.style.transform),'','AA release preserves joystick movement');
-        await stickControl.dispatchEvent('pointerup',{pointerId:36});
-        await page.evaluate(()=>{const d=window.__practiceState.duel;d.lane.nextWave=d.time;});
-        await page.waitForFunction(()=>window.__practiceState.duel.lane.units.length>0);
         const farmHero=await page.evaluate(()=>{const d=window.__practiceState.duel,m=d.lane.units.find(m=>m.side===1);d.lane.units=[m];d.lane.shots=[];m.position=[d.player.hero[0]+1,0,d.player.hero[2]];m.health.hp=1;m.range=4;m.next=Infinity;return d.player.hero.slice();});
         await page.getByLabel('Farm minions or attack tower',{exact:true}).dispatchEvent('pointerdown',{pointerId:33});
         await page.waitForFunction(()=>window.__practiceState.duel.player.training.cs>0,null,{timeout:10000});
@@ -318,13 +298,10 @@ try {
     const center=async selector=>{const r=await page.locator(selector).boundingBox();return {x:r.x+r.width/2,y:r.y+r.height/2};};
     const stickPoint=await center('.pt-joystick'),aaPoint=await center('.pt-skill[data-slot="AA"]'),qPoint=await center('.pt-skill[data-slot="Q"]');
     const touch=async(type,points)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points.map(p=>({...p,radiusX:2,radiusY:2,force:1}))});
-    // AA can approach its target, but its finger cannot take joystick ownership. Skill aim cannot move.
+    // Real touch capture: AA/skill drag into the joystick never takes ownership.
     for(const [id,point]of[[10,aaPoint],[11,qPoint]]){
-      const before=await page.evaluate(()=>window.__practiceState.hero.slice());
       await touch('touchStart',[{id,...point}]);await touch('touchMove',[{id,...stickPoint}]);await page.waitForTimeout(150);
-      const after=await page.evaluate(()=>window.__practiceState.hero.slice());
-      if(id===11)assert.deepEqual(after,before,'Skill aim must not move hero');
-      else assert.ok(Math.hypot(after[0]-15,after[2])<Math.hypot(before[0]-15,before[2]),'Held AA approaches target');
+      assert.deepEqual(await page.evaluate(()=>window.__practiceState.hero.slice()),hero,'AA/skill drag must not move hero');
       assert.equal(await page.locator('.pt-joystick i').evaluate(e=>e.style.transform),'');await touch('touchEnd',[]);
     }
     await page.getByRole('button',{name:'Restart practice',exact:true}).click();
