@@ -1,4 +1,12 @@
-# SharpWR Damage Lab — V7.1.11
+# SharpWR Damage Lab — V7.1.12
+
+### Lane training (mobile 0.8.11)
+
+1v1 now optionally includes symmetric four-minion waves every 25 seconds, melee/caster minions, champion-damage minion/tower aggro, tower projectiles and destructible tower health. Hold **Farm** to attack an in-range enemy minion (lowest health first), or an enemy tower when no minion is in range. **Attack** targets the champion. Neither button creates movement. Ezreal Q/Jinx W can be blocked by enemy minions. Turn off **Minions and towers** for the original pure duel.
+
+Harder bots use delayed public lane observations for last hits, cover, clear skillshot angles and tower retreat. Champion stats do not vary by difficulty. Gold is a score only, not an item/stat purchase system. **Finish session**, champion death, a destroyed tower or the time limit displays damage, damaging-skill accuracy, CS/gold, attack-ready idle time, movement while recently under attack, and tower hits taken.
+
+This is an original training ruleset, not extracted Riot balance: four minions/wave; 450/300 melee/caster HP; 30/20 gold scores; 3500 tower HP; 6.5 m tower radius. Full Wild Rift minion scaling, item shopping, area splash/piercing across entire waves, and a complete match economy are not modeled. No claim of exact Riot minion/tower statistics or full-kit parity.
 
 Free, fan-made Wild Rift damage research app: 23 marksman adapters, level 1–15 stats, expected crit, item callbacks, mana/cooldowns, movement and deterministic fight replays, plus an original 3D Animation Studio. Entry point: `streamlit_app.py`; the UI-independent damage engine lives in `sharpwr/`. Target architecture and roadmap (including the planned Android app): [docs/architecture.md](docs/architecture.md).
 

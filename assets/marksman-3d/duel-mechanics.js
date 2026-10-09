@@ -5,7 +5,7 @@ const node=typeof module!=='undefined'&&module.exports,P=node?require('./practic
 const config=s=>s.profile.practice.duel,rank=(s,slot)=>(s.ranks[slot]||1)-1;
 function init(s){const c=config(s),i=s.level-1;s.combat={weapon:'minigun',stacks:0,stackUntil:0,carry:false,rootUntil:0,slowUntil:0,slow:0,excitedUntil:0};
  if(c)s.resource={mana:c.resources.mana[i],max:c.resources.mana[i],manaRegen:c.resources.mana_regen_per_5s[i]/5,hpRegen:c.resources.hp_regen_per_5s[i]/5};}
-function other(s){return s.duel.player===s?s.duel.enemy:s.duel.player;}
+function other(s){if(s.duel.hitVictim)return s.duel.hitVictim.actor||null;return s.duel.player===s?s.duel.enemy:s.duel.player;}
 function cost(s,slot){const c=config(s);return !c?0:slot==='AA'?(s.profile.name==='Jinx'&&s.combat.weapon==='rockets'?c.costs.Q[rank(s,'Q')]:0):slot==='P'?0:s.profile.name==='Jinx'&&slot==='Q'?0:c.costs[slot]?.[rank(s,slot)];}
 function canCast(s,slot){if(s.combat?.rootUntil>s.time&&s.movements[s.profile.name]?.[slot])return false;const c=config(s);if(!c)return true;
  if(slot==='AA'&&s.combat.weapon==='rockets'&&s.resource.mana<cost(s,slot)){s.combat.weapon='minigun';s.combat.carry=false;}
@@ -35,10 +35,10 @@ function onHit(s,h,flux){const c=config(s);if(!c)return;const b=s.combat,before=
   if(flux&&!h.attack)s.resource.mana=Math.min(s.resource.max,s.resource.mana+c.flux_refund[rank(s,'W')]);
  }else{
   if(h.attack&&h.event.weapon==='minigun'&&s.ranks.Q){b.stacks=Math.min(3,b.stacks+1);b.stackUntil=s.time+c.stack_duration;}
-  const target=other(s);if(h.slot==='W'){target.combat.slow=c.slow[rank(s,'W')];target.combat.slowUntil=s.time+c.slow_duration;}
-  if(h.trap){target.combat.rootUntil=s.time+c.root[rank(s,'E')];target.destination=target.hero.slice();target.queued=null;
+  const target=other(s);if(h.slot==='W'&&target){target.combat.slow=c.slow[rank(s,'W')];target.combat.slowUntil=s.time+c.slow_duration;}
+  if(h.trap&&target){target.combat.rootUntil=s.time+c.root[rank(s,'E')];target.destination=target.hero.slice();target.queued=null;
    for(const e of target.events)if(e.motion&&e.motion.kind!=='blink'&&!e.landed&&target.time<e.lockEnd){e.landed=true;e.lockEnd=target.time;e.animEnd=target.time;}}
-  if(s.dummy.hp<=0){b.excitedUntil=s.time+c.excited_duration;s.resource.mana=Math.min(s.resource.max,s.resource.mana+(s.resource.max-s.resource.mana)*c.excited_mana);}
+  if(s.dummy.hp<=0&&target){b.excitedUntil=s.time+c.excited_duration;s.resource.mana=Math.min(s.resource.max,s.resource.mana+(s.resource.max-s.resource.mana)*c.excited_mana);}
  }rescaleAttack(s,before);
 }
 function step(s,dt){const c=config(s);if(!c)return;const b=s.combat,before=P.stats(s).as;
