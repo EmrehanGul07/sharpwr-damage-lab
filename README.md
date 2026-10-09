@@ -1,4 +1,10 @@
-# SharpWR Damage Lab — V7.1.18
+# SharpWR Damage Lab — V7.1.19
+
+### Day 2 arena presentation (mobile 0.8.18)
+
+Lane minions now use original articulated melee/caster models with shared geometry, faction armor, weapons, distance-based walking and attack motion. Walking turns interpolate along the shortest angle; skill casts retain exact aiming direction. Jinx minigun, rocket attacks, Zap and ultimate have separate projectile silhouettes; Ezreal E shows its post-blink bolt. Opponent impact effects use actual hit positions. Stone/rock surfaces gain fine bump detail and stronger material tint, with higher texture filtering on high quality.
+
+Bots retreat from visible tower aggro even under friendly minion cover, avoid enemy towers while seeking skillshot angles, and expire observation deduplication records. Difficulty never changes stats. Eight three-minute pilot/difficulty lane sessions verify bounded state; browser checks monitor model resource and renderer budgets. Exact Riot assets, complete WR mechanics and unresolved data assumptions remain outside this milestone.
 
 ### Day 1 combat audit (mobile 0.8.17)
 

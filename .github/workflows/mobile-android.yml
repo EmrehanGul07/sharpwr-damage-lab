@@ -12,6 +12,7 @@ on:
       - "tests/test_lane_training.cjs"
       - "tests/test_lane_multihit.cjs"
       - "tests/test_dragon_lane.cjs"
+      - "tests/test_day2_quality.cjs"
       - "app-data/**"
       - "assets/riot/**"
       # The Practice tab runs the web Practice Tool scripts.
@@ -60,6 +61,7 @@ jobs:
           node tests/test_lane_training.cjs
           node tests/test_lane_multihit.cjs
           node tests/test_dragon_lane.cjs
+          node tests/test_day2_quality.cjs
       - name: Build the web app
         env:
           # GitHub preview builds take live updates from the mobile-preview release and

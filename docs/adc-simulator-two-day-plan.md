@@ -16,10 +16,12 @@ The E priority and champion-only trap rules are documented in `data/ability-desc
 
 ## Day 2 — presentation and practice quality
 
-- [ ] Improve walking/cast transitions and direction alignment for the two pilot champions.
-- [ ] Review distinct AA/Q/W/E/R effects, impact readability and range/blink/dash indicators.
-- [ ] Improve minion models and motion; inspect lane/tower scale and texture consistency.
-- [ ] Tune bot decisions without changing difficulty-dependent stats.
-- [ ] Run mobile viewport, sustained-duel and performance checks, then publish a validated update.
+- [x] Improve walking/cast transitions and direction alignment for the two pilot champions: shortest-arc walk turns, immediate cast facing, existing skeletal blends verified.
+- [x] Review distinct AA/Q/W/E/R effects, impact readability and range/blink/dash indicators: pilot projectile silhouettes, Ezreal blink bolt and actual opponent impact positions improved.
+- [x] Improve minion models and motion; inspect lane/tower scale and texture consistency: articulated melee/caster actors, distance-based gait, attack telemetry, shared resources and stone/rock detail.
+- [x] Tune bot decisions without changing difficulty-dependent stats: visible tower-aggro retreat, safer firing-angle sidesteps and expiring observation records.
+- [x] Run mobile viewport, sustained-duel and performance checks. Eight three-minute pilot/difficulty runs and mobile tests pass; release 0.8.18 includes browser resource ceilings and CI publication validation.
+
+Implementation details and remaining simulator limitations: `adc-simulator-day2-results.md`. These completed milestones do not imply full Wild Rift parity.
 
 Completion means reviewed behavior and passing relevant checks, rather than an unsupported percentage of Wild Rift parity.

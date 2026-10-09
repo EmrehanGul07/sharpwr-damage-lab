@@ -10,7 +10,7 @@ const MODES=Object.freeze({
 });
 const dist=(a,b)=>Math.hypot(a[0]-b[0],a[2]-b[2]);
 function rng(seed){let s=seed>>>0;return()=>{s=(s+0x6D2B79F5)>>>0;let x=s;x=Math.imul(x^(x>>>15),x|1);x^=x+Math.imul(x^(x>>>7),x|61);return((x^(x>>>14))>>>0)/4294967296;};}
-function create(difficulty='medium',seed=1){if(!MODES[difficulty])throw Error('Unknown bot difficulty: '+difficulty);return{difficulty,config:MODES[difficulty],random:rng(seed),next:0,history:[],last:null,dodgeUntil:0,decision:null,knownCooldowns:{},seenCasts:new Set(),seenHits:new Set()};}
+function create(difficulty='medium',seed=1){if(!MODES[difficulty])throw Error('Unknown bot difficulty: '+difficulty);return{difficulty,config:MODES[difficulty],random:rng(seed),next:0,history:[],last:null,dodgeUntil:0,decision:null,knownCooldowns:{},seenCasts:new Map(),seenHits:new Map()};}
 function observe(bot,publicView){const v=structuredCopy(publicView);bot.history.push(v);while(bot.history.length>2&&bot.history[1].time<v.time-1.2)bot.history.shift();}
 function structuredCopy(v){return JSON.parse(JSON.stringify(v));}
 function visible(bot,time){const cutoff=time-bot.config.reaction;return bot.history.filter(v=>v.time<=cutoff+1e-9).at(-1)||null;}
@@ -21,15 +21,16 @@ function threat(enemy,self,time){for(const e of enemy.casts){if(!['line','recoil
  if(e.shape==='area'?dist(self.position,b)<e.radius+.65:u>=0&&u<=1&&side<e.width/2+.7)return{dx:dx/l,dz:dz/l,width:e.width};
  }return null;}
 function decide(bot,self,time){if(time+1e-9<bot.next||self.hp<=0)return null;bot.next=time+bot.config.think;const view=visible(bot,time);if(!view||view.enemy.hp<=0)return null;
- for(const cast of view.enemy.casts||[]){const key=cast.slot+':'+cast.startTime;if(!bot.seenCasts.has(key)){bot.seenCasts.add(key);bot.knownCooldowns[cast.slot]=cast.startTime+(cast.cooldown||0);}}
- for(const hit of view.enemy.hits||[]){const key=hit.slot+':'+hit.time;if(!bot.seenHits.has(key)){bot.seenHits.add(key);if(view.enemy.champion==='Ezreal'&&hit.slot==='Q')for(const slot of Object.keys(bot.knownCooldowns))bot.knownCooldowns[slot]=Math.max(hit.time,bot.knownCooldowns[slot]-1.5);}}
+ for(const cast of view.enemy.casts||[]){const key=cast.slot+':'+cast.startTime;if(!bot.seenCasts.has(key)){bot.seenCasts.set(key,Math.max(time+3,(cast.endTime||time)+bot.config.reaction+1));bot.knownCooldowns[cast.slot]=cast.startTime+(cast.cooldown||0);}}
+ for(const hit of view.enemy.hits||[]){const key=hit.slot+':'+hit.time;if(!bot.seenHits.has(key)){bot.seenHits.set(key,time+3);if(view.enemy.champion==='Ezreal'&&hit.slot==='Q')for(const slot of Object.keys(bot.knownCooldowns))bot.knownCooldowns[slot]=Math.max(hit.time,bot.knownCooldowns[slot]-1.5);}}
+ for(const records of[bot.seenCasts,bot.seenHits])for(const[key,expires]of records)if(expires<time)records.delete(key);
  if(time<bot.dodgeUntil)return null;
  const enemy=view.enemy,c=bot.config,d=dist(self.position,enemy.position),ready=s=>self.skills[s]?.rank>0&&self.skills[s].ready<=time+1e-9&&self.skills[s].affordable!==false,legal=s=>ready(s)&&(!self.skills[s].targeted||d<=self.skills[s].range+.65),danger=self.rooted?null:threat(enemy,self,time),away=Geo.point(enemy.position,self.position,Math.max(d,1)+1.5);
  // Dodge only telegraphed casts already observed; never inspect pending damage or player input.
  if(danger&&time>=bot.dodgeUntil&&bot.random()<c.dodge){bot.dodgeUntil=time+.35;const sign=bot.random()<.5?-1:1,point=[self.position[0]-danger.dz*sign*1.8,0,self.position[2]+danger.dx*sign*1.8],escape=Object.keys(self.skills).find(s=>legal(s)&&self.skills[s].mobility&&!self.skills[s].targeted);
   return remember(bot,{move:point,...(escape&&c.dodge>=.8&&!self.locked?{cast:escape,aim:point}:{}),reason:'dodge'});}
  if(self.locked)return null;
- const lane=view.lane;if(lane&&c.dodge>=.4){const towers=lane.towers.filter(t=>t.side!==lane.side),home=lane.towers.find(t=>t.side===lane.side),unsafe=towers.find(t=>dist(self.position,t.position)<t.range+.8&&!lane.minions.some(m=>m.side===lane.side&&dist(m.position,t.position)<t.range));
+ const lane=view.lane;if(lane&&c.dodge>=.4){const towers=lane.towers.filter(t=>t.side!==lane.side),home=lane.towers.find(t=>t.side===lane.side),unsafe=towers.find(t=>dist(self.position,t.position)<t.range+.8&&(t.aggro===(lane.side?'enemy':'player')||!lane.minions.some(m=>m.side===lane.side&&dist(m.position,t.position)<t.range)));
   if(unsafe||self.hp/self.max<(c.dodge>=.8?.30:.18))return remember(bot,{move:home?Geo.point(home.position,enemy.position,3):away,reason:'tower retreat'});
   const farm=lane.minions.filter(m=>m.side!==lane.side&&dist(m.position,self.position)<=self.range+.35&&m.hp<=lane.ad*100/115*(c.dodge>=.8?1:.75)).sort((a,b)=>a.hp-b.hp);
   if(farm.length&&self.attackReady<=time&&!danger)return remember(bot,{cast:'AA',targetId:farm[0].id,aim:farm[0].position.slice(),move:self.position.slice(),reason:'last hit'});
@@ -49,7 +50,7 @@ function decide(bot,self,time){if(time+1e-9<bot.next||self.hp<=0)return null;bot
   if(s.mobility){if(self.hp/self.max>.28||d>self.range||c.dodge<.8)continue;cmd.cast=slot;cmd.aim=away;cmd.reason='escape';break;}
   if(s.buff&&d>self.range+.65)continue;
   if(!s.buff&&d>s.range+.65)continue;
-  if(lane&&c.dodge>=.8&&((self.champion==='Ezreal'&&slot==='Q')||(self.champion==='Jinx'&&slot==='W'))){const a=self.position,b=enemy.position,dx=b[0]-a[0],dz=b[2]-a[2],len=Math.hypot(dx,dz)||1,blocked=lane.minions.some(m=>{if(m.side===lane.side)return false;const u=((m.position[0]-a[0])*dx+(m.position[2]-a[2])*dz)/(len*len);return u>0&&u<1&&Math.abs((m.position[0]-a[0])*dz-(m.position[2]-a[2])*dx)/len<.55;});if(blocked){cmd.move=[a[0]-dz/len,0,a[2]+dx/len];cmd.reason='clear skillshot angle';continue;}}
+  if(lane&&c.dodge>=.8&&((self.champion==='Ezreal'&&slot==='Q')||(self.champion==='Jinx'&&slot==='W'))){const a=self.position,b=enemy.position,dx=b[0]-a[0],dz=b[2]-a[2],len=Math.hypot(dx,dz)||1,blocked=lane.minions.some(m=>{if(m.side===lane.side)return false;const u=((m.position[0]-a[0])*dx+(m.position[2]-a[2])*dz)/(len*len);return u>0&&u<1&&Math.abs((m.position[0]-a[0])*dz-(m.position[2]-a[2])*dx)/len<.55;});if(blocked){const options=[1,-1].map(sign=>[a[0]-dz/len*sign,0,a[2]+dx/len*sign]),safe=options.find(p=>!lane.towers.some(t=>t.side!==lane.side&&dist(p,t.position)<t.range+.3));if(safe)cmd.move=safe;cmd.reason='clear skillshot angle';continue;}}
   if(slot==='R'&&!s.buff&&c.dodge>=.8&&enemy.hp/enemy.max>.4&&self.hp/self.max>.35)continue;
   cmd.cast=slot;cmd.aim=aim(bot,self,enemy,slot);cmd.reason=s.buff?'buff':slot==='R'?'finish':'combo';break;
  }
