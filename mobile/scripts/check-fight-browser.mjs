@@ -372,6 +372,21 @@ try {
     assert.equal(await page.evaluate(()=>window.__practiceState.attackHeld),false,'late releases cannot restore cleared input');
     await cdp.detach();
     await page.getByRole('button',{name:'Exit practice',exact:true}).click();
+    // Saved equipment is read again for a fresh round; named drills keep the input gate.
+    await page.evaluate(()=>localStorage.setItem('sharpwr.build',JSON.stringify({champion:'Ezreal',level:15,items:["Guinsoo's Rageblade",'Statikk Shiv'],runes:true})));
+    await page.getByLabel('Arena mode',{exact:true}).selectOption('duel');
+    for(const scenario of ['kite','dodge','last-hit','tower']) {
+      await page.getByLabel('Training scenario',{exact:true}).selectOption(scenario);
+      await page.waitForFunction(name=>window.__practiceState?.duel?.scenario===name,scenario);
+      const setup=await page.evaluate(()=>{const d=window.__practiceState.duel;return {scenario:d.scenario,build:!!d.player.loadout,ad:window.MarksmanPractice.stats(d.player).ad,time:d.time,damage:d.player.training.damage,duration:d.duration,lane:!!d.lane};});
+      assert(setup.build);assert(setup.ad>120);assert.equal(setup.time,0);assert.equal(setup.damage,0);assert.equal(setup.duration,60);
+      if(scenario==='last-hit'||scenario==='tower')assert(setup.lane);
+    }
+    await page.getByRole('button',{name:'Start Practice',exact:true}).click();
+    await page.getByRole('button',{name:'Finish training session',exact:true}).click();
+    await page.locator('.pt-results:not([hidden])').waitFor();
+    assert.match(await page.locator('.pt-results').innerText(),/TOWER/);
+    await page.getByRole('button',{name:'Exit practice',exact:true}).click();
     assert.deepEqual(errors, []);
     assert.deepEqual(external.filter(x => !x.endsWith('/app-data/database.json')), []);
     await page.locator('nav a').first().click();

@@ -9,6 +9,8 @@ import { h } from "../dom";
 import { remoteAsset } from "../online";
 import { fetchModel } from "./model3d";
 import type { View } from "./shared";
+import { loadDatabase } from '../data';
+import { arenaBuild } from '../arena-build';
 
 interface PracticeTool {
   dispose(): void;
@@ -47,11 +49,12 @@ export function leaveFullScreen(): boolean {
 
 async function start(root: HTMLElement, champion: string | null): Promise<void> {
   try {
-    const [catalogue, { loadPracticeScripts }] = await Promise.all([loadCatalogue(), import("../practice-scripts")]);
+    const [catalogue, { loadPracticeScripts }, database] = await Promise.all([loadCatalogue(), import("../practice-scripts"), loadDatabase()]);
     loadPracticeScripts();
     const api = (globalThis as unknown as { MarksmanPracticeTool: PracticeToolApi }).MarksmanPracticeTool;
     const tool = await api.mount(root, {
       catalogue,
+      loadout: arenaBuild(database),
       champion: champion ?? undefined,
       compact: true,
       allowDownload: false,
