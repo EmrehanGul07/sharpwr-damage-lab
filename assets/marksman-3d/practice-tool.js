@@ -3,7 +3,7 @@
    Needs MarksmanScene, MarksmanPractice, MarksmanFight (movement table) and MarksmanGeometry. */
 (function(scope){'use strict';
 const SLOTS=['AA','P','Q','W','E','R'],NOTE_FIELDS=['General','AA','P','Q','W','E','R'],NOTES_KEY='sharpwr.practiceNotes';
-const AIM_PIXELS=90,CAMERA_YAW=.48;
+const AIM_PIXELS=90,CAMERA_YAW=-.78;
 function el(tag,attrs={},...children){const node=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(v==null||v===false)continue;if(k.startsWith('on'))node.addEventListener(k.slice(2),v);else if(k==='class')node.className=v;else if(k==='text')node.textContent=v;else node.setAttribute(k,v===true?'':v);}for(const c of children.flat())if(c!=null)node.append(c);return node;}
 function capture(node,e){try{node.setPointerCapture(e.pointerId);}catch{}}
 function localStore(){return{get(key){try{return localStorage.getItem(key);}catch{return null;}},set(key,value){try{localStorage.setItem(key,value);return true;}catch{return false;}}};}

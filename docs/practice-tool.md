@@ -47,3 +47,11 @@ Android uses the official Screen Orientation plugin to lock the session to lands
 The original dragon-lane environment includes irregular worn paving, lane brush pockets, river entrance, dragon-pit floor, jungle cliffs/trees and decorative blue/red outer tower platforms. The same terrain layout drives movement and skill indicators. Walking and grounded dashes stop at solid terrain; blink/jump can cross it with a legal in-range landing. Projectiles retain their direction and pass terrain as before. Brush is scenery, without vision/stealth mechanics. Towers and dragon scenery do not attack; no minions or monsters are simulated. It is a Wild Rift-inspired lane, not an exact imported Riot map. The Animation Studio keeps its existing environment.
 
 Checks: `tests/test_dragon_lane.cjs`, orientation unit tests, and offline browser scenarios at portrait-phone, landscape-phone and desktop sizes cover waiting, first-input start, restart/exit, two GLBs, navigation cleanup and shared terrain collisions.
+
+## Reference camera and lane revision (mobile 0.8.5 / web 7.1.6)
+
+The 9 October Poco F7 recording (2772×1280, 26.8 seconds) and five screenshots (2048×945) guide this revision. The dragon-lane Rift/Follow camera tracks the player, not the duel midpoint, and keeps a fixed 40.8-world-unit radius, 35° vertical FOV, −0.78-radian yaw and 0.96-radian elevation. These are visually calibrated estimates, not Riot camera parameters. Other Studio camera modes retain their behavior. Joystick and skill drag directions use the same yaw.
+
+The terrain is re-authored with broad fractured stone ribbons, uneven grass margins, evergreen forest, dressed outer wall and cool river/brush colors. Tower spacing and ground are twice the prior authoring scale; champion and skill distances are unchanged. Movement and indicators accept the arena bounds, including casts beyond the old ±11.5 boundary. Health bars are more compact in the reference view.
+
+This reproduces the supplied dragon-lane composition approximately; it does not yet reproduce every curve, prop, texture or the full Rift. The layout still uses unioned walkable rectangles and circular blockers. No native change: min APK remains 0.8.4 and this revision can arrive through the web update.

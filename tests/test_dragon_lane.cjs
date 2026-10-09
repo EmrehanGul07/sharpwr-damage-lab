@@ -2,10 +2,10 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),T=require(require.resolve('three',{paths:[__dirname,require('node:path').join(__dirname,'../mobile')]}));
 const A=require('../assets/marksman-3d/rift-arena.js'),P=require('../assets/marksman-3d/practice.js'),D=require('../assets/marksman-3d/duel.js'),F=require('../assets/marksman-3d/fight.js');
 const C=JSON.parse(fs.readFileSync('app-data/practice.json')).champions,profile=name=>({...C[name],name}),N=A.navigation;
-assert(N.passable([0,0,0]));assert(N.passable([0,0,6]));assert(!N.passable([8,0,6]));assert(!N.passable([-9.5,0,0]));
-for(const raw of [[99,0,99],[-9.5,0,0],[-3.1,0,4.8],[8,0,6]])assert(N.passable(N.project(raw)),'projection ends on walkable terrain');
-const from=[-10.8,0,0],to=[-8,0,0];assert(N.trace(from,to,'dash')[0]<-10.4,'dash stops at physical tower');assert.deepEqual(N.trace(from,to,'blink'),to,'blink crosses a tower if landing is legal');
-assert(N.trace([0,0,0],[0,0,9])[2]<7.4,'walking cannot leave river');
+assert(N.passable([0,0,0]));assert(N.passable([0,0,6]));assert(!N.passable([16,0,12]));assert(!N.passable([-19,0,0]));
+for(const raw of [[99,0,99],[-19,0,0],[-6.2,0,9.6],[16,0,12]])assert(N.passable(N.project(raw)),'projection ends on walkable terrain');
+const from=[-21.6,0,0],to=[-16,0,0];assert(N.trace(from,to,'dash')[0]<-20.8,'dash stops at physical tower');assert.deepEqual(N.trace(from,to,'blink'),to,'blink crosses a tower if landing is legal');
+assert(N.trace([0,0,0],[0,0,18])[2]<15.4,'walking cannot leave river');
 assert(N.passable(N.trace([0,0,0],[6,0,7],'blink')),'blink has a legal endpoint');
 for(const name of ['Ezreal','Lucian','Tristana','Vayne']){
  const s=P.create(profile(name),{movements:F.MOVEMENT,arena:N});s.hero=from.slice();s.destination=from.slice();s.target=[-6,0,0];
