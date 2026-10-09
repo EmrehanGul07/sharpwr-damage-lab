@@ -31,6 +31,8 @@ def main():
    if name=='Smolder'and slot=='R'and raw.get('range')=='3300 / -500':r=[3300]
    if name=="Kai'Sa"and slot=='Q':shape='self';r=cast
    if name=='Smolder'and slot=='Q':shape='target'
+   if name=='Caitlyn'and slot=='W':shape='area'
+   if name=='Caitlyn'and slot=='R':shape='target'
    slots[slot]={'shape':shape,'range':r,'travel_range':travel,'movement_range':movement_range,'radius':radius,'width':values(raw.get('width')),'global':global_range,'source':a.get('timing_source')or a.get('wr_wiki_metadata',{}).get('url'),'status':'database'if r or global_range else'unresolved','label':a['name'],'raw':{k:raw.get(k,'')for k in['range','target range','effect radius','width']}}
    if name=='Tristana'and slot in['E','R']:slots[slot]['level_range']={'base':545,'per_level':10,'max_level':15};slots[slot]['status']='database_level_scaled'
   champions[name]={'slots':slots,'attack_level_range':{'base':545,'per_level':10,'max_level':15}if name=='Tristana'else None}

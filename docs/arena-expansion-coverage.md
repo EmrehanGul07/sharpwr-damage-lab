@@ -1,4 +1,4 @@
-# Arena expansion — 7.1.21 / mobile 0.8.20
+# Arena expansion — 7.1.22 / mobile 0.8.21
 
 ## Five workstreams
 
@@ -19,7 +19,7 @@ Repository sources: `data/ability-descriptions.json`, `sharpwr/marksman_fight_en
 | Takedowns | Champion and tower contributions work; there are no epic monsters in this arena. |
 | Build bridge | Uses the locally bundled catalogue; opponent keeps its base kit. Active items, buying from earned gold, item shields/slows, cleave/chain targets and general ability-triggered item effects remain outside this adapter. |
 | Runes | Live adapters cover Lethal Tempo/Conqueror stacks and expiry, Empowerment, Dark Harvest, Tyrant, Empowered Attack, Brutal, initial First Strike and Phase Rush cooldown reduction. Fleet heal/energy, Phase Rush speed/haste, defensive/ally conditions, Sudden Impact and fully dynamic persistent-stat conditions need separate adapters. Rune damage follows the existing provisional ADC model. |
-| Caitlyn | Six-hit Headshot uses the engine's confirmed 60% baseline; level/crit progression, brush counting, trap charges and R interception remain unresolved. Net enables double attack range briefly. |
+| Caitlyn | Six-hit Headshot uses the engine's confirmed 60% baseline; level/crit progression and brush counting remain unresolved. W has rank-based charges, sequential recharge, 30s lifetime, oldest-trap eviction, root and delayed Headshot bonus; net/trap rights are reserved on AA and restored on cancellation. R has 1.5s lineup, champion-only targeting and homing damage. The 1v1 arena contains no second opposing champion for R interception. Arming (1s), collision radius (20u) and Headshot entitlement window (4s) remain provisional. The R lineup follows the tooltip summary; the older Kit cast-time value is 0.375s. |
 | Lucian | Two AA impacts and on-hit scheduling; secondary shot uses the existing confirmed 40% baseline (100% against minions), with each impact reducing E. Level progression, Vigilance and full channel behavior remain unresolved. |
 | Kai’Sa | Plasma stacks live on each victim and expire in 4s; detonation follows the engine coefficient. AA magic uses the engine's known level-one baseline. Evolutions, missile splitting, marked-only R and shield require fuller adapters. |
 | Other kits | Existing `skip` entries remain explicit: channels, poison/bombs/feathers, transformations, reloads and target-dependent procs are not converted into fake damage. Resources/common standards are complete across the roster; complete custom kits are not. |

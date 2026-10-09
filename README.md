@@ -1,4 +1,11 @@
-# SharpWR Damage Lab — V7.1.21
+# SharpWR Damage Lab — V7.1.22
+
+### Caitlyn live kit (mobile 0.8.21)
+
+W now places a persistent champion-only trap at the aimed ground point. It consumes rank-based charges, recharges sequentially, enforces the active trap limit and roots without immediate damage; the extra damage is reserved for the next Headshot on that victim. Net and trap Headshot rights are reserved for the attacking target and restored if the AA windup is canceled, preserving normal six-attack progress.
+
+R requires a champion, lines up for 1.5 seconds and follows its acquired target with sourced base/bonus-AD damage and the recorded crit modifier. Minions cannot block it. Trap/ultimate indicators now use ground/target shapes instead of straight skillshot lines. Arming/radius/Headshot windows and full passive scaling remain explicitly provisional.
+
 
 ### Live arena expansion (mobile 0.8.20)
 

@@ -175,7 +175,7 @@
           }
         },
         "W": {
-          "shape": "line",
+          "shape": "area",
           "range": [
             675.0
           ],
@@ -219,7 +219,7 @@
           }
         },
         "R": {
-          "shape": "line",
+          "shape": "target",
           "range": [
             1750.0,
             2250.0,
