@@ -3,6 +3,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "VERSION"
+      - "README.md"
+      - "tests/test_version.py"
       - "assets/marksman-3d/*.js"
       - "assets/marksman-3d/practice-tool.*"
       - "sharpwr/practice_data.py"
