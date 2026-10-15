@@ -1,0 +1,527 @@
+{
+ "schema": "sharpwr.champion/1",
+ "id": "ref.samira",
+ "display_name": "Samira",
+ "ip": "riot-reference",
+ "shippable": false,
+ "stats": {
+  "base_ad": {
+   "value": "60",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "ad_per_level": {
+   "value": "3.5",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "base_hp": {
+   "value": "630",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#hp_base"
+  },
+  "hp_per_level": {
+   "value": "128",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#hp_lvl"
+  },
+  "base_mana": {
+   "value": "345",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mp_base"
+  },
+  "mana_per_level": {
+   "value": "49",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mp_lvl"
+  },
+  "base_armor": {
+   "value": "35",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#arm_base"
+  },
+  "armor_per_level": {
+   "value": "5",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#arm_lvl"
+  },
+  "base_mr": {
+   "value": "30",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mr_base"
+  },
+  "mr_per_level": {
+   "value": "1.4",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mr_lvl"
+  },
+  "hp_regen_per_5s": {
+   "value": "7.5",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#hp5_base"
+  },
+  "hp_regen_per_5s_per_level": {
+   "value": "0.68",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#hp5_lvl"
+  },
+  "mana_regen_per_5s": {
+   "value": "15",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mp5_base"
+  },
+  "mana_regen_per_5s_per_level": {
+   "value": "0.5",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#mp5_lvl"
+  },
+  "movement_speed": {
+   "value": "340",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#ms"
+  },
+  "attack_range": {
+   "value": "525",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira#range"
+  },
+  "base_attack_speed": {
+   "value": "0.658",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "attack_speed_ratio": {
+   "value": "0.658",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "bonus_attack_speed_level1": {
+   "value": "0.14",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "bonus_attack_speed_per_level": {
+   "value": "0.03",
+   "status": "damage_lab_preserved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "attack_projectile_speed": {
+   "value": "2800.0",
+   "status": "wr_wiki",
+   "source": "https://wiki.leagueoflegends.com/en-us/Module:ChampionData/data#missile_speed"
+  },
+  "gameplay_radius": {
+   "value": null,
+   "status": "unresolved",
+   "source": "data/marksman_champion_stats.json (existing_user_preserved)"
+  },
+  "attack_windup_seconds": {
+   "value": "0.2279635167173252",
+   "status": "pc_reference_provisional",
+   "source": "docs/samira-timed-combat.md V5.56 (PC windup/baseAS quotient, user-authorized fallback)"
+  },
+  "level_growth_curve": {
+   "value": "damage_lab_quadratic",
+   "status": "damage_lab_preserved",
+   "source": "sharpwr/aa_engine.py gu(): n*(0.7025+0.0175n); WR level audit open"
+  }
+ },
+ "abilities": {
+  "Q": {
+   "name": "Flair",
+   "damage_type": "physical",
+   "base_damage_by_rank": [
+    {
+     "value": "15.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "20.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "25.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "30.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D001–D002; user practice Q 76/114 and 123/203"
+    }
+   ],
+   "total_ad_ratio": {
+    "value": "1.25",
+    "status": "damage_lab_user_sourced",
+    "source": "D001–D002; user practice Q 76/114 and 123/203"
+   },
+   "bonus_ad_ratio": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D001–D002; user practice Q 76/114 and 123/203"
+   },
+   "hits": 1,
+   "crit_effectiveness": {
+    "value": "0.5",
+    "status": "damage_lab_user_sourced",
+    "source": "D001–D002; user practice Q 76/114 and 123/203"
+   },
+   "cooldown_by_rank": [
+    {
+     "value": "6.5",
+     "status": "damage_lab_user_sourced",
+     "source": "D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "5.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "3.5",
+     "status": "damage_lab_user_sourced",
+     "source": "D001–D002; user practice Q 76/114 and 123/203"
+    },
+    {
+     "value": "2.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D001–D002; user practice Q 76/114 and 123/203"
+    }
+   ],
+   "mana_cost": {
+    "value": "30",
+    "status": "wr_verified_user",
+    "source": "User Wild Rift confirmation, 2026-10-01; constant across ranks"
+   },
+   "cast_time_seconds": {
+    "value": "0.25",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "projectile_speed": {
+    "value": "2600",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "geometry": {
+    "shape": "line",
+    "range": {
+     "value": "950",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair"
+    },
+    "width": {
+     "value": "120.0",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair"
+    },
+    "radius": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Flair"
+    }
+   }
+  },
+  "W": {
+   "name": "Blade Whirl",
+   "damage_type": "physical",
+   "base_damage_by_rank": [
+    {
+     "value": "20.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D003–D004"
+    },
+    {
+     "value": "40.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D003–D004"
+    },
+    {
+     "value": "60.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D003–D004"
+    },
+    {
+     "value": "80.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D003–D004"
+    }
+   ],
+   "total_ad_ratio": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D003–D004"
+   },
+   "bonus_ad_ratio": {
+    "value": "0.5",
+    "status": "damage_lab_user_sourced",
+    "source": "D003–D004"
+   },
+   "hits": 2,
+   "crit_effectiveness": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D003–D004"
+   },
+   "cooldown_by_rank": [
+    {
+     "value": "22.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D003–D004"
+    },
+    {
+     "value": "20.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D003–D004"
+    },
+    {
+     "value": "18.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D003–D004"
+    },
+    {
+     "value": "16.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D003–D004"
+    }
+   ],
+   "mana_cost": {
+    "value": "60",
+    "status": "wr_verified_user",
+    "source": "User Wild Rift confirmation, 2026-10-01; constant across ranks"
+   },
+   "cast_time_seconds": {
+    "value": "0.1",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "projectile_speed": {
+    "value": null,
+    "status": "unresolved",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "geometry": {
+    "shape": "line",
+    "range": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl"
+    },
+    "width": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl"
+    },
+    "radius": {
+     "value": "325.0",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Blade_Whirl"
+    }
+   }
+  },
+  "E": {
+   "name": "Wild Rush",
+   "damage_type": "magic",
+   "base_damage_by_rank": [
+    {
+     "value": "45.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D005–D006"
+    },
+    {
+     "value": "60.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D005–D006"
+    },
+    {
+     "value": "75.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D005–D006"
+    },
+    {
+     "value": "90.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D005–D006"
+    }
+   ],
+   "total_ad_ratio": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D005–D006"
+   },
+   "bonus_ad_ratio": {
+    "value": "0.2",
+    "status": "damage_lab_user_sourced",
+    "source": "D005–D006"
+   },
+   "hits": 1,
+   "crit_effectiveness": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D005–D006"
+   },
+   "cooldown_by_rank": [
+    {
+     "value": "20.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D005–D006"
+    },
+    {
+     "value": "17.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D005–D006"
+    },
+    {
+     "value": "14.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D005–D006"
+    },
+    {
+     "value": "11.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D005–D006"
+    }
+   ],
+   "mana_cost": {
+    "value": "40",
+    "status": "wr_verified_user",
+    "source": "User Wild Rift confirmation, 2026-10-01; constant across ranks"
+   },
+   "cast_time_seconds": {
+    "value": "0",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "projectile_speed": {
+    "value": null,
+    "status": "unresolved",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "geometry": {
+    "shape": "target-dash",
+    "range": {
+     "value": "600.0",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush"
+    },
+    "width": {
+     "value": "300.0",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush"
+    },
+    "radius": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Wild_Rush"
+    }
+   }
+  },
+  "R": {
+   "name": "Inferno Trigger",
+   "damage_type": "physical",
+   "base_damage_by_rank": [
+    {
+     "value": "20.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D007–D008; user tooltip and R 69/158 crit ratio"
+    },
+    {
+     "value": "40.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D007–D008; user tooltip and R 69/158 crit ratio"
+    },
+    {
+     "value": "60.0",
+     "status": "damage_lab_user_sourced",
+     "source": "champion_skill_data.py D007–D008; user tooltip and R 69/158 crit ratio"
+    }
+   ],
+   "total_ad_ratio": {
+    "value": "0.5",
+    "status": "damage_lab_user_sourced",
+    "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+   },
+   "bonus_ad_ratio": {
+    "value": "0.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+   },
+   "hits": 10,
+   "crit_effectiveness": {
+    "value": "1.0",
+    "status": "damage_lab_user_sourced",
+    "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+   },
+   "cooldown_by_rank": [
+    {
+     "value": "6.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+    },
+    {
+     "value": "6.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+    },
+    {
+     "value": "6.0",
+     "status": "damage_lab_user_sourced",
+     "source": "D007–D008; user tooltip and R 69/158 crit ratio"
+    }
+   ],
+   "mana_cost": {
+    "value": "0",
+    "status": "wr_verified_user",
+    "source": "User Wild Rift confirmation, 2026-10-01: no mana; S Style required"
+   },
+   "cast_time_seconds": {
+    "value": "0",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "projectile_speed": {
+    "value": null,
+    "status": "unresolved",
+    "source": "docs/samira-mechanics-reference.json"
+   },
+   "geometry": {
+    "shape": "line",
+    "range": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger"
+    },
+    "width": {
+     "value": null,
+     "status": "unresolved",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger"
+    },
+    "radius": {
+     "value": "600.0",
+     "status": "wr_wiki",
+     "source": "https://wiki.leagueoflegends.com/en-us/Template:WR_Data_Samira/Inferno_Trigger"
+    }
+   },
+   "required_resource": {
+    "type": "Style",
+    "grade": "S",
+    "stacks": 6
+   }
+  }
+ },
+ "passive": {
+  "name": "Daredevil Impulse",
+  "status": "unsupported",
+  "note": "Style stacks and melee bonus damage use a provisional user-accepted interpolation inside fight_engine.replay_samira; not migrated in v1."
+ },
+ "unsupported_mechanics": [
+  "P: Style grades, melee bonus damage interpolation, immobilized-target assist attack",
+  "Q: melee cone variant, E-Q explosives",
+  "W: projectile destruction, R-ends-W rule",
+  "R: exact WR shot offsets (fixture uses even spacing), ability-haste rule",
+  "Collision/gameplay radius (unknown in source data)"
+ ],
+ "open_questions_source": "docs/ingame-test-todo.md (Samira row)"
+}

@@ -1,0 +1,36 @@
+name: Game CI
+# Fast tier for the MOBA workspace (docs/moba/06-testing.md). The Python Damage Lab keeps its
+# own checks; this workflow only reads it (parity fixtures are regenerated and compared).
+on:
+  push:
+    paths: ["game/**", "tools/**", ".claude/**", "docs/moba/**", "CLAUDE.md", "sharpwr/**", "data/**", ".github/workflows/game-ci.yml"]
+  pull_request:
+    paths: ["game/**", "tools/**", ".claude/**", "docs/moba/**", "CLAUDE.md", "sharpwr/**", "data/**"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fast-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: "8.0.x" }
+      - name: Fast checks (lint, content, ownership, parity fixtures, C# sim tests)
+        run: python -I tools/ci/fast_checks.py
+  sim-cross-platform:
+    # Same tests on ARM64 and x64 runners: determinism is a cross-platform property.
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: "8.0.x" }
+      - run: dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo
+  # unity-build: added in milestone M1 (needs UNITY_LICENSE secrets; see docs/moba/06-testing.md)

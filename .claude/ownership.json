@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "doc": "Exclusive write ownership for the game workstreams. Each path under the governed roots must match exactly one owner (checked by tools/ownership/check_ownership.py). Read access is unrestricted. Changing this file is a lead decision.",
+  "governed_roots": [
+    "game/",
+    "tools/",
+    ".claude/",
+    "docs/moba/",
+    ".github/workflows/game-",
+    "CLAUDE.md"
+  ],
+  "protected_reference": {
+    "doc": "Python Damage Lab: the validation reference. Writes are blocked by .claude/hooks/guard_paths.py unless SHARPWR_ALLOW_REFERENCE_EDIT=1 is set by the user for a deliberate reference change.",
+    "paths": [
+      "sharpwr/**",
+      "data/**",
+      "app-data/**",
+      "scripts/**",
+      "tests/**",
+      "mobile/**",
+      "assets/**",
+      "static/**",
+      "docs/*.md",
+      "docs/*.json",
+      "docs/art-review/**",
+      "streamlit_app.py",
+      "engine_runtime.py",
+      "marksman_art.py",
+      "combat_replay.py",
+      "VERSION",
+      "README.md",
+      "requirements.txt",
+      "pyproject.toml",
+      "package.json",
+      "package-lock.json",
+      ".streamlit/**",
+      ".github/workflows/mobile-android.yml",
+      ".github/workflows/fetch-riot-icons.yml",
+      ".github/workflows/marksman-art-package.yml"
+    ]
+  },
+  "shared_contracts": {
+    "doc": "Owned by combat-engineer, consumed by everyone. Changes follow the contract-change protocol (.claude/rules/integration.md): ADR, consumer sign-off, all suites green.",
+    "paths": [
+      "game/packages/com.sharpwr.sim/Runtime/Numerics/**",
+      "game/packages/com.sharpwr.sim/Runtime/Core/**",
+      "game/packages/com.sharpwr.sim/Runtime/Combat/CombatEvent.cs",
+      "game/packages/com.sharpwr.sim/Runtime/Contracts/**"
+    ]
+  },
+  "owners": {
+    "lead": {
+      "doc": "Main session / engineering director. Architecture, plans, configuration, rosters (product/IP decisions).",
+      "paths": [
+        "CLAUDE.md",
+        ".claude/**",
+        "docs/moba/*.md",
+        "docs/moba/adr/**",
+        "game/README.md",
+        "game/.gitignore",
+        "game/unity/Packages/manifest.json",
+        "game/unity/ProjectSettings/**",
+        "game/content/rosters/**",
+        "game/unity/README.md"
+      ]
+    },
+    "combat-engineer": {
+      "doc": "Deterministic simulation core: numerics, time, scheduler, events, stats, damage pipeline, status effects, items/runes runtime, world/entities.",
+      "paths": [
+        "game/packages/com.sharpwr.sim/package.json",
+        "game/packages/com.sharpwr.sim/Runtime/SharpWR.Sim.asmdef",
+        "game/packages/com.sharpwr.sim/Runtime/Numerics/**",
+        "game/packages/com.sharpwr.sim/Runtime/Core/**",
+        "game/packages/com.sharpwr.sim/Runtime/Combat/**",
+        "game/packages/com.sharpwr.sim/Runtime/Contracts/**",
+        "game/packages/com.sharpwr.sim/Runtime/Entities/**",
+        "game/packages/com.sharpwr.sim/Runtime/Stats/**",
+        "game/packages/com.sharpwr.sim/Runtime/Status/**",
+        "game/packages/com.sharpwr.sim/Runtime/Items/**",
+        "game/packages/com.sharpwr.sim/Runtime/Runes/**",
+        "game/packages/com.sharpwr.sim/Runtime/World/**",
+        "game/sim/SharpWR.Sim.csproj",
+        "game/sim/README.md",
+        "game/sim/tests/Numerics/**",
+        "game/sim/tests/Determinism/**",
+        "game/sim/tests/Combat/**",
+        "game/sim/tests/World/**"
+      ]
+    },
+    "champion-implementer": {
+      "doc": "Ability framework content and per-champion scripts: data-driven definitions, ability hooks, original champion/item/rune content.",
+      "paths": [
+        "game/packages/com.sharpwr.sim/Runtime/Abilities/**",
+        "game/packages/com.sharpwr.sim/Runtime/Champions/**",
+        "game/content/champions/**",
+        "game/content/items/**",
+        "game/content/runes/**",
+        "game/sim/tests/Abilities/**",
+        "game/sim/tests/Champions/**"
+      ]
+    },
+    "unity-gameplay": {
+      "doc": "Unity presentation: rendering, camera, input (touch + desktop), HUD, VFX/audio hookup, scenes, view interpolation. Never decides combat outcomes.",
+      "paths": [
+        "game/unity/Assets/**"
+      ]
+    },
+    "gameplay-ai": {
+      "doc": "Bots, minion/tower/monster target selection, difficulty policies. Runs inside the sim using only legal observations.",
+      "paths": [
+        "game/packages/com.sharpwr.sim/Runtime/AI/**",
+        "game/content/ai/**",
+        "game/sim/tests/AI/**"
+      ]
+    },
+    "network-engineer": {
+      "doc": "Server-authoritative networking: protocol, input commands, snapshots, prediction/reconciliation, lag compensation, headless server.",
+      "paths": [
+        "game/packages/com.sharpwr.sim/Runtime/Net/**",
+        "game/server/**",
+        "game/sim/tests/Net/**"
+      ]
+    },
+    "data-verification": {
+      "doc": "Data migration from the Damage Lab, provenance, parity fixtures, content schema and validation.",
+      "paths": [
+        "game/content/reference-riot/**",
+        "game/content/schema/**",
+        "game/parity/**",
+        "tools/parity/**",
+        "tools/data_import/**",
+        "tools/content/**"
+      ]
+    },
+    "qa": {
+      "doc": "Test infrastructure, parity/integration/acceptance suites, CI, lint and ownership tooling, milestone acceptance reports.",
+      "paths": [
+        "game/packages/com.sharpwr.acceptance/**",
+        "game/sim/tests/SharpWR.Sim.Tests.csproj",
+        "game/sim/tests/Fixtures.cs",
+        "game/sim/tests/Parity/**",
+        "game/sim/tests/Integration/**",
+        "game/sim/tests/Acceptance/**",
+        "tools/ci/**",
+        "tools/sim_lint/**",
+        "tools/ownership/**",
+        ".github/workflows/game-*.yml",
+        "docs/moba/milestones/**",
+        "tools/.gitignore"
+      ]
+    }
+  }
+}

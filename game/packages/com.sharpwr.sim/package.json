@@ -1,0 +1,7 @@
+{
+  "name": "com.sharpwr.sim",
+  "version": "0.1.0",
+  "displayName": "SharpWR Simulation Core",
+  "description": "Engine-agnostic deterministic MOBA simulation. No UnityEngine references; also compiled by game/sim/SharpWR.Sim.csproj for dotnet test and the headless server.",
+  "unity": "6000.3"
+}

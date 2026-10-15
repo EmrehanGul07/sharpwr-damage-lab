@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Compiles the Unity package sources outside Unity: fast `dotnet test` in CI and the
+       headless authoritative server (docs/moba/01-architecture.md). Do not add sources here;
+       they live in ../packages/com.sharpwr.sim/Runtime. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SharpWR.Sim</AssemblyName>
+    <RootNamespace>SharpWR.Sim</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../packages/com.sharpwr.sim/Runtime/**/*.cs" />
+  </ItemGroup>
+</Project>
