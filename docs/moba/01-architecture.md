@@ -130,8 +130,9 @@ game/
 ```
 
 Assembly definitions: `SharpWR.Sim` (package) ← `SharpWR.Presentation` ← `SharpWR.Bootstrap`;
-test asmdefs reference the assembly under test only. Player builds exclude
-`content/reference-riot` (it is never placed under `Assets/` or Addressables).
+test asmdefs reference the assembly under test only. The personal build loads
+`content/reference-riot` through the `personal` roster; Riot-derived art lives only in
+`Assets/SharpWR/Reference/` so it stays separable (ADR-0004 rev 2).
 
 ## 6. Target hardware (initial)
 

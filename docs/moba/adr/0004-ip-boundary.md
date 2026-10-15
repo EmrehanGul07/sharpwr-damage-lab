@@ -1,12 +1,21 @@
-# ADR-0004 · Riot data for validation only; shipped content is original
+# ADR-0004 · Personal-only game; Riot reference content kept separable
 
-Status: proposed — needs owner confirmation · Date: 2026-10-15
+Status: **accepted (rev 2)** · Date: 2026-10-15
 
-**Context.** Riot's policy prohibits its IP in games/apps (see `../10-legal-and-ip.md`).
+**Context.** Riot's policy prohibits its IP in games/apps (see `../10-legal-and-ip.md`). The
+owner decided on 2026-10-15: the game is for personal use only and will not be published or
+shared.
 
-**Decision.** Reference data (`ip: riot-reference`) is used only in tests and an optional,
-never-distributed reference build. Playable/shareable builds use original champions, items,
-runes, map and art. Enforced by content validator R4/R5 and the art guard hook.
+**Decision.**
+- The personal build may use Riot reference content: Samira and other Damage Lab champions
+  (`game/content/reference-riot/`) and the existing SharpWR fan models/icons.
+- That content stays **separable**: data in `content/reference-riot/`, art only in
+  `game/unity/Assets/SharpWR/Reference/`, rosters declare `distribution: "personal"`.
+- A `public` roster may list only `ip: "original"` champions (validator R5), and a public
+  build must exclude the Reference folder. Nothing public is planned; the guard keeps the
+  option of an original version open without a rewrite.
 
-**Open.** Owner decision on (a) whether a private reference build is acceptable at all,
-(b) the first original champion's identity and design values.
+**Superseded (rev 1).** Required an original first champion for any playable build.
+
+**Consequences.** M1 plays Samira. No original champion design is needed now. Builds are never
+uploaded to stores or shared links.

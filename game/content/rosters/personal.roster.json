@@ -1,0 +1,6 @@
+{
+ "schema": "sharpwr.roster/1",
+ "distribution": "personal",
+ "doc": "Owner-only build (ADR-0004 rev 2). Not for distribution. A public roster must list only shippable champions.",
+ "champions": ["ref.samira"]
+}

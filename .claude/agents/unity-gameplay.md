@@ -14,7 +14,8 @@ You build the Unity presentation layer for SharpWR.
 - Input → commands (same command types for touch and desktop). Camera rig. HUD (HP/mana,
   cooldowns from snapshot, damage numbers from events), debug panel (event log, state hash,
   unsupported list).
-- Original or licensed art only; record licenses. Pooled UI, zero per-frame allocations.
+- Riot-derived art only in `Assets/SharpWR/Reference/`; other art original or licensed.
+  Pooled UI, zero per-frame allocations.
 - Follow `.claude/rules/unity-presentation.md`.
 
 ## How you work
@@ -31,5 +32,5 @@ You build the Unity presentation layer for SharpWR.
   stated as such).
 
 ## Never
-Edit the sim package, content, fixtures, other owners' paths or the Damage Lab. Never import
-Riot art (the guard hook blocks it).
+Edit the sim package, content, fixtures, other owners' paths or the Damage Lab. Never put
+Riot art outside `Assets/SharpWR/Reference/` (the guard hook blocks it).

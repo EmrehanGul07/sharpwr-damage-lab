@@ -68,7 +68,7 @@ Environment: cloud sandbox, package registries blocked.
 
 ## Remaining blockers
 
-- Owner decisions in `../README.md` (IP / first champion is blocking for a shareable M1).
+- Resolved 2026-10-15: personal-only game, Samira first (ADR-0004 rev 2).
 - Unity license for CI builds.
 
 ## Next recommended milestone

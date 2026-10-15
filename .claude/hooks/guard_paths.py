@@ -4,8 +4,9 @@
 Blocks (exit 2, reason on stderr):
   1. writes to the protected Python Damage Lab (the validation reference), unless the user
      started the session with SHARPWR_ALLOW_REFERENCE_EDIT=1 for a deliberate change;
-  2. Riot-derived art entering the game tree (copies of assets/riot or static/marksman-3d files,
-     or any path segment named "riot" under game/unity).
+  2. Riot-derived art (copies of assets/riot or static/marksman-3d files, or any path segment
+     named "riot") anywhere in game/ EXCEPT the personal-build folder
+     game/unity/Assets/SharpWR/Reference/, which a public build excludes (ADR-0004 rev 2).
 Everything else passes. Ownership between agents is enforced by tools/ownership (diff check),
 because a hook cannot reliably tell which subagent is writing.
 """
@@ -18,6 +19,7 @@ ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR", Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools" / "ownership"))
 import check_ownership as co  # noqa: E402
 
+REFERENCE_ART_DIR = "game/unity/assets/sharpwr/reference/"
 ART = (".png", ".webp", ".jpg", ".jpeg", ".glb", ".gltf", ".fbx", ".blend", ".wav", ".ogg", ".mp3")
 
 
@@ -51,10 +53,11 @@ def main():
               "restart with SHARPWR_ALLOW_REFERENCE_EDIT=1.", file=sys.stderr)
         return 2
     lower = rel.lower()
-    if lower.startswith("game/") and lower.endswith(ART):
+    if lower.startswith("game/") and lower.endswith(ART) and not lower.startswith(REFERENCE_ART_DIR):
         if "/riot/" in f"/{lower}" or Path(lower).name in riot_art_names():
-            print(f"BLOCKED: {rel} looks like Riot-derived art. The game ships only original or "
-                  "licensed assets (docs/moba/10-legal-and-ip.md).", file=sys.stderr)
+            print(f"BLOCKED: {rel} looks like Riot-derived art. Put it under "
+                  "game/unity/Assets/SharpWR/Reference/ (personal build only, excluded from any "
+                  "public build; docs/moba/10-legal-and-ip.md).", file=sys.stderr)
             return 2
     return 0
 

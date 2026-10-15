@@ -15,22 +15,14 @@
 | In-game debug panel: event log, damage per hit, state hash, "unsupported" list | |
 | Damage comparison report vs the Python reference | |
 
-## Champion choice — decision required
+## Champion choice — decided
 
-Samira is the requested first champion and is the best-documented kit in the Damage Lab. She is
-also Riot IP, and Riot's policy prohibits its IP in games/apps (`10-legal-and-ip.md`). Plan:
+**Samira**, from `game/content/reference-riot/champions/samira.champion.json`, listed in
+`game/content/rosters/personal.roster.json` (`distribution: "personal"`). The game is
+personal-only (ADR-0004 rev 2): never published or shared. Placeholder art first; the existing
+SharpWR Samira fan model may be imported into `Assets/SharpWR/Reference/` later.
 
-1. **Engine validation uses the Samira reference data** (`game/content/reference-riot/`) in
-   headless tests and a **private, never-distributed "reference" build configuration**
-   (scripting define `SHARPWR_RIOT_REFERENCE`, editor/dev only). Whether even a private build is
-   acceptable is the owner's call; the tests alone are enough to validate the engine.
-2. **The playable, shareable slice uses an original marksman** with a kit shaped like the
-   framework stress test (blink-dash, two-hit spin, channel ult, style-like stacking resource),
-   numbers authored as `original_design` and visuals as original placeholder art.
-   **Needs from the owner:** a name and design values, or approval to use clearly-labelled
-   `original_placeholder` values derived from design TTK targets (not from Samira's table).
-
-## Samira data available for the reference configuration
+## Samira data available
 
 | Element | Status | Slice handling |
 |---|---|---|
@@ -55,7 +47,7 @@ also Riot IP, and Riot's policy prohibits its IP in games/apps (`10-legal-and-ip
 | S5 | Damage pipeline steps 1–7 (`03` §4), death/respawn | combat-engineer | S4 |
 | S6 | Content schema v1 + loader (JSON → definitions → Fix64) | data-verification + champion-implementer | — |
 | S7 | Ability framework: targeting, cast/lockouts, delivery (Projectile, Area, Dash, Channel), cooldown/cost, unsupported gating | champion-implementer | S5, S6 |
-| S8 | Champion kit (reference Samira + original marksman) in data + hooks | champion-implementer | S7 |
+| S8 | Samira kit in data + hooks | champion-implementer | S7 |
 | S9 | Bot v1 (observation delay, decision interval, aim error, dodge) | gameplay-ai | S4, S7 |
 | S10 | Offline host loop in Unity (fixed step, catch-up cap, view interpolation) | unity-gameplay | S2 |
 | S11 | Camera, touch joystick + skill buttons, desktop input → commands | unity-gameplay | S10 |

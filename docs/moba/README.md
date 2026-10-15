@@ -23,10 +23,8 @@ Claude Code configuration: `/CLAUDE.md`, `.claude/rules/`, `.claude/agents/`, `.
 
 ## Decisions needed from the owner
 
-1. **IP / first champion (blocking for M1 art and the shareable build).** Confirm that shipped
-   content will be original (ADR-0004). Choose: (a) an original first marksman — name + design
-   values, or approval for labelled placeholder values; (b) whether a private, never-distributed
-   Samira reference build is acceptable, or keep Samira to headless tests only.
-2. **Unity licensing for CI** (Personal/Pro seat; `UNITY_LICENSE` secret for GameCI).
-3. **Repository layout** (ADR-0003): game inside this repo (recommended) vs a separate repo.
-4. **Reference devices** for performance acceptance (one minimum-tier, one recommended Android).
+Decided 2026-10-15: personal-only game, Samira is the first champion (ADR-0004 rev 2).
+
+1. **Unity licensing for CI** (Personal/Pro seat; `UNITY_LICENSE` secret for GameCI).
+2. **Repository layout** (ADR-0003): game inside this repo (recommended) vs a separate repo.
+3. **Reference devices** for performance acceptance (one minimum-tier, one recommended Android).

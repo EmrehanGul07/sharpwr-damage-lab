@@ -13,8 +13,9 @@ paths:
 - Input layer: touch (joystick, skill buttons with drag-aim and cancel zone) and desktop
   (right-click move/attack, QWER with cursor aim, A-move) map to the same command types.
 - Isometric camera: fixed pitch/yaw from config; follow with damping; no gameplay logic in camera.
-- Assets: original or licensed only; record licenses in `Assets/SharpWR/Art/LICENSES.md`.
-  Riot assets are blocked by hook.
+- Assets: Riot-derived art (existing SharpWR fan models, icons) only under
+  `Assets/SharpWR/Reference/` (personal build). Other art: original or licensed, recorded in
+  `Assets/SharpWR/Art/LICENSES.md`. The guard hook blocks Riot art elsewhere.
 - Use the Input System, URP and Addressables; no `Resources/` for content.
 - Zero per-frame allocations in hot paths (health bars, damage numbers pooled).
 - PlayMode/EditMode tests for input mapping, camera math and interpolation.

@@ -25,10 +25,10 @@ decisions). Architecture: `docs/moba/01-architecture.md`. Roadmap: `docs/moba/08
 - **Never invent champion statistics.** Every number in `game/content` is a provenance field
   `{value, status, source}`. Unknown ⇒ `status: "unresolved"`, `value: null`, mechanic gated
   off and labelled "unsupported". Do not fill gaps from memory, PC LoL, or guesses.
-- **IP boundary.** Riot data only in `game/content/reference-riot/` (not shippable). Shipped
-  content and art are original or licensed. Never copy files from `assets/riot/`,
-  `static/marksman-3d/` or `assets/marksman-3d/models/` into `game/`. See
-  `docs/moba/10-legal-and-ip.md`.
+- **Personal-only game** (owner decision, ADR-0004 rev 2): never publish, upload or share
+  builds. Riot reference content is allowed but kept separable: data only in
+  `game/content/reference-riot/`, art only in `game/unity/Assets/SharpWR/Reference/`, rosters
+  declare `distribution: "personal"`. See `docs/moba/10-legal-and-ip.md`.
 - **Ownership.** Each path has exactly one owner (`.claude/ownership.json`). Parallel agents
   only write inside their own paths; shared contracts change via the protocol in
   `.claude/rules/integration.md`. Check with

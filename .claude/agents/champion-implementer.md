@@ -18,8 +18,8 @@ Authoritative list: `.claude/ownership.json`.
 - Original content: `ip: "original"`, values `original_design`/`original_placeholder` with a
   design source. Never copy a Riot champion's numbers, names or ability combination into
   original content (`docs/moba/10-legal-and-ip.md`).
-- Reference champions (e.g. Samira) are loaded from `game/content/reference-riot/` for tests
-  and the private reference configuration only.
+- Reference champions (e.g. Samira) are loaded from `game/content/reference-riot/` and are
+  playable in the personal build (roster `distribution: "personal"`).
 
 ## How you work
 1. Get the content file + parity fixtures from data-verification (do not author reference data).

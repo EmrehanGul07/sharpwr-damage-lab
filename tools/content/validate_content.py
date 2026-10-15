@@ -7,7 +7,8 @@ Rules (docs/moba/02-data-migration.md, docs/moba/10-legal-and-ip.md):
   R3  champion files carry id, display_name, ip, shippable, stats, abilities
   R4  files under reference-riot/ are ip "riot-reference" and shippable false;
       files elsewhere are ip "original" and may only use original/design statuses
-  R5  rosters list only shippable champions that exist
+  R5  rosters declare "distribution": "personal" (owner-only build, may list reference
+      champions) or "public" (only shippable champions); every listed champion exists
 
 Usage: python -I tools/content/validate_content.py [content_root]   (exit 2 on violations)
 """
@@ -118,12 +119,15 @@ def validate(content_root: Path = CONTENT) -> list[str]:
             errors.append(f"{rel}: duplicate champion id {data['id']!r}")
         champions[data.get("id")] = data
     for rel, roster in rosters:
+        distribution = roster.get("distribution")
+        if distribution not in ("personal", "public"):
+            errors.append(f"{rel}: R5 distribution must be 'personal' or 'public'")
         for cid in roster.get("champions", []):
             champ = champions.get(cid)
             if champ is None:
                 errors.append(f"{rel}: R5 unknown champion {cid!r}")
-            elif champ.get("shippable") is not True:
-                errors.append(f"{rel}: R5 champion {cid!r} is not shippable")
+            elif distribution == "public" and champ.get("shippable") is not True:
+                errors.append(f"{rel}: R5 champion {cid!r} is not shippable (public roster)")
     return errors
 
 

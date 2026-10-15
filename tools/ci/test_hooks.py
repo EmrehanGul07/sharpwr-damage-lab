@@ -37,6 +37,8 @@ class GuardPaths(unittest.TestCase):
         self.assertEqual(run("guard_paths.py", "game/unity/Assets/Art/samira.glb")[0], 2)
         self.assertEqual(run("guard_paths.py", "game/unity/Assets/Art/riot/icon.png")[0], 2)
         self.assertEqual(run("guard_paths.py", "game/unity/Assets/Art/original-hero.glb")[0], 0)
+        # Personal build: reference art is allowed only in the Reference folder.
+        self.assertEqual(run("guard_paths.py", "game/unity/Assets/SharpWR/Reference/Models/samira.glb")[0], 0)
 
 
 class PostEditChecks(unittest.TestCase):

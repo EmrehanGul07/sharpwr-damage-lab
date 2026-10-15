@@ -49,9 +49,13 @@ class ValidateContent(unittest.TestCase):
     def test_reference_content_cannot_be_rostered(self):
         ref = champ(id="ref.x", ip="riot-reference", shippable=False,
                     stats={"x": {"value": "60", "status": "wr_wiki", "source": "wiki"}})
-        roster = {"schema": "sharpwr.roster/1", "champions": ["ref.x"]}
+        roster = {"schema": "sharpwr.roster/1", "distribution": "public", "champions": ["ref.x"]}
         errors = self.run_with({"reference-riot/champions/x.json": ref, "rosters/r.json": roster})
         self.assertTrue(any("not shippable" in e for e in errors), errors)
+        personal = dict(roster, distribution="personal")
+        self.assertEqual(self.run_with({"reference-riot/champions/x.json": ref, "rosters/r.json": personal}), [])
+        missing = {"schema": "sharpwr.roster/1", "champions": []}
+        self.assertTrue(any("distribution" in e for e in self.run_with({"rosters/r.json": missing})))
 
     def test_reference_area_requires_reference_ip(self):
         errors = self.run_with({"reference-riot/champions/x.json": champ()})
