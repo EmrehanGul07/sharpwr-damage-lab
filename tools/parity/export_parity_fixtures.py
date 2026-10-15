@@ -45,7 +45,10 @@ SOURCE_FILES = (
 # absolute seconds for event times. The C# sim schedules on an integer-microsecond grid and
 # rounds each attack period to it, so drift grows by <= 0.5 us per attack; 10 us over a
 # six-second fight is far below one 33,333 us simulation tick.
-TOLERANCE = {"stat": 1e-6, "multiplier": 1e-9, "damage": 1e-3, "time_seconds": 1e-5}
+# Long attack loops round each attack period to the microsecond grid, so drift grows with
+# the attack count (measured up to 25 us over 52 attacks); 0.1 ms is ~0.3% of one tick.
+TOLERANCE = {"stat": 1e-6, "multiplier": 1e-9, "damage": 1e-3, "time_seconds": 1e-5,
+             "loop_time_seconds": 1e-4}
 
 
 def fingerprint():
@@ -239,6 +242,46 @@ def timeline_cases():
     }
 
 
+def champion_loop_cases():
+    """Level-derived AA loop until a dummy dies: stats, bonus-AS windup scaling, travel, armor.
+
+    Mirrors how the game builds a champion from content: AS = base + ratio * (level bonus),
+    windup = base_windup / (1 + 0.5 * bonus AS) (Damage Lab V5.56 formula).
+    """
+    stats = json.loads((ROOT / "data" / "marksman_champion_stats.json").read_text())
+    samira = next(c for c in stats["champions"] if c["name"] == "Samira")["stats"]
+    base_windup = samira["base_attack_windup_seconds"]
+    scenarios = []
+    for level, distance, hp, armor in ((1, 525.0, 1500.0, 50.0), (9, 400.0, 2000.0, 50.0),
+                                       (15, 520.0, 2500.0, 120.0)):
+        s = aa_engine.stats("Samira", level)
+        bonus = s["bba"] + s["lvbas"]
+        result = replay_samira(
+            [], level=level, ad=s["ad"], attack_speed=s["baseas"], crit_chance=0.0,
+            crit_damage=1.75, hp=hp, armor=armor, q_rank=0, w_rank=0, e_rank=0, r_rank=0,
+            use_e=False, automatic_until=60.0, until_death=True, timed_combat=True,
+            base_windup=base_windup, starting_bonus_as=bonus, movement_speed=0.0,
+            distance=distance, attack_range=float(samira["attack_range"]),
+        )
+        scenarios.append({
+            "name": f"samira_l{level}_d{int(distance)}",
+            "inputs": {"level": level, "distance": distance, "dummy_hp": hp, "dummy_armor": armor,
+                       "base_windup_seconds": base_windup, "windup_bonus_as_factor": 0.5},
+            "derived": {"ad": s["ad"], "bonus_as": bonus,
+                        "attack_speed": s["baseas"] + s["ratio"] * bonus},
+            "killed_at": result.killed_at,
+            "impacts": [{"time": e["time"], "action": e["action"], "damage": e["damage"],
+                         "hp_after": e["hp_after"]} for e in result.log],
+        })
+    return {
+        "engine_functions": ["sharpwr.fight_engine.replay_samira(timed_combat, until_death, "
+                             "base_windup, starting_bonus_as)"],
+        "data_status": "windup PC-provisional; growth curve app curve; AS formula "
+                       "base + ratio*(bba+lvbas) from sharpwr/aa_engine.py",
+        "scenarios": scenarios,
+    }
+
+
 def build():
     return {
         "schema": "sharpwr.parity-fixture/1",
@@ -252,6 +295,7 @@ def build():
         "resistance": resistance_cases(),
         "skills": skill_cases(),
         "timeline": timeline_cases(),
+        "champion_loop": champion_loop_cases(),
     }
 
 
@@ -282,6 +326,7 @@ def main(argv=None):
         "resistance": len(json.loads(text)["resistance"]["cases"]),
         "skills": len(json.loads(text)["skills"]["cases"]),
         "timeline_scenarios": len(json.loads(text)["timeline"]["scenarios"]),
+        "champion_loops": len(json.loads(text)["champion_loop"]["scenarios"]),
     }
     print(f"wrote {OUT.relative_to(ROOT)} {counts}")
     return 0

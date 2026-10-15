@@ -32,5 +32,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with: { dotnet-version: "8.0.x" }
-      - run: dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - name: C# sim tests (must execute at least MIN_SIM_TESTS)
+        env: { MIN_SIM_TESTS: "26" }
+        run: |
+          dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo --logger "trx;LogFileName=sim.trx" --results-directory TestResults
+          python -I tools/ci/check_trx.py TestResults/sim.trx --min ${{ env.MIN_SIM_TESTS }}
   # unity-build: added in milestone M1 (needs UNITY_LICENSE secrets; see docs/moba/06-testing.md)

@@ -82,6 +82,10 @@ def champion_stats(name):
     out["attack_windup_seconds"] = field(
         stats.get("base_attack_windup_seconds"), "pc_reference_provisional",
         "docs/samira-timed-combat.md V5.56 (PC windup/baseAS quotient, user-authorized fallback)")
+    out["attack_windup_bonus_as_factor"] = field(
+        0.5, "damage_lab_preserved",
+        "sharpwr/combat_timing.py attack_windup: base / (1 + 0.5*bonusAS) "
+        "(WR Patch 2.2 formula per docs/samira-timed-combat.md V5.56; WR applicability unverified)")
     out["level_growth_curve"] = {
         "value": "damage_lab_quadratic", "status": "damage_lab_preserved",
         "source": "sharpwr/aa_engine.py gu(): n*(0.7025+0.0175n); WR level audit open",

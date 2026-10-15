@@ -45,6 +45,14 @@ namespace SharpWR.Sim.Combat
 
         public int Count => _heap.Count;
 
+        /// <summary>Exact copy (pending events and sequence counter) for match snapshots.</summary>
+        public CombatScheduler Clone()
+        {
+            var copy = new CombatScheduler { _nextSequence = _nextSequence };
+            copy._heap.AddRange(_heap);
+            return copy;
+        }
+
         public long Schedule(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId)
         {
             long seq = _nextSequence++;

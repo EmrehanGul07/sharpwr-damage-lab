@@ -126,6 +126,32 @@ class FixedPointParity(unittest.TestCase):
                 self.note("time_seconds", error)
                 self.assertLessEqual(error, self.tol["time_seconds"], (scenario["name"], got, want))
 
+    def test_champion_loop_from_content(self):
+        """Same algorithm as Match: stats from content, us-grid periods, homing projectile."""
+        from fixed_point_model import ONE_FIX, ZERO, growth_units, seconds_to_micros
+
+        content = json.loads((ROOT / "game/content/reference-riot/champions/samira.champion.json").read_text())
+        p = lambda k: Fix.parse(content["stats"][k]["value"])  # noqa: E731
+        for sc in self.data["champion_loop"]["scenarios"]:
+            i = sc["inputs"]
+            bonus = p("bonus_attack_speed_level1") + p("bonus_attack_speed_per_level") * growth_units(i["level"])
+            speed = p("base_attack_speed") + p("attack_speed_ratio") * bonus
+            windup = p("attack_windup_seconds") / (ONE_FIX + p("attack_windup_bonus_as_factor") * bonus)
+            ad = stat_at_level(p("base_ad"), p("ad_per_level"), i["level"])
+            period = seconds_to_micros(ONE_FIX / speed)
+            lead = seconds_to_micros(windup) + seconds_to_micros(fix(i["distance"]) / p("attack_projectile_speed"))
+            hit = ad * resistance_multiplier(effective_resistance(fix(i["dummy_armor"]), ZERO, ZERO))
+            hp, start = fix(i["dummy_hp"]), 0
+            for imp in sc["impacts"]:
+                removed = hit if hit < hp else hp
+                hp = hp - removed
+                error = abs((start + lead) / MICROS - imp["time"])
+                self.note("loop_time_seconds", error)
+                self.assertLessEqual(error, self.tol["loop_time_seconds"], sc["name"])
+                self.assertLessEqual(abs(removed.to_float() - imp["damage"]), self.tol["damage"], sc["name"])
+                start += period
+            self.assertEqual(hp.raw, 0, sc["name"])
+
     def test_arithmetic_is_exact_and_symmetric(self):
         a, b = Fix.parse("-3.75"), Fix.parse("1.5")
         self.assertEqual((a * b).raw, Fix.parse("-5.625").raw)

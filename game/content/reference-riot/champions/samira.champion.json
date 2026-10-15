@@ -120,6 +120,11 @@
    "status": "pc_reference_provisional",
    "source": "docs/samira-timed-combat.md V5.56 (PC windup/baseAS quotient, user-authorized fallback)"
   },
+  "attack_windup_bonus_as_factor": {
+   "value": "0.5",
+   "status": "damage_lab_preserved",
+   "source": "sharpwr/combat_timing.py attack_windup: base / (1 + 0.5*bonusAS) (WR Patch 2.2 formula per docs/samira-timed-combat.md V5.56; WR applicability unverified)"
+  },
   "level_growth_curve": {
    "value": "damage_lab_quadratic",
    "status": "damage_lab_preserved",

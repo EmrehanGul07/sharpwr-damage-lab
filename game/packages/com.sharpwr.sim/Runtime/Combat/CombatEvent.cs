@@ -24,6 +24,8 @@ namespace SharpWR.Sim.Combat
     {
         AttackStart = 1,
         AttackImpact = 2,
+        AttackWindupEnd = 3,   // M1 (ADR-0005): projectile fired / melee hit resolves
+        AttackReady = 4,       // M1 (ADR-0005): attack timer elapsed while in range
         AbilityCast = 10,
         AbilityImpact = 11,
         DamageApplied = 20,

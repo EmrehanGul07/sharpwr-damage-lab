@@ -147,6 +147,18 @@ def crit_scaled(raw: Fix, crit_effectiveness: Fix, crit_damage: Fix, is_crit: bo
     return raw * (ONE_FIX + crit_effectiveness * (crit_damage - ONE_FIX))
 
 
+def fsqrt(v: Fix) -> Fix:
+    """Mirror of Fix64.Sqrt: isqrt seed then three Newton steps with a floor halving."""
+    import math
+
+    if v.raw <= 0:
+        return ZERO
+    x = Fix(math.isqrt(v.raw) << 16)
+    for _ in range(3):
+        x = Fix((x + v / x).raw >> 1)
+    return x
+
+
 # Time: integer microseconds ---------------------------------------------------------------
 
 MICROS = 1_000_000

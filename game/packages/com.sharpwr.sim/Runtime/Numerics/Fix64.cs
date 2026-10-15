@@ -92,6 +92,40 @@ namespace SharpWR.Sim.Numerics
         public static Fix64 Min(Fix64 a, Fix64 b) => a.Raw <= b.Raw ? a : b;
         public static Fix64 Clamp(Fix64 v, Fix64 lo, Fix64 hi) => Max(lo, Min(hi, v));
 
+        /// <summary>
+        /// Deterministic square root: integer sqrt seed (isqrt(raw) &lt;&lt; 16) then three Newton
+        /// steps x = (x + v/x) &gt;&gt; 1. Bit-exact with fixed_point_model.fsqrt. Negative or zero → 0.
+        /// </summary>
+        public static Fix64 Sqrt(Fix64 v)
+        {
+            if (v.Raw <= 0) return Zero;
+            Fix64 x = new Fix64((long)(ISqrt((ulong)v.Raw) << 16));
+            for (int i = 0; i < 3; i++)
+                x = new Fix64((x + v / x).Raw >> 1);
+            return x;
+        }
+
+        /// <summary>floor(sqrt(n)) by the bitwise method.</summary>
+        public static ulong ISqrt(ulong n)
+        {
+            ulong result = 0, bit = 1UL << 62;
+            while (bit > n) bit >>= 2;
+            while (bit != 0)
+            {
+                if (n >= result + bit)
+                {
+                    n -= result + bit;
+                    result = (result >> 1) + bit;
+                }
+                else
+                {
+                    result >>= 1;
+                }
+                bit >>= 2;
+            }
+            return result;
+        }
+
         /// <summary>Round half up of raw * multiplier / 2^32 (used for unit conversion).</summary>
         public static long MulRawToLong(long raw, long multiplier) => MulShiftRound(raw, multiplier);
 

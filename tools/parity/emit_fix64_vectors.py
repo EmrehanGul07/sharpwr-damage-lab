@@ -13,7 +13,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 
-from fixed_point_model import Fix, growth_units, seconds_to_micros  # noqa: E402
+from fixed_point_model import Fix, fsqrt, growth_units, seconds_to_micros  # noqa: E402
 
 OUT = ROOT / "game" / "parity" / "fixtures" / "fix64-vectors-v1.json"
 TEXTS = ("0", "1", "-1", "0.5", "-0.5", "0.0175", "0.7025", "1.25", "-3.75", "0.658",
@@ -28,8 +28,10 @@ def build():
     growth = [{"level": lvl, "raw": growth_units(lvl).raw} for lvl in range(1, 16)]
     micros = [{"seconds": t, "micros": seconds_to_micros(Fix.parse(t))}
               for t in ("0.2279635167173252", "0.1875", "1.519756838905775", "-0.0000005")]
+    sqrt = [{"text": t, "raw": fsqrt(Fix.parse(t)).raw}
+            for t in ("0", "1e-9", "0.0175", "0.25", "2", "100", "525", "275625", "440000000", "2147483647")]
     return {"schema": "sharpwr.fix64-vectors/1", "frac_bits": 32, "parse": parse, "mul": mul,
-            "div": div, "growth_units": growth, "seconds_to_micros": micros}
+            "div": div, "growth_units": growth, "seconds_to_micros": micros, "sqrt": sqrt}
 
 
 def main():

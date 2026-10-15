@@ -129,7 +129,9 @@
         "game/parity/**",
         "tools/parity/**",
         "tools/data_import/**",
-        "tools/content/**"
+        "tools/content/**",
+        "game/packages/com.sharpwr.sim/Runtime/Content/**",
+        "game/sim/tests/Content/**"
       ]
     },
     "qa": {

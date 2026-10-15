@@ -17,6 +17,13 @@ namespace SharpWR.Sim.Combat
         public ulong Hash { get; private set; } = OffsetBasis;
         public IReadOnlyList<CombatEvent> Events => _events;
 
+        public EventLog Clone()
+        {
+            var copy = new EventLog { Hash = Hash };
+            copy._events.AddRange(_events);
+            return copy;
+        }
+
         public void Append(in CombatEvent e)
         {
             _events.Add(e);
