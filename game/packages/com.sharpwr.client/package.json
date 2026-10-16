@@ -1,0 +1,8 @@
+{
+  "name": "com.sharpwr.client",
+  "version": "0.1.0",
+  "displayName": "SharpWR Client Core",
+  "description": "Engine-agnostic client logic: fixed-step host, input-to-command mapping, view interpolation and HUD model. No UnityEngine references; tested with dotnet.",
+  "unity": "6000.3",
+  "dependencies": { "com.sharpwr.sim": "0.1.0" }
+}

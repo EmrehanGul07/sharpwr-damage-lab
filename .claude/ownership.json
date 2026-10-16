@@ -100,9 +100,12 @@
       ]
     },
     "unity-gameplay": {
-      "doc": "Unity presentation: rendering, camera, input (touch + desktop), HUD, VFX/audio hookup, scenes, view interpolation. Never decides combat outcomes.",
+      "doc": "Unity presentation and the engine-agnostic client core (fixed-step host, input mapping, view model): rendering, camera, input (touch + desktop), HUD, VFX/audio hookup, scenes. Never decides combat outcomes.",
       "paths": [
-        "game/unity/Assets/**"
+        "game/unity/Assets/**",
+        "game/packages/com.sharpwr.client/**",
+        "game/sim/SharpWR.Client.csproj",
+        "game/sim/tests/Client/**"
       ]
     },
     "gameplay-ai": {

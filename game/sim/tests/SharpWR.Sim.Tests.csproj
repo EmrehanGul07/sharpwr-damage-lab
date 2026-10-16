@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../SharpWR.Sim.csproj" />
+    <ProjectReference Include="../SharpWR.Client.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../../parity/fixtures/*.json" Link="fixtures/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />

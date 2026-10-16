@@ -1,0 +1,14 @@
+{
+  "name": "SharpWR.Client",
+  "rootNamespace": "SharpWR.Client",
+  "references": ["SharpWR.Sim"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}
