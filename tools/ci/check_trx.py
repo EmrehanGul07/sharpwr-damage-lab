@@ -35,7 +35,7 @@ def main(argv=None):
     line = f"tests executed={c.get('executed', 0)} passed={c.get('passed', 0)} failed={c.get('failed', 0)} (min {a.min})"
     print(line)
     print(f"::notice title=sim tests::{line}")
-    for report in reports(a.trx)[:8]:
+    for report in reports(a.trx)[:12]:
         print(f"::notice title=report::{report}")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:

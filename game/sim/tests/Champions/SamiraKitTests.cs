@@ -82,6 +82,28 @@ namespace SharpWR.Sim.Tests.Champions
         }
 
         [Test]
+        public void QDuringEDashIsAnUnsupportedMechanic()
+        {
+            var m = new SamiraTestMatch(9, "500", "5000", "0", "0");
+            m.At(0, m.Cast(AbilitySlot.E));
+            m.At(3, m.Cast(AbilitySlot.Q));            // 0.1 s: dash lasts 650/1600 s
+            m.RunUntil(30);
+            Assert.That(m.Rejections().Select(Reason), Is.EqualTo(new[] { RejectReason.UnsupportedMechanic }));
+        }
+
+        [Test]
+        public void NotEnoughManaIsRejectedWithoutSpendingCooldown()
+        {
+            var m = new SamiraTestMatch(9, "400", "5000", "0", "0");
+            m.Match.DefinitionOf(m.Samira).MaxMana = Fix64.FromInt(0);   // test-only: empty pool, no regen
+            m.Match.DefinitionOf(m.Samira).ManaRegenPer5s = Fix64.Zero;
+            m.At(0, m.Cast(AbilitySlot.Q));
+            m.RunUntil(3);
+            Assert.That(m.Rejections().Select(Reason), Is.EqualTo(new[] { RejectReason.NotEnoughResource }));
+            Assert.That(m.Match.Get(m.Samira).CooldownQ.Micros, Is.EqualTo(0));
+        }
+
+        [Test]
         public void QMissesWhenAimedAway()
         {
             var m = new SamiraTestMatch(9, "600", "5000", "0", "0");

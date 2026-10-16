@@ -53,6 +53,15 @@ namespace SharpWR.Sim.Tests.Parity
                 Assert.That(hits[k].Time.ToSecondsDouble(), Is.EqualTo(impacts[k].GetProperty("time").GetDouble()).Within(loopTol), $"{name} hit {k}");
                 Assert.That(hits[k].Amount.ToDouble(), Is.EqualTo(impacts[k].GetProperty("damage").GetDouble()).Within(dmgTol), $"{name} hit {k}");
             }
+            double maxDt = 0, maxDmg = 0;
+            for (int k = 0; k < hits.Count; k++)
+            {
+                maxDt = System.Math.Max(maxDt, System.Math.Abs(hits[k].Time.ToSecondsDouble() - impacts[k].GetProperty("time").GetDouble()));
+                maxDmg = System.Math.Max(maxDmg, System.Math.Abs(hits[k].Amount.ToDouble() - impacts[k].GetProperty("damage").GetDouble()));
+            }
+            TestContext.WriteLine($"REPORT: AA loop {name}: {hits.Count} hits, kill at {hits[hits.Count - 1].Time.ToSecondsDouble():F6} s, max |dt| {maxDt:E2} s, max |d dmg| {maxDmg:E2} HP");
+            if (i.GetProperty("dummy_hp").GetDouble() == 2000 && i.GetProperty("dummy_armor").GetDouble() == 50)
+                Assert.That(maxDt, Is.LessThanOrEqualTo(10e-6), "M1 acceptance #3: 2000 HP / 50 armor dummy within 10 us");
             Assert.That(m.Get(d).Alive, Is.False, name);
             Assert.That(hits[hits.Count - 1].Time.ToSecondsDouble(), Is.EqualTo(sc.GetProperty("killed_at").GetDouble()).Within(loopTol));
         }
