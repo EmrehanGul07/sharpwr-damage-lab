@@ -58,6 +58,13 @@ namespace SharpWR.Sim.Tests.Champions
             var report = new System.Text.StringBuilder();
             foreach (var h in hits) report.Append($"{h.Micros / 1e6:F6} {h.Label} {h.Damage.ToDouble():F4}\n");
             Assert.That(hits.Count, Is.EqualTo(impacts.GetArrayLength()), "C# hits:\n" + report);
+            double maxTime = 0, maxDamage = 0;
+            for (int k = 0; k < hits.Count; k++)
+            {
+                maxTime = System.Math.Max(maxTime, System.Math.Abs(hits[k].Micros / 1e6 - impacts[k].GetProperty("time").GetDouble()));
+                maxDamage = System.Math.Max(maxDamage, System.Math.Abs(hits[k].Damage.ToDouble() - impacts[k].GetProperty("damage").GetDouble()));
+            }
+            TestContext.WriteLine($"REPORT: Samira rotation parity: {hits.Count} hits, max |dt| {maxTime:E2} s, max |d dmg| {maxDamage:E2} HP");
             for (int k = 0; k < hits.Count; k++)
             {
                 JsonElement want = impacts[k];

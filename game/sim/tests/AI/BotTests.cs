@@ -131,7 +131,7 @@ namespace SharpWR.Sim.Tests.AI
             const int shots = 20;
             int easy = QHitsOnBot("easy", shots);
             int impossible = QHitsOnBot("impossible", shots);
-            TestContext.WriteLine($"Q hits: easy {easy}/{shots}, impossible {impossible}/{shots}");
+            TestContext.WriteLine($"REPORT: Q hits: easy {easy}/{shots}, impossible {impossible}/{shots}");
             Assert.That(easy, Is.GreaterThanOrEqualTo(14), "easy bot (8% dodge, 650 ms delay) mostly gets hit");
             Assert.That(impossible, Is.LessThanOrEqualTo(10), "impossible bot dodges most telegraphed Qs");
             Assert.That(impossible, Is.LessThan(easy));
