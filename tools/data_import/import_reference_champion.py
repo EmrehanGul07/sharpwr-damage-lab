@@ -223,7 +223,7 @@ def build(name):
             "W: projectile destruction",
             "AA: attack timer under mid-cycle attack-speed changes (timer fixed at attack start)",
             "W cast during E dash: rejected (Damage Lab buffers it to dash end)",
-            "Q collision is evaluated at release against current positions (no swept dodge)",
+            "Q projectile sweeps against tick-start unit positions (dodgeable, not sub-tick exact)",
             "Walking positions update at tick end; mid-tick events see tick-start positions (dashes exact)",
             "Crits: no crit chance without items (M3); crit rolls not implemented",
             "R: exact WR shot offsets (fixture uses even spacing), ability-haste rule",

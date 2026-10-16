@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 CONTENT = ROOT / "game" / "content"
 
-SCHEMAS = {"sharpwr.champion/1", "sharpwr.roster/1"}
+SCHEMAS = {"sharpwr.champion/1", "sharpwr.roster/1", "sharpwr.ai-profiles/1"}
 REFERENCE_STATUSES = {
     "wr_verified_user",        # explicit user Wild Rift confirmation
     "wr_wiki",                 # Wild Rift wiki data template
@@ -101,6 +101,12 @@ def validate(content_root: Path = CONTENT) -> list[str]:
             if reference_area:
                 errors.append(f"{rel}: R5 rosters may not live in reference-riot/")
             rosters.append((rel, data))
+            continue
+        if schema == "sharpwr.ai-profiles/1":
+            if reference_area or data.get("ip") != "original":
+                errors.append(f"{rel}: R4 AI profiles are original content outside reference-riot/")
+            for path, f in walk_fields(data):
+                errors += [f"{rel}: R2 {e}" for e in check_field(path, f, ORIGINAL_STATUSES)]
             continue
         for key in ("id", "display_name", "ip", "shippable", "stats", "abilities"):
             if key not in data:

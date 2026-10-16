@@ -129,11 +129,21 @@ namespace SharpWR.Sim.Champions.Samira
             switch (slot)
             {
                 case AbilitySlot.Q:
+                {
                     u.CastLockUntil = now + _qCast;
-                    u.KitAimPoint = AimOf(match, unit, command, now);
-                    u.KitAimTarget = NearestEnemy(match, unit, now, _qSlashRange);
-                    match.Schedule(now + _qCast, EventPhase.CastStart, CombatEventKind.AbilityCast, unit, 0, actionId);
+                    int slashTarget = NearestEnemy(match, unit, now, _qSlashRange);
+                    if (slashTarget != 0)
+                    {
+                        // Slash: resolves at cast end on the nearest enemy (cone geometry unsupported).
+                        match.Schedule(now + _qCast, EventPhase.Impact, CombatEventKind.AbilityImpact, unit, slashTarget, actionId, 1);
+                        break;
+                    }
+                    // The projectile exists from cast start (visible telegraph) and leaves at cast end.
+                    FixVec2 origin = match.PositionAt(unit, now);
+                    FixVec2 direction = (AimOf(match, unit, command, now) - origin).NormalizedOr(new FixVec2(Fix64.One, Fix64.Zero));
+                    match.LaunchProjectile(unit, actionId, origin, direction, _qSpeed, _qRange, _qHalfWidth, now, now + _qCast);
                     break;
+                }
                 case AbilitySlot.W:
                     u.CastLockUntil = now + _wCast;
                     u.KitSpinCast = actionId;
@@ -179,8 +189,7 @@ namespace SharpWR.Sim.Champions.Samira
             AbilitySlot slot = ActionIds.SlotOf(e.ActionId);
             if (e.Kind == CombatEventKind.AbilityCast)
             {
-                if (slot == AbilitySlot.Q) ReleaseQ(match, e);
-                else if (slot == AbilitySlot.R) FireRShot(match, e);
+                if (slot == AbilitySlot.R) FireRShot(match, e);
                 return;
             }
             switch (slot)
@@ -190,34 +199,6 @@ namespace SharpWR.Sim.Champions.Samira
                 case AbilitySlot.E: HitE(match, e); break;
                 case AbilitySlot.R: HitR(match, e); break;
             }
-        }
-
-        private void ReleaseQ(Match match, in ScheduledEvent e)
-        {
-            Unit u = match.Get(e.Source);
-            if (u.KitAimTarget != 0 && match.Get(u.KitAimTarget).Alive)
-            {
-                // Slash: resolves at cast end on the nearest enemy (cone geometry unsupported).
-                match.Schedule(e.Time, EventPhase.Impact, CombatEventKind.AbilityImpact, e.Source, u.KitAimTarget, e.ActionId, 1);
-                return;
-            }
-            FixVec2 origin = match.PositionAt(e.Source, e.Time);
-            FixVec2 direction = (u.KitAimPoint - origin).NormalizedOr(FixVec2.Zero);
-            int best = 0;
-            Fix64 bestDistance = Fix64.Zero;
-            for (int id = 1; id <= match.UnitCount; id++)
-            {
-                if (!match.IsEnemy(e.Source, id) || !match.Get(id).Alive) continue;
-                FixVec2 relative = match.PositionAt(id, e.Time) - origin;
-                Fix64 along = FixVec2.Dot(relative, direction);
-                if (along < Fix64.Zero || along > _qRange) continue;
-                Fix64 reach = _qHalfWidth + match.DefinitionOf(id).Radius;
-                if (relative.LengthSquared - along * along > reach * reach) continue;
-                if (best == 0 || along < bestDistance) { best = id; bestDistance = along; }
-            }
-            if (best == 0) return; // missed (collision checked at release; no swept dodge yet)
-            match.Schedule(e.Time + SimTime.FromSeconds(bestDistance / _qSpeed), EventPhase.Impact,
-                           CombatEventKind.AbilityImpact, e.Source, best, e.ActionId, 0);
         }
 
         private void HitQ(Match match, in ScheduledEvent e)

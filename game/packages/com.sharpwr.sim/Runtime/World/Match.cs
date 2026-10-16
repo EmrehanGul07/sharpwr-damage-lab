@@ -29,6 +29,9 @@ namespace SharpWR.Sim.World
         private Unit[] _units = new Unit[16];
         private int _count;
         private CombatScheduler _scheduler = new CombatScheduler();
+        private List<Projectile> _projectiles = new List<Projectile>();
+        private int _nextProjectileId;
+        private SimTime _tickEnd;
         private long _logSequence;
 
         public EventLog Log { get; private set; } = new EventLog();
@@ -82,9 +85,12 @@ namespace SharpWR.Sim.World
             Tick++;
             SimTime end = SimClock.TickStart(Tick);
 
+            _tickEnd = end;
             if (commands != null)
                 for (int i = 0; i < commands.Count; i++) Apply(commands[i], start);
 
+            for (int i = 0; i < _projectiles.Count; i++) Sweep(i, end);
+            _projectiles.RemoveAll(p => !p.Active);
             Drain(end);
             MoveUnits(start, end);
             Regenerate(start, end);
@@ -186,21 +192,36 @@ namespace SharpWR.Sim.World
             }
         }
 
-        /// <summary>Gate order (03-combat-event-model.md §5): lock → kit → rank → cooldown → cost.</summary>
+        /// <summary>
+        /// Would this cast be accepted right now? Pure (no state change). Bots use it for their
+        /// own abilities. Gate order (03-combat-event-model.md §5): lock → kit → rank → cooldown → cost.
+        /// </summary>
+        public RejectReason? CheckCast(in Command c, SimTime now)
+        {
+            if (c.Unit < 1 || c.Unit > _count) return RejectReason.UnknownUnit;
+            Unit u = _units[c.Unit - 1];
+            UnitDefinition d = _definitions[u.Definition];
+            if (!u.Alive || !d.CanAct) return RejectReason.CannotAct;
+            if (c.Slot > 3 || d.Kit == null || d.Abilities[c.Slot] == null) return RejectReason.UnsupportedCommand;
+            var slot = (AbilitySlot)c.Slot;
+            if (now < u.CastLockUntil || u.WindingUp) return RejectReason.Locked;
+            RejectReason? kitReason = d.Kit.Validate(this, c.Unit, slot, c, now);
+            if (kitReason.HasValue) return kitReason;
+            if (d.AbilityRanks[c.Slot] <= 0) return RejectReason.NotLearned;
+            if (now < CooldownReadyAt(c.Unit, slot)) return RejectReason.OnCooldown;
+            if (u.Mana < d.Abilities[c.Slot].ManaCost) return RejectReason.NotEnoughResource;
+            return null;
+        }
+
         private void TryCast(int id, in Command c, SimTime now)
         {
+            RejectReason? reason = CheckCast(c, now);
+            if (reason.HasValue) { Reject(now, id, reason.Value); return; }
             ref Unit u = ref _units[id - 1];
             UnitDefinition d = _definitions[u.Definition];
-            if (c.Slot > 3 || d.Kit == null || d.Abilities[c.Slot] == null) { Reject(now, id, RejectReason.UnsupportedCommand); return; }
             var slot = (AbilitySlot)c.Slot;
             AbilityDefinition ability = d.Abilities[c.Slot];
-            if (now < u.CastLockUntil) { Reject(now, id, RejectReason.Locked); return; }
-            RejectReason? kitReason = d.Kit.Validate(this, id, slot, c, now);
-            if (kitReason.HasValue) { Reject(now, id, kitReason.Value); return; }
             int rank = d.AbilityRanks[c.Slot];
-            if (rank <= 0) { Reject(now, id, RejectReason.NotLearned); return; }
-            if (now < CooldownReadyAt(id, slot)) { Reject(now, id, RejectReason.OnCooldown); return; }
-            if (u.Mana < ability.ManaCost) { Reject(now, id, RejectReason.NotEnoughResource); return; }
 
             u.Mana -= ability.ManaCost;
             Fix64 cooldown = ability.CooldownByRank[rank - 1] * Fix64.Hundred / (Fix64.Hundred + d.AbilityHaste);
@@ -237,6 +258,57 @@ namespace SharpWR.Sim.World
             u.DashTo = to;
             u.DashStart = now;
             u.DashEnd = now + SimTime.FromSeconds(FixVec2.Distance(from, to) / speed);
+        }
+
+        // ---- projectiles ------------------------------------------------------------------
+
+        public IReadOnlyList<Projectile> Projectiles => _projectiles;
+
+        /// <summary>
+        /// Launch a line skillshot that hits the first enemy it reaches; the owner's kit receives
+        /// an AbilityImpact (target = hit unit) at the exact hit time.
+        /// </summary>
+        public void LaunchProjectile(int owner, int actionId, FixVec2 origin, FixVec2 direction, Fix64 speed,
+                                     Fix64 range, Fix64 halfWidth, SimTime visible, SimTime release)
+        {
+            _projectiles.Add(new Projectile
+            {
+                Id = ++_nextProjectileId, Owner = owner, ActionId = actionId, Origin = origin, Direction = direction,
+                Speed = speed, Range = range, HalfWidth = halfWidth, Visible = visible, Release = release,
+                Swept = -Fix64.One, Active = true,
+            });
+            Sweep(_projectiles.Count - 1, _tickEnd);
+        }
+
+        private void Sweep(int index, SimTime to)
+        {
+            Projectile p = _projectiles[index];
+            if (!p.Active) return;
+            Fix64 reached = Fix64.Min(p.Range, p.Speed * Fix64.Ratio(to.Micros - p.Release.Micros, SimTime.MicrosPerSecond));
+            int best = 0;
+            Fix64 bestAlong = Fix64.Zero;
+            for (int id = 1; id <= _count; id++)
+            {
+                if (!IsEnemy(p.Owner, id) || !_units[id - 1].Alive) continue;
+                FixVec2 relative = PositionAt(id, to) - p.Origin;
+                Fix64 along = FixVec2.Dot(relative, p.Direction);
+                if (along <= p.Swept || along > reached) continue;
+                Fix64 reach = p.HalfWidth + _definitions[_units[id - 1].Definition].Radius;
+                if (relative.LengthSquared - along * along > reach * reach) continue;
+                if (best == 0 || along < bestAlong) { best = id; bestAlong = along; }
+            }
+            if (best != 0)
+            {
+                p.Active = false;
+                _scheduler.Schedule(p.Release + SimTime.FromSeconds(Fix64.Max(Fix64.Zero, bestAlong) / p.Speed), EventPhase.Impact,
+                                    CombatEventKind.AbilityImpact, p.Owner, best, p.ActionId, 0);
+            }
+            else
+            {
+                if (reached > p.Swept) p.Swept = reached;   // before release nothing is swept
+                if (reached >= p.Range) p.Active = false;
+            }
+            _projectiles[index] = p;
         }
 
         // ---- movement & regeneration ------------------------------------------------------
@@ -477,6 +549,9 @@ namespace SharpWR.Sim.World
                 _units = (Unit[])_units.Clone(),
                 _count = _count,
                 _scheduler = _scheduler.Clone(),
+                _projectiles = new List<Projectile>(_projectiles),
+                _nextProjectileId = _nextProjectileId,
+                _tickEnd = _tickEnd,
                 _logSequence = _logSequence,
                 Log = Log.Clone(),
                 Tick = Tick,
