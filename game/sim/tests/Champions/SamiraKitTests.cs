@@ -95,8 +95,8 @@ namespace SharpWR.Sim.Tests.Champions
         public void NotEnoughManaIsRejectedWithoutSpendingCooldown()
         {
             var m = new SamiraTestMatch(9, "400", "5000", "0", "0");
-            m.Match.DefinitionOf(m.Samira).MaxMana = Fix64.FromInt(0);   // test-only: empty pool, no regen
-            m.Match.DefinitionOf(m.Samira).ManaRegenPer5s = Fix64.Zero;
+            // Test-only: make Q cost more than the full pool (mana is filled at spawn).
+            m.Match.DefinitionOf(m.Samira).Abilities[(int)AbilitySlot.Q].ManaCost = Fix64.FromInt(100_000);
             m.At(0, m.Cast(AbilitySlot.Q));
             m.RunUntil(3);
             Assert.That(m.Rejections().Select(Reason), Is.EqualTo(new[] { RejectReason.NotEnoughResource }));
