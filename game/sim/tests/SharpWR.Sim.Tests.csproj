@@ -11,6 +11,11 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Generated embedded content of the Unity package (plain C#): checked to load in tests. -->
+    <Compile Include="../../packages/com.sharpwr.unity/Runtime/Reference/*.cs" />
+    <Compile Include="../../packages/com.sharpwr.unity/Runtime/Generated/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../SharpWR.Sim.csproj" />
     <ProjectReference Include="../SharpWR.Client.csproj" />
   </ItemGroup>

@@ -28,6 +28,7 @@ CHECKS = [
     ("parity fixtures current", PY + ["tools/parity/export_parity_fixtures.py", "--check"]),
     ("fix64 vectors current", PY + ["tools/parity/emit_fix64_vectors.py", "--check"]),
     ("reference content current", PY + ["tools/data_import/import_reference_champion.py", "Samira", "--check"]),
+    ("unity embedded content current", PY + ["tools/content/sync_unity_content.py", "--check"]),
 ]
 
 

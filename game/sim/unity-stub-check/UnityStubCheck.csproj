@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Compiles com.sharpwr.unity against UnityStubs.cs, once per input backend. Syntax/type
+       check of our own code only; see UnityStubs.cs. Build with -p:InputBackend=new|legacy. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InputBackend Condition="'$(InputBackend)' == ''">new</InputBackend>
+    <DefineConstants Condition="'$(InputBackend)' == 'new'">$(DefineConstants);SHARPWR_INPUT_SYSTEM;ENABLE_INPUT_SYSTEM</DefineConstants>
+    <DefineConstants Condition="'$(InputBackend)' == 'legacy'">$(DefineConstants);ENABLE_LEGACY_INPUT_MANAGER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="UnityStubs.cs" />
+    <Compile Include="../../packages/com.sharpwr.unity/Runtime/**/*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SharpWR.Sim.csproj" />
+    <ProjectReference Include="../SharpWR.Client.csproj" />
+  </ItemGroup>
+</Project>

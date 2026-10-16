@@ -1,0 +1,16 @@
+{
+  "name": "SharpWR.Unity",
+  "rootNamespace": "SharpWR.Unity",
+  "references": ["SharpWR.Sim", "SharpWR.Client", "Unity.InputSystem"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [
+    { "name": "com.unity.inputsystem", "expression": "1.0.0", "define": "SHARPWR_INPUT_SYSTEM" }
+  ],
+  "noEngineReferences": false
+}

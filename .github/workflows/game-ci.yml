@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.13" }
       - name: C# sim tests (must execute at least MIN_SIM_TESTS)
-        env: { MIN_SIM_TESTS: "47" }
+        env: { MIN_SIM_TESTS: "48" }
         shell: bash
         run: |
           set -o pipefail
@@ -55,4 +55,27 @@ jobs:
         if: failure()
         shell: bash
         run: python -I tools/ci/annotate_failures.py build.log TestResults/sim.trx
-  # unity-build: added in milestone M1 (needs UNITY_LICENSE secrets; see docs/moba/06-testing.md)
+  unity-layer-stub-check:
+    # Compiles the Unity presentation package against signature stubs (both input backends).
+    # Catches our own C# mistakes only; real Unity compilation is a manual step until a
+    # Unity licence secret is configured (docs/moba/06-testing.md).
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: "8.0.x" }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - name: Build against stubs (Input System and legacy input)
+        shell: bash
+        run: |
+          set -o pipefail
+          for backend in new legacy; do
+            dotnet build game/sim/unity-stub-check/UnityStubCheck.csproj --nologo -p:InputBackend=$backend 2>&1 | tee -a build.log
+          done
+      - name: Report failures as annotations
+        if: failure()
+        shell: bash
+        run: python -I tools/ci/annotate_failures.py build.log
+  # unity-build: needs UNITY_LICENSE / UNITY_EMAIL / UNITY_PASSWORD secrets (GameCI); see docs/moba/06-testing.md

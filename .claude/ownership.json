@@ -61,7 +61,7 @@
         "game/unity/Packages/manifest.json",
         "game/unity/ProjectSettings/**",
         "game/content/rosters/**",
-        "game/unity/README.md"
+        "game/UNITY_SETUP.md"
       ]
     },
     "combat-engineer": {
@@ -105,7 +105,8 @@
         "game/unity/Assets/**",
         "game/packages/com.sharpwr.client/**",
         "game/sim/SharpWR.Client.csproj",
-        "game/sim/tests/Client/**"
+        "game/sim/tests/Client/**",
+        "game/packages/com.sharpwr.unity/**"
       ]
     },
     "gameplay-ai": {
@@ -151,7 +152,8 @@
         "tools/ownership/**",
         ".github/workflows/game-*.yml",
         "docs/moba/milestones/**",
-        "tools/.gitignore"
+        "tools/.gitignore",
+        "game/sim/unity-stub-check/**"
       ]
     }
   }
