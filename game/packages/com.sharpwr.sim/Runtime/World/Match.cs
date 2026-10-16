@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SharpWR.Sim.Abilities;
 using SharpWR.Sim.Combat;
 using SharpWR.Sim.Contracts;
 using SharpWR.Sim.Core;
@@ -12,13 +13,17 @@ namespace SharpWR.Sim.World
     /// One match: units, scheduler, event log and the fixed-step loop
     /// (docs/moba/03-combat-event-model.md §1). Pure function of (definitions, spawns, commands).
     ///
-    /// M1 scope: movement, basic attacks (windup, projectile, timer), damage with armor/MR,
-    /// death and respawn. Abilities plug in through the ability framework (next step).
+    /// M1 scope: movement, dashes, basic attacks (windup, projectile, timer), abilities through
+    /// champion kits, damage with armor/MR, death and respawn.
+    /// Known approximation: walking positions update at the end of each tick; events inside a
+    /// tick see the position at the tick start (dash positions are exact, see PositionAt).
     /// </summary>
     public sealed class Match
     {
         /// <summary>Engine rule for the vertical slice (09-vertical-slice.md), not a champion stat.</summary>
         public static readonly SimTime RespawnDelay = new SimTime(5 * SimTime.MicrosPerSecond);
+
+        private static readonly Fix64 FivePerSecond = Fix64.FromInt(5);
 
         private readonly List<UnitDefinition> _definitions = new List<UnitDefinition>();
         private Unit[] _units = new Unit[16];
@@ -42,13 +47,31 @@ namespace SharpWR.Sim.World
             _units[_count++] = new Unit
             {
                 Id = id, Definition = _definitions.Count - 1, Team = team, Position = position,
-                SpawnPosition = position, Health = definition.MaxHealth, Alive = true,
+                SpawnPosition = position, Health = definition.MaxHealth, Mana = definition.MaxMana, Alive = true,
             };
             return id;
         }
 
         public Unit Get(int id) => _units[id - 1];
         public UnitDefinition DefinitionOf(int id) => _definitions[_units[id - 1].Definition];
+
+        /// <summary>Kits mutate their own unit through this (same assembly only).</summary>
+        internal ref Unit Mutable(int id) => ref _units[id - 1];
+
+        public bool IsEnemy(int a, int b) => a != b && _units[a - 1].Team != _units[b - 1].Team;
+
+        /// <summary>Exact position at a time inside the current tick (dashes interpolate).</summary>
+        public FixVec2 PositionAt(int id, SimTime time)
+        {
+            Unit u = _units[id - 1];
+            if (!u.Dashing) return u.Position;
+            if (time >= u.DashEnd) return u.DashTo;
+            if (time <= u.DashStart) return u.DashFrom;
+            Fix64 f = Fix64.Ratio(time.Micros - u.DashStart.Micros, u.DashEnd.Micros - u.DashStart.Micros);
+            return u.DashFrom + (u.DashTo - u.DashFrom) * f;
+        }
+
+        public bool IsDashing(int id, SimTime time) => _units[id - 1].Dashing && time < _units[id - 1].DashEnd;
 
         // ---- loop -------------------------------------------------------------------------
 
@@ -64,6 +87,7 @@ namespace SharpWR.Sim.World
 
             Drain(end);
             MoveUnits(start, end);
+            Regenerate(start, end);
             for (int id = 1; id <= _count; id++) TryAttack(id, end);
         }
 
@@ -78,9 +102,18 @@ namespace SharpWR.Sim.World
                     case CombatEventKind.AttackImpact: OnImpact(e); break;
                     case CombatEventKind.Death: OnDeath(e); break;
                     case CombatEventKind.Respawn: OnRespawn(e); break;
+                    case CombatEventKind.AbilityCast:
+                    case CombatEventKind.AbilityImpact:
+                    case CombatEventKind.StatusExpired:
+                        DefinitionOf(e.Source).Kit?.OnEvent(this, e);
+                        break;
                 }
             }
         }
+
+        /// <summary>Kits schedule their own follow-up events through this.</summary>
+        public void Schedule(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId, int param = 0) =>
+            _scheduler.Schedule(time, phase, kind, source, target, actionId, param);
 
         // ---- commands ---------------------------------------------------------------------
 
@@ -110,8 +143,8 @@ namespace SharpWR.Sim.World
                     u.Order = OrderKind.None; u.OrderTarget = 0;
                     break;
                 case CommandKind.AttackUnit:
-                    if (c.TargetUnit < 1 || c.TargetUnit > _count || c.TargetUnit == u.Id ||
-                        !_units[c.TargetUnit - 1].Alive || _units[c.TargetUnit - 1].Team == u.Team)
+                    if (c.TargetUnit < 1 || c.TargetUnit > _count || !IsEnemy(u.Id, c.TargetUnit) ||
+                        !_units[c.TargetUnit - 1].Alive)
                     {
                         Reject(now, u.Id, RejectReason.InvalidTarget);
                         return;
@@ -119,13 +152,94 @@ namespace SharpWR.Sim.World
                     u.Order = OrderKind.Attack; u.OrderTarget = c.TargetUnit;
                     TryAttack(u.Id, now);
                     break;
+                case CommandKind.Cast:
+                    TryCast(u.Id, c, now);
+                    break;
                 default:
                     Reject(now, u.Id, RejectReason.UnsupportedCommand);
                     break;
             }
         }
 
-        // ---- movement ---------------------------------------------------------------------
+        // ---- abilities --------------------------------------------------------------------
+
+        public SimTime CooldownReadyAt(int id, AbilitySlot slot)
+        {
+            Unit u = _units[id - 1];
+            switch (slot)
+            {
+                case AbilitySlot.Q: return u.CooldownQ;
+                case AbilitySlot.W: return u.CooldownW;
+                case AbilitySlot.E: return u.CooldownE;
+                default: return u.CooldownR;
+            }
+        }
+
+        private void SetCooldown(ref Unit u, AbilitySlot slot, SimTime readyAt)
+        {
+            switch (slot)
+            {
+                case AbilitySlot.Q: u.CooldownQ = readyAt; break;
+                case AbilitySlot.W: u.CooldownW = readyAt; break;
+                case AbilitySlot.E: u.CooldownE = readyAt; break;
+                default: u.CooldownR = readyAt; break;
+            }
+        }
+
+        /// <summary>Gate order (03-combat-event-model.md §5): lock → kit → rank → cooldown → cost.</summary>
+        private void TryCast(int id, in Command c, SimTime now)
+        {
+            ref Unit u = ref _units[id - 1];
+            UnitDefinition d = _definitions[u.Definition];
+            if (c.Slot > 3 || d.Kit == null || d.Abilities[c.Slot] == null) { Reject(now, id, RejectReason.UnsupportedCommand); return; }
+            var slot = (AbilitySlot)c.Slot;
+            AbilityDefinition ability = d.Abilities[c.Slot];
+            if (now < u.CastLockUntil) { Reject(now, id, RejectReason.Locked); return; }
+            RejectReason? kitReason = d.Kit.Validate(this, id, slot, c, now);
+            if (kitReason.HasValue) { Reject(now, id, kitReason.Value); return; }
+            int rank = d.AbilityRanks[c.Slot];
+            if (rank <= 0) { Reject(now, id, RejectReason.NotLearned); return; }
+            if (now < CooldownReadyAt(id, slot)) { Reject(now, id, RejectReason.OnCooldown); return; }
+            if (u.Mana < ability.ManaCost) { Reject(now, id, RejectReason.NotEnoughResource); return; }
+
+            u.Mana -= ability.ManaCost;
+            Fix64 cooldown = ability.CooldownByRank[rank - 1] * Fix64.Hundred / (Fix64.Hundred + d.AbilityHaste);
+            SetCooldown(ref u, slot, now + SimTime.FromSeconds(cooldown));
+            u.CastSequence++;
+            int actionId = ActionIds.Ability(slot, u.CastSequence);
+            Record(now, EventPhase.CastStart, CombatEventKind.AbilityCast, id, c.TargetUnit, actionId, ability.DamageType, Fix64.Zero);
+            d.Kit.Execute(this, id, slot, c, now, actionId);
+        }
+
+        /// <summary>Raw ability damage for a unit's current rank (no crit, no mitigation).</summary>
+        public Fix64 AbilityRawDamage(int id, AbilitySlot slot)
+        {
+            UnitDefinition d = DefinitionOf(id);
+            return d.Abilities[(int)slot].RawDamage(d.AbilityRanks[(int)slot], d.AttackDamage, d.BaseAttackDamage);
+        }
+
+        /// <summary>Mitigate and apply one damage component from source to target.</summary>
+        public void DealDamage(SimTime time, int source, int target, int actionId, DamageType type, Fix64 raw)
+        {
+            UnitDefinition t = DefinitionOf(target);
+            Fix64 mitigated = type == DamageType.Physical ? CombatMath.Mitigate(raw, t.Armor, Fix64.Zero, Fix64.Zero)
+                : type == DamageType.Magic ? CombatMath.Mitigate(raw, t.MagicResist, Fix64.Zero, Fix64.Zero)
+                : raw;
+            ApplyDamage(time, source, target, actionId, type, mitigated);
+        }
+
+        public void StartDash(int id, FixVec2 to, Fix64 speed, SimTime now)
+        {
+            ref Unit u = ref _units[id - 1];
+            FixVec2 from = PositionAt(id, now);
+            u.Dashing = true;
+            u.DashFrom = from;
+            u.DashTo = to;
+            u.DashStart = now;
+            u.DashEnd = now + SimTime.FromSeconds(FixVec2.Distance(from, to) / speed);
+        }
+
+        // ---- movement & regeneration ------------------------------------------------------
 
         private void MoveUnits(SimTime start, SimTime end)
         {
@@ -134,7 +248,14 @@ namespace SharpWR.Sim.World
             {
                 ref Unit u = ref _units[i];
                 UnitDefinition d = _definitions[u.Definition];
-                if (!u.Alive || u.WindingUp || !d.CanAct) continue;
+                if (!u.Alive) continue;
+                if (u.Dashing)
+                {
+                    u.Position = PositionAt(u.Id, end);
+                    if (end >= u.DashEnd) u.Dashing = false;
+                    continue;
+                }
+                if (u.WindingUp || !d.CanAct || end <= u.CastLockUntil) continue;
                 if (u.Order == OrderKind.Attack && !_units[u.OrderTarget - 1].Alive) { u.Order = OrderKind.None; continue; }
                 FixVec2 goal;
                 if (u.Order == OrderKind.Move) goal = u.OrderPoint;
@@ -152,6 +273,18 @@ namespace SharpWR.Sim.World
             }
         }
 
+        private void Regenerate(SimTime start, SimTime end)
+        {
+            Fix64 seconds = Fix64.Ratio(end.Micros - start.Micros, SimTime.MicrosPerSecond);
+            for (int i = 0; i < _count; i++)
+            {
+                ref Unit u = ref _units[i];
+                UnitDefinition d = _definitions[u.Definition];
+                if (!u.Alive || d.MaxMana <= Fix64.Zero) continue;
+                u.Mana = Fix64.Min(d.MaxMana, u.Mana + d.ManaRegenPer5s / FivePerSecond * seconds);
+            }
+        }
+
         private Fix64 AttackReach(int attacker, int target) =>
             DefinitionOf(attacker).AttackRange + DefinitionOf(target).Radius;
 
@@ -160,31 +293,53 @@ namespace SharpWR.Sim.World
 
         // ---- basic attacks ----------------------------------------------------------------
 
+        private SimTime AttackBlockedUntil(int id, SimTime now)
+        {
+            Unit u = _units[id - 1];
+            SimTime until = u.CastLockUntil;
+            if (u.Dashing && u.DashEnd > until) until = u.DashEnd;
+            IChampionKit kit = _definitions[u.Definition].Kit;
+            if (kit != null)
+            {
+                SimTime kitUntil = kit.AttackBlockedUntil(this, id);
+                if (kitUntil > until) until = kitUntil;
+            }
+            return until;
+        }
+
         private void TryAttack(int id, SimTime now)
         {
             ref Unit u = ref _units[id - 1];
             if (!u.Alive || u.WindingUp || u.Order != OrderKind.Attack) return;
             if (!_units[u.OrderTarget - 1].Alive) { u.Order = OrderKind.None; return; }
             if (!InAttackRange(id, u.OrderTarget)) return;
-            if (now < u.AttackReadyAt)
+            SimTime readyAt = u.AttackReadyAt;
+            SimTime blocked = AttackBlockedUntil(id, now);
+            if (blocked > readyAt) readyAt = blocked;
+            if (now < readyAt)
             {
                 if (!u.ReadyEventPending)
                 {
                     u.ReadyEventPending = true;
-                    _scheduler.Schedule(u.AttackReadyAt, EventPhase.CastStart, CombatEventKind.AttackReady, id, u.OrderTarget, 0);
+                    _scheduler.Schedule(readyAt, EventPhase.CastStart, CombatEventKind.AttackReady, id, u.OrderTarget, 0);
                 }
                 return;
             }
             StartAttack(ref u, now);
         }
 
+        private Fix64 BonusAs(in Unit u, SimTime now) => now < u.BonusAsBuffUntil ? u.BonusAsBuff : Fix64.Zero;
+
         private void StartAttack(ref Unit u, SimTime now)
         {
             UnitDefinition d = _definitions[u.Definition];
+            Fix64 extra = BonusAs(u, now);
             u.AttackSequence++;
             u.WindingUp = true;
-            u.WindupEndsAt = now + SimTime.FromSeconds(d.WindupSeconds);
-            u.AttackReadyAt = now + SimTime.FromSeconds(Fix64.One / d.AttackSpeed);
+            u.AttackMelee = d.MeleeAttackRange > Fix64.Zero &&
+                FixVec2.WithinRange(u.Position, _units[u.OrderTarget - 1].Position, d.MeleeAttackRange);
+            u.WindupEndsAt = now + SimTime.FromSeconds(d.WindupSecondsWith(extra));
+            u.AttackReadyAt = now + SimTime.FromSeconds(Fix64.One / d.AttackSpeedWith(extra));
             Record(now, EventPhase.CastStart, CombatEventKind.AttackStart, u.Id, u.OrderTarget, u.AttackSequence, DamageType.Physical, Fix64.Zero);
             _scheduler.Schedule(u.WindupEndsAt, EventPhase.CastStart, CombatEventKind.AttackWindupEnd, u.Id, u.OrderTarget, u.AttackSequence);
         }
@@ -204,10 +359,11 @@ namespace SharpWR.Sim.World
             if (u.Alive && target.Alive)
             {
                 UnitDefinition d = _definitions[u.Definition];
-                SimTime travel = d.ProjectileSpeed > Fix64.Zero
+                SimTime travel = !u.AttackMelee && d.ProjectileSpeed > Fix64.Zero
                     ? SimTime.FromSeconds(FixVec2.Distance(u.Position, target.Position) / d.ProjectileSpeed)
                     : SimTime.Zero;
-                _scheduler.Schedule(e.Time + travel, EventPhase.Impact, CombatEventKind.AttackImpact, u.Id, e.Target, e.ActionId);
+                _scheduler.Schedule(e.Time + travel, EventPhase.Impact, CombatEventKind.AttackImpact, u.Id, e.Target, e.ActionId,
+                                    u.AttackMelee ? 1 : 0);
             }
             if (u.HasBufferedCommand)
             {
@@ -220,12 +376,11 @@ namespace SharpWR.Sim.World
 
         private void OnImpact(in ScheduledEvent e)
         {
-            // Homing projectile: lands if the target is still alive (M1; dodge rules arrive with skillshots).
+            // Homing projectile: lands if the target is still alive.
             if (!_units[e.Target - 1].Alive) return;
-            UnitDefinition source = DefinitionOf(e.Source);
-            UnitDefinition target = DefinitionOf(e.Target);
-            Fix64 dealt = CombatMath.Mitigate(source.AttackDamage, target.Armor, Fix64.Zero, Fix64.Zero);
-            ApplyDamage(e.Time, e.Source, e.Target, e.ActionId, DamageType.Physical, dealt);
+            Fix64 before = _units[e.Target - 1].Health;
+            DealDamage(e.Time, e.Source, e.Target, e.ActionId, DamageType.Physical, DefinitionOf(e.Source).AttackDamage);
+            DefinitionOf(e.Source).Kit?.OnAttackHit(this, e.Source, e.Target, e.Time, e.Param == 1, e.ActionId, before);
         }
 
         // ---- damage, death, respawn ------------------------------------------------------
@@ -237,7 +392,7 @@ namespace SharpWR.Sim.World
         public void ApplyDamage(SimTime time, int source, int target, int actionId, DamageType type, Fix64 mitigated)
         {
             ref Unit t = ref _units[target - 1];
-            if (!t.Alive || mitigated <= Fix64.Zero) return;
+            if (!t.Alive || t.Health <= Fix64.Zero || mitigated <= Fix64.Zero) return;
             Fix64 removed = Fix64.Min(mitigated, t.Health);
             t.Health -= removed;
             Record(time, EventPhase.Damage, CombatEventKind.DamageApplied, source, target, actionId, type, removed);
@@ -253,7 +408,11 @@ namespace SharpWR.Sim.World
             t.Order = OrderKind.None;
             t.WindingUp = false;
             t.HasBufferedCommand = false;
+            t.Dashing = false;
+            t.CastLockUntil = SimTime.Zero;
+            t.BonusAsBuffUntil = SimTime.Zero;
             t.RespawnAt = e.Time + RespawnDelay;
+            DefinitionOf(e.Target).Kit?.OnDeath(this, e.Target);
             Record(e.Time, EventPhase.Death, CombatEventKind.Death, e.Source, e.Target, 0, DamageType.True, Fix64.Zero);
             _scheduler.Schedule(t.RespawnAt, EventPhase.StatusExpiry, CombatEventKind.Respawn, e.Target, e.Target, 0);
         }
@@ -262,8 +421,10 @@ namespace SharpWR.Sim.World
         {
             ref Unit t = ref _units[e.Target - 1];
             if (t.Alive) return;
+            UnitDefinition d = _definitions[t.Definition];
             t.Alive = true;
-            t.Health = _definitions[t.Definition].MaxHealth;
+            t.Health = d.MaxHealth;
+            t.Mana = d.MaxMana;
             t.Position = t.SpawnPosition;
             t.AttackReadyAt = e.Time;
             Record(e.Time, EventPhase.StatusExpiry, CombatEventKind.Respawn, e.Target, e.Target, 0, DamageType.True, Fix64.Zero);
@@ -271,12 +432,12 @@ namespace SharpWR.Sim.World
 
         // ---- log, hashing, snapshots ------------------------------------------------------
 
-        private void Reject(SimTime time, int unit, RejectReason reason)
+        public void Reject(SimTime time, int unit, RejectReason reason)
         {
             Record(time, EventPhase.Input, CombatEventKind.Rejected, unit, -1, (int)reason, DamageType.True, Fix64.Zero);
         }
 
-        private void Record(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId, DamageType type, Fix64 amount)
+        public void Record(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId, DamageType type, Fix64 amount)
         {
             Log.Append(new CombatEvent(time, phase, _logSequence++, kind, source, target, actionId, type, amount));
         }
@@ -289,9 +450,12 @@ namespace SharpWR.Sim.World
             {
                 Unit u = _units[i];
                 h = Mix(h, (ulong)u.Position.X.Raw); h = Mix(h, (ulong)u.Position.Z.Raw);
-                h = Mix(h, (ulong)u.Health.Raw); h = Mix(h, u.Alive ? 1UL : 0UL);
+                h = Mix(h, (ulong)u.Health.Raw); h = Mix(h, (ulong)u.Mana.Raw); h = Mix(h, u.Alive ? 1UL : 0UL);
                 h = Mix(h, (ulong)u.Order); h = Mix(h, (ulong)(uint)u.OrderTarget);
                 h = Mix(h, (ulong)u.AttackReadyAt.Micros); h = Mix(h, (ulong)(uint)u.AttackSequence);
+                h = Mix(h, (ulong)u.CooldownQ.Micros); h = Mix(h, (ulong)u.CooldownW.Micros);
+                h = Mix(h, (ulong)u.CooldownE.Micros); h = Mix(h, (ulong)u.CooldownR.Micros);
+                h = Mix(h, (ulong)(uint)u.KitStacks); h = Mix(h, (ulong)u.KitChannelUntil.Micros);
             }
             return Mix(h, (ulong)Tick);
         }

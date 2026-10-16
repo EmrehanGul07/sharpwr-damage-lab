@@ -20,6 +20,15 @@ namespace SharpWR.Sim.Numerics
 
         public static Fix64 Distance(FixVec2 a, FixVec2 b) => (b - a).Length;
 
+        public static Fix64 Dot(FixVec2 a, FixVec2 b) => a.X * b.X + a.Z * b.Z;
+
+        /// <summary>Unit vector, or <paramref name="fallback"/> for a zero vector.</summary>
+        public FixVec2 NormalizedOr(FixVec2 fallback)
+        {
+            Fix64 length = Length;
+            return length == Fix64.Zero ? fallback : new FixVec2(X / length, Z / length);
+        }
+
         /// <summary>True when |b - a| &lt;= range, without a square root.</summary>
         public static bool WithinRange(FixVec2 a, FixVec2 b, Fix64 range) =>
             range >= Fix64.Zero && (b - a).LengthSquared <= range * range;

@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from sharpwr.champion_skill_data import SAMIRA_ABILITIES  # noqa: E402
+from sharpwr.fight_engine import SAMIRA_SKILL_ORDER  # noqa: E402
 
 OUT_DIR = ROOT / "game" / "content" / "reference-riot" / "champions"
 STATS = ROOT / "data" / "marksman_champion_stats.json"
@@ -129,6 +130,68 @@ def ability(slot, data, geometry, pc):
     return out
 
 
+PC = "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+ENGINE = "sharpwr/fight_engine.py replay_samira timed_combat"
+
+
+def samira_kit():
+    """Mechanics the Damage Lab timed model uses, each with provenance. Read from the reference
+    JSON where present; values that exist only as Damage Lab code constants cite that code."""
+    pc = json.loads(PC_REF.read_text())
+    lab = "damage_lab_preserved"
+    prov = "pc_reference_provisional"
+    return {
+        "hook": "samira",
+        "style": {
+            "max_stacks": field(6, lab, ENGINE + ": style = min(6, style + 1)"),
+            "expiry_seconds": field(pc["P"]["style_duration_seconds"], prov, PC),
+            "gain": "AA/Q/W/E hit whose action differs from the previous Style action "
+                    "(Damage Lab rule); R hits never grant Style",
+            "reset": "at R channel end (Damage Lab WR engine; PC says end of effect)",
+        },
+        "passive_melee_bonus": {
+            "formula": "(level + 5 + (0.05 + 0.008*level) * AD) * (1 + missing_hp / max_hp), magic",
+            "level_flat": field(5, lab, ENGINE + " passive (user-accepted provisional interpolation)"),
+            "ad_ratio_base": field(0.05, lab, ENGINE + " passive (user-accepted provisional interpolation)"),
+            "ad_ratio_per_level": field(0.008, lab, ENGINE + " passive (user-accepted provisional interpolation)"),
+            "applies_to": "W hits, E hit, melee AA (target within melee_attack_range), Q slash; never R",
+        },
+        "melee_attack_range": field(pc["P"]["blade_attack_edge_range"], prov, PC + " blade AA edge range"),
+        "q": {
+            "cast_seconds": field(pc["Q"]["cast_time_seconds"], prov, PC),
+            "projectile_speed": field(pc["Q"]["projectile_speed"], prov, PC),
+            "slash_range": field(pc["Q"]["target_edge_range"], prov, PC + " melee cone trigger"),
+        },
+        "w": {
+            "cast_seconds": field(pc["W"]["cast_time_seconds"], prov, PC),
+            "hit_offsets_seconds": [field(v, prov, PC) for v in pc["W"]["hit_times_relative_seconds"]],
+            "radius": field(pc["W"]["edge_effect_radius"], prov, PC),
+            "blocks": ["AA", "Q"],
+        },
+        "e": {
+            "target_range": field(pc["E"]["center_target_range"], prov, PC),
+            "dash_distance": field(650, "wr_wiki", "data/marksman-skill-geometry.json Samira E movement_range"),
+            "dash_speed": field(pc["E"]["dash_speed"], prov, PC),
+            "hit_width": field(pc["E"]["edge_width"], prov,
+                               PC + " edge width; Damage Lab E impact limit 250 (fight_engine.py)"),
+            "attack_speed_by_rank": [field(v, lab, ENGINE + " attack_stats E bonus") for v in (0.25, 0.30, 0.35, 0.40)],
+            "attack_speed_seconds": field(pc["E"]["WR_AS_buff_duration_preserved_seconds"], "wr_verified_user",
+                                          PC + " WR 3 s duration preserved by user"),
+        },
+        "r": {
+            "required_style": field(6, "wr_verified_user", "sharpwr/champion_skill_data.py R required_resource"),
+            "radius": field(pc["R"]["center_effect_radius"], prov, PC),
+            "channel_seconds": field(pc["R"]["channel_duration_seconds"], prov, PC),
+            "shot_window_seconds": field(pc["R"]["shot_window_seconds"], prov, PC),
+            "shots": field(pc["R"]["max_shots_per_target"], prov, PC),
+            "shot_spacing": "even across the window (Damage Lab assumption; exact WR offsets unknown)",
+            "projectile_speed": field(2800, lab, ENGINE + " R tick travel gap/2800"),
+            "blocks": ["AA", "Q", "W"],
+            "ends_w": True,
+        },
+    }
+
+
 def build(name):
     if name not in SUPPORTED:
         raise SystemExit(f"{name}: no Damage Lab ability table to import yet")
@@ -146,14 +209,23 @@ def build(name):
         "abilities": abilities,
         "passive": {
             "name": "Daredevil Impulse",
-            "status": "unsupported",
-            "note": "Style stacks and melee bonus damage use a provisional user-accepted "
-                    "interpolation inside fight_engine.replay_samira; not migrated in v1.",
+            "note": "Style and melee bonus in kit.style / kit.passive_melee_bonus (provisional).",
         },
+        "skill_order": {
+            "order": "".join(SAMIRA_SKILL_ORDER),
+            "source": "sharpwr/fight_engine.py SAMIRA_SKILL_ORDER (Damage Lab default leveling)",
+        },
+        "kit": samira_kit(),
         "unsupported_mechanics": [
-            "P: Style grades, melee bonus damage interpolation, immobilized-target assist attack",
-            "Q: melee cone variant, E-Q explosives",
-            "W: projectile destruction, R-ends-W rule",
+            "P: Style movement speed bonus; immobilized-target assist attack",
+            "P: melee bonus damage uses a provisional interpolation (labelled, see kit)",
+            "Q: melee cone geometry (slash hits the nearest enemy in slash_range); E-Q explosives",
+            "W: projectile destruction",
+            "AA: attack timer under mid-cycle attack-speed changes (timer fixed at attack start)",
+            "W cast during E dash: rejected (Damage Lab buffers it to dash end)",
+            "Q collision is evaluated at release against current positions (no swept dodge)",
+            "Walking positions update at tick end; mid-tick events see tick-start positions (dashes exact)",
+            "Crits: no crit chance without items (M3); crit rolls not implemented",
             "R: exact WR shot offsets (fixture uses even spacing), ability-haste rule",
             "Collision/gameplay radius (unknown in source data)",
         ],

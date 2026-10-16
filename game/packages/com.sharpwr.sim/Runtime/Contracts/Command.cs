@@ -16,6 +16,8 @@ namespace SharpWR.Sim.Contracts
         Locked = 7,
         OutOfRange = 8,
         UnsupportedMechanic = 9,
+        NotLearned = 10,
+        RequirementNotMet = 11,
     }
 
     public enum CommandKind : byte

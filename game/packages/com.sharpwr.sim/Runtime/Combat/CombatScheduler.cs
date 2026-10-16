@@ -14,12 +14,13 @@ namespace SharpWR.Sim.Combat
         public readonly int Source;
         public readonly int Target;
         public readonly int ActionId;
+        public readonly int Param;      // kit-defined detail (hit index, slash flag, expiry kind)
 
         public ScheduledEvent(SimTime time, EventPhase phase, long sequence, CombatEventKind kind,
-                              int source, int target, int actionId)
+                              int source, int target, int actionId, int param = 0)
         {
             Time = time; Phase = phase; Sequence = sequence; Kind = kind;
-            Source = source; Target = target; ActionId = actionId;
+            Source = source; Target = target; ActionId = actionId; Param = param;
         }
 
         /// <summary>Total order: time, then phase, then insertion sequence. Never ties.</summary>
@@ -53,10 +54,10 @@ namespace SharpWR.Sim.Combat
             return copy;
         }
 
-        public long Schedule(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId)
+        public long Schedule(SimTime time, EventPhase phase, CombatEventKind kind, int source, int target, int actionId, int param = 0)
         {
             long seq = _nextSequence++;
-            _heap.Add(new ScheduledEvent(time, phase, seq, kind, source, target, actionId));
+            _heap.Add(new ScheduledEvent(time, phase, seq, kind, source, target, actionId, param));
             SiftUp(_heap.Count - 1);
             return seq;
         }

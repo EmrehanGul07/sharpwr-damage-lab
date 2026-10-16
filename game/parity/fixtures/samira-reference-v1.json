@@ -1,4 +1,168 @@
 {
+ "ability_script": {
+  "engine_functions": [
+   "sharpwr.fight_engine.replay_samira(events, timed_combat=True)"
+  ],
+  "impacts": [
+   {
+    "action": "AA",
+    "damage": 59.70714285714257,
+    "style_after": 1,
+    "time": 0.3821576011590173
+   },
+   {
+    "action": "Q",
+    "damage": 96.0625,
+    "style_after": 2,
+    "time": 0.9519230769230769
+   },
+   {
+    "action": "AA",
+    "damage": 59.70714285714257,
+    "style_after": 3,
+    "time": 1.8821576011590173
+   },
+   {
+    "action": "Q",
+    "damage": 96.0625,
+    "style_after": 4,
+    "time": 2.951923076923077
+   },
+   {
+    "action": "E",
+    "damage": 65.92746483152769,
+    "style_after": 5,
+    "time": 3.328125
+   },
+   {
+    "action": "W",
+    "damage": 34.30476549807918,
+    "style_after": 6,
+    "time": 3.6
+   },
+   {
+    "action": "W",
+    "damage": 34.43247411799075,
+    "style_after": 6,
+    "time": 4.35
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 4.544642857142857
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 4.768309523809524
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 4.991976190476191
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 5.215642857142857
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 5.4393095238095235
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 5.66297619047619
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 5.886642857142857
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 6.110309523809524
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 6.33397619047619
+   },
+   {
+    "action": "R tick",
+    "damage": 58.42500000000018,
+    "style_after": 6,
+    "time": 6.5576428571428576
+   }
+  ],
+  "inputs": {
+   "distance": 525.0,
+   "dummy_armor": 40.0,
+   "dummy_hp": 5000.0,
+   "dummy_mr": 30.0,
+   "level": 9,
+   "movement_speed": 0.0,
+   "ranks": {
+    "E": 2,
+    "Q": 4,
+    "R": 2,
+    "W": 1
+   },
+   "script": [
+    {
+     "action": "AA",
+     "time": 0.0
+    },
+    {
+     "action": "Q",
+     "time": 0.5
+    },
+    {
+     "action": "AA",
+     "time": 1.5
+    },
+    {
+     "action": "Q",
+     "time": 2.5
+    },
+    {
+     "action": "E",
+     "time": 3.0
+    },
+    {
+     "action": "W",
+     "time": 3.5
+    },
+    {
+     "action": "R",
+     "time": 4.5
+    },
+    {
+     "action": "Q",
+     "time": 4.6
+    }
+   ]
+  },
+  "rejected": [
+   {
+    "action": "Q",
+    "reason": "R channel active",
+    "time": 4.6
+   }
+  ]
+ },
  "champion": "Samira",
  "champion_loop": {
   "data_status": "windup PC-provisional; growth curve app curve; AS formula base + ratio*(bba+lvbas) from sharpwr/aa_engine.py",
@@ -823,7 +987,7 @@
  },
  "fingerprint": {
   "damage_lab_version": "7.1.23",
-  "git_head_at_export": "b186d7e4388414ace8f776668acc0caabde219a8",
+  "git_head_at_export": "9313ad325caccb1fa244bbf86e8815e30509ec5e",
   "source_sha256": {
    "VERSION": "1f415f082ab3c040c1ce8fdafed6109bbfd61485e42f268a9d2de5cbca661f93",
    "data/marksman_champion_stats.json": "a0185bcbe0d381eb67f8483bf395b53e63c1669fc3a94c751a0cf9a5ac41b55e",

@@ -518,13 +518,196 @@
  },
  "passive": {
   "name": "Daredevil Impulse",
-  "status": "unsupported",
-  "note": "Style stacks and melee bonus damage use a provisional user-accepted interpolation inside fight_engine.replay_samira; not migrated in v1."
+  "note": "Style and melee bonus in kit.style / kit.passive_melee_bonus (provisional)."
+ },
+ "skill_order": {
+  "order": "QEWQRQQEREEWRWW",
+  "source": "sharpwr/fight_engine.py SAMIRA_SKILL_ORDER (Damage Lab default leveling)"
+ },
+ "kit": {
+  "hook": "samira",
+  "style": {
+   "max_stacks": {
+    "value": "6",
+    "status": "damage_lab_preserved",
+    "source": "sharpwr/fight_engine.py replay_samira timed_combat: style = min(6, style + 1)"
+   },
+   "expiry_seconds": {
+    "value": "6",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "gain": "AA/Q/W/E hit whose action differs from the previous Style action (Damage Lab rule); R hits never grant Style",
+   "reset": "at R channel end (Damage Lab WR engine; PC says end of effect)"
+  },
+  "passive_melee_bonus": {
+   "formula": "(level + 5 + (0.05 + 0.008*level) * AD) * (1 + missing_hp / max_hp), magic",
+   "level_flat": {
+    "value": "5",
+    "status": "damage_lab_preserved",
+    "source": "sharpwr/fight_engine.py replay_samira timed_combat passive (user-accepted provisional interpolation)"
+   },
+   "ad_ratio_base": {
+    "value": "0.05",
+    "status": "damage_lab_preserved",
+    "source": "sharpwr/fight_engine.py replay_samira timed_combat passive (user-accepted provisional interpolation)"
+   },
+   "ad_ratio_per_level": {
+    "value": "0.008",
+    "status": "damage_lab_preserved",
+    "source": "sharpwr/fight_engine.py replay_samira timed_combat passive (user-accepted provisional interpolation)"
+   },
+   "applies_to": "W hits, E hit, melee AA (target within melee_attack_range), Q slash; never R"
+  },
+  "melee_attack_range": {
+   "value": "200",
+   "status": "pc_reference_provisional",
+   "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR) blade AA edge range"
+  },
+  "q": {
+   "cast_seconds": {
+    "value": "0.25",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "projectile_speed": {
+    "value": "2600",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "slash_range": {
+    "value": "340",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR) melee cone trigger"
+   }
+  },
+  "w": {
+   "cast_seconds": {
+    "value": "0.1",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "hit_offsets_seconds": [
+    {
+     "value": "0",
+     "status": "pc_reference_provisional",
+     "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+    },
+    {
+     "value": "0.75",
+     "status": "pc_reference_provisional",
+     "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+    }
+   ],
+   "radius": {
+    "value": "325",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "blocks": [
+    "AA",
+    "Q"
+   ]
+  },
+  "e": {
+   "target_range": {
+    "value": "600",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "dash_distance": {
+    "value": "650",
+    "status": "wr_wiki",
+    "source": "data/marksman-skill-geometry.json Samira E movement_range"
+   },
+   "dash_speed": {
+    "value": "1600",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "hit_width": {
+    "value": "250",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR) edge width; Damage Lab E impact limit 250 (fight_engine.py)"
+   },
+   "attack_speed_by_rank": [
+    {
+     "value": "0.25",
+     "status": "damage_lab_preserved",
+     "source": "sharpwr/fight_engine.py replay_samira timed_combat attack_stats E bonus"
+    },
+    {
+     "value": "0.3",
+     "status": "damage_lab_preserved",
+     "source": "sharpwr/fight_engine.py replay_samira timed_combat attack_stats E bonus"
+    },
+    {
+     "value": "0.35",
+     "status": "damage_lab_preserved",
+     "source": "sharpwr/fight_engine.py replay_samira timed_combat attack_stats E bonus"
+    },
+    {
+     "value": "0.4",
+     "status": "damage_lab_preserved",
+     "source": "sharpwr/fight_engine.py replay_samira timed_combat attack_stats E bonus"
+    }
+   ],
+   "attack_speed_seconds": {
+    "value": "3",
+    "status": "wr_verified_user",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR) WR 3 s duration preserved by user"
+   }
+  },
+  "r": {
+   "required_style": {
+    "value": "6",
+    "status": "wr_verified_user",
+    "source": "sharpwr/champion_skill_data.py R required_resource"
+   },
+   "radius": {
+    "value": "600",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "channel_seconds": {
+    "value": "2.277",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "shot_window_seconds": {
+    "value": "2.013",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "shots": {
+    "value": "10",
+    "status": "pc_reference_provisional",
+    "source": "docs/samira-mechanics-reference.json (PC reference; user-authorized provisional for WR)"
+   },
+   "shot_spacing": "even across the window (Damage Lab assumption; exact WR offsets unknown)",
+   "projectile_speed": {
+    "value": "2800",
+    "status": "damage_lab_preserved",
+    "source": "sharpwr/fight_engine.py replay_samira timed_combat R tick travel gap/2800"
+   },
+   "blocks": [
+    "AA",
+    "Q",
+    "W"
+   ],
+   "ends_w": true
+  }
  },
  "unsupported_mechanics": [
-  "P: Style grades, melee bonus damage interpolation, immobilized-target assist attack",
-  "Q: melee cone variant, E-Q explosives",
-  "W: projectile destruction, R-ends-W rule",
+  "P: Style movement speed bonus; immobilized-target assist attack",
+  "P: melee bonus damage uses a provisional interpolation (labelled, see kit)",
+  "Q: melee cone geometry (slash hits the nearest enemy in slash_range); E-Q explosives",
+  "W: projectile destruction",
+  "AA: attack timer under mid-cycle attack-speed changes (timer fixed at attack start)",
+  "W cast during E dash: rejected (Damage Lab buffers it to dash end)",
+  "Q collision is evaluated at release against current positions (no swept dodge)",
+  "Walking positions update at tick end; mid-tick events see tick-start positions (dashes exact)",
+  "Crits: no crit chance without items (M3); crit rolls not implemented",
   "R: exact WR shot offsets (fixture uses even spacing), ability-haste rule",
   "Collision/gameplay radius (unknown in source data)"
  ],

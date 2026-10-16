@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.13" }
       - name: C# sim tests (must execute at least MIN_SIM_TESTS)
-        env: { MIN_SIM_TESTS: "26" }
+        env: { MIN_SIM_TESTS: "36" }
         run: |
           dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo --logger "trx;LogFileName=sim.trx" --results-directory TestResults
           python -I tools/ci/check_trx.py TestResults/sim.trx --min ${{ env.MIN_SIM_TESTS }}

@@ -282,6 +282,44 @@ def champion_loop_cases():
     }
 
 
+ABILITY_SCRIPT = ((0.0, "AA"), (0.5, "Q"), (1.5, "AA"), (2.5, "Q"), (3.0, "E"), (3.5, "W"),
+                  (4.5, "R"), (4.6, "Q"))
+
+
+def ability_script_cases():
+    """Scripted Q/W/E/R rotation (all times on 0.1 s = 3-tick boundaries) vs a stationary dummy.
+
+    Covers casts, cooldowns, projectile travel, W two hits, E dash + overshoot, Style to S,
+    R gate/channel shots, passive melee bonus on W/E, and a rejected Q during R.
+    """
+    from sharpwr.champion_database import level_stats
+    from sharpwr.fight_engine import FightEvent, samira_ranks
+
+    stats = json.loads((ROOT / "data" / "marksman_champion_stats.json").read_text())
+    samira = next(c for c in stats["champions"] if c["name"] == "Samira")["stats"]
+    level, distance, hp, armor, mr = 9, 525.0, 5000.0, 40.0, 30.0
+    s = aa_engine.stats("Samira", level)
+    ranks = samira_ranks(level)
+    result = replay_samira(
+        [FightEvent(t, a) for t, a in ABILITY_SCRIPT], level=level, ad=s["ad"],
+        attack_speed=s["baseas"], crit_chance=0.0, crit_damage=1.75, hp=hp, armor=armor, mr=mr,
+        q_rank=ranks["Q"], w_rank=ranks["W"], e_rank=ranks["E"], r_rank=ranks["R"],
+        timed_combat=True, base_windup=samira["base_attack_windup_seconds"],
+        starting_bonus_as=s["bba"] + s["lvbas"], movement_speed=0.0, distance=distance,
+        attack_range=float(samira["attack_range"]), max_mana=level_stats("Samira", level)["mana"],
+    )
+    return {
+        "engine_functions": ["sharpwr.fight_engine.replay_samira(events, timed_combat=True)"],
+        "inputs": {"level": level, "ranks": ranks, "distance": distance, "dummy_hp": hp,
+                   "dummy_armor": armor, "dummy_mr": mr, "movement_speed": 0.0,
+                   "script": [{"time": t, "action": a} for t, a in ABILITY_SCRIPT]},
+        "impacts": [{"time": e["time"], "action": e["action"], "damage": e["damage"],
+                     "style_after": e["after"]["style"]} for e in result.log],
+        "rejected": [{"time": r["time"], "action": r["action"], "reason": r["reason"]}
+                     for r in result.rejected],
+    }
+
+
 def build():
     return {
         "schema": "sharpwr.parity-fixture/1",
@@ -296,6 +334,7 @@ def build():
         "skills": skill_cases(),
         "timeline": timeline_cases(),
         "champion_loop": champion_loop_cases(),
+        "ability_script": ability_script_cases(),
     }
 
 
