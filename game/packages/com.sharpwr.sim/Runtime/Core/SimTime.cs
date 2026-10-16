@@ -28,6 +28,8 @@ namespace SharpWR.Sim.Core
         public static bool operator >(SimTime a, SimTime b) => a.Micros > b.Micros;
         public static bool operator <=(SimTime a, SimTime b) => a.Micros <= b.Micros;
         public static bool operator >=(SimTime a, SimTime b) => a.Micros >= b.Micros;
+        public static bool operator ==(SimTime a, SimTime b) => a.Micros == b.Micros;
+        public static bool operator !=(SimTime a, SimTime b) => a.Micros != b.Micros;
 
         public Fix64 ToSeconds() => Fix64.Ratio(Micros, MicrosPerSecond);
         public double ToSecondsDouble() => Micros / 1e6; // sim-lint: allow(floating-point) diagnostics only
