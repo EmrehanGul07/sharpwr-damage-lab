@@ -1,7 +1,9 @@
 # SharpWR MOBA — engineering index
 
-Current milestone: **M0 Foundation — partially accepted** (see `milestones/M0-foundation.md`).
-Next: owner decisions below, then M0 close-out on a machine with .NET 8 + Unity Hub, then M1.
+Current milestone: **M1 Vertical slice — simulation complete, Unity items pending**
+(`milestones/M1-vertical-slice.md`, damage report `milestones/M1-parity.md`).
+Next: owner creates the Unity project (`game/UNITY_SETUP.md`), then close M1 and start M2.
+M0 (`milestones/M0-foundation.md`): C# now compiled and tested in CI on 4 platforms.
 
 | # | Document | Brief deliverable |
 |---|---|---|

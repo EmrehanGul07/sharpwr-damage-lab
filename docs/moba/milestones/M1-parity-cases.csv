@@ -1,0 +1,391 @@
+group,case,python,csharp,abs_delta,tolerance,pass,data_status
+level_stat,L1 ad,60.0,60.0,0.000e+00,1e-06,True,damage_lab_preserved
+level_stat,L1 hp,630.0,630.0,0.000e+00,1e-06,True,wr_wiki
+level_stat,L1 armor,35.0,35.0,0.000e+00,1e-06,True,wr_wiki
+level_stat,L1 mr,30.0,30.0,0.000e+00,1e-06,True,wr_wiki
+level_stat,L2 ad,62.52,62.52000000001863,1.862e-11,1e-06,True,damage_lab_preserved
+level_stat,L2 hp,722.16,722.1599999964237,3.576e-09,1e-06,True,wr_wiki
+level_stat,L2 armor,38.6,38.5999999998603,1.397e-10,1e-06,True,wr_wiki
+level_stat,L2 mr,31.008,31.00799999991432,8.568e-11,1e-06,True,wr_wiki
+level_stat,L3 ad,65.1625,65.16250000032596,3.260e-10,1e-06,True,damage_lab_preserved
+level_stat,L3 hp,818.8,818.8000000119209,1.192e-08,1e-06,True,wr_wiki
+level_stat,L3 armor,42.375,42.37500000046566,4.657e-10,1e-06,True,wr_wiki
+level_stat,L3 mr,32.065,32.06499999994412,5.588e-11,1e-06,True,wr_wiki
+level_stat,L4 ad,67.9275,67.92749999975786,2.421e-10,1e-06,True,damage_lab_preserved
+level_stat,L4 hp,919.9200000000001,919.919999986887,1.311e-08,1e-06,True,wr_wiki
+level_stat,L4 armor,46.325,46.32499999948777,5.122e-10,1e-06,True,wr_wiki
+level_stat,L4 mr,33.171,33.170999999623746,3.763e-10,1e-06,True,wr_wiki
+level_stat,L5 ad,70.815,70.81500000040978,4.098e-10,1e-06,True,damage_lab_preserved
+level_stat,L5 hp,1025.52,1025.5200000107288,1.073e-08,1e-06,True,wr_wiki
+level_stat,L5 armor,50.45,50.450000000419095,4.191e-10,1e-06,True,wr_wiki
+level_stat,L5 mr,34.326,34.325999999884516,1.155e-10,1e-06,True,wr_wiki
+level_stat,L6 ad,73.825,73.82499999995343,4.657e-11,1e-06,True,damage_lab_preserved
+level_stat,L6 hp,1135.6,1135.5999999940395,5.960e-09,1e-06,True,wr_wiki
+level_stat,L6 armor,54.75,54.74999999976717,2.328e-10,1e-06,True,wr_wiki
+level_stat,L6 mr,35.53,35.52999999956228,4.377e-10,1e-06,True,wr_wiki
+level_stat,L7 ad,76.9575,76.95750000001863,1.863e-11,1e-06,True,damage_lab_preserved
+level_stat,L7 hp,1250.1599999999999,1250.1599999964237,3.576e-09,1e-06,True,wr_wiki
+level_stat,L7 armor,59.224999999999994,59.2249999998603,1.397e-10,1e-06,True,wr_wiki
+level_stat,L7 mr,36.783,36.782999999588355,4.116e-10,1e-06,True,wr_wiki
+level_stat,L8 ad,80.2125,80.21249999967404,3.260e-10,1e-06,True,damage_lab_preserved
+level_stat,L8 hp,1369.2,1369.199999988079,1.192e-08,1e-06,True,wr_wiki
+level_stat,L8 armor,63.875,63.87499999953434,4.657e-10,1e-06,True,wr_wiki
+level_stat,L8 mr,38.085,38.084999999264255,7.357e-10,1e-06,True,wr_wiki
+level_stat,L9 ad,83.59,83.59000000008382,8.382e-11,1e-06,True,damage_lab_preserved
+level_stat,L9 hp,1492.72,1492.719999998808,1.192e-09,1e-06,True,wr_wiki
+level_stat,L9 armor,68.7,68.69999999995343,4.657e-11,1e-06,True,wr_wiki
+level_stat,L9 mr,39.436,39.43599999928847,7.115e-10,1e-06,True,wr_wiki
+level_stat,L10 ad,87.09,87.09000000008382,8.382e-11,1e-06,True,damage_lab_preserved
+level_stat,L10 hp,1620.7200000000003,1620.719999998808,1.192e-09,1e-06,True,wr_wiki
+level_stat,L10 armor,73.7,73.69999999995343,4.657e-11,1e-06,True,wr_wiki
+level_stat,L10 mr,40.836,40.83599999919534,8.047e-10,1e-06,True,wr_wiki
+level_stat,L11 ad,90.7125,90.71249999967404,3.260e-10,1e-06,True,damage_lab_preserved
+level_stat,L11 hp,1753.2,1753.199999988079,1.192e-08,1e-06,True,wr_wiki
+level_stat,L11 armor,78.875,78.87499999953434,4.657e-10,1e-06,True,wr_wiki
+level_stat,L11 mr,42.285,42.28499999898486,1.015e-09,1e-06,True,wr_wiki
+level_stat,L12 ad,94.45750000000001,94.45750000001863,1.862e-11,1e-06,True,damage_lab_preserved
+level_stat,L12 hp,1890.16,1890.1599999964237,3.576e-09,1e-06,True,wr_wiki
+level_stat,L12 armor,84.225,84.2249999998603,1.397e-10,1e-06,True,wr_wiki
+level_stat,L12 mr,43.783,43.782999999122694,8.773e-10,1e-06,True,wr_wiki
+level_stat,L13 ad,98.325,98.32499999995343,4.657e-11,1e-06,True,damage_lab_preserved
+level_stat,L13 hp,2031.6000000000001,2031.5999999940395,5.961e-09,1e-06,True,wr_wiki
+level_stat,L13 armor,89.75,89.74999999976717,2.328e-10,1e-06,True,wr_wiki
+level_stat,L13 mr,45.33,45.32999999891035,1.090e-09,1e-06,True,wr_wiki
+level_stat,L14 ad,102.315,102.31500000040978,4.098e-10,1e-06,True,damage_lab_preserved
+level_stat,L14 hp,2177.52,2177.520000010729,1.073e-08,1e-06,True,wr_wiki
+level_stat,L14 armor,95.45,95.4500000004191,4.191e-10,1e-06,True,wr_wiki
+level_stat,L14 mr,46.926,46.925999999046326,9.537e-10,1e-06,True,wr_wiki
+level_stat,L15 ad,106.42750000000001,106.42749999975786,2.422e-10,1e-06,True,damage_lab_preserved
+level_stat,L15 hp,2327.92,2327.919999986887,1.311e-08,1e-06,True,wr_wiki
+level_stat,L15 armor,101.325,101.32499999948777,5.122e-10,1e-06,True,wr_wiki
+level_stat,L15 mr,48.571,48.57099999859929,1.401e-09,1e-06,True,wr_wiki
+resistance,R-60.0 pen0.0/0.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-60.0 pen0.3/0.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-60.0 pen0.0/18.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-60.0 pen0.3/18.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-60.0 pen1.0/0.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-60.0 pen0.45/200.0,1.375,1.375,0.000e+00,1e-09,True,formula
+resistance,R-25.0 pen0.0/0.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-25.0 pen0.3/0.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-25.0 pen0.0/18.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-25.0 pen0.3/18.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-25.0 pen1.0/0.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-25.0 pen0.45/200.0,1.2,1.1999999999534339,4.657e-11,1e-09,True,formula
+resistance,R-1.0 pen0.0/0.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R-1.0 pen0.3/0.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R-1.0 pen0.0/18.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R-1.0 pen0.3/18.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R-1.0 pen1.0/0.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R-1.0 pen0.45/200.0,1.00990099009901,1.0099009901750833,7.607e-11,1e-09,True,formula
+resistance,R0.0 pen0.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R0.0 pen0.3/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R0.0 pen0.0/18.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R0.0 pen0.3/18.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R0.0 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R0.0 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1.0 pen0.0/0.0,0.9900990099009901,0.9900990098249167,7.607e-11,1e-09,True,formula
+resistance,R1.0 pen0.3/0.0,0.9930486593843098,0.993048659292981,9.133e-11,1e-09,True,formula
+resistance,R1.0 pen0.0/18.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1.0 pen0.3/18.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1.0 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1.0 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R35.0 pen0.0/0.0,0.7407407407407407,0.7407407406717539,6.899e-11,1e-09,True,formula
+resistance,R35.0 pen0.3/0.0,0.8032128514056225,0.8032128515187651,1.131e-10,1e-09,True,formula
+resistance,R35.0 pen0.0/18.0,0.8547008547008547,0.8547008547466248,4.577e-11,1e-09,True,formula
+resistance,R35.0 pen0.3/18.0,0.9389671361502347,0.9389671362005174,5.028e-11,1e-09,True,formula
+resistance,R35.0 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R35.0 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R50.5 pen0.0/0.0,0.6644518272425249,0.6644518272951245,5.260e-11,1e-09,True,formula
+resistance,R50.5 pen0.3/0.0,0.7388252678241596,0.7388252678792924,5.513e-11,1e-09,True,formula
+resistance,R50.5 pen0.0/18.0,0.7547169811320755,0.754716981202364,7.029e-11,1e-09,True,formula
+resistance,R50.5 pen0.3/18.0,0.852151682999574,0.8521516830660403,6.647e-11,1e-09,True,formula
+resistance,R50.5 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R50.5 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R101.325 pen0.0/0.0,0.49670930088165904,0.49670930090360343,2.194e-11,1e-09,True,formula
+resistance,R101.325 pen0.3/0.0,0.5850433663395299,0.5850433662999421,3.959e-11,1e-09,True,formula
+resistance,R101.325 pen0.0/18.0,0.5454793399699986,0.5454793400131166,4.312e-11,1e-09,True,formula
+resistance,R101.325 pen0.3/18.0,0.6539046280100047,0.653904628008604,1.401e-12,1e-09,True,formula
+resistance,R101.325 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R101.325 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R250.0 pen0.0/0.0,0.2857142857142857,0.2857142856810242,3.326e-11,1e-09,True,formula
+resistance,R250.0 pen0.3/0.0,0.36363636363636365,0.36363636376336217,1.270e-10,1e-09,True,formula
+resistance,R250.0 pen0.0/18.0,0.30120481927710846,0.3012048192322254,4.488e-11,1e-09,True,formula
+resistance,R250.0 pen0.3/18.0,0.38910505836575876,0.3891050582751632,9.060e-11,1e-09,True,formula
+resistance,R250.0 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R250.0 pen0.45/200.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1000.0 pen0.0/0.0,0.09090909090909091,0.09090909082442522,8.467e-11,1e-09,True,formula
+resistance,R1000.0 pen0.3/0.0,0.125,0.125,0.000e+00,1e-09,True,formula
+resistance,R1000.0 pen0.0/18.0,0.09242144177449169,0.09242144180461764,3.013e-11,1e-09,True,formula
+resistance,R1000.0 pen0.3/18.0,0.1278772378516624,0.12787723797373474,1.221e-10,1e-09,True,formula
+resistance,R1000.0 pen1.0/0.0,1.0,1.0,0.000e+00,1e-09,True,formula
+resistance,R1000.0 pen0.45/200.0,0.2222222222222222,0.2222222222480923,2.587e-11,1e-09,True,formula
+ability,Q1 AD60.0/60.0 res0.0 Normal,90.0,90.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD60.0/60.0 res0.0 Critical,123.75,123.75,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD60.0/60.0 res35.0 Normal,66.66666666666666,66.66666666045785,6.209e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD60.0/60.0 res35.0 Critical,91.66666666666666,91.66666665812954,8.537e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD60.0/60.0 res101.325 Normal,44.70383707934931,44.70383708132431,1.975e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD60.0/60.0 res101.325 Critical,61.46777598410531,61.46777598676272,2.657e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res0.0 Normal,190.0,190.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res0.0 Critical,261.25,261.25,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res35.0 Normal,140.74074074074073,140.74074072763324,1.311e-08,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res35.0 Critical,193.5185185185185,193.5185185004957,1.802e-08,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res101.325 Normal,94.37476716751522,94.37476717168465,4.169e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD140.0/88.0 res101.325 Critical,129.76530485533343,129.7653048611246,5.791e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res0.0 Normal,415.0,415.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res0.0 Critical,570.625,570.625,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res35.0 Normal,307.4074074074074,307.40740737877786,2.863e-08,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res35.0 Critical,422.68518518518516,422.68518514581956,3.937e-08,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res101.325 Normal,206.1343598658885,206.13435987499543,9.107e-09,0.001,True,damage_lab_user_sourced
+ability,Q1 AD320.0/109.0 res101.325 Critical,283.4347448155967,283.4347448281478,1.255e-08,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res0.0 Normal,95.0,95.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res0.0 Critical,130.625,130.625,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res35.0 Normal,70.37037037037037,70.37037036381662,6.554e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res35.0 Critical,96.75925925925925,96.75925925024785,9.011e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res101.325 Normal,47.18738358375761,47.187383585842326,2.085e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD60.0/60.0 res101.325 Critical,64.88265242766671,64.8826524305623,2.896e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res0.0 Normal,195.0,195.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res0.0 Critical,268.125,268.125,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res35.0 Normal,144.44444444444443,144.444444430992,1.345e-08,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res35.0 Critical,198.61111111111111,198.611111092614,1.850e-08,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res101.325 Normal,96.85831367192351,96.85831367620267,4.279e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD140.0/88.0 res101.325 Critical,133.18018129889484,133.18018130469136,5.797e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res0.0 Normal,420.0,420.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res0.0 Critical,577.5,577.5,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res35.0 Normal,311.1111111111111,311.11111108213663,2.897e-08,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res35.0 Critical,427.77777777777777,427.77777773793787,3.984e-08,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res101.325 Normal,208.6179063702968,208.61790637951344,9.217e-09,0.001,True,damage_lab_user_sourced
+ability,Q2 AD320.0/109.0 res101.325 Critical,286.8496212591581,286.8496212719474,1.279e-08,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res0.0 Normal,100.0,100.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res0.0 Critical,137.5,137.5,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res35.0 Normal,74.07407407407408,74.07407406717539,6.899e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res35.0 Critical,101.85185185185185,101.85185184236616,9.486e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res101.325 Normal,49.6709300881659,49.67093009036034,2.194e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD60.0/60.0 res101.325 Critical,68.29752887122812,68.29752887436189,3.134e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res0.0 Normal,200.0,200.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res0.0 Critical,275.0,275.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res35.0 Normal,148.14814814814815,148.14814813435078,1.380e-08,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res35.0 Critical,203.7037037037037,203.70370368473232,1.897e-08,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res101.325 Normal,99.3418601763318,99.34186018072069,4.389e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD140.0/88.0 res101.325 Critical,136.59505774245625,136.59505774849094,6.035e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res0.0 Normal,425.0,425.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res0.0 Critical,584.375,584.375,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res35.0 Normal,314.8148148148148,314.8148147854954,2.932e-08,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res35.0 Critical,432.8703703703703,432.8703703300562,4.031e-08,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res101.325 Normal,211.1014528747051,211.10145288403146,9.326e-09,0.001,True,damage_lab_user_sourced
+ability,Q3 AD320.0/109.0 res101.325 Critical,290.2644977027195,290.26449771551415,1.279e-08,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res0.0 Normal,105.0,105.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res0.0 Critical,144.375,144.375,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res35.0 Normal,77.77777777777777,77.77777777053416,7.244e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res35.0 Critical,106.94444444444444,106.94444443448447,9.960e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res101.325 Normal,52.1544765925742,52.15447659487836,2.304e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD60.0/60.0 res101.325 Critical,71.71240531478952,71.71240531792864,3.139e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res0.0 Normal,205.0,205.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res0.0 Critical,281.875,281.875,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res35.0 Normal,151.85185185185185,151.85185183770955,1.414e-08,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res35.0 Critical,208.79629629629628,208.79629627685063,1.945e-08,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res101.325 Normal,101.8254066807401,101.8254066852387,4.499e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD140.0/88.0 res101.325 Critical,140.00993418601763,140.00993419229053,6.273e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res0.0 Normal,430.0,430.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res0.0 Critical,591.25,591.25,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res35.0 Normal,318.5185185185185,318.51851848885417,2.966e-08,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res35.0 Critical,437.96296296296293,437.9629629221745,4.079e-08,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res101.325 Normal,213.58499937911338,213.58499938854948,9.436e-09,0.001,True,damage_lab_user_sourced
+ability,Q4 AD320.0/109.0 res101.325 Critical,293.6793741462809,293.67937415931374,1.303e-08,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res0.0 Normal,40.0,40.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res0.0 Critical,40.0,40.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res35.0 Normal,29.629629629629626,29.629629626870155,2.759e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res35.0 Critical,29.629629629629626,29.629629626870155,2.759e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res101.325 Normal,19.86837203526636,19.868372036144137,8.778e-10,0.001,True,damage_lab_user_sourced
+ability,W1 AD60.0/60.0 res101.325 Critical,19.86837203526636,19.868372036144137,8.778e-10,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res0.0 Normal,92.0,92.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res0.0 Critical,92.0,92.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res35.0 Normal,68.14814814814814,68.14814814180136,6.347e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res35.0 Critical,68.14814814814814,68.14814814180136,6.347e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res101.325 Normal,45.69725568111263,45.697255683131516,2.019e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD140.0/88.0 res101.325 Critical,45.69725568111263,45.697255683131516,2.019e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res0.0 Normal,251.0,251.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res0.0 Critical,251.0,251.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res35.0 Normal,185.92592592592592,185.92592590861022,1.732e-08,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res35.0 Critical,185.92592592592592,185.92592590861022,1.732e-08,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res101.325 Normal,124.67403452129642,124.67403452703729,5.741e-09,0.001,True,damage_lab_user_sourced
+ability,W1 AD320.0/109.0 res101.325 Critical,124.67403452129642,124.67403452703729,5.741e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res0.0 Normal,80.0,80.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res0.0 Critical,80.0,80.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res35.0 Normal,59.25925925925925,59.25925925374031,5.519e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res35.0 Critical,59.25925925925925,59.25925925374031,5.519e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res101.325 Normal,39.73674407053272,39.736744072288275,1.756e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD60.0/60.0 res101.325 Critical,39.73674407053272,39.736744072288275,1.756e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res0.0 Normal,132.0,132.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res0.0 Critical,132.0,132.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res35.0 Normal,97.77777777777777,97.77777776867151,9.106e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res35.0 Critical,97.77777777777777,97.77777776867151,9.106e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res101.325 Normal,65.565627716379,65.56562771927565,2.897e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD140.0/88.0 res101.325 Critical,65.565627716379,65.56562771927565,2.897e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res0.0 Normal,291.0,291.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res0.0 Critical,291.0,291.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res35.0 Normal,215.55555555555554,215.55555553548038,2.008e-08,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res35.0 Critical,215.55555555555554,215.55555553548038,2.008e-08,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res101.325 Normal,144.54240655656278,144.54240656318143,6.619e-09,0.001,True,damage_lab_user_sourced
+ability,W2 AD320.0/109.0 res101.325 Critical,144.54240655656278,144.54240656318143,6.619e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res0.0 Normal,120.0,120.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res0.0 Critical,120.0,120.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res35.0 Normal,88.88888888888889,88.88888888061047,8.278e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res35.0 Critical,88.88888888888889,88.88888888061047,8.278e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res101.325 Normal,59.605116105799084,59.60511610843241,2.633e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD60.0/60.0 res101.325 Critical,59.605116105799084,59.60511610843241,2.633e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res0.0 Normal,172.0,172.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res0.0 Critical,172.0,172.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res35.0 Normal,127.4074074074074,127.40740739554167,1.187e-08,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res35.0 Critical,127.4074074074074,127.40740739554167,1.187e-08,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res101.325 Normal,85.43399975164536,85.43399975541979,3.774e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD140.0/88.0 res101.325 Critical,85.43399975164536,85.43399975541979,3.774e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res0.0 Normal,331.0,331.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res0.0 Critical,331.0,331.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res35.0 Normal,245.18518518518516,245.18518516235054,2.283e-08,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res35.0 Critical,245.18518518518516,245.18518516235054,2.283e-08,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res101.325 Normal,164.41077859182914,164.41077859932557,7.496e-09,0.001,True,damage_lab_user_sourced
+ability,W3 AD320.0/109.0 res101.325 Critical,164.41077859182914,164.41077859932557,7.496e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res0.0 Normal,160.0,160.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res0.0 Critical,160.0,160.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res35.0 Normal,118.5185185185185,118.51851850748062,1.104e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res35.0 Critical,118.5185185185185,118.51851850748062,1.104e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res101.325 Normal,79.47348814106545,79.47348814457655,3.511e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD60.0/60.0 res101.325 Critical,79.47348814106545,79.47348814457655,3.511e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res0.0 Normal,212.0,212.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res0.0 Critical,212.0,212.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res35.0 Normal,157.03703703703704,157.03703702241182,1.463e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res35.0 Critical,157.03703703703704,157.03703702241182,1.463e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res101.325 Normal,105.30237178691172,105.30237179156393,4.652e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD140.0/88.0 res101.325 Critical,105.30237178691172,105.30237179156393,4.652e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res0.0 Normal,371.0,371.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res0.0 Critical,371.0,371.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res35.0 Normal,274.8148148148148,274.8148147892207,2.559e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res35.0 Critical,274.8148148148148,274.8148147892207,2.559e-08,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res101.325 Normal,184.2791506270955,184.2791506354697,8.374e-09,0.001,True,damage_lab_user_sourced
+ability,W4 AD320.0/109.0 res101.325 Critical,184.2791506270955,184.2791506354697,8.374e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res0.0 Normal,45.0,45.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res0.0 Critical,45.0,45.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res30.0 Normal,34.61538461538462,34.61538461619057,8.059e-10,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res30.0 Critical,34.61538461538462,34.61538461619057,8.059e-10,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res48.571 Normal,30.2885489092757,30.288548906100914,3.175e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD60.0/60.0 res48.571 Critical,30.2885489092757,30.288548906100914,3.175e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res0.0 Normal,55.4,55.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res0.0 Critical,55.4,55.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res30.0 Normal,42.61538461538461,42.61538461456075,8.239e-10,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res30.0 Critical,42.61538461538461,42.61538461456075,8.239e-10,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res48.571 Normal,37.288569101641635,37.28856909601018,5.631e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD140.0/88.0 res48.571 Critical,37.288569101641635,37.28856909601018,5.631e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res0.0 Normal,87.2,87.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res0.0 Critical,87.2,87.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res30.0 Normal,67.07692307692308,67.07692307094112,5.982e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res30.0 Critical,67.07692307692308,67.07692307094112,5.982e-09,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res48.571 Normal,58.6924769975298,58.69247698481195,1.272e-08,0.001,True,damage_lab_user_sourced
+ability,E1 AD320.0/109.0 res48.571 Critical,58.6924769975298,58.69247698481195,1.272e-08,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res0.0 Normal,60.0,60.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res0.0 Critical,60.0,60.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res30.0 Normal,46.15384615384615,46.15384615492076,1.075e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res30.0 Critical,46.15384615384615,46.15384615492076,1.075e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res48.571 Normal,40.38473187903426,40.38473187480122,4.233e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD60.0/60.0 res48.571 Critical,40.38473187903426,40.38473187480122,4.233e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res0.0 Normal,70.4,70.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res0.0 Critical,70.4,70.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res30.0 Normal,54.15384615384616,54.15384615329094,5.552e-10,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res30.0 Critical,54.15384615384616,54.15384615329094,5.552e-10,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res48.571 Normal,47.38475207140021,47.38475206471048,6.690e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD140.0/88.0 res48.571 Critical,47.38475207140021,47.38475206471048,6.690e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res0.0 Normal,102.2,102.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res0.0 Critical,102.2,102.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res30.0 Normal,78.61538461538463,78.61538460967131,5.713e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res30.0 Critical,78.61538461538463,78.61538460967131,5.713e-09,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res48.571 Normal,68.78865996728837,68.78865995351225,1.378e-08,0.001,True,damage_lab_user_sourced
+ability,E2 AD320.0/109.0 res48.571 Critical,68.78865996728837,68.78865995351225,1.378e-08,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res0.0 Normal,75.0,75.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res0.0 Critical,75.0,75.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res30.0 Normal,57.69230769230769,57.692307693650946,1.343e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res30.0 Critical,57.69230769230769,57.692307693650946,1.343e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res48.571 Normal,50.480914848792835,50.48091484350152,5.291e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD60.0/60.0 res48.571 Critical,50.480914848792835,50.48091484350152,5.291e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res0.0 Normal,85.4,85.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res0.0 Critical,85.4,85.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res30.0 Normal,65.6923076923077,65.69230769202113,2.866e-10,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res30.0 Critical,65.6923076923077,65.69230769202113,2.866e-10,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res48.571 Normal,57.48093504115877,57.48093503341079,7.748e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD140.0/88.0 res48.571 Critical,57.48093504115877,57.48093503341079,7.748e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res0.0 Normal,117.2,117.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res0.0 Critical,117.2,117.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res30.0 Normal,90.15384615384616,90.1538461484015,5.445e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res30.0 Critical,90.15384615384616,90.1538461484015,5.445e-09,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res48.571 Normal,78.88484293704694,78.88484292221256,1.483e-08,0.001,True,damage_lab_user_sourced
+ability,E3 AD320.0/109.0 res48.571 Critical,78.88484293704694,78.88484292221256,1.483e-08,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res0.0 Normal,90.0,90.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res0.0 Critical,90.0,90.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res30.0 Normal,69.23076923076924,69.23076923238114,1.612e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res30.0 Critical,69.23076923076924,69.23076923238114,1.612e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res48.571 Normal,60.5770978185514,60.57709781220183,6.350e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD60.0/60.0 res48.571 Critical,60.5770978185514,60.57709781220183,6.350e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res0.0 Normal,100.4,100.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res0.0 Critical,100.4,100.39999999757856,2.421e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res30.0 Normal,77.23076923076924,77.23076923075132,1.792e-11,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res30.0 Critical,77.23076923076924,77.23076923075132,1.792e-11,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res48.571 Normal,67.57711801091735,67.57711800211109,8.806e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD140.0/88.0 res48.571 Critical,67.57711801091735,67.57711800211109,8.806e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res0.0 Normal,132.2,132.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res0.0 Critical,132.2,132.19999999017455,9.825e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res30.0 Normal,101.6923076923077,101.69230768713169,5.176e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res30.0 Critical,101.6923076923077,101.69230768713169,5.176e-09,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res48.571 Normal,88.98102590680548,88.98102589091286,1.589e-08,0.001,True,damage_lab_user_sourced
+ability,E4 AD320.0/109.0 res48.571 Critical,88.98102590680548,88.98102589091286,1.589e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res0.0 Normal,500.0,500.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res0.0 Critical,875.0,875.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res35.0 Normal,370.3703703703703,370.37037033587694,3.449e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res35.0 Critical,648.1481481481482,648.1481480877846,6.036e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res101.325 Normal,248.35465044082952,248.35465045180172,1.097e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD60.0/60.0 res101.325 Critical,434.62063827145164,434.62063829181716,2.037e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res0.0 Normal,900.0,900.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res0.0 Critical,1575.0,1575.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res35.0 Normal,666.6666666666666,666.6666666045785,6.209e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res35.0 Critical,1166.6666666666665,1166.6666665580124,1.087e-07,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res101.325 Normal,447.03837079349313,447.0383708132431,1.975e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD140.0/88.0 res101.325 Critical,782.317148888613,782.3171489243396,3.573e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res0.0 Normal,1800.0,1800.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res0.0 Critical,3150.0,3150.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res35.0 Normal,1333.3333333333333,1333.333333209157,1.242e-07,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res35.0 Critical,2333.333333333333,2333.3333331160247,2.173e-07,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res101.325 Normal,894.0767415869863,894.0767416264862,3.950e-08,0.001,True,damage_lab_user_sourced
+ability,R1 AD320.0/109.0 res101.325 Critical,1564.634297777226,1564.6342978463508,6.912e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res0.0 Normal,700.0,700.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res0.0 Critical,1225.0,1225.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res35.0 Normal,518.5185185185185,518.5185184702277,4.829e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res35.0 Critical,907.4074074074074,907.4074073228985,8.451e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res101.325 Normal,347.6965106171613,347.6965106325224,1.536e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD60.0/60.0 res101.325 Critical,608.4688935800323,608.4688936080784,2.805e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res0.0 Normal,1100.0,1100.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res0.0 Critical,1925.0,1925.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res35.0 Normal,814.8148148148148,814.8148147389293,7.589e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res35.0 Critical,1425.9259259259259,1425.9259257931262,1.328e-07,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res101.325 Normal,546.380230969825,546.3802309939638,2.414e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD140.0/88.0 res101.325 Critical,956.1654041971937,956.1654042406008,4.341e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res0.0 Normal,2000.0,2000.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res0.0 Critical,3500.0,3500.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res35.0 Normal,1481.4814814814813,1481.4814813435078,1.380e-07,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res35.0 Critical,2592.5925925925926,2592.5925923511386,2.415e-07,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res101.325 Normal,993.4186017633181,993.4186018072069,4.389e-08,0.001,True,damage_lab_user_sourced
+ability,R2 AD320.0/109.0 res101.325 Critical,1738.4825530858066,1738.482553162612,7.681e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res0.0 Normal,900.0,900.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res0.0 Critical,1575.0,1575.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res35.0 Normal,666.6666666666666,666.6666666045785,6.209e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res35.0 Critical,1166.6666666666665,1166.6666665580124,1.087e-07,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res101.325 Normal,447.03837079349313,447.0383708132431,1.975e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD60.0/60.0 res101.325 Critical,782.317148888613,782.3171489243396,3.573e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res0.0 Normal,1300.0,1300.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res0.0 Critical,2275.0,2275.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res35.0 Normal,962.9629629629629,962.96296287328,8.968e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res35.0 Critical,1685.185185185185,1685.18518502824,1.569e-07,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res101.325 Normal,645.7220911461568,645.7220911746845,2.853e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD140.0/88.0 res101.325 Critical,1130.0136595057743,1130.013659556862,5.109e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res0.0 Normal,2200.0,2200.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res0.0 Critical,3850.0,3850.0,0.000e+00,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res35.0 Normal,1629.6296296296296,1629.6296294778585,1.518e-07,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res35.0 Critical,2851.8518518518517,2851.8518515862525,2.656e-07,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res101.325 Normal,1092.76046193965,1092.7604619879276,4.828e-08,0.001,True,damage_lab_user_sourced
+ability,R3 AD320.0/109.0 res101.325 Critical,1912.3308083943873,1912.3308084788732,8.449e-08,0.001,True,damage_lab_user_sourced
