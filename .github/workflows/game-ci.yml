@@ -20,10 +20,20 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with: { dotnet-version: "8.0.x" }
       - name: Fast checks (lint, content, ownership, parity fixtures, C# sim tests)
-        run: python -I tools/ci/fast_checks.py
+        shell: bash
+        run: |
+          set -o pipefail
+          python -I tools/ci/fast_checks.py 2>&1 | tee fast.log
+      - name: Report fast-check failures as annotations
+        if: failure()
+        shell: bash
+        run: |
+          python -I tools/ci/annotate_failures.py fast.log
+          grep -E "^\[FAIL\]" fast.log | head -5 | sed 's/^/::error title=fast check::/' || true
   sim-cross-platform:
     # Same tests on ARM64 and x64 runners: determinism is a cross-platform property.
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -36,7 +46,13 @@ jobs:
         with: { python-version: "3.13" }
       - name: C# sim tests (must execute at least MIN_SIM_TESTS)
         env: { MIN_SIM_TESTS: "36" }
+        shell: bash
         run: |
-          dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo --logger "trx;LogFileName=sim.trx" --results-directory TestResults
+          set -o pipefail
+          dotnet test game/sim/tests/SharpWR.Sim.Tests.csproj --nologo --logger "trx;LogFileName=sim.trx" --results-directory TestResults 2>&1 | tee build.log
           python -I tools/ci/check_trx.py TestResults/sim.trx --min ${{ env.MIN_SIM_TESTS }}
+      - name: Report failures as annotations
+        if: failure()
+        shell: bash
+        run: python -I tools/ci/annotate_failures.py build.log TestResults/sim.trx
   # unity-build: added in milestone M1 (needs UNITY_LICENSE secrets; see docs/moba/06-testing.md)
